@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Diagnostics;
 using NUnit.Framework;
 
 namespace Jsoncons.JsonPathLib.Tests
@@ -10,15 +11,10 @@ namespace Jsoncons.JsonPathLib.Tests
         [Test]
         public void Test()
         {
-            string path = Path.Combine(TestContext.CurrentContext.TestDirectory, @"test_data\identifiers.json");
-            Console.Write(path);
-        }
-        [TestCase(12, 3, 4)]
-        [TestCase(12, 2, 6)]
-        [TestCase(12, 4, 3)]
-        public void DivideTest(int n, int d, int q)
-        {
-            Assert.AreEqual(q, n / d);
+            var path = System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\identifiers.json");
+            Debug.WriteLine(path);
+            string text = System.IO.File.ReadAllText(path);
+            //Console.Write(text);
         }
     }
 }
