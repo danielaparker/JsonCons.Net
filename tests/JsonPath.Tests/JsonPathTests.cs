@@ -24,7 +24,7 @@ namespace JsonCons.JsonPathLib.Tests
                 foreach (var testCase in testCasesEnumeratable)
                 {
                     var exprElement = testCase.GetProperty("expression");
-                    var expression = JsonPathExpression.CreateInstance(exprElement.ToString());
+                    var expression = JsonPathExpression.Compile(exprElement.ToString());
                     JsonElement expected;
                     if (testCase.TryGetProperty("result", out expected))
                     {
