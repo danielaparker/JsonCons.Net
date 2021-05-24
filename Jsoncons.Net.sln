@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath.Tests", "tests\JsonPath.Tests\JsonPath.Tests.csproj", "{A32E0179-C5A8-4EDB-90FA-B62A9A42176C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2} = {9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath", "src\JsonPath\JsonPath.csproj", "{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}"
 EndProject

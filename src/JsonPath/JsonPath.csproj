@@ -7,7 +7,7 @@
     <ProjectGuid>{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>JsonPath</RootNamespace>
+    <RootNamespace>JsonCons</RootNamespace>
     <AssemblyName>JsonPath</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JsonPath.cs" />
+    <Compile Include="JsonPathExpression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
