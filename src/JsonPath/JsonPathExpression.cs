@@ -170,6 +170,20 @@ namespace JsonCons.JsonPathLib
                         }
                         break;
                     }
+                    case ExpressionState::RecursiveDescentOrExpressionLhs:
+                        switch (_input[_index])
+                        {
+                            case '.':
+                                PushToken(token_type(jsoncons::make_unique<recursive_selector>()), ec);
+                                ++p_;
+                                ++column_;
+                                state_stack_.back() = path_state::name_or_left_bracket;
+                                break;
+                            default:
+                                state_stack_.back() = path_state::path_lhs;
+                                break;
+                        }
+                        break;
                     default:
                         ++_index;
                         break;
