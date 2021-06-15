@@ -18,17 +18,18 @@ namespace JsonCons.JsonPathLib.Tests
 
             foreach (var testGroup in testsEnumeratable)
             {
-                var given = testGroup.GetProperty("given");
+                JsonElement given = testGroup.GetProperty("given");
                 var testCases = testGroup.GetProperty("cases");
                 var testCasesEnumeratable = testCases.EnumerateArray();
                 foreach (var testCase in testCasesEnumeratable)
                 {
                     var exprElement = testCase.GetProperty("expression");
-                    var expression = JsonPathExpression.Compile(exprElement.ToString());
+                    var expr = JsonPathExpression.Compile(exprElement.ToString());
                     JsonElement expected;
                     if (testCase.TryGetProperty("result", out expected))
                     {
-                        TestContext.WriteLine(expected.ToString());
+                        TestContext.WriteLine(@"result: " + expected.ToString());
+                        expr.Evaluate(given);
                     }
                 }
             }

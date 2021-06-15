@@ -3,57 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-    enum TokenType
-    {
-        RootNode,
-        CurrentNode,
-        Expression,
-        Lparen,
-        Rparen,
-        BeginUnion,
-        EndUnion,
-        BeginFilter,
-        EndFilter,
-        BeginExpression,
-        End_indexExpression,
-        EndArgumentExpression,
-        Separator,
-        Literal,
-        Selector,
-        Function,
-        EndFunction,
-        Argument,
-        EndOfExpression,
-        UnaryOperator,
-        BinaryOperator
-    };
-
-    class Token 
-    {
-        TokenType _type;
-
-        protected Token(TokenType type)
-        {
-            _type = type;
-        }
-
-        public TokenType Type
-        {
-          get { return _type; }   
-        }
-    };
-
-    class RootToken : Token
-    {
-        public RootToken()
-            : base(TokenType.RootNode)
-        {
-        }
-    }
-
     enum ExpressionState
     {
         Start,
@@ -120,6 +73,14 @@ namespace JsonCons.JsonPathLib
         ExpectAnd
     };
 
+    public class JsonPathException : Exception
+    {
+        public JsonPathException(string message)
+            : base(message)
+        {
+        }
+    }
+
     class ExpressionCompiler 
     {
         string _input;
@@ -127,6 +88,7 @@ namespace JsonCons.JsonPathLib
         int _column = 1;
         int _line = 1;
         Stack<ExpressionState> _stateStack = new Stack<ExpressionState>();
+        List<Token> _tokens = new List<Token>();
 
         public ExpressionCompiler(string input)
         {
@@ -154,7 +116,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             case '$':
                             {
-                                PushToken(new RootToken());
+                                PushToken(new Token(TokenType.RootNode));
                                 _stateStack.Push(ExpressionState.PathRhs);
                                 ++_index;
                                 ++_column;
@@ -162,38 +124,26 @@ namespace JsonCons.JsonPathLib
                             }
                             default:
                             {
-                                _stateStack.Push(ExpressionState.PathRhs);
-                                _stateStack.Push(ExpressionState.ExpectFunctionExpr);
-                                _stateStack.Push(ExpressionState.UnquotedString);
-                                break;
+                                throw new JsonPathException("Invalid state");
                             }
                         }
                         break;
                     }
-                    case ExpressionState::RecursiveDescentOrExpressionLhs:
-                        switch (_input[_index])
-                        {
-                            case '.':
-                                PushToken(token_type(jsoncons::make_unique<recursive_selector>()), ec);
-                                ++p_;
-                                ++column_;
-                                state_stack_.back() = path_state::name_or_left_bracket;
-                                break;
-                            default:
-                                state_stack_.back() = path_state::path_lhs;
-                                break;
-                        }
-                        break;
                     default:
                         ++_index;
                         break;
                     }
             }
-            return new JsonPathExpression();
+            return new JsonPathExpression(_tokens);
         }
 
         private void PushToken(Token token)
         {
+            switch (token.Type)
+            {
+            case TokenType.RootNode:
+                break;
+            }
         }
 
         private void AdvancePastSpaceCharacter()
@@ -224,10 +174,23 @@ namespace JsonCons.JsonPathLib
 
     public class JsonPathExpression
     {
+        List<Token> _tokens;
+
+        internal JsonPathExpression(List<Token> tokens)
+        {
+            _tokens = tokens;
+        }
+
+        public void Evaluate(JsonElement value)
+        {
+        }
+
         public static JsonPathExpression Compile(string expr)
         {
+
             var compiler = new ExpressionCompiler(expr);
             return compiler.Compile();
         }
     }
-}
+
+} // namespace JsonCons.JsonPathLib
