@@ -32,7 +32,6 @@ namespace JsonCons.JsonPathLib
                                     JsonElement current,
                                     IList<JsonElement> nodes)
         {
-            TestContext.WriteLine("EvaluateTail...");
             if (Tail == null)
             {
                 nodes.Add(current);
@@ -96,6 +95,25 @@ namespace JsonCons.JsonPathLib
                                     JsonElement current,
                                     IList<JsonElement> nodes)
         {
+            TestContext.WriteLine("RecursiveDescentSelector ...");
+            if (current.ValueKind == JsonValueKind.Array)
+            {
+                TestContext.WriteLine("RecursiveDescentSelector Array ...");
+                this.EvaluateTail(root, current, nodes);
+                foreach (var item in current.EnumerateArray())
+                {
+                    Select(root, item, nodes);
+                }
+            }
+            else if (current.ValueKind == JsonValueKind.Object)
+            {
+                TestContext.WriteLine("RecursiveDescentSelector Object ...");
+                this.EvaluateTail(root, current, nodes);
+                foreach (var prop in current.EnumerateObject())
+                {
+                    Select(root, prop.Value, nodes);
+                }
+            }
         }
     }
 

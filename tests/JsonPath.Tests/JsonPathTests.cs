@@ -35,9 +35,12 @@ namespace JsonCons.JsonPathLib.Tests
 
                         var comparer = new JsonElementComparer();
 
+                        TestContext.WriteLine("Results " + items.Count);
                         Assert.AreEqual(items.Count, expected.GetArrayLength());
                         for (Int32 i = 0; i < items.Count; ++i)
                         {
+                            TestContext.WriteLine("Result: " + items[i].ToString());
+
                             Assert.IsTrue(comparer.Equals(items[i],expected[i]));
                         }
                     }

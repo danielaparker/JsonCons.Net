@@ -164,6 +164,23 @@ namespace JsonCons.JsonPathLib
                                 break;
                         }
                         break;
+                    case ExprState.NameOrLeftBracket: 
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '[': // [ can follow ..
+                                _stateStack.Pop(); _stateStack.Push(ExprState.BracketSpecifierOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                buffer.Clear();
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathLhs);
+                                break;
+                        }
+                        break;
                     case ExprState.PathLhs: 
                         switch (_input[_index])
                         {
@@ -381,7 +398,7 @@ namespace JsonCons.JsonPathLib
                         break;
                     case ExprState.EscapeU4:
                         cp = AppendToCodepoint(cp, _input[_index]);
-                        if (IsHighSurrogate(cp))
+                        if (Char.IsHighSurrogate((Char)cp))
                         {
                             ++_index;
                             ++_column;
@@ -522,11 +539,6 @@ namespace JsonCons.JsonPathLib
                     }
                     break;
             }
-        }
-
-        bool IsHighSurrogate(UInt32 ch) 
-        {
-            return (ch >= 0xD800 && ch <= 0xDBFF);
         }
 
         private UInt32 AppendToCodepoint(UInt32 cp, uint c)

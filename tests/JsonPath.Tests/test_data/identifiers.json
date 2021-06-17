@@ -15,6 +15,16 @@
                 "expression": "$.'key'",
                 "result": ["value"],
                 "path" : ["$['key']"]
+            },
+            {
+                "expression": "$.\"key\"",
+                "result": ["value"],
+                "path" : ["$['key']"]
+            },
+            {
+                "expression": "$..key",
+                "result": ["value"],
+                "path" : ["$['key']"]
             }
         ]
     }
