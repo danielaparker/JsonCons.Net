@@ -1,0 +1,3490 @@
+// Copyright 2021 Daniel Parker
+// Distributed under the Boost license, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+// See https://github.com/danielaparker/jsoncons for latest version
+
+#ifndef JSONCONS_JSONPATH_JSON_QUERY_HPP
+#define JSONCONS_JSONPATH_JSON_QUERY_HPP
+
+#include <string>
+#include <vector>
+#include <memory>
+#include <type_traits> // std::is_const
+#include <limits> // std::numeric_limits
+#include <utility> // std::move
+#include <regex>
+#include <jsoncons/json.hpp>
+#include <jsoncons_ext/jsonpath/jsonpath_error.hpp>
+#include <jsoncons_ext/jsonpath/path_expression.hpp>
+
+namespace jsoncons { namespace jsonpath {
+
+    // token
+
+    struct Slice
+    {
+        jsoncons::optional<int64_t> start_;
+        jsoncons::optional<int64_t> stop_;
+        int64_t step_;
+
+        Slice()
+            : start_(), stop_(), step_(1)
+        {
+        }
+
+        Slice(const jsoncons::optional<int64_t>& start, const jsoncons::optional<int64_t>& end, int64_t step) 
+            : start_(start), stop_(end), step_(step)
+        {
+        }
+
+        Slice(const Slice& other)
+            : start_(other.start_), stop_(other.stop_), step_(other.step_)
+        {
+        }
+
+        Slice& operator=(const Slice& rhs) 
+        {
+            if (this != &rhs)
+            {
+                if (rhs.start_)
+                {
+                    start_ = rhs.start_;
+                }
+                else
+                {
+                    start_.reset();
+                }
+                if (rhs.stop_)
+                {
+                    stop_ = rhs.stop_;
+                }
+                else
+                {
+                    stop_.reset();
+                }
+                step_ = rhs.step_;
+            }
+            return *this;
+        }
+
+        int64_t get_start(std::size_t size) const
+        {
+            if (start_)
+            {
+                auto len = *start_ >= 0 ? *start_ : (static_cast<int64_t>(size) + *start_);
+                return len <= static_cast<int64_t>(size) ? len : static_cast<int64_t>(size);
+            }
+            else
+            {
+                if (step_ >= 0)
+                {
+                    return 0;
+                }
+                else 
+                {
+                    return static_cast<int64_t>(size);
+                }
+            }
+        }
+
+        int64_t get_stop(std::size_t size) const
+        {
+            if (stop_)
+            {
+                auto len = *stop_ >= 0 ? *stop_ : (static_cast<int64_t>(size) + *stop_);
+                return len <= static_cast<int64_t>(size) ? len : static_cast<int64_t>(size);
+            }
+            else
+            {
+                return step_ >= 0 ? static_cast<int64_t>(size) : -1;
+            }
+        }
+
+        int64_t step() const
+        {
+            return step_; // Allow negative
+        }
+    };
+
+    namespace detail {
+     
+    enum class ExprState 
+    {
+        Start,
+        ExpectFunctionExpr,
+        PathLhs,
+        PathRhs,
+        FilterExpression,
+        ExpressionRhs,
+        RecursiveDescentOrPathLhs,
+        PathOrLiteralOrFunction,
+        JsonTextOrFunction,
+        JsonTextOrFunctionName,
+        JsonTextString,
+        JsonValue,
+        JsonString,
+        IdentifierOrFunctionExpr,
+        NameOrLeftBracket,
+        UnquotedString,
+        Number,
+        FunctionExpression,
+        Argument,
+        ZeroOrOneArguments,
+        OneOrMoreArguments,
+        Identifier,
+        SingleQuotedString,
+        DoubleQuotedString,
+        BracketedUnquotedNameOrUnion,
+        UnionExpression,
+        IdentifierOrUnion,
+        BracketSpecifierOrUnion,
+        BracketedWildcard,
+        IndexOrSlice,
+        WildcardOrUnion,
+        UnionElement,
+        IndexOrSliceOrUnion,
+        Index,
+        Integer,
+        Digit,
+        SliceExpressionStop,
+        SliceExpressionStep,
+        CommaOrRightBracket,
+        ExpectRightBracket,
+        QuotedStringEscapeChar,
+        EscapeU1, 
+        EscapeU2, 
+        EscapeU3, 
+        EscapeU4, 
+        EscapeExpectSurrogatePair1, 
+        EscapeExpectSurrogatePair2, 
+        EscapeU5, 
+        EscapeU6, 
+        EscapeU7, 
+        EscapeU8,
+        Expression,
+        ComparatorExpression,
+        EqOrRegex,
+        ExpectRegex,
+        Regex,
+        CmpLtOrLte,
+        CmpGtOrGte,
+        CmpNe,
+        ExpectOr,
+        ExpectAnd
+    };
+
+    JSONCONS_STRING_LITERAL(length_literal, 'l', 'e', 'n', 'g', 't', 'h')
+
+    template<class Json,
+             class JsonReference>
+    class jsonpath_evaluator : public ser_context
+    {
+    public:
+        using char_type = typename Json::char_type;
+        using string_type = std::basic_string<char_type,std::char_traits<char_type>>;
+        using string_view_type = typename Json::string_view_type;
+        using path_node_type = path_node<Json,JsonReference>;
+        using value_type = Json;
+        using reference = JsonReference;
+        using pointer = typename path_node_type::pointer;
+        using selector_base_type = selector_base<Json,JsonReference>;
+        using token_type = token<Json,JsonReference>;
+        using pathExpression_type = pathExpression<Json,JsonReference>;
+        using expression_tree_type = expression_tree<Json,JsonReference>;
+        using path_component_type = path_component<char_type>;
+
+    private:
+
+        // path_selector
+        class path_selector : public selector_base_type
+        {
+            std::unique_ptr<selector_base_type> tail_selector_;
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            using selector_base_type::generate_path;
+
+            path_selector()
+                : selector_base_type(true, 11), tail_selector_()
+            {
+            }
+
+            path_selector(bool is_path, std::size_t precedence_level)
+                : selector_base_type(is_path, precedence_level), tail_selector_()
+            {
+            }
+
+            void append_selector(std::unique_ptr<selector_base_type>&& expr) override
+            {
+                if (!tail_selector_)
+                {
+                    tail_selector_ = std::move(expr);
+                }
+                else
+                {
+                    tail_selector_->append_selector(std::move(expr));
+                }
+            }
+
+            void evaluate_tail(dynamic_resources<Json,JsonReference>& resources,
+                               const std::vector<path_component_type>& path, 
+                               reference root,
+                               reference val,
+                               std::vector<path_node_type>& nodes,
+                               node_kind& ndtype,
+                               result_options options) const
+            {
+                if (!tail_selector_)
+                {
+                    nodes.Add(path, std::addressof(val));
+                }
+                else
+                {
+                    tail_selector_->select(resources, path, root, val, nodes, ndtype, options);
+                }
+            }
+
+            std::string to_string(int level = 0) const override
+            {
+                std::string s;
+                if (level > 0)
+                {
+                    s.append("\n");
+                    s.append(level*2, ' ');
+                }
+                if (tail_selector_)
+                {
+                    s.append(tail_selector_->to_string(level));
+                }
+                return s;
+            }
+        };
+
+        class identifier_selector final : public path_selector
+        {
+            string_type identifier_;
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            using path_selector::generate_path;
+
+            identifier_selector(const string_view_type& identifier)
+                : path_selector(), identifier_(identifier)
+            {
+            }
+
+            void select(dynamic_resources<Json,JsonReference>& resources,
+                        const std::vector<path_component_type>& path, 
+                        reference root,
+                        reference val,
+                        std::vector<path_node_type>& nodes,
+                        node_kind& ndtype,
+                        result_options options) const override
+            {
+                //std::string buf;
+                //buf.append("identifier selector: ");
+                //unicode_traits::convert(identifier_.data(),identifier_.size(),buf);
+
+                ndtype = node_kind::single;
+                if (val.is_object())
+                {
+                    auto it = val.find(identifier_);
+                    if (it != val.object_range().end())
+                    {
+                        this->evaluate_tail(resources, generate_path(path, identifier_, options), 
+                                                root, it->value(), nodes, ndtype, options);
+                    }
+                }
+                else if (val.is_array())
+                {
+                    int64_t n{0};
+                    auto r = jsoncons::detail::to_integer_decimal(identifier_.data(), identifier_.size(), n);
+                    if (r)
+                    {
+                        std::size_t index = (n >= 0) ? static_cast<std::size_t>(n) : static_cast<std::size_t>(static_cast<int64_t>(val.size()) + n);
+                        if (index < val.size())
+                        {
+                            this->evaluate_tail(resources, generate_path(path, index, options), 
+                                                root, val[index], nodes, ndtype, options);
+                        }
+                    }
+                    else if (identifier_ == length_literal<char_type>() && val.size() > 0)
+                    {
+                        pointer ptr = resources.create_json(val.size());
+                        this->evaluate_tail(resources, generate_path(path, identifier_, options), 
+                                                root, *ptr, nodes, ndtype, options);
+                    }
+                }
+                else if (val.is_string() && identifier_ == length_literal<char_type>())
+                {
+                    string_view_type sv = val.as_string_view();
+                    std::size_t count = unicode_traits::count_codepoints(sv.data(), sv.size());
+                    pointer ptr = resources.create_json(count);
+                    this->evaluate_tail(resources, generate_path(path, identifier_, options), 
+                                            root, *ptr, nodes, ndtype, options);
+                }
+                //std::cout << "end identifier_selector\n";
+            }
+
+            std::string to_string(int level = 0) const override
+            {
+                std::string s;
+                if (level > 0)
+                {
+                    s.append("\n");
+                    s.append(level*2, ' ');
+                }
+                s.append("identifier selector ");
+                unicode_traits::convert(identifier_.data(),identifier_.size(),s);
+                s.append(path_selector::to_string(level+1));
+                //s.append("\n");
+
+                return s;
+            }
+        };
+
+        class root_selector final : public path_selector
+        {
+            std::size_t id_;
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            using path_selector::generate_path;
+
+            root_selector(std::size_t id)
+                : path_selector(), id_(id)
+            {
+            }
+
+            void select(dynamic_resources<Json,JsonReference>& resources,
+                        const std::vector<path_component_type>& path, 
+                        reference root,
+                        reference,
+                        std::vector<path_node_type>& nodes,
+                        node_kind& ndtype,
+                        result_options options) const override
+            {
+                if (resources.is_cached(id_))
+                {
+                    resources.Retrieve_from_cache(id_, nodes, ndtype);
+                }
+                else
+                {
+                    std::vector<path_node_type> v;
+                    this->evaluate_tail(resources, path, 
+                                        root, root, v, ndtype, options);
+                    resources.add_to_cache(id_, v, ndtype);
+                    for (auto&& item : v)
+                    {
+                        nodes.Add(std::move(item));
+                    }
+                }
+            }
+
+            std::string to_string(int level = 0) const override
+            {
+                std::string s;
+                if (level > 0)
+                {
+                    s.append("\n");
+                    s.append(level*2, ' ');
+                }
+                s.append("root_selector ");
+                s.append(path_selector::to_string(level+1));
+
+                return s;
+            }
+        };
+
+        class current_node_selector final : public path_selector
+        {
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            using path_selector::generate_path;
+
+            current_node_selector()
+            {
+            }
+
+            void select(dynamic_resources<Json,JsonReference>& resources,
+                        const std::vector<path_component_type>& path, 
+                        reference root,
+                        reference current,
+                        std::vector<path_node_type>& nodes,
+                        node_kind& ndtype,
+                        result_options options) const override
+            {
+                //std::cout << "current_node_selector: " << current << "\n";
+                ndtype = node_kind::single;
+                this->evaluate_tail(resources, path, 
+                                    root, current, nodes, ndtype, options);
+            }
+
+            std::string to_string(int level = 0) const override
+            {
+                std::string s;
+                if (level > 0)
+                {
+                    s.append("\n");
+                    s.append(level*2, ' ');
+                }
+                s.append("current_node_selector");
+                s.append(path_selector::to_string(level+1));
+
+                return s;
+            }
+        };
+
+        class index_selector final : public path_selector
+        {
+            int64_t index_;
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            using path_selector::generate_path;
+
+            index_selector(int64_t index)
+                : path_selector(), index_(index)
+            {
+            }
+
+            void select(dynamic_resources<Json,JsonReference>& resources,
+                        const std::vector<path_component_type>& path, 
+                        reference root,
+                        reference val,
+                        std::vector<path_node_type>& nodes,
+                        node_kind& ndtype,
+                        result_options options) const override
+            {
+                ndtype = node_kind::single;
+                if (val.is_array())
+                {
+                    int64_t slen = static_cast<int64_t>(val.size());
+                    if (index_ >= 0 && index_ < slen)
+                    {
+                        std::size_t index = static_cast<std::size_t>(index_);
+                        //std::cout << "path: " << path << ", val: " << val << ", index: " << index << "\n";
+                        //nodes.Add(generate_path(path, index, options),std::addressof(val.at(index)));
+                        //nodes.Add(path, std::addressof(val));
+                        this->evaluate_tail(resources, generate_path(path, index, options), 
+                                                root, val.at(index), nodes, ndtype, options);
+                    }
+                    else if ((slen + index_) >= 0 && (slen+index_) < slen)
+                    {
+                        std::size_t index = static_cast<std::size_t>(slen + index_);
+                        //std::cout << "path: " << path << ", val: " << val << ", index: " << index << "\n";
+                        //nodes.Add(generate_path(path, index ,options),std::addressof(val.at(index)));
+                        this->evaluate_tail(resources, generate_path(path, index, options), 
+                                                root, val.at(index), nodes, ndtype, options);
+                    }
+                }
+            }
+        };
+
+        class wildcard_selector final : public path_selector
+        {
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            using path_selector::generate_path;
+
+            wildcard_selector()
+                : path_selector()
+            {
+            }
+
+            void select(dynamic_resources<Json,JsonReference>& resources,
+                        const std::vector<path_component_type>& path, 
+                        reference root,
+                        reference val,
+                        std::vector<path_node_type>& nodes,
+                        node_kind& ndtype,
+                        result_options options) const override
+            {
+                //std::cout << "wildcard_selector: " << val << "\n";
+                ndtype = node_kind::multi; // always multi
+
+                node_kind tmptype;
+                if (val.is_array())
+                {
+                    for (std::size_t i = 0; i < val.size(); ++i)
+                    {
+                        this->evaluate_tail(resources, generate_path(path, i, options), root, val[i], nodes, tmptype, options);
+                    }
+                }
+                else if (val.is_object())
+                {
+                    for (auto& item : val.object_range())
+                    {
+                        this->evaluate_tail(resources, generate_path(path, item.key(), options), root, item.value(), nodes, tmptype, options);
+                    }
+                }
+                //std::cout << "end wildcard_selector\n";
+            }
+
+            std::string to_string(int level = 0) const override
+            {
+                std::string s;
+                if (level > 0)
+                {
+                    s.append("\n");
+                    s.append(level*2, ' ');
+                }
+                s.append("wildcard selector");
+                s.append(path_selector::to_string(level));
+
+                return s;
+            }
+        };
+
+        class recursive_selector final : public path_selector
+        {
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            using path_selector::generate_path;
+
+            recursive_selector()
+                : path_selector()
+            {
+            }
+
+            void select(dynamic_resources<Json,JsonReference>& resources,
+                        const std::vector<path_component_type>& path, 
+                        reference root,
+                        reference val,
+                        std::vector<path_node_type>& nodes,
+                        node_kind& ndtype,
+                        result_options options) const override
+            {
+                //std::cout << "wildcard_selector: " << val << "\n";
+                if (val.is_array())
+                {
+                    this->evaluate_tail(resources, path, root, val, nodes, ndtype, options);
+                    for (std::size_t i = 0; i < val.size(); ++i)
+                    {
+                        select(resources, generate_path(path, i, options), root, val[i], nodes, ndtype, options);
+                    }
+                }
+                else if (val.is_object())
+                {
+                    this->evaluate_tail(resources, path, root, val, nodes, ndtype, options);
+                    for (auto& item : val.object_range())
+                    {
+                        select(resources, generate_path(path, item.key(), options), root, item.value(), nodes, ndtype, options);
+                    }
+                }
+                //std::cout << "end wildcard_selector\n";
+            }
+
+            std::string to_string(int level = 0) const override
+            {
+                std::string s;
+                if (level > 0)
+                {
+                    s.append("\n");
+                    s.append(level*2, ' ');
+                }
+                s.append("wildcard selector");
+                s.append(path_selector::to_string(level));
+
+                return s;
+            }
+        };
+
+        class union_selector final : public path_selector
+        {
+            std::vector<pathExpression_type> expressions_;
+
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            using path_selector::generate_path;
+
+            union_selector(std::vector<pathExpression_type>&& expressions)
+                : path_selector(), expressions_(std::move(expressions))
+            {
+            }
+
+            void select(dynamic_resources<Json,JsonReference>& resources,
+                        const std::vector<path_component_type>& path, 
+                        reference root,
+                        reference val, 
+                        std::vector<path_node_type>& nodes,
+                        node_kind& ndtype,
+                        result_options options) const override
+            {
+                //std::cout << "union_selector select val: " << val << "\n";
+                ndtype = node_kind::multi;
+
+                auto callback = [&](const std::vector<path_component_type>& p, reference v)
+                {
+                    //std::cout << "union select callback: node: " << *node.ptr << "\n";
+                    this->evaluate_tail(resources, p, root, v, nodes, ndtype, options);
+                };
+                for (auto& expr : expressions_)
+                {
+                    expr.evaluate(resources, path, root, val, callback, options);
+                }
+            }
+
+            std::string to_string(int level = 0) const override
+            {
+                std::string s;
+                if (level > 0)
+                {
+                    s.append("\n");
+                    s.append(level*2, ' ');
+                }
+                s.append("union selector ");
+                for (auto& expr : expressions_)
+                {
+                    s.append(expr.to_string(level+1));
+                    //s.Add('\n');
+                }
+
+                return s;
+            }
+        };
+
+        class filterExpression_selector final : public path_selector
+        {
+            expression_tree_type expr_;
+
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            using path_selector::generate_path;
+
+            filterExpression_selector(expression_tree_type&& expr)
+                : path_selector(), expr_(std::move(expr))
+            {
+            }
+
+            void select(dynamic_resources<Json,JsonReference>& resources,
+                        const std::vector<path_component_type>& path, 
+                        reference root,
+                        reference current, 
+                        std::vector<path_node_type>& nodes,
+                        node_kind& ndtype,
+                        result_options options) const override
+            {
+                if (current.is_array())
+                {
+                    for (std::size_t i = 0; i < current.size(); ++i)
+                    {
+                        std::error_code ec;
+                        value_type r = expr_.evaluate_single(resources, root, current[i], options);
+                        bool t = ec ? false : detail::is_true(r);
+                        if (t)
+                        {
+                            this->evaluate_tail(resources, path, root, current[i], nodes, ndtype, options);
+                        }
+                    }
+                }
+                else if (current.is_object())
+                {
+                    for (auto& member : current.object_range())
+                    {
+                        std::error_code ec;
+                        value_type r = expr_.evaluate_single(resources, root, member.value(), options);
+                        bool t = ec ? false : detail::is_true(r);
+                        if (t)
+                        {
+                            this->evaluate_tail(resources, path, root, member.value(), nodes, ndtype, options);
+                        }
+                    }
+                }
+            }
+
+            std::string to_string(int level = 0) const override
+            {
+                std::string s;
+                if (level > 0)
+                {
+                    s.append("\n");
+                    s.append(level*2, ' ');
+                }
+                s.append("filter selector ");
+                s.append(expr_.to_string(level+1));
+
+                return s;
+            }
+        };
+
+        class indexExpression_selector final : public path_selector
+        {
+            expression_tree_type expr_;
+
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            using path_selector::generate_path;
+
+            indexExpression_selector(expression_tree_type&& expr)
+                : path_selector(), expr_(std::move(expr))
+            {
+            }
+
+            void select(dynamic_resources<Json,JsonReference>& resources,
+                        const std::vector<path_component_type>& path, 
+                        reference root,
+                        reference current, 
+                        std::vector<path_node_type>& nodes,
+                        node_kind& ndtype,
+                        result_options options) const override
+            {
+                //std::cout << "indexExpression_selector current: " << current << "\n";
+
+                std::error_code ec;
+                value_type j = expr_.evaluate_single(resources, root, current, options);
+
+                if (!ec)
+                {
+                    if (j.template is<std::size_t>() && current.is_array())
+                    {
+                        std::size_t start = j.template as<std::size_t>();
+                        this->evaluate_tail(resources, path, root, current.at(start), nodes, ndtype, options);
+                    }
+                    else if (j.is_string() && current.is_object())
+                    {
+                        this->evaluate_tail(resources, path, root, current.at(j.as_string_view()), nodes, ndtype, options);
+                    }
+                }
+            }
+
+            std::string to_string(int level = 0) const override
+            {
+                std::string s;
+                if (level > 0)
+                {
+                    s.append("\n");
+                    s.append(level*2, ' ');
+                }
+                s.append("bracket expression selector ");
+                s.append(expr_.to_string(level+1));
+                s.append(path_selector::to_string(level+1));
+
+                return s;
+            }
+        };
+
+        class argumentExpression final : public expression_base<Json,JsonReference>
+        {
+            expression_tree_type expr_;
+
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+
+            argumentExpression(expression_tree_type&& expr)
+                : expr_(std::move(expr))
+            {
+            }
+
+            value_type evaluate_single(dynamic_resources<Json,JsonReference>& resources,
+                                       const std::vector<path_component_type>&, 
+                                       reference root,
+                                       reference current, 
+                                       result_options options,
+                                       std::error_code& ec) const override
+            {
+                value_type ref = expr_.evaluate_single(resources, root, current, options);
+                return ec ? Json::null() : ref; 
+            }
+
+            std::string to_string(int level = 0) const override
+            {
+                std::string s;
+                if (level > 0)
+                {
+                    s.append("\n");
+                    s.append(level*2, ' ');
+                }
+                s.append("expression selector ");
+                s.append(expr_.to_string(level+1));
+
+                return s;
+            }
+        };
+
+        class slice_selector final : public path_selector
+        {
+            Slice slice_;
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            using path_selector::generate_path;
+
+            slice_selector(const Slice& slic)
+                : path_selector(), slice_(slic) 
+            {
+            }
+
+            void select(dynamic_resources<Json,JsonReference>& resources,
+                        const std::vector<path_component_type>& path, 
+                        reference root,
+                        reference current,
+                        std::vector<path_node_type>& nodes,
+                        node_kind& ndtype,
+                        result_options options) const override
+            {
+                ndtype = node_kind::multi;
+
+                if (current.is_array())
+                {
+                    auto start = slice_.get_start(current.size());
+                    auto end = slice_.getStop(current.size());
+                    auto step = slice_.step();
+
+                    if (step > 0)
+                    {
+                        if (start < 0)
+                        {
+                            start = 0;
+                        }
+                        if (end > static_cast<int64_t>(current.size()))
+                        {
+                            end = current.size();
+                        }
+                        for (int64_t i = start; i < end; i += step)
+                        {
+                            std::size_t j = static_cast<std::size_t>(i);
+                            this->evaluate_tail(resources, generate_path(path, j, options), root, current[j], nodes, ndtype, options);
+                        }
+                    }
+                    else if (step < 0)
+                    {
+                        if (start >= static_cast<int64_t>(current.size()))
+                        {
+                            start = static_cast<int64_t>(current.size()) - 1;
+                        }
+                        if (end < -1)
+                        {
+                            end = -1;
+                        }
+                        for (int64_t i = start; i > end; i += step)
+                        {
+                            std::size_t j = static_cast<std::size_t>(i);
+                            if (j < current.size())
+                            {
+                                this->evaluate_tail(resources, generate_path(path,j,options), root, current[j], nodes, ndtype, options);
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        class function_selector final : public path_selector
+        {
+        public:
+            using path_component_type = typename selector_base_type::path_component_type;
+            expression_tree_type expr_;
+
+            function_selector(expression_tree_type&& expr)
+                : path_selector(), expr_(std::move(expr))
+            {
+            }
+
+            void select(dynamic_resources<Json,JsonReference>& resources,
+                        const std::vector<path_component_type>& path, 
+                        reference root,
+                        reference current, 
+                        std::vector<path_node_type>& nodes,
+                        node_kind& ndtype,
+                        result_options options) const override
+            {
+                ndtype = node_kind::single;
+                std::error_code ec;
+                value_type ref = expr_.evaluate_single(resources, root, current, options);
+                if (!ec)
+                {
+                    this->evaluate_tail(resources, path, root, *resources.create_json(std::move(ref)), nodes, ndtype, options);
+                }
+            }
+
+            std::string to_string(int level = 0) const override
+            {
+                std::string s;
+                if (level > 0)
+                {
+                    s.append("\n");
+                    s.append(level*2, ' ');
+                }
+                s.append("function_selector ");
+                s.append(expr_.to_string(level+1));
+
+                return s;
+            }
+        };
+
+        std::size_t line_;
+        std::size_t column_;
+        const char_type* begin_input_;
+        const char_type* end_input_;
+        const char_type* p_;
+
+        using argument_type = std::vector<pointer>;
+        std::vector<argument_type> function_stack_;
+        std::vector<ExprState> _stateStack;
+        std::vector<token_type> _outputStack;
+        std::vector<token_type> operator_stack_;
+
+    public:
+        jsonpath_evaluator()
+            : line_(1), column_(1),
+              begin_input_(nullptr), end_input_(nullptr),
+              p_(nullptr)
+        {
+        }
+
+        jsonpath_evaluator(std::size_t line, std::size_t column)
+            : line_(line), column_(column),
+              begin_input_(nullptr), end_input_(nullptr),
+              p_(nullptr)
+        {
+        }
+
+        std::size_t line() const
+        {
+            return line_;
+        }
+
+        std::size_t column() const
+        {
+            return column_;
+        }
+
+        pathExpression_type compile(static_resources<value_type,reference>& resources, const string_view_type& path)
+        {
+            std::error_code ec;
+            auto result = compile(resources, path);
+            if (ec)
+            {
+                JSONCONS_THROW(jsonpath_error(ec, line_, column_));
+            }
+            return result;
+        }
+
+        pathExpression_type compile(static_resources<value_type,reference>& resources, 
+                                     const string_view_type& path, 
+                                     std::error_code& ec)
+        {
+            std::size_t selector_id = 0;
+
+            string_type buffer;
+            uint32_t cp = 0;
+            uint32_t cp2 = 0;
+
+            begin_input_ = path.data();
+            end_input_ = path.data() + path.length();
+            p_ = begin_input_;
+
+            Slice slic;
+
+            Stack<Int64> evalStack;
+            evalStack.Push(0);
+
+            _stateStack.Push(ExprState.Start);
+            while (p_ < end_input_ && !_stateStack.empty())
+            {
+                switch (_stateStack.Peek())
+                {
+                    case ExprState.Start: 
+                    {
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '$':
+                            {
+                                PushToken(root_node_arg);
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Push(ExprState.PathRhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            default:
+                            {
+                                _stateStack.Push(ExprState.PathRhs);
+                                _stateStack.Push(ExprState.ExpectFunctionExpr);
+                                _stateStack.Push(ExprState.UnquotedString);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case ExprState.RecursiveDescentOrPathLhs:
+                        switch (_input[_index])
+                        {
+                            case '.':
+                                PushToken(new Token(jsoncons::make_unique<recursive_selector>()));
+                                if (ec) {return pathExpression_type();}
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop(); _stateStack.Push(ExprState.NameOrLeftBracket);
+                                break;
+                            default:
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathLhs);
+                                break;
+                        }
+                        break;
+                    case ExprState.NameOrLeftBracket: 
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '[': // [ can follow ..
+                                _stateStack.Pop(); _stateStack.Push(ExprState.BracketSpecifierOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                buffer.Clear();
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathLhs);
+                                break;
+                        }
+                        break;
+                    case ExprState.JsonString:
+                    {
+                        //std::cout << "literal: " << buffer << "\n";
+                        PushToken(new Token(literal_arg, Json(buffer)));
+                        if (ec) {return pathExpression_type();}
+                        buffer.Clear();
+                        _stateStack.Pop(); // JsonValue
+                        break;
+                    }
+                    case ExprState.PathOrLiteralOrFunction: 
+                    {
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '$':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathLhs);
+                                break;
+                            case '@':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathLhs);
+                                break;
+                            case '(':
+                            {
+                                ++_index;
+                                ++_column;
+                                ++evalStack.back();
+                                PushToken(lparen_arg);
+                                if (ec) {return pathExpression_type();}
+                                break;
+                            }
+                            case '\'':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonString);
+                                _stateStack.Push(ExprState.SingleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonString);
+                                _stateStack.Push(ExprState.DoubleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '!':
+                            {
+                                ++_index;
+                                ++_column;
+                                PushToken(new Token(resources.get_unary_not()));
+                                if (ec) {return pathExpression_type();}
+                                break;
+                            }
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                            {
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonValue);
+                                _stateStack.Push(ExprState.Number);
+                                break;
+                            }
+                            default:
+                            {
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonTextOrFunctionName);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case ExprState.JsonTextOrFunction:
+                    {
+                        switch (_input[_index])
+                        {
+                            case '(':
+                            {
+                                evalStack.Push(0);
+                                auto f = resources.get_function(buffer);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                buffer.Clear();
+                                PushToken(current_node_arg);
+                                if (ec) {return pathExpression_type();}
+                                PushToken(new Token(f));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.FunctionExpression);
+                                _stateStack.Push(ExprState.ZeroOrOneArguments);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            default:
+                            {
+                                json_decoder<Json> decoder;
+                                basic_json_parser<char_type> parser;
+                                parser.update(buffer.data(),buffer.size());
+                                parser.parse_some(decoder);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                parser.finish_parse(decoder);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                PushToken(new Token(literal_arg, decoder.get_result()));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case ExprState.JsonValue:
+                    {
+                        json_decoder<Json> decoder;
+                        basic_json_parser<char_type> parser;
+                        parser.update(buffer.data(),buffer.size());
+                        parser.parse_some(decoder);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        parser.finish_parse(decoder);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        PushToken(new Token(literal_arg, decoder.get_result()));
+                        if (ec) {return pathExpression_type();}
+                        buffer.Clear();
+                        _stateStack.Pop();
+                        break;
+                    }
+                    case ExprState.JsonTextOrFunctionName:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '{':
+                            case '[':
+                            {
+                                json_decoder<Json> decoder;
+                                basic_json_parser<char_type> parser;
+                                parser.update(p_,end_input_ - p_);
+                                parser.parse_some(decoder);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                parser.finish_parse(decoder);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                PushToken(new Token(literal_arg, decoder.get_result()));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop();
+                                p_ = parser.current();
+                                column_ = column_ + parser.column() - 1;
+                                break;
+                            }
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonTextOrFunction);
+                                _stateStack.Push(ExprState.Number);
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonTextOrFunction);
+                                _stateStack.Push(ExprState.JsonTextString);
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonTextOrFunction);
+                                _stateStack.Push(ExprState.UnquotedString);
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                        };
+                        break;
+                    case ExprState.Number: 
+                        switch (_input[_index])
+                        {
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                            case 'e':case 'E':case '.':
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                _stateStack.Pop(); // Number
+                                break;
+                        };
+                        break;
+                    case ExprState.JsonTextString: 
+                        switch (_input[_index])
+                        {
+                            case '\\':
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                if (p_ == end_input_)
+                                {
+                                    ec = jsonpath_errc::unexpected_eof;
+                                    return pathExpression_type();
+                                }
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                buffer.Append (_input[_index]);
+                                _stateStack.Pop(); 
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                        };
+                        break;
+                    case ExprState.PathLhs: 
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '*':
+                                PushToken(new Token(jsoncons::make_unique<wildcard_selector>()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\'':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Identifier);
+                                _stateStack.Push(ExprState.SingleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Identifier);
+                                _stateStack.Push(ExprState.DoubleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '[':
+                                _stateStack.Push(ExprState.BracketSpecifierOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '$':
+                                PushToken(new Token(root_node_arg));
+                                PushToken(new Token(jsoncons::make_unique<root_selector>(selector_id++)));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '@':
+                                PushToken(new Token(current_node_arg)); // ISSUE
+                                PushToken(new Token(jsoncons::make_unique<current_node_selector>()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '.':
+                                ec = jsonpath_errc::expected_key;
+                                return pathExpression_type();
+                            default:
+                                buffer.Clear();
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IdentifierOrFunctionExpr);
+                                _stateStack.Push(ExprState.UnquotedString);
+                                break;
+                        }
+                        break;
+                    case ExprState.IdentifierOrFunctionExpr:
+                    {
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '(':
+                            {
+                                evalStack.Push(0);
+                                auto f = resources.get_function(buffer);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                buffer.Clear();
+                                PushToken(current_node_arg);
+                                PushToken(new Token(f));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.FunctionExpression);
+                                _stateStack.Push(ExprState.ZeroOrOneArguments);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            default:
+                            {
+                                PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop(); 
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case ExprState.ExpectFunctionExpr:
+                    {
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '(':
+                            {
+                                evalStack.Push(0);
+                                auto f = resources.get_function(buffer);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                buffer.Clear();
+                                PushToken(current_node_arg);
+                                PushToken(new Token(f));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.FunctionExpression);
+                                _stateStack.Push(ExprState.ZeroOrOneArguments);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            default:
+                            {
+                                ec = jsonpath_errc::expected_root_or_function;
+                                return pathExpression_type();
+                            }
+                        }
+                        break;
+                    }
+                    case ExprState.FunctionExpression:
+                    {
+                        
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ',':
+                                PushToken(new Token(current_node_arg));
+                                if (ec) {return pathExpression_type();}
+                                PushToken(new Token(beginExpression_arg));
+                                if (ec) {return pathExpression_type();}
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Push(ExprState.Argument);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ')':
+                            {
+                                if (evalStack.empty() || (evalStack.back() != 0))
+                                {
+                                    ec = jsonpath_errc::unbalanced_parentheses;
+                                    return pathExpression_type();
+                                }
+                                evalStack.Pop();
+                                PushToken(new Token(end_function_arg));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); 
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            default:
+                                ec = jsonpath_errc::syntax_error;
+                                return pathExpression_type();
+                        }
+                        break;
+                    }
+                    case ExprState.ZeroOrOneArguments:
+                    {
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ')':
+                                _stateStack.Pop();
+                                break;
+                            default:
+                                PushToken(new Token(beginExpression_arg));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.OneOrMoreArguments);
+                                _stateStack.Push(ExprState.Argument);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                break;
+                        }
+                        break;
+                    }
+                    case ExprState.OneOrMoreArguments:
+                    {
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ')':
+                                _stateStack.Pop();
+                                break;
+                            case ',':
+                                PushToken(new Token(beginExpression_arg));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Push(ExprState.Argument);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                ++_index;
+                                ++_column;
+                                break;
+                        }
+                        break;
+                    }
+                    case ExprState.Argument:
+                    {
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ',':
+                            case ')':
+                            {
+                                PushToken(new Token(end_argumentExpression_arg));
+                                PushToken(argument_arg);
+                                //PushToken(argument_arg);
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop();
+                                break;
+                            }
+                            default:
+                                ec = jsonpath_errc::expected_comma_or_right_parenthesis;
+                                return pathExpression_type();
+                        }
+                        break;
+                    }
+                    case ExprState.UnquotedString: 
+                        switch (_input[_index])
+                        {
+                            case 'a':case 'b':case 'c':case 'd':case 'e':case 'f':case 'g':case 'h':case 'i':case 'j':case 'k':case 'l':case 'm':case 'n':case 'o':case 'p':case 'q':case 'r':case 's':case 't':case 'u':case 'v':case 'w':case 'x':case 'y':case 'z':
+                            case 'A':case 'B':case 'C':case 'D':case 'E':case 'F':case 'G':case 'H':case 'I':case 'J':case 'K':case 'L':case 'M':case 'N':case 'O':case 'P':case 'Q':case 'R':case 'S':case 'T':case 'U':case 'V':case 'W':case 'X':case 'Y':case 'Z':
+                            case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                            case '_':
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                if (typename std::make_unsigned<char_type>::type(_input[_index]) > 127)
+                                {
+                                    buffer.Append (_input[_index]);
+                                    ++_index;
+                                    ++_column;
+                                }
+                                else
+                                {
+                                    _stateStack.Pop(); // UnquotedString
+                                }
+                                break;
+                        };
+                        break;                    
+                    case ExprState.PathRhs: 
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '.':
+                                _stateStack.Push(ExprState.RecursiveDescentOrPathLhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '[':
+                                _stateStack.Push(ExprState.BracketSpecifierOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ')':
+                            {
+                                if (evalStack.empty())
+                                {
+                                    ec = jsonpath_errc::unbalanced_parentheses;
+                                    return pathExpression_type();
+                                }
+                                if (evalStack.back() > 0)
+                                {
+                                    ++_index;
+                                    ++_column;
+                                    --evalStack.back();
+                                    PushToken(rparen_arg);
+                                    if (ec) {return pathExpression_type();}
+                                }
+                                else
+                                {
+                                    _stateStack.Pop();
+                                }
+                                break;
+                            }
+                            case ']':
+                            case ',':
+                                _stateStack.Pop();
+                                break;
+                            default:
+                                ec = jsonpath_errc::expected_separator;
+                                return pathExpression_type();
+                        };
+                        break;
+                    case ExprState.ExpressionRhs: 
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '.':
+                                _stateStack.Push(ExprState.RecursiveDescentOrPathLhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '[':
+                                _stateStack.Push(ExprState.BracketSpecifierOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ')':
+                            {
+                                if (evalStack.empty())
+                                {
+                                    ec = jsonpath_errc::unbalanced_parentheses;
+                                    return pathExpression_type();
+                                }
+                                if (evalStack.back() > 0)
+                                {
+                                    ++_index;
+                                    ++_column;
+                                    --evalStack.back();
+                                    PushToken(rparen_arg);
+                                    if (ec) {return pathExpression_type();}
+                                }
+                                else
+                                {
+                                    _stateStack.Pop();
+                                }
+                                break;
+                            }
+                            case '|':
+                                ++_index;
+                                ++_column;
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.ExpectOr);
+                                break;
+                            case '&':
+                                ++_index;
+                                ++_column;
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.ExpectAnd);
+                                break;
+                            case '<':
+                            case '>':
+                            {
+                                _stateStack.Push(ExprState.ComparatorExpression);
+                                break;
+                            }
+                            case '=':
+                            {
+                                _stateStack.Push(ExprState.EqOrRegex);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case '!':
+                            {
+                                ++_index;
+                                ++_column;
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.CmpNe);
+                                break;
+                            }
+                            case '+':
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                PushToken(new Token(resources.get_plus_operator()));
+                                if (ec) {return pathExpression_type();}
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '-':
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                PushToken(new Token(resources.get_minus_operator()));
+                                if (ec) {return pathExpression_type();}
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '*':
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                PushToken(new Token(resources.get_mult_operator()));
+                                if (ec) {return pathExpression_type();}
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '/':
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                PushToken(new Token(resources.get_div_operator()));
+                                if (ec) {return pathExpression_type();}
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ']':
+                            case ',':
+                                _stateStack.Pop();
+                                break;
+                            default:
+                                ec = jsonpath_errc::expected_separator;
+                                return pathExpression_type();
+                        };
+                        break;
+                    case ExprState.ExpectOr:
+                    {
+                        switch (_input[_index])
+                        {
+                            case '|':
+                                PushToken(new Token(resources.get_or_operator()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); 
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                ec = jsonpath_errc::expected_or;
+                                return pathExpression_type();
+                        }
+                        break;
+                    }
+                    case ExprState.ExpectAnd:
+                    {
+                        switch (_input[_index])
+                        {
+                            case '&':
+                                PushToken(new Token(resources.get_and_operator()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); // ExpectAnd
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                ec = jsonpath_errc::expected_and;
+                                return pathExpression_type();
+                        }
+                        break;
+                    }
+                    case ExprState.ComparatorExpression:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '<':
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.CmpLtOrLte);
+                                break;
+                            case '>':
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.CmpGtOrGte);
+                                break;
+                            default:
+                                if (_stateStack.Count > 1)
+                                {
+                                    _stateStack.Pop();
+                                }
+                                else
+                                {
+                                    ec = jsonpath_errc::syntax_error;
+                                    return pathExpression_type();
+                                }
+                                break;
+                        }
+                        break;
+                    case ExprState.EqOrRegex:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '=':
+                            {
+                                PushToken(new Token(resources.get_eq_operator()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case '~':
+                            {
+                                ++_index;
+                                ++_column;
+                                _stateStack.Push(ExprState.ExpectRegex);
+                                break;
+                            }
+                            default:
+                                if (_stateStack.Count > 1)
+                                {
+                                    _stateStack.Pop();
+                                }
+                                else
+                                {
+                                    ec = jsonpath_errc::syntax_error;
+                                    return pathExpression_type();
+                                }
+                                break;
+                        }
+                        break;
+                    case ExprState.ExpectRegex: 
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '/':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Regex);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default: 
+                                ec = jsonpath_errc::expected_forward_slash;
+                                return pathExpression_type();
+                        };
+                        break;
+                    case ExprState.Regex: 
+                    {
+                        switch (_input[_index])
+                        {                   
+                            case '/':
+                                {
+                                    std::regex::flag_type options = std::regex_constants::ECMAScript; 
+                                    if (p_+1  < end_input_ && *(p_+1) == 'i')
+                                    {
+                                        ++_index;
+                                        ++_column;
+                                        options |= std::regex_constants::icase;
+                                    }
+                                    std::basicRegex<char_type> pattern(buffer, options);
+                                    PushToken(resources.getRegex_operator(std::move(pattern)));
+                                    if (ec) {return pathExpression_type();}
+                                    buffer.Clear();
+                                }
+                                _stateStack.Pop();
+                                break;
+
+                            default: 
+                                buffer.Append (_input[_index]);
+                                break;
+                        }
+                        ++_index;
+                        ++_column;
+                        break;
+                    }
+                    case ExprState.CmpLtOrLte:
+                    {
+                        switch (_input[_index])
+                        {
+                            case '=':
+                                PushToken(new Token(resources.get_lte_operator()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                PushToken(new Token(resources.get_lt_operator()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop();
+                                break;
+                        }
+                        break;
+                    }
+                    case ExprState.CmpGtOrGte:
+                    {
+                        switch (_input[_index])
+                        {
+                            case '=':
+                                PushToken(new Token(resources.get_gte_operator()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); 
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                //std::cout << "Parse: gt_operator\n";
+                                PushToken(new Token(resources.get_gt_operator()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); 
+                                break;
+                        }
+                        break;
+                    }
+                    case ExprState.CmpNe:
+                    {
+                        switch (_input[_index])
+                        {
+                            case '=':
+                                PushToken(new Token(resources.get_ne_operator()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); 
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                ec = jsonpath_errc::expected_comparator;
+                                return pathExpression_type();
+                        }
+                        break;
+                    }
+                    case ExprState.Identifier:
+                        PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                        if (ec) {return pathExpression_type();}
+                        buffer.Clear();
+                        _stateStack.Pop(); 
+                        break;
+                    case ExprState.SingleQuotedString:
+                        switch (_input[_index])
+                        {
+                            case '\'':
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\\':
+                                _stateStack.Push(ExprState.QuotedStringEscapeChar);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                        };
+                        break;
+                    case ExprState.DoubleQuotedString: 
+                        switch (_input[_index])
+                        {
+                            case '\"':
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\\':
+                                _stateStack.Push(ExprState.QuotedStringEscapeChar);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                        };
+                        break;
+                    case ExprState.CommaOrRightBracket:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ',':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.BracketSpecifierOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ']':
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                ec = jsonpath_errc::expected_CommaOrRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.ExpectRightBracket:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']':
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                ec = jsonpath_errc::expectedRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.BracketSpecifierOrUnion:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '(':
+                            {
+                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(beginExpression_arg));
+                                PushToken(lparen_arg);
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.Expression);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                ++evalStack.back();
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case '?':
+                            {
+                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(begin_filter_arg));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.FilterExpression);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case '*':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.WildcardOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\'':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IdentifierOrUnion);
+                                _stateStack.Push(ExprState.SingleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IdentifierOrUnion);
+                                _stateStack.Push(ExprState.DoubleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ':': // SliceExpression
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IndexOrSliceOrUnion);
+                                break;
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IndexOrSliceOrUnion);
+                                _stateStack.Push(ExprState.Integer);
+                                break;
+                            case '$':
+                                PushToken(new Token(begin_union_arg));
+                                PushToken(root_node_arg);
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.PathRhs);                                
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '@':
+                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(current_node_arg)); // ISSUE
+                                PushToken(new Token(jsoncons::make_unique<current_node_selector>()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.PathRhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                ec = jsonpath_errc::expected_BracketSpecifierOrUnion;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.UnionElement:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ':': // SliceExpression
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IndexOrSlice);
+                                break;
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IndexOrSlice);
+                                _stateStack.Push(ExprState.Integer);
+                                break;
+                            case '(':
+                            {
+                                PushToken(new Token(beginExpression_arg));
+                                PushToken(lparen_arg);
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Expression);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                ++evalStack.back();
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case '?':
+                            {
+                                PushToken(new Token(begin_filter_arg));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.FilterExpression);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case '*':
+                                PushToken(new Token(jsoncons::make_unique<wildcard_selector>()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathRhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '$':
+                                PushToken(new Token(root_node_arg));
+                                PushToken(new Token(jsoncons::make_unique<root_selector>(selector_id++)));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathRhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '@':
+                                PushToken(new Token(current_node_arg)); // ISSUE
+                                PushToken(new Token(jsoncons::make_unique<current_node_selector>()));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathRhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\'':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Identifier);
+                                _stateStack.Push(ExprState.SingleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Identifier);
+                                _stateStack.Push(ExprState.DoubleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                ec = jsonpath_errc::expected_BracketSpecifierOrUnion;
+                                return pathExpression_type();
+                        }
+                        break;
+
+                    case ExprState.Integer:
+                        switch (_input[_index])
+                        {
+                            case '-':
+                                buffer.Append (_input[_index]);
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Digit);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Digit);
+                                break;
+                        }
+                        break;
+                    case ExprState.Digit:
+                        switch (_input[_index])
+                        {
+                            case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                _stateStack.Pop(); // digit
+                                break;
+                        }
+                        break;
+                    case ExprState.IndexOrSliceOrUnion:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']':
+                            {
+                                if (buffer.empty())
+                                {
+                                    ec = jsonpath_errc::invalid_number;
+                                    return pathExpression_type();
+                                }
+                                int64_t n{0};
+                                auto r = jsoncons::detail::to_integer(buffer.data(), buffer.size(), n);
+                                if (!r)
+                                {
+                                    ec = jsonpath_errc::invalid_number;
+                                    return pathExpression_type();
+                                }
+                                PushToken(new Token(jsoncons::make_unique<index_selector>(n)));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop(); // IndexOrSliceOrUnion
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case ',':
+                            {
+                                PushToken(new Token(begin_union_arg));
+                                if (ec) {return pathExpression_type();}
+                                if (buffer.empty())
+                                {
+                                    ec = jsonpath_errc::invalid_number;
+                                    return pathExpression_type();
+                                }
+                                else
+                                {
+                                    int64_t n{0};
+                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.size(), n);
+                                    if (!r)
+                                    {
+                                        ec = jsonpath_errc::invalid_number;
+                                        return pathExpression_type();
+                                    }
+                                    PushToken(new Token(jsoncons::make_unique<index_selector>(n)));
+                                    if (ec) {return pathExpression_type();}
+
+                                    buffer.Clear();
+                                }
+                                PushToken(new Token(separator_arg));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.UnionElement);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case ':':
+                            {
+                                if (!buffer.empty())
+                                {
+                                    int64_t n{0};
+                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.size(), n);
+                                    if (!r)
+                                    {
+                                        ec = jsonpath_errc::invalid_number;
+                                        return pathExpression_type();
+                                    }
+                                    slic.start_ = n;
+                                    buffer.Clear();
+                                }
+                                PushToken(new Token(begin_union_arg));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.SliceExpressionStop);
+                                _stateStack.Push(ExprState.Integer);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            default:
+                                ec = jsonpath_errc::expectedRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.Index:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']':
+                            case '.':
+                            case ',':
+                            {
+                                if (buffer.empty())
+                                {
+                                    ec = jsonpath_errc::invalid_number;
+                                    return pathExpression_type();
+                                }
+                                else
+                                {
+                                    int64_t n{0};
+                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.size(), n);
+                                    if (!r)
+                                    {
+                                        ec = jsonpath_errc::invalid_number;
+                                        return pathExpression_type();
+                                    }
+                                    PushToken(new Token(jsoncons::make_unique<index_selector>(n)));
+                                    if (ec) {return pathExpression_type();}
+
+                                    buffer.Clear();
+                                }
+                                _stateStack.Pop(); // index
+                                break;
+                            }
+                            default:
+                                ec = jsonpath_errc::expectedRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.SliceExpressionStop:
+                    {
+                        if (!buffer.empty())
+                        {
+                            int64_t n{0};
+                            auto r = jsoncons::detail::to_integer(buffer.data(), buffer.size(), n);
+                            if (!r)
+                            {
+                                ec = jsonpath_errc::invalid_number;
+                                return pathExpression_type();
+                            }
+                            slic.stop_ = jsoncons::optional<int64_t>(n);
+                            buffer.Clear();
+                        }
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']':
+                            case ',':
+                                PushToken(new Token(jsoncons::make_unique<slice_selector>(slic)));
+                                if (ec) {return pathExpression_type();}
+                                slic = Slice{};
+                                _stateStack.Pop(); // BracketSpecifier2
+                                break;
+                            case ':':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.SliceExpressionStep);
+                                _stateStack.Push(ExprState.Integer);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                ec = jsonpath_errc::expectedRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    }
+                    case ExprState.SliceExpressionStep:
+                    {
+                        if (!buffer.empty())
+                        {
+                            int64_t n{0};
+                            auto r = jsoncons::detail::to_integer(buffer.data(), buffer.size(), n);
+                            if (!r)
+                            {
+                                ec = jsonpath_errc::invalid_number;
+                                return pathExpression_type();
+                            }
+                            if (n == 0)
+                            {
+                                ec = jsonpath_errc::step_cannot_be_zero;
+                                return pathExpression_type();
+                            }
+                            slic.step_ = n;
+                            buffer.Clear();
+                        }
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']':
+                            case ',':
+                                PushToken(new Token(jsoncons::make_unique<slice_selector>(slic)));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                slic = Slice{};
+                                _stateStack.Pop(); // SliceExpressionStep
+                                break;
+                            default:
+                                ec = jsonpath_errc::expectedRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    }
+
+                    case ExprState.BracketedUnquotedNameOrUnion:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']': 
+                                PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '.':
+                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.PathLhs);                                
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '[':
+                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.PathLhs);                                
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ',': 
+                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                                PushToken(new Token(separator_arg));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.PathLhs);                                
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                        }
+                        break;
+                    case ExprState.UnionExpression:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '.':
+                                _stateStack.Push(ExprState.PathLhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '[':
+                                _stateStack.Push(ExprState.BracketSpecifierOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ',': 
+                                PushToken(new Token(separator_arg));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Push(ExprState.UnionElement);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ']': 
+                                PushToken(new Token(end_union_arg));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                ec = jsonpath_errc::expectedRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.IdentifierOrUnion:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']': 
+                                PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ',': 
+                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                                PushToken(new Token(separator_arg));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.UnionElement);                                
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                ec = jsonpath_errc::expectedRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.BracketedWildcard:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '[':
+                            case ']':
+                            case ',':
+                            case '.':
+                                PushToken(new Token(jsoncons::make_unique<wildcard_selector>()));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop();
+                                break;
+                            default:
+                                ec = jsonpath_errc::expectedRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.IndexOrSlice:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ',':
+                            case ']':
+                            {
+                                if (buffer.empty())
+                                {
+                                    ec = jsonpath_errc::invalid_number;
+                                    return pathExpression_type();
+                                }
+                                else
+                                {
+                                    int64_t n{0};
+                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.size(), n);
+                                    if (!r)
+                                    {
+                                        ec = jsonpath_errc::invalid_number;
+                                        return pathExpression_type();
+                                    }
+                                    PushToken(new Token(jsoncons::make_unique<index_selector>(n)));
+                                    if (ec) {return pathExpression_type();}
+
+                                    buffer.Clear();
+                                }
+                                _stateStack.Pop(); // BracketSpecifier
+                                break;
+                            }
+                            case ':':
+                            {
+                                if (!buffer.empty())
+                                {
+                                    int64_t n{0};
+                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.size(), n);
+                                    if (!r)
+                                    {
+                                        ec = jsonpath_errc::invalid_number;
+                                        return pathExpression_type();
+                                    }
+                                    slic.start_ = n;
+                                    buffer.Clear();
+                                }
+                                _stateStack.Pop(); _stateStack.Push(ExprState.SliceExpressionStop);
+                                _stateStack.Push(ExprState.Integer);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            default:
+                                ec = jsonpath_errc::expectedRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.WildcardOrUnion:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']': 
+                                PushToken(new Token(jsoncons::make_unique<wildcard_selector>()));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ',': 
+                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(jsoncons::make_unique<wildcard_selector>()));
+                                PushToken(new Token(separator_arg));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.UnionElement);                                
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                ec = jsonpath_errc::expectedRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.QuotedStringEscapeChar:
+                        switch (_input[_index])
+                        {
+                            case '\"':
+                                buffer.Append('\"');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case '\'':
+                                buffer.Append('\'');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case '\\': 
+                                buffer.Append('\\');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case '/':
+                                buffer.Append('/');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 'b':
+                                buffer.Append('\b');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 'f':
+                                buffer.Append('\f');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 'n':
+                                buffer.Append('\n');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 'r':
+                                buffer.Append('\r');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 't':
+                                buffer.Append('\t');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 'u':
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU1);
+                                break;
+                            default:
+                                ec = jsonpath_errc::illegal_escaped_character;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.EscapeU1:
+                        cp = append_to_codepoint(0, _input[_index]);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU2);
+                        break;
+                    case ExprState.EscapeU2:
+                        cp = append_to_codepoint(cp, _input[_index]);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU3);
+                        break;
+                    case ExprState.EscapeU3:
+                        cp = append_to_codepoint(cp, _input[_index]);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU4);
+                        break;
+                    case ExprState.EscapeU4:
+                        cp = append_to_codepoint(cp, _input[_index]);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        if (unicode_traits::is_high_surrogate(cp))
+                        {
+                            ++_index;
+                            ++_column;
+                            _stateStack.Pop(); _stateStack.Push(ExprState.EscapeExpectSurrogatePair1);
+                        }
+                        else
+                        {
+                            unicode_traits::convert(&cp, 1, buffer);
+                            ++_index;
+                            ++_column;
+                            _stateStack.Pop();
+                        }
+                        break;
+                    case ExprState.EscapeExpectSurrogatePair1:
+                        switch (_input[_index])
+                        {
+                            case '\\': 
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop(); _stateStack.Push(ExprState.EscapeExpectSurrogatePair2);
+                                break;
+                            default:
+                                ec = jsonpath_errc::invalid_codepoint;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.EscapeExpectSurrogatePair2:
+                        switch (_input[_index])
+                        {
+                            case 'u': 
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU5);
+                                break;
+                            default:
+                                ec = jsonpath_errc::invalid_codepoint;
+                                return pathExpression_type();
+                        }
+                        break;
+                    case ExprState.EscapeU5:
+                        cp2 = append_to_codepoint(0, _input[_index]);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU6);
+                        break;
+                    case ExprState.EscapeU6:
+                        cp2 = append_to_codepoint(cp2, _input[_index]);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU7);
+                        break;
+                    case ExprState.EscapeU7:
+                        cp2 = append_to_codepoint(cp2, _input[_index]);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU8);
+                        break;
+                    case ExprState.EscapeU8:
+                    {
+                        cp2 = append_to_codepoint(cp2, _input[_index]);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        uint32_t codepoint = 0x10000 + ((cp & 0x3FF) << 10) + (cp2 & 0x3FF);
+                        unicode_traits::convert(&codepoint, 1, buffer);
+                        _stateStack.Pop();
+                        ++_index;
+                        ++_column;
+                        break;
+                    }
+                    case ExprState.FilterExpression:
+                    {
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ',':
+                            case ']':
+                            {
+                                PushToken(new Token(end_filter_arg));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop();
+                                break;
+                            }
+                            default:
+                                ec = jsonpath_errc::expected_CommaOrRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    }
+                    case ExprState.Expression:
+                    {
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ',':
+                            case ']':
+                            {
+                                PushToken(new Token(end_indexExpression_arg));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop();
+                                break;
+                            }
+                            default:
+                                ec = jsonpath_errc::expected_CommaOrRightBracket;
+                                return pathExpression_type();
+                        }
+                        break;
+                    }
+                    default:
+                        ++_index;
+                        ++_column;
+                        break;
+                }
+            }
+
+            if (_stateStack.empty())
+            {
+                ec = jsonpath_errc::syntax_error;
+                return pathExpression_type();
+            }
+            if (_stateStack.Peek() == ExprState.Start)
+            {
+                ec = jsonpath_errc::unexpected_eof;
+                return pathExpression_type();
+            }
+
+            if (_stateStack.Count >= 3)
+            {
+                if (_stateStack.Peek() == ExprState.UnquotedString || _stateStack.Peek() == ExprState.Identifier)
+                {
+                    PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                    if (ec) {return pathExpression_type();}
+                    _stateStack.Pop(); // UnquotedString
+                    buffer.Clear();
+                    if (_stateStack.Peek() == ExprState.IdentifierOrFunctionExpr)
+                    {
+                        _stateStack.Pop(); // identifier
+                    }
+                }
+                else if (_stateStack.Peek() == ExprState.Digit)
+                {
+                    if (buffer.empty())
+                    {
+                        ec = jsonpath_errc::invalid_number;
+                        return pathExpression_type();
+                    }
+                    int64_t n{0};
+                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.size(), n);
+                    if (!r)
+                    {
+                        ec = jsonpath_errc::invalid_number;
+                        return pathExpression_type();
+                    }
+                    PushToken(new Token(jsoncons::make_unique<index_selector>(n)));
+                    if (ec) {return pathExpression_type();}
+                    buffer.Clear();
+                    _stateStack.Pop(); // IndexOrSliceOrUnion
+                    if (_stateStack.Peek() == ExprState.Index)
+                    {
+                        _stateStack.Pop(); // index
+                    }
+                }
+            }
+
+            if (_stateStack.Count > 2)
+            {
+                ec = jsonpath_errc::unexpected_eof;
+                return pathExpression_type();
+            }
+            if (evalStack.size() != 1 || evalStack.back() != 0)
+            {
+                ec = jsonpath_errc::unbalanced_parentheses;
+                return pathExpression_type();
+            }
+
+            //std::cout << "\nTokens\n\n";
+            //for (const auto& tok : _outputStack)
+            //{
+            //    std::cout << tok.to_string() << "\n";
+            //}
+            //std::cout << "\n";
+
+            if (_outputStack.empty() || !operator_stack_.empty())
+            {
+                ec = jsonpath_errc::unexpected_eof;
+                return pathExpression_type();
+            }
+
+            return pathExpression_type(std::move(_outputStack.Peek().selector_));
+        }
+
+        void SkipWhiteSpace()
+        {
+            switch (_input[_index])
+            {
+                case ' ':case '\t':
+                    ++_index;
+                    ++_column;
+                    break;
+                case '\r':
+                    if (p_+1 < end_input_ && *(p_+1) == '\n')
+                        ++_index;
+                    ++line_;
+                    column_ = 1;
+                    ++_index;
+                    break;
+                case '\n':
+                    ++line_;
+                    column_ = 1;
+                    ++_index;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        void unwind_rparen(std::error_code& ec)
+        {
+            auto it = operator_stack_.Rbegin();
+            while (it != operator_stack_.Rend() && !it->is_lparen())
+            {
+                _outputStack.Add(std::move(*it));
+                ++it;
+            }
+            if (it == operator_stack_.Rend())
+            {
+                ec = jsonpath_errc::unbalanced_parentheses;
+                return;
+            }
+            ++it;
+            operator_stack_.erase(it.base(),operator_stack_.end());
+        }
+
+        void PushToken(token_type&& tok, std::error_code& ec)
+        {
+            //std::cout << tok.to_string() << "\n";
+            switch (tok.type())
+            {
+                case token_kind::begin_filter:
+                    _outputStack.Add(std::move(tok));
+                    operator_stack_.Add(new Token(lparen_arg));
+                    break;
+                case token_kind::end_filter:
+                {
+                    //std::cout << "PushToken end_filter 1\n";
+                    //for (const auto& tok2 : _outputStack)
+                    //{
+                    //    std::cout << tok2.to_string() << "\n";
+                    //}
+                    //std::cout << "\n\n";
+                    unwind_rparen(ec);
+                    if (ec)
+                    {
+                        return;
+                    }
+                    std::vector<token_type> toks;
+                    auto it = _outputStack.Rbegin();
+                    while (it != _outputStack.Rend() && it->type() != token_kind::begin_filter)
+                    {
+                        toks.insert(toks.begin(), std::move(*it));
+                        ++it;
+                    }
+                    if (it == _outputStack.Rend())
+                    {
+                        ec = jsonpath_errc::unbalanced_parentheses;
+                        return;
+                    }
+                    ++it;
+                    _outputStack.erase(it.base(),_outputStack.end());
+
+                    if (!_outputStack.empty() && _outputStack.Peek().is_path())
+                    {
+                        _outputStack.Peek().selector_->append_selector(jsoncons::make_unique<filterExpression_selector>(expression_tree_type(std::move(toks))));
+                    }
+                    else
+                    {
+                        _outputStack.Add(new Token(jsoncons::make_unique<filterExpression_selector>(expression_tree_type(std::move(toks)))));
+                    }
+                    //std::cout << "PushToken end_filter 2\n";
+                    //for (const auto& tok2 : _outputStack)
+                    //{
+                    //    std::cout << tok2.to_string() << "\n";
+                    //}
+                    //std::cout << "\n\n";
+                    break;
+                }
+                case token_kind::beginExpression:
+                    //std::cout << "beginExpression\n";
+                    _outputStack.Add(std::move(tok));
+                    operator_stack_.Add(new Token(lparen_arg));
+                    break;
+                case token_kind::end_indexExpression:
+                {
+                    //std::cout << "token_kind::end_indexExpression\n";
+                    //for (const auto& t : _outputStack)
+                    //{
+                    //    std::cout << t.to_string() << "\n";
+                    //}
+                    //std::cout << "/token_kind::end_indexExpression\n";
+                    unwind_rparen(ec);
+                    if (ec)
+                    {
+                        return;
+                    }
+                    std::vector<token_type> toks;
+                    auto it = _outputStack.Rbegin();
+                    while (it != _outputStack.Rend() && it->type() != token_kind::beginExpression)
+                    {
+                        toks.insert(toks.begin(), std::move(*it));
+                        ++it;
+                    }
+                    if (it == _outputStack.Rend())
+                    {
+                        ec = jsonpath_errc::unbalanced_parentheses;
+                        return;
+                    }
+                    ++it;
+                    _outputStack.erase(it.base(),_outputStack.end());
+
+                    if (!_outputStack.empty() && _outputStack.Peek().is_path())
+                    {
+                        _outputStack.Peek().selector_->append_selector(jsoncons::make_unique<indexExpression_selector>(expression_tree_type(std::move(toks))));
+                    }
+                    else
+                    {
+                        _outputStack.Add(new Token(jsoncons::make_unique<indexExpression_selector>(expression_tree_type(std::move(toks)))));
+                    }
+                    break;
+                }
+                case token_kind::end_argumentExpression:
+                {
+                    //std::cout << "token_kind::end_indexExpression\n";
+                    //for (const auto& t : _outputStack)
+                    //{
+                    //    std::cout << t.to_string() << "\n";
+                    //}
+                    //std::cout << "/token_kind::end_indexExpression\n";
+                    unwind_rparen(ec);
+                    if (ec)
+                    {
+                        return;
+                    }
+                    std::vector<token_type> toks;
+                    auto it = _outputStack.Rbegin();
+                    while (it != _outputStack.Rend() && it->type() != token_kind::beginExpression)
+                    {
+                        toks.insert(toks.begin(), std::move(*it));
+                        ++it;
+                    }
+                    if (it == _outputStack.Rend())
+                    {
+                        ec = jsonpath_errc::unbalanced_parentheses;
+                        return;
+                    }
+                    ++it;
+                    _outputStack.erase(it.base(),_outputStack.end());
+                    _outputStack.Add(new Token(jsoncons::make_unique<argumentExpression>(expression_tree_type(std::move(toks)))));
+                    break;
+                }
+                case token_kind::selector:
+                {
+                    if (!_outputStack.empty() && _outputStack.Peek().is_path())
+                    {
+                        _outputStack.Peek().selector_->append_selector(std::move(tok.selector_));
+                    }
+                    else
+                    {
+                        _outputStack.Add(std::move(tok));
+                    }
+                    break;
+                }
+                case token_kind::separator:
+                    _outputStack.Add(std::move(tok));
+                    break;
+                case token_kind::begin_union:
+                    _outputStack.Add(std::move(tok));
+                    break;
+                case token_kind::end_union:
+                {
+                    std::vector<pathExpression_type> expressions;
+                    auto it = _outputStack.Rbegin();
+                    while (it != _outputStack.Rend() && it->type() != token_kind::begin_union)
+                    {
+                        if (it->type() == token_kind::selector)
+                        {
+                            expressions.emplace(expressions.begin(), pathExpression_type(std::move(it->selector_)));
+                        }
+                        do
+                        {
+                            ++it;
+                        } 
+                        while (it != _outputStack.Rend() && it->type() != token_kind::begin_union && it->type() != token_kind::separator);
+                        if (it->type() == token_kind::separator)
+                        {
+                            ++it;
+                        }
+                    }
+                    if (it == _outputStack.Rend())
+                    {
+                        ec = jsonpath_errc::unbalanced_parentheses;
+                        return;
+                    }
+                    ++it;
+                    _outputStack.erase(it.base(),_outputStack.end());
+
+                    if (!_outputStack.empty() && _outputStack.Peek().is_path())
+                    {
+                        _outputStack.Peek().selector_->append_selector(jsoncons::make_unique<union_selector>(std::move(expressions)));
+                    }
+                    else
+                    {
+                        _outputStack.Add(new Token(jsoncons::make_unique<union_selector>(std::move(expressions))));
+                    }
+                    break;
+                }
+                case token_kind::lparen:
+                    operator_stack_.Add(std::move(tok));
+                    break;
+                case token_kind::rparen:
+                {
+                    unwind_rparen(ec);
+                    break;
+                }
+                case token_kind::end_function:
+                {
+                    //std::cout << "token_kind::end_function\n";
+                    unwind_rparen(ec);
+                    if (ec)
+                    {
+                        return;
+                    }
+                    std::vector<token_type> toks;
+                    auto it = _outputStack.Rbegin();
+                    std::size_t arg_count = 0;
+                    while (it != _outputStack.Rend() && it->type() != token_kind::function)
+                    {
+                        if (it->type() == token_kind::Argument)
+                        {
+                            ++arg_count;
+                        }
+                        toks.insert(toks.begin(), std::move(*it));
+                        ++it;
+                    }
+                    if (it == _outputStack.Rend())
+                    {
+                        ec = jsonpath_errc::unbalanced_parentheses;
+                        return;
+                    }
+                    if (it->arity() && arg_count != *(it->arity()))
+                    {
+                        ec = jsonpath_errc::invalid_arity;
+                        return;
+                    }
+                    toks.Add(std::move(*it));
+                    ++it;
+                    _outputStack.erase(it.base(),_outputStack.end());
+
+                    if (!_outputStack.empty() && _outputStack.Peek().is_path())
+                    {
+                        _outputStack.Peek().selector_->append_selector(jsoncons::make_unique<function_selector>(expression_tree_type(std::move(toks))));
+                    }
+                    else
+                    {
+                        _outputStack.Add(new Token(jsoncons::make_unique<function_selector>(std::move(toks))));
+                    }
+                    break;
+                }
+                case token_kind::literal:
+                    if (!_outputStack.empty() && (_outputStack.Peek().type() == token_kind::current_node || _outputStack.Peek().type() == token_kind::root_node))
+                    {
+                        _outputStack.Peek() = std::move(tok);
+                    }
+                    else
+                    {
+                        _outputStack.Add(std::move(tok));
+                    }
+                    break;
+                case token_kind::function:
+                    _outputStack.Add(std::move(tok));
+                    operator_stack_.Add(new Token(lparen_arg));
+                    break;
+                case token_kind::Argument:
+                    _outputStack.Add(std::move(tok));
+                    break;
+                case token_kind::root_node:
+                case token_kind::current_node:
+                    _outputStack.Add(std::move(tok));
+                    break;
+                case token_kind::unary_operator:
+                case token_kind::binary_operator:
+                {
+                    if (operator_stack_.empty() || operator_stack_.back().is_lparen())
+                    {
+                        operator_stack_.Add(std::move(tok));
+                    }
+                    else if (tok.precedence_level() < operator_stack_.back().precedence_level()
+                             || (tok.precedence_level() == operator_stack_.back().precedence_level() && tok.is_right_associative()))
+                    {
+                        operator_stack_.Add(std::move(tok));
+                    }
+                    else
+                    {
+                        auto it = operator_stack_.Rbegin();
+                        while (it != operator_stack_.Rend() && it->is_operator()
+                               && (tok.precedence_level() > it->precedence_level()
+                             || (tok.precedence_level() == it->precedence_level() && tok.is_right_associative())))
+                        {
+                            _outputStack.Add(std::move(*it));
+                            ++it;
+                        }
+
+                        operator_stack_.erase(it.base(),operator_stack_.end());
+                        operator_stack_.Add(std::move(tok));
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+            //std::cout << "  " << "Output Stack\n";
+            //for (auto&& t : _outputStack)
+            //{
+            //    std::cout << t.to_string(2) << "\n";
+            //}
+            //if (!operator_stack_.empty())
+            //{
+            //    std::cout << "  " << "Operator Stack\n";
+            //    for (auto&& t : operator_stack_)
+            //    {
+            //        std::cout << t.to_string(2) << "\n";
+            //    }
+            //}
+        }
+
+        uint32_t append_to_codepoint(uint32_t cp, int c, std::error_code& ec)
+        {
+            cp *= 16;
+            if (c >= '0'  &&  c <= '9')
+            {
+                cp += c - '0';
+            }
+            else if (c >= 'a'  &&  c <= 'f')
+            {
+                cp += c - 'a' + 10;
+            }
+            else if (c >= 'A'  &&  c <= 'F')
+            {
+                cp += c - 'A' + 10;
+            }
+            else
+            {
+                ec = jsonpath_errc::invalid_codepoint;
+            }
+            return cp;
+        }
+    };
+
+    } // namespace detail
+
+    template <class Json,class JsonReference = const Json&>
+    class jsonpathExpression
+    {
+    public:
+        using evaluator_t = typename jsoncons::jsonpath::detail::jsonpath_evaluator<Json, JsonReference>;
+        using char_type = typename evaluator_t::char_type;
+        using string_type = typename evaluator_t::string_type;
+        using string_view_type = typename evaluator_t::string_view_type;
+        using value_type = typename evaluator_t::value_type;
+        using reference = typename evaluator_t::reference;
+        using parameter_type = parameter<Json>;
+        using json_selector_t = typename evaluator_t::pathExpression_type;
+        using path_node_type = typename evaluator_t::path_node_type;
+        using path_component_type = typename evaluator_t::path_component_type;
+        using function_type = std::function<value_type(jsoncons::span<const parameter_type>, std::error_code& ec)>;
+    private:
+        jsoncons::jsonpath::detail::static_resources<value_type,reference> static_resources_;
+        json_selector_t expr_;
+    public:
+        jsonpathExpression(jsoncons::jsonpath::detail::static_resources<value_type,reference>&& resources,
+                            json_selector_t&& expr)
+            : static_resources_(std::move(resources)), 
+              expr_(std::move(expr))
+        {
+        }
+
+        jsonpathExpression(jsoncons::jsonpath::detail::static_resources<value_type,reference>&& resources,
+                            json_selector_t&& expr, std::vector<function_type>&& custom_functions)
+            : static_resources_(std::move(resources)), 
+              expr_(std::move(expr), std::move(custom_functions))
+        {
+        }
+
+        template <class BinaryCallback>
+        typename std::enable_if<type_traits::is_binary_function_object<BinaryCallback,const string_type&,reference>::value,void>::type
+        evaluate(reference instance, BinaryCallback callback, result_options options = result_options())
+        {
+            std::vector<path_component_type> path = { path_component_type(root_node_arg) };
+
+            jsoncons::jsonpath::detail::dynamic_resources<Json,reference> resources;
+            auto f = [&callback](const std::vector<path_component_type>& path, reference val)
+            {
+                callback(to_string(path), val);
+            };
+            expr_.evaluate(resources, path, instance, instance, f, options);
+        }
+
+        Json evaluate(reference instance, result_options options = result_options())
+        {
+            std::vector<path_component_type> path = {path_component_type(root_node_arg)};
+
+            if ((options & result_options::path) == result_options::path)
+            {
+                jsoncons::jsonpath::detail::dynamic_resources<Json,reference> resources;
+
+                Json result(json_array_arg);
+                auto callback = [&result](const std::vector<path_component_type>& p, reference)
+                {
+                    result.Add(to_string(p));
+                };
+                expr_.evaluate(resources, path, instance, instance, callback, options);
+                return result;
+            }
+            else
+            {
+                jsoncons::jsonpath::detail::dynamic_resources<Json,reference> resources;
+                return expr_.evaluate(resources, path, instance, instance, options);
+            }
+        }
+
+        static jsonpathExpression compile(const string_view_type& path)
+        {
+            jsoncons::jsonpath::detail::static_resources<value_type,reference> resources;
+
+            evaluator_t e;
+            json_selector_t expr = e.compile(resources, path);
+            return jsonpathExpression(std::move(resources), std::move(expr));
+        }
+
+        static jsonpathExpression compile(const string_view_type& path, std::error_code& ec)
+        {
+            jsoncons::jsonpath::detail::static_resources<value_type,reference> resources;
+            evaluator_t e;
+            json_selector_t expr = e.compile(resources, path);
+            return jsonpathExpression(std::move(resources), std::move(expr));
+        }
+
+        static jsonpathExpression compile(const string_view_type& path, 
+                                           const custom_functions<Json>& functions)
+        {
+            jsoncons::jsonpath::detail::static_resources<value_type,reference> resources(functions);
+
+            evaluator_t e;
+            json_selector_t expr = e.compile(resources, path);
+            return jsonpathExpression(std::move(resources), std::move(expr));
+        }
+
+        static jsonpathExpression compile(const string_view_type& path, 
+                                           const custom_functions<Json>& functions, 
+                                           std::error_code& ec)
+        {
+            jsoncons::jsonpath::detail::static_resources<value_type,reference> resources(functions);
+            evaluator_t e;
+            json_selector_t expr = e.compile(resources, path);
+            return jsonpathExpression(std::move(resources), std::move(expr));
+        }
+    };
+
+    template <class Json>
+    jsonpathExpression<Json> makeExpression(const typename Json::string_view_type& expr, 
+                                              const custom_functions<Json>& functions = custom_functions<Json>())
+    {
+        return jsonpathExpression<Json>::compile(expr, functions);
+    }
+
+    template <class Json>
+    jsonpathExpression<Json> makeExpression(const typename Json::string_view_type& expr, std::error_code& ec)
+    {
+        return jsonpathExpression<Json>::compile(expr);
+    }
+
+    template <class Json>
+    jsonpathExpression<Json> makeExpression(const typename Json::string_view_type& expr, 
+                                              const custom_functions<Json>& functions, 
+                                              std::error_code& ec)
+    {
+        return jsonpathExpression<Json>::compile(expr, functions);
+    }
+
+    template<class Json>
+    Json json_query(const Json& instance,
+                    const typename Json::string_view_type& path, 
+                    result_options options = result_options(),
+                    const custom_functions<Json>& functions = custom_functions<Json>())
+    {
+        auto expr = makeExpression<Json>(path, functions);
+        return expr.evaluate(instance, options);
+    }
+
+    template<class Json,class Callback>
+    typename std::enable_if<type_traits::is_binary_function_object<Callback,const std::basic_string<typename Json::char_type>&,const Json&>::value,void>::type
+    json_query(const Json& instance, 
+               const typename Json::string_view_type& path, 
+               Callback callback,
+               result_options options = result_options(),
+               const custom_functions<Json>& functions = custom_functions<Json>())
+    {
+        auto expr = makeExpression<Json>(path, functions);
+        expr.evaluate(instance, callback, options);
+    }
+
+    template<class Json, class T>
+    typename std::enable_if<is_json_type_traits_specialized<Json,T>::value,void>::type
+        json_replace(Json& instance, const typename Json::string_view_type& path, T&& new_value,
+                     result_options options = result_options::nodups,
+                     const custom_functions<Json>& funcs = custom_functions<Json>())
+    {
+        using evaluator_t = typename jsoncons::jsonpath::detail::jsonpath_evaluator<Json, Json&>;
+        //using string_type = typename evaluator_t::string_type;
+        using value_type = typename evaluator_t::value_type;
+        using reference = typename evaluator_t::reference;
+        using json_selector_t = typename evaluator_t::pathExpression_type;
+        using path_component_type = typename evaluator_t::path_component_type;
+
+        std::vector<path_component_type> output_path = { path_component_type(root_node_arg ) };
+
+        jsoncons::jsonpath::detail::static_resources<value_type,reference> static_resources(funcs);
+        evaluator_t e;
+        json_selector_t expr = e.compile(static_resources, path);
+
+        jsoncons::jsonpath::detail::dynamic_resources<Json,reference> resources;
+        auto callback = [&new_value](const std::vector<path_component_type>&, reference v)
+        {
+            v = std::forward<T>(new_value);
+        };
+        expr.evaluate(resources, output_path, instance, instance, callback, options);
+    }
+
+    template<class Json, class UnaryCallback>
+    typename std::enable_if<type_traits::is_unary_function_object<UnaryCallback,Json>::value,void>::type
+    json_replace(Json& instance, const typename Json::string_view_type& path , UnaryCallback callback)
+    {
+        using evaluator_t = typename jsoncons::jsonpath::detail::jsonpath_evaluator<Json, Json&>;
+        //using string_type = typename evaluator_t::string_type;
+        using value_type = typename evaluator_t::value_type;
+        using reference = typename evaluator_t::reference;
+        using json_selector_t = typename evaluator_t::pathExpression_type;
+        using path_component_type = typename evaluator_t::path_component_type;
+
+        std::vector<path_component_type> output_path = { path_component_type(root_node_arg) };
+
+        jsoncons::jsonpath::detail::static_resources<value_type,reference> static_resources;
+        evaluator_t e;
+        json_selector_t expr = e.compile(static_resources, path);
+
+        jsoncons::jsonpath::detail::dynamic_resources<Json,reference> resources;
+        auto f = [callback](const std::vector<path_component_type>&, reference v)
+        {
+            v = callback(v);
+        };
+        expr.evaluate(resources, output_path, instance, instance, f, result_options::nodups);
+    }
+
+    template<class Json, class BinaryCallback>
+    typename std::enable_if<type_traits::is_binary_function_object<BinaryCallback,const std::basic_string<typename Json::char_type>&,Json&>::value,void>::type
+    json_replace(Json& instance, const typename Json::string_view_type& path , BinaryCallback callback, 
+                 result_options options = result_options::nodups,
+                 const custom_functions<Json>& funcs = custom_functions<Json>())
+    {
+        using evaluator_t = typename jsoncons::jsonpath::detail::jsonpath_evaluator<Json, Json&>;
+        //using string_type = typename evaluator_t::string_type;
+        using value_type = typename evaluator_t::value_type;
+        using reference = typename evaluator_t::reference;
+        using json_selector_t = typename evaluator_t::pathExpression_type;
+        using path_component_type = typename evaluator_t::path_component_type;
+
+        std::vector<path_component_type> output_path = { path_component_type(root_node_arg) };
+
+        jsoncons::jsonpath::detail::static_resources<value_type,reference> static_resources(funcs);
+        evaluator_t e;
+        json_selector_t expr = e.compile(static_resources, path);
+
+        jsoncons::jsonpath::detail::dynamic_resources<Json,reference> resources;
+
+        auto f = [&callback](const std::vector<path_component_type>& path, reference val)
+        {
+            callback(to_string(path), val);
+        };
+        expr.evaluate(resources, output_path, instance, instance, f, options);
+    }
+
+} // namespace jsonpath
+} // namespace jsoncons
+
+#endif

@@ -4,7 +4,12 @@
         "cases": [
             {
                 "expression": "$",
-                "result": {"key": "value"}
+                "result": [{"key": "value"}]
+            },
+            {
+                "expression": "$.key",
+                "result": ["value"],
+                "path" : ["$['key']"]
             }
         ]
     }

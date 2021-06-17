@@ -25,11 +25,21 @@ namespace JsonCons.JsonPathLib.Tests
                 {
                     var exprElement = testCase.GetProperty("expression");
                     var expr = JsonPathExpression.Compile(exprElement.ToString());
+
+
                     JsonElement expected;
                     if (testCase.TryGetProperty("result", out expected))
                     {
                         TestContext.WriteLine(@"result: " + expected.ToString());
-                        expr.Evaluate(given);
+                        var items = expr.Evaluate(given);
+
+                        var comparer = new JsonElementComparer();
+
+                        Assert.AreEqual(items.Count, expected.GetArrayLength());
+                        for (Int32 i = 0; i < items.Count; ++i)
+                        {
+                            Assert.IsTrue(comparer.Equals(items[i],expected[i]));
+                        }
                     }
                 }
             }
