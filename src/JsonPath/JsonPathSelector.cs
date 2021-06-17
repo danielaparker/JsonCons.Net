@@ -123,6 +123,23 @@ namespace JsonCons.JsonPathLib
                                     JsonElement current,
                                     IList<JsonElement> nodes)
         {
+            TestContext.WriteLine("WildcardSelector ...");
+            if (current.ValueKind == JsonValueKind.Array)
+            {
+                TestContext.WriteLine("WildcardSelector Array ...");
+                foreach (var item in current.EnumerateArray())
+                {
+                    this.EvaluateTail(root, item, nodes);
+                }
+            }
+            else if (current.ValueKind == JsonValueKind.Object)
+            {
+                TestContext.WriteLine("WildcardSelector Object ...");
+                foreach (var prop in current.EnumerateObject())
+                {
+                    this.EvaluateTail(root, prop.Value, nodes);
+                }
+            }
         }
     }
 
