@@ -98,6 +98,9 @@ namespace JsonCons.JsonPathLib
             _stateStack.Push(ExprState.Start);
 
             StringBuilder buffer = new StringBuilder();
+            UInt32 cp = 0;
+            UInt32 cp2 = 0;
+
             while (_index < _input.Length)
             {
                 switch (_stateStack.Peek())
@@ -252,6 +255,198 @@ namespace JsonCons.JsonPathLib
                         }
                         break;
                     }
+                    case ExprState.SingleQuotedString:
+                        switch (_input[_index])
+                        {
+                            case '\'':
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\\':
+                                _stateStack.Push(ExprState.QuotedStringEscapeChar);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                        };
+                        break;
+                    case ExprState.DoubleQuotedString: 
+                        switch (_input[_index])
+                        {
+                            case '\"':
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\\':
+                                _stateStack.Push(ExprState.QuotedStringEscapeChar);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                        };
+                        break;
+                    case ExprState.QuotedStringEscapeChar:
+                        switch (_input[_index])
+                        {
+                            case '\"':
+                                buffer.Append('\"');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case '\'':
+                                buffer.Append('\'');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case '\\': 
+                                buffer.Append('\\');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case '/':
+                                buffer.Append('/');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 'b':
+                                buffer.Append('\b');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 'f':
+                                buffer.Append('\f');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 'n':
+                                buffer.Append('\n');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 'r':
+                                buffer.Append('\r');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 't':
+                                buffer.Append('\t');
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop();
+                                break;
+                            case 'u':
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU1);
+                                break;
+                            default:
+                                throw new JsonException("Illegal escape character");
+                        }
+                        break;
+                    case ExprState.EscapeU1:
+                        cp = AppendToCodepoint(0, _input[_index]);
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU2);
+                        break;
+                    case ExprState.EscapeU2:
+                        cp = AppendToCodepoint(cp, _input[_index]);
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU3);
+                        break;
+                    case ExprState.EscapeU3:
+                        cp = AppendToCodepoint(cp, _input[_index]);
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU4);
+                        break;
+                    case ExprState.EscapeU4:
+                        cp = AppendToCodepoint(cp, _input[_index]);
+                        if (IsHighSurrogate(cp))
+                        {
+                            ++_index;
+                            ++_column;
+                            _stateStack.Pop(); _stateStack.Push(ExprState.EscapeExpectSurrogatePair1);
+                        }
+                        else
+                        {
+                            buffer.Append(Char.ConvertFromUtf32((int)cp));
+                            ++_index;
+                            ++_column;
+                            _stateStack.Pop();
+                        }
+                        break;
+                    case ExprState.EscapeExpectSurrogatePair1:
+                        switch (_input[_index])
+                        {
+                            case '\\': 
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop(); _stateStack.Push(ExprState.EscapeExpectSurrogatePair2);
+                                break;
+                            default:
+                                throw new JsonException("Invalid codepoint");
+                        }
+                        break;
+                    case ExprState.EscapeExpectSurrogatePair2:
+                        switch (_input[_index])
+                        {
+                            case 'u': 
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU5);
+                                break;
+                            default:
+                                throw new JsonException("Invalid codepoint");
+                        }
+                        break;
+                    case ExprState.EscapeU5:
+                        cp2 = AppendToCodepoint(0, _input[_index]);
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU6);
+                        break;
+                    case ExprState.EscapeU6:
+                        cp2 = AppendToCodepoint(cp2, _input[_index]);
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU7);
+                        break;
+                    case ExprState.EscapeU7:
+                        cp2 = AppendToCodepoint(cp2, _input[_index]);
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU8);
+                        break;
+                    case ExprState.EscapeU8:
+                    {
+                        cp2 = AppendToCodepoint(cp2, _input[_index]);
+                        UInt32 codepoint = 0x10000 + ((cp & 0x3FF) << 10) + (cp2 & 0x3FF);
+                        buffer.Append(Char.ConvertFromUtf32((int)codepoint));
+                        _stateStack.Pop();
+                        ++_index;
+                        ++_column;
+                        break;
+                    }
                     default:
                         ++_index;
                         break;
@@ -327,6 +522,33 @@ namespace JsonCons.JsonPathLib
                     }
                     break;
             }
+        }
+
+        bool IsHighSurrogate(UInt32 ch) 
+        {
+            return (ch >= 0xD800 && ch <= 0xDBFF);
+        }
+
+        private UInt32 AppendToCodepoint(UInt32 cp, uint c)
+        {
+            cp *= 16;
+            if (c >= '0'  &&  c <= '9')
+            {
+                cp += c - '0';
+            }
+            else if (c >= 'a'  &&  c <= 'f')
+            {
+                cp += c - 'a' + 10;
+            }
+            else if (c >= 'A'  &&  c <= 'F')
+            {
+                cp += c - 'A' + 10;
+            }
+            else
+            {
+                throw new JsonException("Invalid codepoint");
+            }
+            return cp;
         }
 
         private void SkipWhiteSpace()

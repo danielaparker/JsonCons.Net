@@ -2641,7 +2641,7 @@ namespace jsoncons { namespace jsonpath {
                         }
                         break;
                     case ExprState.EscapeU1:
-                        cp = append_to_codepoint(0, _input[_index]);
+                        cp = AppendToCodepoint(0, _input[_index]);
                         if (ec)
                         {
                             return pathExpression_type();
@@ -2651,7 +2651,7 @@ namespace jsoncons { namespace jsonpath {
                         _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU2);
                         break;
                     case ExprState.EscapeU2:
-                        cp = append_to_codepoint(cp, _input[_index]);
+                        cp = AppendToCodepoint(cp, _input[_index]);
                         if (ec)
                         {
                             return pathExpression_type();
@@ -2661,7 +2661,7 @@ namespace jsoncons { namespace jsonpath {
                         _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU3);
                         break;
                     case ExprState.EscapeU3:
-                        cp = append_to_codepoint(cp, _input[_index]);
+                        cp = AppendToCodepoint(cp, _input[_index]);
                         if (ec)
                         {
                             return pathExpression_type();
@@ -2671,7 +2671,7 @@ namespace jsoncons { namespace jsonpath {
                         _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU4);
                         break;
                     case ExprState.EscapeU4:
-                        cp = append_to_codepoint(cp, _input[_index]);
+                        cp = AppendToCodepoint(cp, _input[_index]);
                         if (ec)
                         {
                             return pathExpression_type();
@@ -2717,7 +2717,7 @@ namespace jsoncons { namespace jsonpath {
                         }
                         break;
                     case ExprState.EscapeU5:
-                        cp2 = append_to_codepoint(0, _input[_index]);
+                        cp2 = AppendToCodepoint(0, _input[_index]);
                         if (ec)
                         {
                             return pathExpression_type();
@@ -2727,7 +2727,7 @@ namespace jsoncons { namespace jsonpath {
                         _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU6);
                         break;
                     case ExprState.EscapeU6:
-                        cp2 = append_to_codepoint(cp2, _input[_index]);
+                        cp2 = AppendToCodepoint(cp2, _input[_index]);
                         if (ec)
                         {
                             return pathExpression_type();
@@ -2737,7 +2737,7 @@ namespace jsoncons { namespace jsonpath {
                         _stateStack.Pop(); _stateStack.Push(ExprState.EscapeU7);
                         break;
                     case ExprState.EscapeU7:
-                        cp2 = append_to_codepoint(cp2, _input[_index]);
+                        cp2 = AppendToCodepoint(cp2, _input[_index]);
                         if (ec)
                         {
                             return pathExpression_type();
@@ -2748,7 +2748,7 @@ namespace jsoncons { namespace jsonpath {
                         break;
                     case ExprState.EscapeU8:
                     {
-                        cp2 = append_to_codepoint(cp2, _input[_index]);
+                        cp2 = AppendToCodepoint(cp2, _input[_index]);
                         if (ec)
                         {
                             return pathExpression_type();
@@ -3228,7 +3228,7 @@ namespace jsoncons { namespace jsonpath {
             //}
         }
 
-        uint32_t append_to_codepoint(uint32_t cp, int c, std::error_code& ec)
+        uint32_t AppendToCodepoint(uint32_t cp, int c, std::error_code& ec)
         {
             cp *= 16;
             if (c >= '0'  &&  c <= '9')
