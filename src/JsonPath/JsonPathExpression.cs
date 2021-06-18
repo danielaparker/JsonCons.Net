@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -478,19 +479,21 @@ namespace JsonCons.JsonPathLib
             {
                 throw new JsonException("Unexpected end of input");
             }
-            if (_stateStack.Count >= 3)
+            switch (_stateStack.Peek())
             {
-                if (_stateStack.Peek() == ExprState.UnquotedString || _stateStack.Peek() == ExprState.Identifier)
+                case ExprState.UnquotedString:
+                case ExprState.Identifier:
                 {
                     PushToken(new Token(new IdentifierSelector(buffer.ToString())));
                     _stateStack.Pop(); // UnquotedString
-                    buffer.Clear();
+                    Debug.Assert(buffer.Length != 0);
                     if (_stateStack.Peek() == ExprState.IdentifierOrFunctionExpr)
                     {
                         _stateStack.Pop(); // identifier
                     }
+                    break;
                 }
-                else if (_stateStack.Peek() == ExprState.Digit)
+                case ExprState.Digit:
                 {
                     if (buffer.Length == 0)
                     {
@@ -501,26 +504,24 @@ namespace JsonCons.JsonPathLib
                     {
                         throw new JsonException("Invalid number");
                     }
-                    //PushToken(new Token(jsoncons::make_unique<index_selector>(n)));
-                    buffer.Clear();
                     _stateStack.Pop(); // IndexOrSliceOrUnion
+                    Debug.Assert(buffer.Length != 0);
                     if (_stateStack.Peek() == ExprState.Index)
                     {
                         _stateStack.Pop(); // index
                     }
+                    break;
                 }
+                default:
+                    break;
             }
 
-
+            if (_outputStack.Count != 1 && _outputStack.Peek().Type != TokenType.Selector)
+            {
+                throw new JsonException("Invalid state");
+            }
             Token token = _outputStack.Pop();
-            if (_outputStack.Count != 0)
-            {
-                throw new JsonException("Invalid state");
-            }
-            if (token.Type != TokenType.Selector)
-            {
-                throw new JsonException("Invalid state");
-            }
+
             return new JsonPathExpression(token.GetSelector());
         }
 

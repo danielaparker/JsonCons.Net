@@ -24,16 +24,16 @@ namespace jsoncons { namespace jsonpath {
 
     struct Slice
     {
-        jsoncons::optional<int64_t> start_;
-        jsoncons::optional<int64_t> stop_;
-        int64_t step_;
+        jsoncons::optional<Int64> start_;
+        jsoncons::optional<Int64> stop_;
+        Int64 step_;
 
         Slice()
             : start_(), stop_(), step_(1)
         {
         }
 
-        Slice(const jsoncons::optional<int64_t>& start, const jsoncons::optional<int64_t>& end, int64_t step) 
+        Slice(const jsoncons::optional<Int64>& start, const jsoncons::optional<Int64>& end, Int64 step) 
             : start_(start), stop_(end), step_(step)
         {
         }
@@ -68,12 +68,12 @@ namespace jsoncons { namespace jsonpath {
             return *this;
         }
 
-        int64_t get_start(std::size_t size) const
+        Int64 GetStart(std::size_t size) const
         {
             if (start_)
             {
-                auto len = *start_ >= 0 ? *start_ : (static_cast<int64_t>(size) + *start_);
-                return len <= static_cast<int64_t>(size) ? len : static_cast<int64_t>(size);
+                auto len = *start_ >= 0 ? *start_ : (static_cast<Int64>(size) + *start_);
+                return len <= static_cast<Int64>(size) ? len : static_cast<Int64>(size);
             }
             else
             {
@@ -83,25 +83,25 @@ namespace jsoncons { namespace jsonpath {
                 }
                 else 
                 {
-                    return static_cast<int64_t>(size);
+                    return static_cast<Int64>(size);
                 }
             }
         }
 
-        int64_t get_stop(std::size_t size) const
+        Int64 GetStop(std::size_t size) const
         {
             if (stop_)
             {
-                auto len = *stop_ >= 0 ? *stop_ : (static_cast<int64_t>(size) + *stop_);
-                return len <= static_cast<int64_t>(size) ? len : static_cast<int64_t>(size);
+                auto len = *stop_ >= 0 ? *stop_ : (static_cast<Int64>(size) + *stop_);
+                return len <= static_cast<Int64>(size) ? len : static_cast<Int64>(size);
             }
             else
             {
-                return step_ >= 0 ? static_cast<int64_t>(size) : -1;
+                return step_ >= 0 ? static_cast<Int64>(size) : -1;
             }
         }
 
-        int64_t step() const
+        Int64 GetStep() const
         {
             return step_; // Allow negative
         }
@@ -296,11 +296,11 @@ namespace jsoncons { namespace jsonpath {
                 }
                 else if (val.ValueKind == JsonValueKind.Array)
                 {
-                    int64_t n{0};
+                    Int64 n{0};
                     auto r = jsoncons::detail::to_integer_decimal(identifier_.data(), identifier_.Count, n);
                     if (r)
                     {
-                        std::size_t index = (n >= 0) ? static_cast<std::size_t>(n) : static_cast<std::size_t>(static_cast<int64_t>(val.Count) + n);
+                        std::size_t index = (n >= 0) ? static_cast<std::size_t>(n) : static_cast<std::size_t>(static_cast<Int64>(val.Count) + n);
                         if (index < val.Count)
                         {
                             this->EvaluateTail(resources, generate_path(path, index, options), 
@@ -435,12 +435,12 @@ namespace jsoncons { namespace jsonpath {
 
         class index_selector final : public path_selector
         {
-            int64_t index_;
+            Int64 index_;
         public:
             using path_component_type = typename selector_base_type::path_component_type;
             using path_selector::generate_path;
 
-            index_selector(int64_t index)
+            index_selector(Int64 index)
                 : path_selector(), index_(index)
             {
             }
@@ -456,7 +456,7 @@ namespace jsoncons { namespace jsonpath {
                 ndtype = node_kind::single;
                 if (val.ValueKind == JsonValueKind.Array)
                 {
-                    int64_t slen = static_cast<int64_t>(val.Count);
+                    Int64 slen = static_cast<Int64>(val.Count);
                     if (index_ >= 0 && index_ < slen)
                     {
                         std::size_t index = static_cast<std::size_t>(index_);
@@ -823,9 +823,9 @@ namespace jsoncons { namespace jsonpath {
 
                 if (current.ValueKind == JsonValueKind.Array)
                 {
-                    auto start = slice_.get_start(current.Count);
+                    auto start = slice_.GetStart(current.Count);
                     auto end = slice_.getStop(current.Count);
-                    auto step = slice_.step();
+                    auto step = slice_.GetStep();
 
                     if (step > 0)
                     {
@@ -833,11 +833,11 @@ namespace jsoncons { namespace jsonpath {
                         {
                             start = 0;
                         }
-                        if (end > static_cast<int64_t>(current.Count))
+                        if (end > static_cast<Int64>(current.Count))
                         {
                             end = current.Count;
                         }
-                        for (int64_t i = start; i < end; i += step)
+                        for (Int64 i = start; i < end; i += step)
                         {
                             std::size_t j = static_cast<std::size_t>(i);
                             this->EvaluateTail(resources, generate_path(path, j, options), root, current[j], nodes, ndtype, options);
@@ -845,15 +845,15 @@ namespace jsoncons { namespace jsonpath {
                     }
                     else if (step < 0)
                     {
-                        if (start >= static_cast<int64_t>(current.Count))
+                        if (start >= static_cast<Int64>(current.Count))
                         {
-                            start = static_cast<int64_t>(current.Count) - 1;
+                            start = static_cast<Int64>(current.Count) - 1;
                         }
                         if (end < -1)
                         {
                             end = -1;
                         }
-                        for (int64_t i = start; i > end; i += step)
+                        for (Int64 i = start; i > end; i += step)
                         {
                             std::size_t j = static_cast<std::size_t>(i);
                             if (j < current.Count)
@@ -2162,7 +2162,7 @@ namespace jsoncons { namespace jsonpath {
                                     ec = jsonpath_errc::invalid_number;
                                     return pathExpression_type();
                                 }
-                                int64_t n{0};
+                                Int64 n{0};
                                 auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
                                 if (!r)
                                 {
@@ -2188,7 +2188,7 @@ namespace jsoncons { namespace jsonpath {
                                 }
                                 else
                                 {
-                                    int64_t n{0};
+                                    Int64 n{0};
                                     auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
                                     if (!r)
                                     {
@@ -2213,7 +2213,7 @@ namespace jsoncons { namespace jsonpath {
                             {
                                 if (!buffer.empty())
                                 {
-                                    int64_t n{0};
+                                    Int64 n{0};
                                     auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
                                     if (!r)
                                     {
@@ -2254,7 +2254,7 @@ namespace jsoncons { namespace jsonpath {
                                 }
                                 else
                                 {
-                                    int64_t n{0};
+                                    Int64 n{0};
                                     auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
                                     if (!r)
                                     {
@@ -2278,14 +2278,14 @@ namespace jsoncons { namespace jsonpath {
                     {
                         if (!buffer.empty())
                         {
-                            int64_t n{0};
+                            Int64 n{0};
                             auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
                             if (!r)
                             {
                                 ec = jsonpath_errc::invalid_number;
                                 return pathExpression_type();
                             }
-                            slic.stop_ = jsoncons::optional<int64_t>(n);
+                            slic.stop_ = jsoncons::optional<Int64>(n);
                             buffer.Clear();
                         }
                         switch (_input[_index])
@@ -2316,7 +2316,7 @@ namespace jsoncons { namespace jsonpath {
                     {
                         if (!buffer.empty())
                         {
-                            int64_t n{0};
+                            Int64 n{0};
                             auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
                             if (!r)
                             {
@@ -2503,7 +2503,7 @@ namespace jsoncons { namespace jsonpath {
                                 }
                                 else
                                 {
-                                    int64_t n{0};
+                                    Int64 n{0};
                                     auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
                                     if (!r)
                                     {
@@ -2522,7 +2522,7 @@ namespace jsoncons { namespace jsonpath {
                             {
                                 if (!buffer.empty())
                                 {
-                                    int64_t n{0};
+                                    Int64 n{0};
                                     auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
                                     if (!r)
                                     {
@@ -2840,7 +2840,7 @@ namespace jsoncons { namespace jsonpath {
                         ec = jsonpath_errc::invalid_number;
                         return pathExpression_type();
                     }
-                    int64_t n{0};
+                    Int64 n{0};
                     auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
                     if (!r)
                     {
