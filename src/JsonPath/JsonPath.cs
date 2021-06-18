@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
-
+        
 namespace JsonCons.JsonPathLib
 {
     enum ExprState
@@ -73,7 +73,7 @@ namespace JsonCons.JsonPathLib
         ExpectAnd
     };
 
-    class ExpressionCompiler 
+    class JsonPathCompiler 
     {
         string _input;
         int _index = 0;
@@ -82,12 +82,12 @@ namespace JsonCons.JsonPathLib
         Stack<ExprState> _stateStack = new Stack<ExprState>();
         Stack<Token>_outputStack = new Stack<Token>();
 
-        public ExpressionCompiler(string input)
+        public JsonPathCompiler(string input)
         {
             _input = input;
         }
 
-        public JsonPathExpression Compile()
+        public JsonPath Compile()
         {
             _stateStack = new Stack<ExprState>();
             _index = 0;
@@ -522,7 +522,7 @@ namespace JsonCons.JsonPathLib
             }
             Token token = _outputStack.Pop();
 
-            return new JsonPathExpression(token.GetSelector());
+            return new JsonPath(token.GetSelector());
         }
 
         private void PushToken(Token token)
@@ -590,11 +590,11 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    public class JsonPathExpression
+    public class JsonPath
     {
         ISelector _selector;
 
-        internal JsonPathExpression(ISelector selector)
+        internal JsonPath(ISelector selector)
         {
             _selector = selector;
         }
@@ -606,10 +606,10 @@ namespace JsonCons.JsonPathLib
             return nodes;
         }
 
-        public static JsonPathExpression Compile(string expr)
+        public static JsonPath Compile(string expr)
         {
 
-            var compiler = new ExpressionCompiler(expr);
+            var compiler = new JsonPathCompiler(expr);
             return compiler.Compile();
         }
     }

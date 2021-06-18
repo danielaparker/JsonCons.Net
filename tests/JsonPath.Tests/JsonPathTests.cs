@@ -25,7 +25,7 @@ namespace JsonCons.JsonPathLib.Tests
                 foreach (var testCase in testCasesEnumeratable)
                 {
                     var exprElement = testCase.GetProperty("expression");
-                    var expr = JsonPathExpression.Compile(exprElement.ToString());
+                    var expr = JsonPath.Compile(exprElement.ToString());
 
 
                     JsonElement expected;

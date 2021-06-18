@@ -13,7 +13,7 @@ namespace JsonCons.JsonPathLib
         Int32? _start;
         Int32? _stop;
 
-        Int32 Step {get;}
+        public Int32 Step {get;}
 
         Slice(Int32? start, Int32? stop, Int32 step) 
         {
@@ -22,7 +22,7 @@ namespace JsonCons.JsonPathLib
             Step = step;
         }
 
-        Int32 GetStart(Int32 size)
+        public Int32 GetStart(Int32 size)
         {
             if (_start != null)
             {
@@ -42,7 +42,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        Int32 GetStop(Int32 size)
+        public Int32 GetStop(Int32 size)
         {
             if (_stop != null)
             {
@@ -137,6 +137,93 @@ namespace JsonCons.JsonPathLib
         }
     }
 
+    public class IndexSelector : BaseSelector
+    {
+        Int32 _index;
+
+        public IndexSelector(Int32 index)
+        {
+            _index = index;
+        }
+
+        public override void Select(JsonElement root, 
+                                    JsonElement current,
+                                    IList<JsonElement> nodes)
+        {
+            if (current.ValueKind == JsonValueKind.Array)
+            { 
+                if (_index >= 0 && _index < current.GetArrayLength())
+                {
+                    this.EvaluateTail(root, current[_index], nodes);
+                }
+                else
+                {
+                    Int32 index = current.GetArrayLength() + _index;
+                    if (index >= 0 && index < current.GetArrayLength())
+                    {
+                        this.EvaluateTail(root, current[index], nodes);
+                    }
+                }
+            }
+        }
+    }
+
+    public class SliceSelector : BaseSelector
+    {
+        Slice _slice;
+
+        SliceSelector(Slice slice)
+        {
+            _slice = slice;
+        }
+
+        public override void Select(JsonElement root,
+                                    JsonElement current,
+                                    IList<JsonElement> nodes) 
+        {
+            if (current.ValueKind == JsonValueKind.Array)
+            {
+                Int32 start = _slice.GetStart(current.GetArrayLength());
+                Int32 end = _slice.GetStop(current.GetArrayLength());
+                Int32 step = _slice.Step;
+
+                if (step > 0)
+                {
+                    if (start < 0)
+                    {
+                        start = 0;
+                    }
+                    if (end > current.GetArrayLength())
+                    {
+                        end = current.GetArrayLength();
+                    }
+                    for (Int32 i = start; i < end; i += step)
+                    {
+                        this.EvaluateTail(root, current[i], nodes);
+                    }
+                }
+                else if (step < 0)
+                {
+                    if (start >= current.GetArrayLength())
+                    {
+                        start = current.GetArrayLength() - 1;
+                    }
+                    if (end < -1)
+                    {
+                        end = -1;
+                    }
+                    for (Int32 i = start; i > end; i += step)
+                    {
+                        if (i < current.GetArrayLength())
+                        {
+                            this.EvaluateTail(root, current[i], nodes);
+                        }
+                    }
+                }
+            }
+        }
+    };
+
     public class RecursiveDescentSelector : BaseSelector
     {
         public override void Select(JsonElement root, 
@@ -188,6 +275,43 @@ namespace JsonCons.JsonPathLib
                     this.EvaluateTail(root, prop.Value, nodes);
                 }
             }
+        }
+    }
+
+    public class UnionSelector : ISelector
+    {
+        IList<ISelector> _selectors;
+
+        UnionSelector(IList<ISelector> selectors)
+        {
+            _selectors = selectors;
+        }
+
+        public void AppendSelector(ISelector tail)
+        {
+            foreach (var selector in _selectors)
+            {
+                selector.AppendSelector(tail);
+            }
+        }
+
+        public void Select(JsonElement root, 
+                           JsonElement current,
+                           IList<JsonElement> nodes)
+        {
+            foreach (var selector in _selectors)
+            {
+                selector.Select(root, current, nodes);
+            }
+        }
+    }
+
+    public class FilterSelector : BaseSelector
+    {
+        public override void Select(JsonElement root, 
+                                    JsonElement current,
+                                    IList<JsonElement> nodes)
+        {
         }
     }
 
