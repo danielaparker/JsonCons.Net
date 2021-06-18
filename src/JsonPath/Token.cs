@@ -7,13 +7,13 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-    enum TokenType
+    enum TokenKind
     {
         RootNode,
         CurrentNode,
         Expression,
-        Lparen,
-        Rparen,
+        LParen,
+        RParen,
         BeginUnion,
         EndUnion,
         BeginFilter,
@@ -43,28 +43,28 @@ namespace JsonCons.JsonPathLib
 
     class Token : IEquatable<Token>
     {
-        TokenType _type;
+        TokenKind _type;
         object _expression;
 
-        public Token(TokenType type)
+        public Token(TokenKind type)
         {
             _type = type;
         }
 
         public Token(ISelector selector)
         {
-            _type = TokenType.Selector;
+            _type = TokenKind.Selector;
             _expression = selector;
         }
 
-        public TokenType Type
+        public TokenKind Type
         {
           get { return _type; }   
         }
 
         public ISelector GetSelector()
         {
-            return _type == TokenType.Selector ? (ISelector)_expression : null;
+            return _type == TokenKind.Selector ? (ISelector)_expression : null;
         }
 
         public bool Equals(Token other)

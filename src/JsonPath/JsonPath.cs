@@ -81,6 +81,9 @@ namespace JsonCons.JsonPathLib
         int _line = 1;
         Stack<ExprState> _stateStack = new Stack<ExprState>();
         Stack<Token>_outputStack = new Stack<Token>();
+        Int32? sliceStart = null;
+        Int32? sliceStop = null;
+        Int32 sliceStep = 1;
 
         public JsonPathCompiler(string input)
         {
@@ -93,8 +96,8 @@ namespace JsonCons.JsonPathLib
             _index = 0;
             _column = 1;
 
-            Stack<Int64> evalStack = new Stack<Int64>();
-            evalStack.Push(0);
+            IList<Int64> evalDepth = new List<Int64>();
+            evalDepth.Add(0);
 
             _stateStack.Push(ExprState.Start);
 
@@ -142,6 +145,34 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             }
+                            case '[':
+                                _stateStack.Push(ExprState.BracketSpecifierOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ')':
+                            {
+                                if (evalDepth.Count == 0)
+                                {
+                                    throw new JsonException("Unbalanced parentheses");
+                                }
+                                if (evalDepth[evalDepth.Count-1] > 0)
+                                {
+                                    ++_index;
+                                    ++_column;
+                                    --evalDepth[evalDepth.Count-1];
+                                    PushToken(new Token(TokenKind.RParen));
+                                }
+                                else
+                                {
+                                    _stateStack.Pop();
+                                }
+                                break;
+                            }
+                            case ']':
+                            case ',':
+                                _stateStack.Pop();
+                                break;
                             default:
                             {
                                 throw new JsonException("Invalid state");
@@ -245,8 +276,8 @@ namespace JsonCons.JsonPathLib
                                 break;
                             case '(':
                             {
+                                evalDepth.Add(0);
                                 /*
-                                evalStack.Push(0);
                                 auto f = resources.get_function(buffer);
                                 if (ec)
                                 {
@@ -465,6 +496,309 @@ namespace JsonCons.JsonPathLib
                         ++_column;
                         break;
                     }
+                    case ExprState.BracketSpecifierOrUnion:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '(':
+                            {
+                                PushToken(new Token(TokenKind.BeginUnion));
+                                PushToken(new Token(TokenKind.BeginExpression));
+                                PushToken(new Token(TokenKind.LParen));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.Expression);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                ++evalDepth[evalDepth.Count-1];
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case '?':
+                            {
+                                PushToken(new Token(TokenKind.BeginUnion));
+                                PushToken(new Token(TokenKind.BeginFilter));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.FilterExpression);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case '*':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.WildcardOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\'':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IdentifierOrUnion);
+                                _stateStack.Push(ExprState.SingleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IdentifierOrUnion);
+                                _stateStack.Push(ExprState.DoubleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ':': // SliceExpression
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IndexOrSliceOrUnion);
+                                break;
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IndexOrSliceOrUnion);
+                                _stateStack.Push(ExprState.Integer);
+                                break;
+                            case '$':
+                                PushToken(new Token(TokenKind.BeginUnion));
+                                PushToken(new Token(TokenKind.RootNode));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.PathRhs);                                
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '@':
+                                PushToken(new Token(TokenKind.BeginUnion));
+                                PushToken(new Token(TokenKind.CurrentNode));
+                                PushToken(new Token(new CurrentNodeSelector()));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.PathRhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                throw new JsonException("Expected bracket specifier or union");
+                        }
+                        break;
+                    case ExprState.IndexOrSliceOrUnion:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']':
+                            {
+                                Int32 n;
+                                if (!Int32.TryParse(buffer.ToString(),out n))
+                                {
+                                    throw new JsonException("Invalid index");
+                                }
+                                PushToken(new Token(new IndexSelector(n)));
+                                buffer.Clear();
+                                _stateStack.Pop(); // IndexOrSliceOrUnion
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case ',':
+                            {
+                                PushToken(new Token(TokenKind.BeginUnion));
+                                Int32 n;
+                                if (!Int32.TryParse(buffer.ToString(), out n))
+                                {
+                                    throw new JsonException("Invalid index");
+                                }
+                                PushToken(new Token(new IndexSelector(n)));
+                                buffer.Clear();
+                                PushToken(new Token(TokenKind.Separator));
+                                buffer.Clear();
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.UnionElement);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case ':':
+                            {
+                                if (!(buffer.Length == 0))
+                                {
+                                    Int32 n;
+                                    if (!Int32.TryParse(buffer.ToString(), out n))
+                                    {
+                                        throw new JsonException("Invalid index");
+                                    }
+                                        sliceStart = n;
+                                    buffer.Clear();
+                                }
+                                PushToken(new Token(TokenKind.BeginUnion));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.SliceExpressionStop);
+                                _stateStack.Push(ExprState.Integer);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            default:
+                                throw new JsonException("Expected right bracket");
+                        }
+                        break;
+                    case ExprState.Index:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']':
+                            case '.':
+                            case ',':
+                            {
+                                Int32 n;
+                                if (!Int32.TryParse(buffer.ToString(), out n))
+                                {
+                                    throw new JsonException("Invalid index");
+                                }
+                                PushToken(new Token(new IndexSelector(n)));
+                                buffer.Clear();
+                                _stateStack.Pop(); // index
+                                break;
+                            }
+                            default:
+                                throw new JsonException("Expected right bracket");
+                        }
+                        break;
+                    case ExprState.SliceExpressionStop:
+                    {
+                        if (!(buffer.Length == 0))
+                        {
+                            Int32 n;
+                            if (!Int32.TryParse(buffer.ToString(), out n))
+                            {
+                                throw new JsonException("Invalid slice stop");
+                            }
+                            sliceStop = n;
+                            buffer.Clear();
+                        }
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']':
+                            case ',':
+                                PushToken(new Token(new SliceSelector(new Slice(sliceStart,sliceStop,sliceStep))));
+                                sliceStart = null;
+                                sliceStop = null;
+                                sliceStep = 1;
+                                _stateStack.Pop(); // BracketSpecifier2
+                                break;
+                            case ':':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.SliceExpressionStep);
+                                _stateStack.Push(ExprState.Integer);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                throw new JsonException("Expected right bracket");
+                        }
+                        break;
+                    }
+                    case ExprState.SliceExpressionStep:
+                    {
+                        if (!(buffer.Length == 0))
+                        {
+                            Int32 n;
+                            if (!Int32.TryParse(buffer.ToString(), out n))
+                            {
+                                throw new JsonException("Invalid slice stop");
+                            }
+                            buffer.Clear();
+                            if (n == 0)
+                            {
+                                throw new JsonException("Slice step cannot be zero");
+                            }
+                            sliceStop = n;
+                            buffer.Clear();
+                        }
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']':
+                            case ',':
+                                PushToken(new Token(new SliceSelector(new Slice(sliceStart,sliceStop,sliceStep))));
+                                sliceStart = null;
+                                sliceStop = null;
+                                sliceStep = 1;
+                                buffer.Clear();
+                                _stateStack.Pop(); // SliceExpressionStep
+                                break;
+                            default:
+                                throw new JsonException("Expected right bracket");
+                        }
+                        break;
+                    }
+                    case ExprState.IndexOrSlice:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ',':
+                            case ']':
+                            {
+                                Int32 n;
+                                if (!Int32.TryParse(buffer.ToString(), out n))
+                                {
+                                    throw new JsonException("Invalid index");
+                                }
+                                PushToken(new Token(new IndexSelector(n)));
+                                buffer.Clear();
+                                _stateStack.Pop(); // BracketSpecifier
+                                break;
+                            }
+                            case ':':
+                            {
+                                if (!(buffer.Length == 0))
+                                {
+                                    Int32 n;
+                                    if (!Int32.TryParse(buffer.ToString(), out n))
+                                    {
+                                        throw new JsonException("Invalid slice start");
+                                    }
+                                    sliceStart = n;
+                                    buffer.Clear();
+                                }
+                                _stateStack.Pop(); _stateStack.Push(ExprState.SliceExpressionStop);
+                                _stateStack.Push(ExprState.Integer);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            default:
+                                throw new JsonException("Expected right bracket");
+                        }
+                        break;
+                    case ExprState.Integer:
+                        switch (_input[_index])
+                        {
+                            case '-':
+                                buffer.Append (_input[_index]);
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Digit);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Digit);
+                                break;
+                        }
+                        break;
+                    case ExprState.Digit:
+                        switch (_input[_index])
+                        {
+                            case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                _stateStack.Pop(); // digit
+                                break;
+                        }
+                        break;
                     default:
                         ++_index;
                         break;
@@ -516,7 +850,7 @@ namespace JsonCons.JsonPathLib
                     break;
             }
 
-            if (_outputStack.Count != 1 && _outputStack.Peek().Type != TokenType.Selector)
+            if (_outputStack.Count != 1 && _outputStack.Peek().Type != TokenKind.Selector)
             {
                 throw new JsonException("Invalid state");
             }
@@ -529,8 +863,8 @@ namespace JsonCons.JsonPathLib
         {
             switch (token.Type)
             {
-                case TokenType.Selector:
-                    if (_outputStack.Count != 0 && _outputStack.Peek().Type == TokenType.Selector)
+                case TokenKind.Selector:
+                    if (_outputStack.Count != 0 && _outputStack.Peek().Type == TokenKind.Selector)
                     {
                         _outputStack.Peek().GetSelector().AppendSelector(token.GetSelector());
                     }

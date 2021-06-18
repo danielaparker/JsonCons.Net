@@ -1011,7 +1011,7 @@ namespace jsoncons { namespace jsonpath {
                         switch (_input[_index])
                         {
                             case '.':
-                                PushToken(new Token(jsoncons::make_unique<recursive_selector>()));
+                                PushToken(new Token(new RecursiveSelector());
                                 if (ec) {return pathExpression_type();}
                                 ++_index;
                                 ++_column;
@@ -1065,8 +1065,8 @@ namespace jsoncons { namespace jsonpath {
                             {
                                 ++_index;
                                 ++_column;
-                                ++evalStack.back();
-                                PushToken(lparen_arg);
+                                ++evalDepth[evalDepth.Count-1];
+                                PushToken(TokenKind.LParen);
                                 if (ec) {return pathExpression_type();}
                                 break;
                             }
@@ -1131,7 +1131,7 @@ namespace jsoncons { namespace jsonpath {
                             {
                                 json_decoder<Json> decoder;
                                 basic_json_parser<char_type> parser;
-                                parser.update(buffer.data(),buffer.Count);
+                                parser.update(buffer.data(),buffer.Length);
                                 parser.parse_some(decoder);
                                 if (ec)
                                 {
@@ -1155,7 +1155,7 @@ namespace jsoncons { namespace jsonpath {
                     {
                         json_decoder<Json> decoder;
                         basic_json_parser<char_type> parser;
-                        parser.update(buffer.data(),buffer.Count);
+                        parser.update(buffer.data(),buffer.Length);
                         parser.parse_some(decoder);
                         if (ec)
                         {
@@ -1275,7 +1275,7 @@ namespace jsoncons { namespace jsonpath {
                                 SkipWhiteSpace();
                                 break;
                             case '*':
-                                PushToken(new Token(jsoncons::make_unique<wildcard_selector>()));
+                                PushToken(new Token(new WildcardSelector());
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop();
                                 ++_index;
@@ -1308,7 +1308,7 @@ namespace jsoncons { namespace jsonpath {
                                 break;
                             case '@':
                                 PushToken(new Token(current_node_arg)); // ISSUE
-                                PushToken(new Token(jsoncons::make_unique<current_node_selector>()));
+                                PushToken(new Token(new CurrentNodeSelector());
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop();
                                 ++_index;
@@ -1404,7 +1404,7 @@ namespace jsoncons { namespace jsonpath {
                             case ',':
                                 PushToken(new Token(current_node_arg));
                                 if (ec) {return pathExpression_type();}
-                                PushToken(new Token(beginExpression_arg));
+                                PushToken(new Token(TokenKind.BeginExpression));
                                 if (ec) {return pathExpression_type();}
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Push(ExprState.Argument);
@@ -1415,7 +1415,7 @@ namespace jsoncons { namespace jsonpath {
                                 break;
                             case ')':
                             {
-                                if (evalStack.empty() || (evalStack.back() != 0))
+                                if (evalStack.Count == 0 || (evalDepth[evalDepth.Count-1] != 0))
                                 {
                                     ec = jsonpath_errc::unbalanced_parentheses;
                                     return pathExpression_type();
@@ -1445,7 +1445,7 @@ namespace jsoncons { namespace jsonpath {
                                 _stateStack.Pop();
                                 break;
                             default:
-                                PushToken(new Token(beginExpression_arg));
+                                PushToken(new Token(TokenKind.BeginExpression));
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.OneOrMoreArguments);
                                 _stateStack.Push(ExprState.Argument);
@@ -1466,7 +1466,7 @@ namespace jsoncons { namespace jsonpath {
                                 _stateStack.Pop();
                                 break;
                             case ',':
-                                PushToken(new Token(beginExpression_arg));
+                                PushToken(new Token(TokenKind.BeginExpression));
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Push(ExprState.Argument);
                                 _stateStack.Push(ExprState.ExpressionRhs);
@@ -1543,17 +1543,17 @@ namespace jsoncons { namespace jsonpath {
                                 break;
                             case ')':
                             {
-                                if (evalStack.empty())
+                                if (evalStack.Count == 0)
                                 {
                                     ec = jsonpath_errc::unbalanced_parentheses;
                                     return pathExpression_type();
                                 }
-                                if (evalStack.back() > 0)
+                                if (evalDepth[evalDepth.Count-1] > 0)
                                 {
                                     ++_index;
                                     ++_column;
-                                    --evalStack.back();
-                                    PushToken(rparen_arg);
+                                    --evalDepth[evalDepth.Count-1];
+                                    PushToken(TokenKind.RParen);
                                     if (ec) {return pathExpression_type();}
                                 }
                                 else
@@ -1589,17 +1589,17 @@ namespace jsoncons { namespace jsonpath {
                                 break;
                             case ')':
                             {
-                                if (evalStack.empty())
+                                if (evalStack.Count == 0)
                                 {
                                     ec = jsonpath_errc::unbalanced_parentheses;
                                     return pathExpression_type();
                                 }
-                                if (evalStack.back() > 0)
+                                if (evalDepth[evalDepth.Count-1] > 0)
                                 {
                                     ++_index;
                                     ++_column;
-                                    --evalStack.back();
-                                    PushToken(rparen_arg);
+                                    --evalDepth[evalDepth.Count-1];
+                                    PushToken(TokenKind.RParen);
                                     if (ec) {return pathExpression_type();}
                                 }
                                 else
@@ -1970,23 +1970,23 @@ namespace jsoncons { namespace jsonpath {
                                 break;
                             case '(':
                             {
-                                PushToken(new Token(begin_union_arg));
-                                PushToken(new Token(beginExpression_arg));
-                                PushToken(lparen_arg);
+                                PushToken(new Token(TokenKind.BeginUnion));
+                                PushToken(new Token(TokenKind.BeginExpression));
+                                PushToken(TokenKind.LParen);
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
                                 _stateStack.Push(ExprState.Expression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
                                 _stateStack.Push(ExprState.PathOrLiteralOrFunction);
-                                ++evalStack.back();
+                                ++evalDepth[evalDepth.Count-1];
                                 ++_index;
                                 ++_column;
                                 break;
                             }
                             case '?':
                             {
-                                PushToken(new Token(begin_union_arg));
-                                PushToken(new Token(begin_filter_arg));
+                                PushToken(new Token(TokenKind.BeginUnion));
+                                PushToken(new Token(TokenKind.BeginFilter));
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
                                 _stateStack.Push(ExprState.FilterExpression);
@@ -2021,7 +2021,7 @@ namespace jsoncons { namespace jsonpath {
                                 _stateStack.Push(ExprState.Integer);
                                 break;
                             case '$':
-                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(TokenKind.BeginUnion));
                                 PushToken(root_node_arg);
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
@@ -2030,9 +2030,9 @@ namespace jsoncons { namespace jsonpath {
                                 ++_column;
                                 break;
                             case '@':
-                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(TokenKind.BeginUnion));
                                 PushToken(new Token(current_node_arg)); // ISSUE
-                                PushToken(new Token(jsoncons::make_unique<current_node_selector>()));
+                                PushToken(new Token(new CurrentNodeSelector());
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
                                 _stateStack.Push(ExprState.PathRhs);
@@ -2059,20 +2059,20 @@ namespace jsoncons { namespace jsonpath {
                                 break;
                             case '(':
                             {
-                                PushToken(new Token(beginExpression_arg));
-                                PushToken(lparen_arg);
+                                PushToken(new Token(TokenKind.BeginExpression));
+                                PushToken(TokenKind.LParen);
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.Expression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
                                 _stateStack.Push(ExprState.PathOrLiteralOrFunction);
-                                ++evalStack.back();
+                                ++evalDepth[evalDepth.Count-1];
                                 ++_index;
                                 ++_column;
                                 break;
                             }
                             case '?':
                             {
-                                PushToken(new Token(begin_filter_arg));
+                                PushToken(new Token(TokenKind.BeginFilter));
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.FilterExpression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
@@ -2082,7 +2082,7 @@ namespace jsoncons { namespace jsonpath {
                                 break;
                             }
                             case '*':
-                                PushToken(new Token(jsoncons::make_unique<wildcard_selector>()));
+                                PushToken(new Token(new WildcardSelector());
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.PathRhs);
                                 ++_index;
@@ -2098,7 +2098,7 @@ namespace jsoncons { namespace jsonpath {
                                 break;
                             case '@':
                                 PushToken(new Token(current_node_arg)); // ISSUE
-                                PushToken(new Token(jsoncons::make_unique<current_node_selector>()));
+                                PushToken(new Token(new CurrentNodeSelector());
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.PathRhs);
                                 ++_index;
@@ -2157,19 +2157,19 @@ namespace jsoncons { namespace jsonpath {
                                 break;
                             case ']':
                             {
-                                if (buffer.empty())
+                                if (buffer.Length == 0)
                                 {
                                     ec = jsonpath_errc::invalid_number;
                                     return pathExpression_type();
                                 }
                                 Int64 n{0};
-                                auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
+                                auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                 if (!r)
                                 {
                                     ec = jsonpath_errc::invalid_number;
                                     return pathExpression_type();
                                 }
-                                PushToken(new Token(jsoncons::make_unique<index_selector>(n)));
+                                PushToken(new Token(new IndexSelector(n)));
                                 if (ec) {return pathExpression_type();}
                                 buffer.Clear();
                                 _stateStack.Pop(); // IndexOrSliceOrUnion
@@ -2179,9 +2179,9 @@ namespace jsoncons { namespace jsonpath {
                             }
                             case ',':
                             {
-                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(TokenKind.BeginUnion));
                                 if (ec) {return pathExpression_type();}
-                                if (buffer.empty())
+                                if (buffer.Length == 0)
                                 {
                                     ec = jsonpath_errc::invalid_number;
                                     return pathExpression_type();
@@ -2189,13 +2189,13 @@ namespace jsoncons { namespace jsonpath {
                                 else
                                 {
                                     Int64 n{0};
-                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
+                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                     if (!r)
                                     {
                                         ec = jsonpath_errc::invalid_number;
                                         return pathExpression_type();
                                     }
-                                    PushToken(new Token(jsoncons::make_unique<index_selector>(n)));
+                                    PushToken(new Token(new IndexSelector(n)));
                                     if (ec) {return pathExpression_type();}
 
                                     buffer.Clear();
@@ -2211,10 +2211,10 @@ namespace jsoncons { namespace jsonpath {
                             }
                             case ':':
                             {
-                                if (!buffer.empty())
+                                if (!(buffer.Length == 0))
                                 {
                                     Int64 n{0};
-                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
+                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                     if (!r)
                                     {
                                         ec = jsonpath_errc::invalid_number;
@@ -2223,7 +2223,7 @@ namespace jsoncons { namespace jsonpath {
                                     slic.start_ = n;
                                     buffer.Clear();
                                 }
-                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(TokenKind.BeginUnion));
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
                                 _stateStack.Push(ExprState.SliceExpressionStop);
@@ -2247,7 +2247,7 @@ namespace jsoncons { namespace jsonpath {
                             case '.':
                             case ',':
                             {
-                                if (buffer.empty())
+                                if (buffer.Length == 0)
                                 {
                                     ec = jsonpath_errc::invalid_number;
                                     return pathExpression_type();
@@ -2255,13 +2255,13 @@ namespace jsoncons { namespace jsonpath {
                                 else
                                 {
                                     Int64 n{0};
-                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
+                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                     if (!r)
                                     {
                                         ec = jsonpath_errc::invalid_number;
                                         return pathExpression_type();
                                     }
-                                    PushToken(new Token(jsoncons::make_unique<index_selector>(n)));
+                                    PushToken(new Token(new IndexSelector(n)));
                                     if (ec) {return pathExpression_type();}
 
                                     buffer.Clear();
@@ -2276,10 +2276,10 @@ namespace jsoncons { namespace jsonpath {
                         break;
                     case ExprState.SliceExpressionStop:
                     {
-                        if (!buffer.empty())
+                        if (!(buffer.Length == 0))
                         {
                             Int64 n{0};
-                            auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
+                            auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                             if (!r)
                             {
                                 ec = jsonpath_errc::invalid_number;
@@ -2314,10 +2314,10 @@ namespace jsoncons { namespace jsonpath {
                     }
                     case ExprState.SliceExpressionStep:
                     {
-                        if (!buffer.empty())
+                        if (!(buffer.Length == 0))
                         {
                             Int64 n{0};
-                            auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
+                            auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                             if (!r)
                             {
                                 ec = jsonpath_errc::invalid_number;
@@ -2366,7 +2366,7 @@ namespace jsoncons { namespace jsonpath {
                                 ++_column;
                                 break;
                             case '.':
-                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(TokenKind.BeginUnion));
                                 PushToken(new Token(new IdentifierSelector(buffer.ToString())));
                                 if (ec) {return pathExpression_type();}
                                 buffer.Clear();
@@ -2376,7 +2376,7 @@ namespace jsoncons { namespace jsonpath {
                                 ++_column;
                                 break;
                             case '[':
-                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(TokenKind.BeginUnion));
                                 PushToken(new Token(new IdentifierSelector(buffer.ToString())));
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
@@ -2385,7 +2385,7 @@ namespace jsoncons { namespace jsonpath {
                                 ++_column;
                                 break;
                             case ',': 
-                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(TokenKind.BeginUnion));
                                 PushToken(new Token(new IdentifierSelector(buffer.ToString())));
                                 PushToken(new Token(separator_arg));
                                 if (ec) {return pathExpression_type();}
@@ -2426,7 +2426,7 @@ namespace jsoncons { namespace jsonpath {
                                 ++_column;
                                 break;
                             case ']': 
-                                PushToken(new Token(end_union_arg));
+                                PushToken(new Token(TokenKind.EndUnion));
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop();
                                 ++_index;
@@ -2452,7 +2452,7 @@ namespace jsoncons { namespace jsonpath {
                                 ++_column;
                                 break;
                             case ',': 
-                                PushToken(new Token(begin_union_arg));
+                                PushToken(new Token(TokenKind.BeginUnion));
                                 PushToken(new Token(new IdentifierSelector(buffer.ToString())));
                                 PushToken(new Token(separator_arg));
                                 if (ec) {return pathExpression_type();}
@@ -2477,7 +2477,7 @@ namespace jsoncons { namespace jsonpath {
                             case ']':
                             case ',':
                             case '.':
-                                PushToken(new Token(jsoncons::make_unique<wildcard_selector>()));
+                                PushToken(new Token(new WildcardSelector());
                                 if (ec) {return pathExpression_type();}
                                 buffer.Clear();
                                 _stateStack.Pop();
@@ -2496,7 +2496,7 @@ namespace jsoncons { namespace jsonpath {
                             case ',':
                             case ']':
                             {
-                                if (buffer.empty())
+                                if (buffer.Length == 0)
                                 {
                                     ec = jsonpath_errc::invalid_number;
                                     return pathExpression_type();
@@ -2504,13 +2504,13 @@ namespace jsoncons { namespace jsonpath {
                                 else
                                 {
                                     Int64 n{0};
-                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
+                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                     if (!r)
                                     {
                                         ec = jsonpath_errc::invalid_number;
                                         return pathExpression_type();
                                     }
-                                    PushToken(new Token(jsoncons::make_unique<index_selector>(n)));
+                                    PushToken(new Token(new IndexSelector(n)));
                                     if (ec) {return pathExpression_type();}
 
                                     buffer.Clear();
@@ -2520,10 +2520,10 @@ namespace jsoncons { namespace jsonpath {
                             }
                             case ':':
                             {
-                                if (!buffer.empty())
+                                if (!(buffer.Length == 0))
                                 {
                                     Int64 n{0};
-                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
+                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                     if (!r)
                                     {
                                         ec = jsonpath_errc::invalid_number;
@@ -2550,7 +2550,7 @@ namespace jsoncons { namespace jsonpath {
                                 SkipWhiteSpace();
                                 break;
                             case ']': 
-                                PushToken(new Token(jsoncons::make_unique<wildcard_selector>()));
+                                PushToken(new Token(new WildcardSelector());
                                 if (ec) {return pathExpression_type();}
                                 buffer.Clear();
                                 _stateStack.Pop();
@@ -2558,8 +2558,8 @@ namespace jsoncons { namespace jsonpath {
                                 ++_column;
                                 break;
                             case ',': 
-                                PushToken(new Token(begin_union_arg));
-                                PushToken(new Token(jsoncons::make_unique<wildcard_selector>()));
+                                PushToken(new Token(TokenKind.BeginUnion));
+                                PushToken(new Token(new WildcardSelector());
                                 PushToken(new Token(separator_arg));
                                 if (ec) {return pathExpression_type();}
                                 buffer.Clear();
@@ -2770,7 +2770,7 @@ namespace jsoncons { namespace jsonpath {
                             case ',':
                             case ']':
                             {
-                                PushToken(new Token(end_filter_arg));
+                                PushToken(new Token(TokenKind.EndFilter));
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop();
                                 break;
@@ -2835,19 +2835,19 @@ namespace jsoncons { namespace jsonpath {
                 }
                 else if (_stateStack.Peek() == ExprState.Digit)
                 {
-                    if (buffer.empty())
+                    if (buffer.Length == 0)
                     {
                         ec = jsonpath_errc::invalid_number;
                         return pathExpression_type();
                     }
                     Int64 n{0};
-                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Count, n);
+                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                     if (!r)
                     {
                         ec = jsonpath_errc::invalid_number;
                         return pathExpression_type();
                     }
-                    PushToken(new Token(jsoncons::make_unique<index_selector>(n)));
+                    PushToken(new Token(new IndexSelector(n)));
                     if (ec) {return pathExpression_type();}
                     buffer.Clear();
                     _stateStack.Pop(); // IndexOrSliceOrUnion
@@ -2863,7 +2863,7 @@ namespace jsoncons { namespace jsonpath {
                 ec = jsonpath_errc::unexpected_eof;
                 return pathExpression_type();
             }
-            if (evalStack.Count != 1 || evalStack.back() != 0)
+            if (evalStack.Count != 1 || evalDepth[evalDepth.Count-1] != 0)
             {
                 ec = jsonpath_errc::unbalanced_parentheses;
                 return pathExpression_type();
@@ -2934,7 +2934,7 @@ namespace jsoncons { namespace jsonpath {
             {
                 case token_kind::begin_filter:
                     _outputStack.Add(std::move(tok));
-                    operator_stack_.Add(new Token(lparen_arg));
+                    operator_stack_.Add(new Token(TokenKind.LParen));
                     break;
                 case token_kind::end_filter:
                 {
@@ -2983,7 +2983,7 @@ namespace jsoncons { namespace jsonpath {
                 case token_kind::beginExpression:
                     //std::cout << "beginExpression\n";
                     _outputStack.Add(std::move(tok));
-                    operator_stack_.Add(new Token(lparen_arg));
+                    operator_stack_.Add(new Token(TokenKind.LParen));
                     break;
                 case token_kind::end_indexExpression:
                 {
@@ -3173,7 +3173,7 @@ namespace jsoncons { namespace jsonpath {
                     break;
                 case token_kind::function:
                     _outputStack.Add(std::move(tok));
-                    operator_stack_.Add(new Token(lparen_arg));
+                    operator_stack_.Add(new Token(TokenKind.LParen));
                     break;
                 case token_kind::Argument:
                     _outputStack.Add(std::move(tok));

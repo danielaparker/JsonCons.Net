@@ -15,7 +15,7 @@ namespace JsonCons.JsonPathLib
 
         public Int32 Step {get;}
 
-        Slice(Int32? start, Int32? stop, Int32 step) 
+        public Slice(Int32? start, Int32? stop, Int32 step) 
         {
             _start = start;
             _stop = stop;
@@ -168,11 +168,11 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    public class SliceSelector : BaseSelector
+    class SliceSelector : BaseSelector
     {
         Slice _slice;
 
-        SliceSelector(Slice slice)
+        public SliceSelector(Slice slice)
         {
             _slice = slice;
         }
