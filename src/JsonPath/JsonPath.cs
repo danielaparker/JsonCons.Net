@@ -38,7 +38,7 @@ namespace JsonCons.JsonPathLib
         UnionExpression,
         IdentifierOrUnion,
         BracketSpecifierOrUnion,
-        Bracketed_wildcard,
+        BracketedWildcard,
         IndexOrSlice,
         WildcardOrUnion,
         UnionElement,
@@ -571,6 +571,51 @@ namespace JsonCons.JsonPathLib
                                 break;
                             default:
                                 throw new JsonException("Expected bracket specifier or union");
+                        }
+                        break;
+                    case ExprState.IdentifierOrUnion:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']': 
+                                PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                                buffer.Clear();
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ',': 
+                                PushToken(new Token(TokenKind.BeginUnion));
+                                PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                                PushToken(new Token(TokenKind.Separator));
+                                buffer.Clear();
+                                _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
+                                _stateStack.Push(ExprState.UnionElement);                                
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                throw new JsonException("Expected right bracket");
+                        }
+                        break;
+                    case ExprState.BracketedWildcard:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '[':
+                            case ']':
+                            case ',':
+                            case '.':
+                                PushToken(new Token(new WildcardSelector()));
+                                buffer.Clear();
+                                _stateStack.Pop();
+                                break;
+                            default:
+                                throw new JsonException("Expected right bracket");
                         }
                         break;
                     case ExprState.IndexOrSliceOrUnion:

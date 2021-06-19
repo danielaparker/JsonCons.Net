@@ -2200,7 +2200,7 @@ namespace jsoncons { namespace jsonpath {
 
                                     buffer.Clear();
                                 }
-                                PushToken(new Token(separator_arg));
+                                PushToken(new Token(TokenKind.Separator));
                                 if (ec) {return pathExpression_type();}
                                 buffer.Clear();
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
@@ -2387,7 +2387,7 @@ namespace jsoncons { namespace jsonpath {
                             case ',': 
                                 PushToken(new Token(TokenKind.BeginUnion));
                                 PushToken(new Token(new IdentifierSelector(buffer.ToString())));
-                                PushToken(new Token(separator_arg));
+                                PushToken(new Token(TokenKind.Separator));
                                 if (ec) {return pathExpression_type();}
                                 buffer.Clear();
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
@@ -2419,7 +2419,7 @@ namespace jsoncons { namespace jsonpath {
                                 ++_column;
                                 break;
                             case ',': 
-                                PushToken(new Token(separator_arg));
+                                PushToken(new Token(TokenKind.Separator));
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Push(ExprState.UnionElement);
                                 ++_index;
@@ -2454,7 +2454,7 @@ namespace jsoncons { namespace jsonpath {
                             case ',': 
                                 PushToken(new Token(TokenKind.BeginUnion));
                                 PushToken(new Token(new IdentifierSelector(buffer.ToString())));
-                                PushToken(new Token(separator_arg));
+                                PushToken(new Token(TokenKind.Separator));
                                 if (ec) {return pathExpression_type();}
                                 buffer.Clear();
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
@@ -2560,7 +2560,7 @@ namespace jsoncons { namespace jsonpath {
                             case ',': 
                                 PushToken(new Token(TokenKind.BeginUnion));
                                 PushToken(new Token(new WildcardSelector());
-                                PushToken(new Token(separator_arg));
+                                PushToken(new Token(TokenKind.Separator));
                                 if (ec) {return pathExpression_type();}
                                 buffer.Clear();
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
