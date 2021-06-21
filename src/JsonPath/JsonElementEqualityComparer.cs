@@ -7,11 +7,11 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-   public class JsonElementComparer : IEqualityComparer<JsonElement>
+   public class JsonElementEqualityComparer : IEqualityComparer<JsonElement>
    {
-       public JsonElementComparer() : this(-1) {}
+       public JsonElementEqualityComparer() : this(-1) {}
 
-       public JsonElementComparer(int maxHashDepth)
+       public JsonElementEqualityComparer(int maxHashDepth)
        {
             this.MaxHashDepth = maxHashDepth;
        }

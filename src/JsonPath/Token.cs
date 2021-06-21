@@ -19,8 +19,8 @@ namespace JsonCons.JsonPathLib
         BeginFilter,
         EndFilter,
         BeginExpression,
-        End_indexExpression,
-        EndArgumentExpression,
+        EndExpression,
+        EndArgument,
         Separator,
         Literal,
         Selector,
@@ -32,19 +32,10 @@ namespace JsonCons.JsonPathLib
         BinaryOperator
     };
 
-    public interface ISelector 
-    {
-        void Select(JsonElement root,
-                    JsonElement current, 
-                    IList<JsonElement> nodes);
-
-        void AppendSelector(ISelector tail);
-    };
-
     class Token : IEquatable<Token>
     {
         TokenKind _type;
-        object _expression;
+        object _expr;
 
         public Token(TokenKind type)
         {
@@ -54,7 +45,13 @@ namespace JsonCons.JsonPathLib
         public Token(ISelector selector)
         {
             _type = TokenKind.Selector;
-            _expression = selector;
+            _expr = selector;
+        }
+
+        public Token(IExpression expr)
+        {
+            _type = TokenKind.Expression;
+            _expr = expr;
         }
 
         public TokenKind Type
@@ -64,7 +61,12 @@ namespace JsonCons.JsonPathLib
 
         public ISelector GetSelector()
         {
-            return _type == TokenKind.Selector ? (ISelector)_expression : null;
+            return _type == TokenKind.Selector ? (ISelector)_expr : null;
+        }
+
+        public IExpression GetExpression()
+        {
+            return _type == TokenKind.Expression ? (IExpression)_expr : null;
         }
 
         public bool Equals(Token other)

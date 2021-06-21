@@ -76,11 +76,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Expression.cs" />
-    <Compile Include="JsonElementComparer.cs" />
+    <Compile Include="JsonElementEqualityComparer.cs" />
     <Compile Include="JsonPath.cs" />
     <Compile Include="NormalizedPath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JsonPathSelector.cs" />
+    <Compile Include="Slice.cs" />
     <Compile Include="Token.cs" />
   </ItemGroup>
   <ItemGroup>

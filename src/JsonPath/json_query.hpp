@@ -191,7 +191,7 @@ namespace jsoncons { namespace jsonpath {
         using selector_base_type = selector_base<Json,JsonReference>;
         using token_type = token<Json,JsonReference>;
         using pathExpression_type = pathExpression<Json,JsonReference>;
-        using expression_tree_type = expression_tree<Json,JsonReference>;
+        using expression_type = expression_tree<Json,JsonReference>;
         using path_component_type = path_component<char_type>;
 
     private:
@@ -643,13 +643,13 @@ namespace jsoncons { namespace jsonpath {
 
         class FilterSelector final : public path_selector
         {
-            expression_tree_type _expr;
+            expression_type _expr;
 
         public:
             using path_component_type = typename selector_base_type::path_component_type;
             using path_selector::generate_path;
 
-            FilterSelector(expression_tree_type&& expr)
+            FilterSelector(expression_type&& expr)
                 : path_selector(), _expr(std::move(expr))
             {
             }
@@ -707,13 +707,13 @@ namespace jsoncons { namespace jsonpath {
 
         class indexExpression_selector final : public path_selector
         {
-            expression_tree_type _expr;
+            expression_type _expr;
 
         public:
             using path_component_type = typename selector_base_type::path_component_type;
             using path_selector::generate_path;
 
-            indexExpression_selector(expression_tree_type&& expr)
+            indexExpression_selector(expression_type&& expr)
                 : path_selector(), _expr(std::move(expr))
             {
             }
@@ -763,12 +763,12 @@ namespace jsoncons { namespace jsonpath {
 
         class argumentExpression final : public expression_base<Json,JsonReference>
         {
-            expression_tree_type _expr;
+            expression_type _expr;
 
         public:
             using path_component_type = typename selector_base_type::path_component_type;
 
-            argumentExpression(expression_tree_type&& expr)
+            argumentExpression(expression_type&& expr)
                 : _expr(std::move(expr))
             {
             }
@@ -870,9 +870,9 @@ namespace jsoncons { namespace jsonpath {
         {
         public:
             using path_component_type = typename selector_base_type::path_component_type;
-            expression_tree_type _expr;
+            expression_type _expr;
 
-            function_selector(expression_tree_type&& expr)
+            function_selector(expression_type&& expr)
                 : path_selector(), _expr(std::move(expr))
             {
             }
@@ -2932,18 +2932,12 @@ namespace jsoncons { namespace jsonpath {
             //std::cout << tok.to_string() << "\n";
             switch (tok.type())
             {
-                case token_kind::begin_filter:
+                case token_kind::BeginFilter:
                     _outputStack.Push(std::move(tok));
                     _operatorStack.Push(new Token(TokenKind.LParen));
                     break;
-                case token_kind::end_filter:
+                case token_kind::EndFilter:
                 {
-                    //std::cout << "PushToken end_filter 1\n";
-                    //for (const auto& tok2 : _outputStack)
-                    //{
-                    //    std::cout << tok2.to_string() << "\n";
-                    //}
-                    //std::cout << "\n\n";
                     UnwindRParen();
                     if (ec)
                     {
@@ -2951,7 +2945,7 @@ namespace jsoncons { namespace jsonpath {
                     }
                     std::vector<token_type> toks;
                     auto it = _outputStack.Rbegin();
-                    while (it != _outputStack.Rend() && it.type() != token_kind::begin_filter)
+                    while (it != _outputStack.Rend() && it.type() != token_kind::BeginFilter)
                     {
                         toks.insert(toks.begin(), std::move(*it));
                         ++it;
@@ -2966,18 +2960,12 @@ namespace jsoncons { namespace jsonpath {
 
                     if (!_outputStack.empty() && _outputStack.Peek().is_path())
                     {
-                        _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<FilterSelector>(expression_tree_type(std::move(toks))));
+                        _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<FilterSelector>(expression_type(std::move(toks))));
                     }
                     else
                     {
-                        _outputStack.Push(new Token(jsoncons::make_unique<FilterSelector>(expression_tree_type(std::move(toks)))));
+                        _outputStack.Push(new Token(jsoncons::make_unique<FilterSelector>(expression_type(std::move(toks)))));
                     }
-                    //std::cout << "PushToken end_filter 2\n";
-                    //for (const auto& tok2 : _outputStack)
-                    //{
-                    //    std::cout << tok2.to_string() << "\n";
-                    //}
-                    //std::cout << "\n\n";
                     break;
                 }
                 case token_kind::beginExpression:
@@ -3015,11 +3003,11 @@ namespace jsoncons { namespace jsonpath {
 
                     if (!_outputStack.empty() && _outputStack.Peek().is_path())
                     {
-                        _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<indexExpression_selector>(expression_tree_type(std::move(toks))));
+                        _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<indexExpression_selector>(expression_type(std::move(toks))));
                     }
                     else
                     {
-                        _outputStack.Push(new Token(jsoncons::make_unique<indexExpression_selector>(expression_tree_type(std::move(toks)))));
+                        _outputStack.Push(new Token(jsoncons::make_unique<indexExpression_selector>(expression_type(std::move(toks)))));
                     }
                     break;
                 }
@@ -3050,7 +3038,7 @@ namespace jsoncons { namespace jsonpath {
                     }
                     ++it;
                     _outputStack.erase(it.base(),_outputStack.end());
-                    _outputStack.Push(new Token(jsoncons::make_unique<argumentExpression>(expression_tree_type(std::move(toks)))));
+                    _outputStack.Push(new Token(jsoncons::make_unique<argumentExpression>(expression_type(std::move(toks)))));
                     break;
                 }
                 case token_kind::selector:
@@ -3153,7 +3141,7 @@ namespace jsoncons { namespace jsonpath {
 
                     if (!_outputStack.empty() && _outputStack.Peek().is_path())
                     {
-                        _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<function_selector>(expression_tree_type(std::move(toks))));
+                        _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<function_selector>(expression_type(std::move(toks))));
                     }
                     else
                     {

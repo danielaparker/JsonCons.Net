@@ -950,6 +950,27 @@ namespace JsonCons.JsonPathLib
                     }
                     break;
                 }
+                case TokenKind.BeginExpression:
+                    _outputStack.Push(token);
+                    _operatorStack.Push(new Token(TokenKind.LParen));
+                    break;
+                case TokenKind.EndExpression:
+                {
+                    UnwindRParen();
+                    List<Token> tokens = new List<Token>();
+                    while (_outputStack.Count > 1 && _outputStack.Peek().Type != TokenKind.BeginExpression)
+                    {
+                        tokens.Add(_outputStack.Pop());
+                    }
+                    if (_outputStack.Count == 0)
+                    {
+                        throw new JsonException("Unbalanced parentheses");
+                    }
+                    _outputStack.Pop(); // TokenKind.LParen
+                    tokens.Reverse();
+                    _outputStack.Push(new Token(new Expression(tokens)));
+                    break;
+                }
                 case TokenKind.Selector:
                     if (_outputStack.Count != 0 && _outputStack.Peek().Type == TokenKind.Selector)
                     {

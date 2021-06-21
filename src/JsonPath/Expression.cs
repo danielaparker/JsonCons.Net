@@ -8,7 +8,11 @@ using System.Text.Json;
         
 namespace JsonCons.JsonPathLib
 {
-    class Expression
+    interface IExpression {
+
+    };
+
+    class Expression : IExpression
     {
         IReadOnlyList<Token> _tokens;
 

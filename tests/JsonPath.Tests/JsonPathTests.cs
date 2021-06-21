@@ -15,7 +15,7 @@ namespace JsonCons.JsonPathLib.Tests
             string text = System.IO.File.ReadAllText(path);
             JsonDocument doc = JsonDocument.Parse(text);
             var testsEnumeratable = doc.RootElement.EnumerateArray();
-            var comparer = new JsonElementComparer();
+            var comparer = new JsonElementEqualityComparer();
 
             foreach (var testGroup in testsEnumeratable)
             {
