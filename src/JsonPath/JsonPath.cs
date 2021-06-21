@@ -12,11 +12,11 @@ namespace JsonCons.JsonPathLib
     {
         Start,
         ExpectFunctionExpr,
-        PathLhs,
+        PathExpression,
         PathRhs,
         FilterExpression,
         ExpressionRhs,
-        RecursiveDescentOrPathLhs,
+        RecursiveDescentOrPathExpression,
         PathOrLiteralOrFunction,
         JsonTextOrFunction,
         JsonTextOrFunctionName,
@@ -85,6 +85,7 @@ namespace JsonCons.JsonPathLib
         Int32? sliceStart = null;
         Int32? sliceStop = null;
         Int32 sliceStep = 1;
+        Int32 selector_id = 0;
 
         public JsonPathCompiler(string input)
         {
@@ -119,7 +120,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             case '$':
                             {
-                                PushToken(new Token(new RootSelector()));
+                                PushToken(new Token(new RootSelector(selector_id++)));
                                 _stateStack.Push(ExprState.PathRhs);
                                 ++_index;
                                 ++_column;
@@ -141,7 +142,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             case '.':
                             {
-                                _stateStack.Push(ExprState.RecursiveDescentOrPathLhs);
+                                _stateStack.Push(ExprState.RecursiveDescentOrPathExpression);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -181,7 +182,7 @@ namespace JsonCons.JsonPathLib
                         }
                         break;
                     }
-                    case ExprState.RecursiveDescentOrPathLhs:
+                    case ExprState.RecursiveDescentOrPathExpression:
                         switch (_input[_index])
                         {
                             case '.':
@@ -193,7 +194,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             default:
                                 _stateStack.Pop();
-                                _stateStack.Push(ExprState.PathLhs);
+                                _stateStack.Push(ExprState.PathExpression);
                                 break;
                         }
                         break;
@@ -210,11 +211,11 @@ namespace JsonCons.JsonPathLib
                                 break;
                             default:
                                 buffer.Clear();
-                                _stateStack.Pop(); _stateStack.Push(ExprState.PathLhs);
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathExpression);
                                 break;
                         }
                         break;
-                    case ExprState.PathLhs: 
+                    case ExprState.PathExpression: 
                         switch (_input[_index])
                         {
                             case ' ':case '\t':case '\r':case '\n':
@@ -574,6 +575,109 @@ namespace JsonCons.JsonPathLib
                                 throw new JsonException("Expected bracket specifier or union");
                         }
                         break;
+                    case ExprState.UnionExpression:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '.':
+                                _stateStack.Push(ExprState.PathExpression);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '[':
+                                _stateStack.Push(ExprState.BracketSpecifierOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ',': 
+                                PushToken(new Token(TokenKind.Separator));
+                                _stateStack.Push(ExprState.UnionElement);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ']': 
+                                PushToken(new Token(TokenKind.EndUnion));
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                throw new JsonException("Expected right bracket");
+                        }
+                        break;
+                    case ExprState.UnionElement:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ':': // SliceExpression
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IndexOrSlice);
+                                break;
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.IndexOrSlice);
+                                _stateStack.Push(ExprState.Integer);
+                                break;
+                            case '(':
+                            {
+                                PushToken(new Token(TokenKind.BeginExpression));
+                                PushToken(new Token(TokenKind.LParen));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Expression);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                ++evalDepth[evalDepth.Count-1];
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case '?':
+                            {
+                                PushToken(new Token(TokenKind.BeginFilter));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.FilterExpression);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            case '*':
+                                PushToken(new Token(new WildcardSelector()));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathRhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '$':
+                                PushToken(new Token(TokenKind.RootNode));
+                                PushToken(new Token(new RootSelector(selector_id++)));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathRhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '@':
+                                PushToken(new Token(TokenKind.CurrentNode)); // ISSUE
+                                PushToken(new Token(new CurrentNodeSelector()));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathRhs);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\'':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Identifier);
+                                _stateStack.Push(ExprState.SingleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Identifier);
+                                _stateStack.Push(ExprState.DoubleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                throw new JsonException("Expected bracket specifier or union");
+                        }
+                        break;
                     case ExprState.IdentifierOrUnion:
                         switch (_input[_index])
                         {
@@ -845,6 +949,230 @@ namespace JsonCons.JsonPathLib
                                 break;
                         }
                         break;
+                    case ExprState.JsonString:
+                    {
+                        //PushToken(new Token(literal_arg, Json(buffer)));
+                        //buffer.Clear();
+                        //_stateStack.Pop(); // JsonValue
+                        break;
+                    }
+                    case ExprState.PathOrLiteralOrFunction: 
+                    {
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '$':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathExpression);
+                                break;
+                            case '@':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathExpression);
+                                break;
+                            case '(':
+                            {
+                                ++_index;
+                                ++_column;
+                                ++evalDepth[evalDepth.Count-1];
+                                PushToken(new Token(TokenKind.LParen));
+                                break;
+                            }
+                            case '\'':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonString);
+                                _stateStack.Push(ExprState.SingleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonString);
+                                _stateStack.Push(ExprState.DoubleQuotedString);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '!':
+                            {
+                                ++_index;
+                                ++_column;
+                                //PushToken(new Token(resources.get_unary_not()));
+                                break;
+                            }
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                            {
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonValue);
+                                _stateStack.Push(ExprState.Number);
+                                break;
+                            }
+                            default:
+                            {
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonTextOrFunctionName);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case ExprState.JsonTextOrFunction:
+                    {
+                        switch (_input[_index])
+                        {
+                            case '(':
+                            {
+                                /*evalStack.Push(0);
+                                auto f = resources.get_function(buffer);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                buffer.Clear();
+                                PushToken(current_node_arg);
+                                if (ec) {return pathExpression_type();}
+                                PushToken(new Token(f));
+                                if (ec) {return pathExpression_type();}
+                                _stateStack.Pop(); _stateStack.Push(ExprState.FunctionExpression);
+                                _stateStack.Push(ExprState.ZeroOrOneArguments);
+                                ++_index;
+                                ++_column;*/
+                                break;
+                            }
+                            default:
+                            {
+                                /*json_decoder<Json> decoder;
+                                basic_json_parser<char_type> parser;
+                                parser.update(buffer.data(),buffer.Length);
+                                parser.parse_some(decoder);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                parser.finish_parse(decoder);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                PushToken(new Token(literal_arg, decoder.get_result()));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop();*/
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case ExprState.JsonValue:
+                    {
+                        /*json_decoder<Json> decoder;
+                        basic_json_parser<char_type> parser;
+                        parser.update(buffer.data(),buffer.Length);
+                        parser.parse_some(decoder);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        parser.finish_parse(decoder);
+                        if (ec)
+                        {
+                            return pathExpression_type();
+                        }
+                        PushToken(new Token(literal_arg, decoder.get_result()));
+                        if (ec) {return pathExpression_type();}
+                        buffer.Clear();
+                        _stateStack.Pop();*/
+                        break;
+                    }
+                    case ExprState.JsonTextOrFunctionName:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '{':
+                            case '[':
+                            {
+                                /*json_decoder<Json> decoder;
+                                basic_json_parser<char_type> parser;
+                                parser.update(p_,end_input_ - p_);
+                                parser.parse_some(decoder);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                parser.finish_parse(decoder);
+                                if (ec)
+                                {
+                                    return pathExpression_type();
+                                }
+                                PushToken(new Token(literal_arg, decoder.get_result()));
+                                if (ec) {return pathExpression_type();}
+                                buffer.Clear();
+                                _stateStack.Pop();
+                                p_ = parser.current();
+                                column_ = column_ + parser.column() - 1;*/
+                                break;
+                            }
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonTextOrFunction);
+                                _stateStack.Push(ExprState.Number);
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonTextOrFunction);
+                                _stateStack.Push(ExprState.JsonTextString);
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                _stateStack.Pop(); _stateStack.Push(ExprState.JsonTextOrFunction);
+                                _stateStack.Push(ExprState.UnquotedString);
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                        };
+                        break;
+                    case ExprState.Number: 
+                        switch (_input[_index])
+                        {
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                            case 'e':case 'E':case '.':
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                _stateStack.Pop(); // Number
+                                break;
+                        };
+                        break;
+                    case ExprState.JsonTextString: 
+                        switch (_input[_index])
+                        {
+                            case '\\':
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                if (_index >= _input.Length)
+                                {
+                                    throw new JsonException("Syntax error");
+                                }
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                buffer.Append (_input[_index]);
+                                _stateStack.Pop(); 
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                buffer.Append (_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                        };
+                        break;
                     default:
                         ++_index;
                         break;
@@ -981,6 +1309,55 @@ namespace JsonCons.JsonPathLib
                         _outputStack.Push(token);
                     }
                     break;
+                case TokenKind.Separator:
+                    _outputStack.Push(token);
+                    break;
+                case TokenKind.BeginUnion:
+                    _outputStack.Push(token);
+                    break;
+                case TokenKind.EndUnion:
+                {
+                    List<ISelector> selectors = new List<ISelector>();
+                    while (_outputStack.Count > 1 && _outputStack.Peek().Type != TokenKind.BeginUnion)
+                    {
+                        switch (_outputStack.Peek().Type)
+                        {
+                            case TokenKind.Selector:
+                                selectors.Add(_outputStack.Pop().GetSelector());
+                                break;
+                            case TokenKind.Separator:
+                                _outputStack.Pop(); // Ignore separator
+                                break;
+                            default:
+                                _outputStack.Pop(); // Probably error
+                                break;
+                        }
+                    }
+                    if (_outputStack.Count == 0)
+                    {
+                        throw new JsonException("Syntax error");
+                    }
+                    selectors.Reverse();
+                    _outputStack.Pop(); // TokenKind.BeginUnion
+
+                    if (_outputStack.Count != 0 && _outputStack.Peek().Type == TokenKind.Selector)
+                    {
+                        _outputStack.Peek().GetSelector().AppendSelector(new UnionSelector(selectors));
+                    }
+                    else
+                    {
+                        _outputStack.Push(new Token(new UnionSelector(selectors)));
+                    }
+                    break;
+                }
+                case TokenKind.LParen:
+                    _operatorStack.Push(token);
+                    break;
+                case TokenKind.RParen:
+                {
+                    UnwindRParen();
+                    break;
+                }
             }
         }
 

@@ -67,7 +67,8 @@ namespace JsonCons.JsonPathLib.Tests
         {
             //TestContext.WriteLine("Message...");
             //RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\identifiers.json"));
-            RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\indices.json"));
+            //RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\indices.json"));
+            RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\union.json"));
         }
     }
 }

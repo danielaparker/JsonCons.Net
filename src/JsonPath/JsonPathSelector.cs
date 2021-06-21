@@ -54,6 +54,13 @@ namespace JsonCons.JsonPathLib
 
     class RootSelector : BaseSelector
     {
+        Int32 _selector_id;
+
+        internal RootSelector(Int32 selector_id)
+        {
+            _selector_id = selector_id;
+        }
+
         public override void Select(JsonElement root, 
                                     JsonElement current,
                                     IList<JsonElement> nodes)
@@ -243,7 +250,7 @@ namespace JsonCons.JsonPathLib
     {
         IList<ISelector> _selectors;
 
-        UnionSelector(IList<ISelector> selectors)
+        internal UnionSelector(IList<ISelector> selectors)
         {
             _selectors = selectors;
         }
