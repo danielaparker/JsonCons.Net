@@ -56,7 +56,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    public abstract class BaseSelector : ISelector 
+    abstract class BaseSelector : ISelector 
     {
         ISelector Tail {get;set;} = null;
 
@@ -91,7 +91,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    public class RootSelector : BaseSelector
+    class RootSelector : BaseSelector
     {
         public override void Select(JsonElement root, 
                                     JsonElement current,
@@ -102,7 +102,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    public class CurrentNodeSelector : BaseSelector
+    class CurrentNodeSelector : BaseSelector
     {
         public override void Select(JsonElement root, 
                                     JsonElement current,
@@ -112,7 +112,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    public class IdentifierSelector : BaseSelector
+    class IdentifierSelector : BaseSelector
     {
         string _identifier;
 
@@ -137,7 +137,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    public class IndexSelector : BaseSelector
+    class IndexSelector : BaseSelector
     {
         Int32 _index;
 
@@ -224,7 +224,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    public class RecursiveDescentSelector : BaseSelector
+    class RecursiveDescentSelector : BaseSelector
     {
         public override void Select(JsonElement root, 
                                     JsonElement current,
@@ -252,7 +252,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    public class WildcardSelector : BaseSelector
+    class WildcardSelector : BaseSelector
     {
         public override void Select(JsonElement root, 
                                     JsonElement current,
@@ -278,7 +278,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    public class UnionSelector : ISelector
+    class UnionSelector : ISelector
     {
         IList<ISelector> _selectors;
 
@@ -306,8 +306,15 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    public class FilterSelector : BaseSelector
+    class FilterSelector : BaseSelector
     {
+        Expression _expr;
+
+        public FilterSelector(Expression expr)
+        {
+            _expr = expr;
+        }
+
         public override void Select(JsonElement root, 
                                     JsonElement current,
                                     IList<JsonElement> nodes)

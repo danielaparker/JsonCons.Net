@@ -81,6 +81,7 @@ namespace JsonCons.JsonPathLib
         int _line = 1;
         Stack<ExprState> _stateStack = new Stack<ExprState>();
         Stack<Token>_outputStack = new Stack<Token>();
+        Stack<Token>_operatorStack = new Stack<Token>();
         Int32? sliceStart = null;
         Int32? sliceStop = null;
         Int32 sliceStep = 1;
@@ -904,10 +905,51 @@ namespace JsonCons.JsonPathLib
             return new JsonPath(token.GetSelector());
         }
 
+        void UnwindRParen()
+        {
+            while (_operatorStack.Count > 1 && _operatorStack.Peek().Type != TokenKind.LParen)
+            {
+                _outputStack.Push(_operatorStack.Pop());
+            }
+            if (_operatorStack.Count == 0)
+            {
+                throw new JsonException("Unbalanced parentheses");
+            }
+            _operatorStack.Pop(); // TokenKind.LParen
+        }
+
         private void PushToken(Token token)
         {
             switch (token.Type)
             {
+                case TokenKind.BeginFilter:
+                    _outputStack.Push(token);
+                    _operatorStack.Push(new Token(TokenKind.LParen));
+                    break;
+                case TokenKind.EndFilter:
+                {
+                    UnwindRParen();
+                    List<Token> tokens = new List<Token>();
+                    while (_outputStack.Count > 1 && _outputStack.Peek().Type != TokenKind.BeginFilter)
+                    {
+                        tokens.Add(_outputStack.Pop());
+                    }
+                    if (_outputStack.Count == 0)
+                    {
+                        throw new JsonException("Unbalanced parentheses");
+                    }
+                    _outputStack.Pop(); // TokenKind.LParen
+                    tokens.Reverse();
+                    if (_outputStack.Count > 1 && _outputStack.Peek().Type == TokenKind.Selector)
+                    {
+                        _outputStack.Peek().GetSelector().AppendSelector(new FilterSelector(new Expression(tokens)));
+                    }
+                    else
+                    {
+                        _outputStack.Push(new Token(new FilterSelector(new Expression(tokens))));
+                    }
+                    break;
+                }
                 case TokenKind.Selector:
                     if (_outputStack.Count != 0 && _outputStack.Peek().Type == TokenKind.Selector)
                     {

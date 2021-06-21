@@ -919,7 +919,7 @@ namespace jsoncons { namespace jsonpath {
         std::vector<argument_type> function_stack_;
         std::vector<ExprState> _stateStack;
         std::vector<token_type> _outputStack;
-        std::vector<token_type> operator_stack_;
+        std::vector<token_type> _operatorStack;
 
     public:
         jsonpath_evaluator()
@@ -2876,7 +2876,7 @@ namespace jsoncons { namespace jsonpath {
             //}
             //std::cout << "\n";
 
-            if (_outputStack.empty() || !operator_stack_.empty())
+            if (_outputStack.empty() || !_operatorStack.empty())
             {
                 ec = jsonpath_errc::unexpected_eof;
                 return pathExpression_type();
@@ -2912,19 +2912,19 @@ namespace jsoncons { namespace jsonpath {
 
         void unwind_rparen(std::error_code& ec)
         {
-            auto it = operator_stack_.Rbegin();
-            while (it != operator_stack_.Rend() && !it.is_lparen())
+            auto it = _operatorStack.Rbegin();
+            while (it != _operatorStack.Rend() && !it.is_lparen())
             {
-                _outputStack.Add(std::move(*it));
+                _outputStack.Push(std::move(*it));
                 ++it;
             }
-            if (it == operator_stack_.Rend())
+            if (it == _operatorStack.Rend())
             {
                 ec = jsonpath_errc::unbalanced_parentheses;
                 return;
             }
             ++it;
-            operator_stack_.erase(it.base(),operator_stack_.end());
+            _operatorStack.erase(it.base(),_operatorStack.end());
         }
 
         void PushToken(token_type&& tok, std::error_code& ec)
@@ -2933,8 +2933,8 @@ namespace jsoncons { namespace jsonpath {
             switch (tok.type())
             {
                 case token_kind::begin_filter:
-                    _outputStack.Add(std::move(tok));
-                    operator_stack_.Add(new Token(TokenKind.LParen));
+                    _outputStack.Push(std::move(tok));
+                    _operatorStack.Push(new Token(TokenKind.LParen));
                     break;
                 case token_kind::end_filter:
                 {
@@ -2944,7 +2944,7 @@ namespace jsoncons { namespace jsonpath {
                     //    std::cout << tok2.to_string() << "\n";
                     //}
                     //std::cout << "\n\n";
-                    unwind_rparen(ec);
+                    UnwindRParen();
                     if (ec)
                     {
                         return;
@@ -2966,11 +2966,11 @@ namespace jsoncons { namespace jsonpath {
 
                     if (!_outputStack.empty() && _outputStack.Peek().is_path())
                     {
-                        _outputStack.Peek().selector_.append_selector(jsoncons::make_unique<FilterSelector>(expression_tree_type(std::move(toks))));
+                        _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<FilterSelector>(expression_tree_type(std::move(toks))));
                     }
                     else
                     {
-                        _outputStack.Add(new Token(jsoncons::make_unique<FilterSelector>(expression_tree_type(std::move(toks)))));
+                        _outputStack.Push(new Token(jsoncons::make_unique<FilterSelector>(expression_tree_type(std::move(toks)))));
                     }
                     //std::cout << "PushToken end_filter 2\n";
                     //for (const auto& tok2 : _outputStack)
@@ -2982,8 +2982,8 @@ namespace jsoncons { namespace jsonpath {
                 }
                 case token_kind::beginExpression:
                     //std::cout << "beginExpression\n";
-                    _outputStack.Add(std::move(tok));
-                    operator_stack_.Add(new Token(TokenKind.LParen));
+                    _outputStack.Push(std::move(tok));
+                    _operatorStack.Push(new Token(TokenKind.LParen));
                     break;
                 case token_kind::end_indexExpression:
                 {
@@ -2993,7 +2993,7 @@ namespace jsoncons { namespace jsonpath {
                     //    std::cout << t.to_string() << "\n";
                     //}
                     //std::cout << "/token_kind::end_indexExpression\n";
-                    unwind_rparen(ec);
+                    UnwindRParen();
                     if (ec)
                     {
                         return;
@@ -3015,11 +3015,11 @@ namespace jsoncons { namespace jsonpath {
 
                     if (!_outputStack.empty() && _outputStack.Peek().is_path())
                     {
-                        _outputStack.Peek().selector_.append_selector(jsoncons::make_unique<indexExpression_selector>(expression_tree_type(std::move(toks))));
+                        _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<indexExpression_selector>(expression_tree_type(std::move(toks))));
                     }
                     else
                     {
-                        _outputStack.Add(new Token(jsoncons::make_unique<indexExpression_selector>(expression_tree_type(std::move(toks)))));
+                        _outputStack.Push(new Token(jsoncons::make_unique<indexExpression_selector>(expression_tree_type(std::move(toks)))));
                     }
                     break;
                 }
@@ -3031,7 +3031,7 @@ namespace jsoncons { namespace jsonpath {
                     //    std::cout << t.to_string() << "\n";
                     //}
                     //std::cout << "/token_kind::end_indexExpression\n";
-                    unwind_rparen(ec);
+                    UnwindRParen();
                     if (ec)
                     {
                         return;
@@ -3050,26 +3050,26 @@ namespace jsoncons { namespace jsonpath {
                     }
                     ++it;
                     _outputStack.erase(it.base(),_outputStack.end());
-                    _outputStack.Add(new Token(jsoncons::make_unique<argumentExpression>(expression_tree_type(std::move(toks)))));
+                    _outputStack.Push(new Token(jsoncons::make_unique<argumentExpression>(expression_tree_type(std::move(toks)))));
                     break;
                 }
                 case token_kind::selector:
                 {
                     if (!_outputStack.empty() && _outputStack.Peek().is_path())
                     {
-                        _outputStack.Peek().selector_.append_selector(std::move(tok.selector_));
+                        _outputStack.Peek().selector_.AppendSelector(std::move(tok.selector_));
                     }
                     else
                     {
-                        _outputStack.Add(std::move(tok));
+                        _outputStack.Push(std::move(tok));
                     }
                     break;
                 }
                 case token_kind::separator:
-                    _outputStack.Add(std::move(tok));
+                    _outputStack.Push(std::move(tok));
                     break;
                 case token_kind::begin_union:
-                    _outputStack.Add(std::move(tok));
+                    _outputStack.Push(std::move(tok));
                     break;
                 case token_kind::end_union:
                 {
@@ -3101,26 +3101,26 @@ namespace jsoncons { namespace jsonpath {
 
                     if (!_outputStack.empty() && _outputStack.Peek().is_path())
                     {
-                        _outputStack.Peek().selector_.append_selector(jsoncons::make_unique<union_selector>(std::move(expressions)));
+                        _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<union_selector>(std::move(expressions)));
                     }
                     else
                     {
-                        _outputStack.Add(new Token(jsoncons::make_unique<union_selector>(std::move(expressions))));
+                        _outputStack.Push(new Token(jsoncons::make_unique<union_selector>(std::move(expressions))));
                     }
                     break;
                 }
                 case token_kind::lparen:
-                    operator_stack_.Add(std::move(tok));
+                    _operatorStack.Push(std::move(tok));
                     break;
                 case token_kind::rparen:
                 {
-                    unwind_rparen(ec);
+                    UnwindRParen();
                     break;
                 }
                 case token_kind::end_function:
                 {
                     //std::cout << "token_kind::end_function\n";
-                    unwind_rparen(ec);
+                    UnwindRParen();
                     if (ec)
                     {
                         return;
@@ -3153,11 +3153,11 @@ namespace jsoncons { namespace jsonpath {
 
                     if (!_outputStack.empty() && _outputStack.Peek().is_path())
                     {
-                        _outputStack.Peek().selector_.append_selector(jsoncons::make_unique<function_selector>(expression_tree_type(std::move(toks))));
+                        _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<function_selector>(expression_tree_type(std::move(toks))));
                     }
                     else
                     {
-                        _outputStack.Add(new Token(jsoncons::make_unique<function_selector>(std::move(toks))));
+                        _outputStack.Push(new Token(jsoncons::make_unique<function_selector>(std::move(toks))));
                     }
                     break;
                 }
@@ -3168,45 +3168,45 @@ namespace jsoncons { namespace jsonpath {
                     }
                     else
                     {
-                        _outputStack.Add(std::move(tok));
+                        _outputStack.Push(std::move(tok));
                     }
                     break;
                 case token_kind::function:
-                    _outputStack.Add(std::move(tok));
-                    operator_stack_.Add(new Token(TokenKind.LParen));
+                    _outputStack.Push(std::move(tok));
+                    _operatorStack.Push(new Token(TokenKind.LParen));
                     break;
                 case token_kind::Argument:
-                    _outputStack.Add(std::move(tok));
+                    _outputStack.Push(std::move(tok));
                     break;
                 case token_kind::root_node:
                 case token_kind::current_node:
-                    _outputStack.Add(std::move(tok));
+                    _outputStack.Push(std::move(tok));
                     break;
                 case token_kind::unary_operator:
                 case token_kind::binary_operator:
                 {
-                    if (operator_stack_.empty() || operator_stack_.back().is_lparen())
+                    if (_operatorStack.empty() || _operatorStack.back().is_lparen())
                     {
-                        operator_stack_.Add(std::move(tok));
+                        _operatorStack.Push(std::move(tok));
                     }
-                    else if (tok.precedence_level() < operator_stack_.back().precedence_level()
-                             || (tok.precedence_level() == operator_stack_.back().precedence_level() && tok.is_right_associative()))
+                    else if (tok.precedence_level() < _operatorStack.back().precedence_level()
+                             || (tok.precedence_level() == _operatorStack.back().precedence_level() && tok.is_right_associative()))
                     {
-                        operator_stack_.Add(std::move(tok));
+                        _operatorStack.Push(std::move(tok));
                     }
                     else
                     {
-                        auto it = operator_stack_.Rbegin();
-                        while (it != operator_stack_.Rend() && it.is_operator()
+                        auto it = _operatorStack.Rbegin();
+                        while (it != _operatorStack.Rend() && it.is_operator()
                                && (tok.precedence_level() > it.precedence_level()
                              || (tok.precedence_level() == it.precedence_level() && tok.is_right_associative())))
                         {
-                            _outputStack.Add(std::move(*it));
+                            _outputStack.Push(std::move(*it));
                             ++it;
                         }
 
-                        operator_stack_.erase(it.base(),operator_stack_.end());
-                        operator_stack_.Add(std::move(tok));
+                        _operatorStack.erase(it.base(),_operatorStack.end());
+                        _operatorStack.Push(std::move(tok));
                     }
                     break;
                 }
@@ -3218,10 +3218,10 @@ namespace jsoncons { namespace jsonpath {
             //{
             //    std::cout << t.to_string(2) << "\n";
             //}
-            //if (!operator_stack_.empty())
+            //if (!_operatorStack.empty())
             //{
             //    std::cout << "  " << "Operator Stack\n";
-            //    for (auto&& t : operator_stack_)
+            //    for (auto&& t : _operatorStack)
             //    {
             //        std::cout << t.to_string(2) << "\n";
             //    }
