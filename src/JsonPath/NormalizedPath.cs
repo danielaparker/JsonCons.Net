@@ -11,14 +11,15 @@ namespace JsonCons.JsonPathLib
     {
         enum PathNodeKind {Root,Identifier,Index};
 
-        internal readonly PathNode _parent;
+        public PathNode Parent {get;}
+
         private readonly PathNodeKind _nodeKind;
         private readonly string _identifier;
         private readonly Int32 _index;
 
         public PathNode(string identifier)
         {
-            _parent = null;
+            Parent = null;
             _nodeKind = PathNodeKind.Root;
             _identifier = identifier;
             _index = 0;
@@ -26,7 +27,7 @@ namespace JsonCons.JsonPathLib
 
         public PathNode(PathNode parent, string identifier)
         {
-            _parent = parent;
+            Parent = parent;
             _nodeKind = PathNodeKind.Identifier;
             _identifier = identifier;
             _index = 0;
@@ -34,7 +35,7 @@ namespace JsonCons.JsonPathLib
 
         public PathNode(PathNode parent, Int32 index)
         {
-            _parent = parent;
+            Parent = parent;
             _nodeKind = PathNodeKind.Index;
             _identifier = null;
             _index = index;
@@ -110,7 +111,7 @@ namespace JsonCons.JsonPathLib
             do
             {
                 nodes.Add(p);
-                p = p._parent;
+                p = p.Parent;
             }
             while (p != null);
             

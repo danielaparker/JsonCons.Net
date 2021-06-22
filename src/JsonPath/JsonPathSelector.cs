@@ -8,15 +8,50 @@ using NUnit.Framework;
 
 namespace JsonCons.JsonPathLib
 {
+    public enum ResultOptions {Path=1, NoDups=Path|2, Sort=Path|4};
 
-    public enum ResultOptions {NoDups=1, Sort=2, Path=4};
+    interface INodeAccumulator
+    {
+        void Accumulate(PathNode pathTail, JsonElement value);
+    };
+
+    static class PathGenerator 
+    {
+        static internal PathNode Generate(PathNode pathTail, 
+                                          Int32 index, 
+                                          ResultOptions options) 
+        {
+            if ((options & ResultOptions.Path) != 0)
+            {
+                return new PathNode(pathTail, index);
+            }
+            else
+            {
+                return pathTail;
+            }
+        }
+
+        static internal PathNode Generate(PathNode pathTail, 
+                                          string identifier, 
+                                          ResultOptions options) 
+        {
+            if ((options & ResultOptions.Path) != 0)
+            {
+                return new PathNode(pathTail, identifier);
+            }
+            else
+            {
+                return pathTail;
+            }
+        }
+    };
 
     interface ISelector 
     {
-        void Select(PathNode pathNode,
-                    JsonElement root,
+        void Select(JsonElement root,
+                    PathNode pathTail,
                     JsonElement current, 
-                    IList<JsonElement> nodes,
+                    INodeAccumulator accumulator,
                     ResultOptions options);
 
         void AppendSelector(ISelector tail);
@@ -26,10 +61,10 @@ namespace JsonCons.JsonPathLib
     {
         ISelector Tail {get;set;} = null;
 
-        public abstract void Select(PathNode pathNode,
-                                    JsonElement root, 
+        public abstract void Select(JsonElement root, 
+                                    PathNode pathTail,
                                     JsonElement current,
-                                    IList<JsonElement> nodes,
+                                    INodeAccumulator accumulator,
                                     ResultOptions options);
 
         public void AppendSelector(ISelector tail)
@@ -44,19 +79,19 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        protected void EvaluateTail(PathNode pathNode,
-                                    JsonElement root, 
+        protected void EvaluateTail(JsonElement root, 
+                                    PathNode pathTail,
                                     JsonElement current,
-                                    IList<JsonElement> nodes,
+                                    INodeAccumulator accumulator,
                                     ResultOptions options)
         {
             if (Tail == null)
             {
-                nodes.Add(current);
+                accumulator.Accumulate(pathTail, current);
             }
             else
             {
-                Tail.Select(pathNode, root, current, nodes, options);
+                Tail.Select(root, pathTail, current, accumulator, options);
             }
         }
     }
@@ -70,26 +105,25 @@ namespace JsonCons.JsonPathLib
             _selector_id = selector_id;
         }
 
-        public override void Select(PathNode pathNode,
-                                    JsonElement root, 
+        public override void Select(JsonElement root, 
+                                    PathNode pathTail,
                                     JsonElement current,
-                                    IList<JsonElement> nodes,
+                                    INodeAccumulator accumulator,
                                     ResultOptions options)
         {
-            TestContext.WriteLine("RootSelector...");
-            this.EvaluateTail(pathNode, root, root, nodes, options);        
+            this.EvaluateTail(root, pathTail, root, accumulator, options);        
         }
     }
 
     class CurrentNodeSelector : BaseSelector
     {
-        public override void Select(PathNode pathNode,
-                                    JsonElement root, 
+        public override void Select(JsonElement root, 
+                                    PathNode pathTail,
                                     JsonElement current,
-                                    IList<JsonElement> nodes,
+                                    INodeAccumulator accumulator,
                                     ResultOptions options)
         {
-            this.EvaluateTail(pathNode, root, current, nodes, options);        
+            this.EvaluateTail(root, pathTail, current, accumulator, options);        
         }
     }
 
@@ -97,24 +131,25 @@ namespace JsonCons.JsonPathLib
     {
         string _identifier;
 
-        public IdentifierSelector(string identifier)
+        internal IdentifierSelector(string identifier)
         {
             _identifier = identifier;
         }
 
-        public override void Select(PathNode pathNode,
-                                    JsonElement root, 
+        public override void Select(JsonElement root, 
+                                    PathNode pathTail,
                                     JsonElement current,
-                                    IList<JsonElement> nodes,
+                                    INodeAccumulator accumulator,
                                     ResultOptions options)
         {
-            TestContext.WriteLine("IdentifierSelector...");
             if (current.ValueKind == JsonValueKind.Object)
             { 
                 JsonElement value;
                 if (current.TryGetProperty(_identifier, out value))
                 {
-                    this.EvaluateTail(pathNode, root, value, nodes, options);
+                    this.EvaluateTail(root, 
+                                      PathGenerator.Generate(pathTail, _identifier, options), 
+                                      value, accumulator, options);
                 }
             }
         }
@@ -124,29 +159,33 @@ namespace JsonCons.JsonPathLib
     {
         Int32 _index;
 
-        public IndexSelector(Int32 index)
+        internal IndexSelector(Int32 index)
         {
             _index = index;
         }
 
-        public override void Select(PathNode pathNode,
-                                    JsonElement root, 
+        public override void Select(JsonElement root, 
+                                    PathNode pathTail,
                                     JsonElement current,
-                                    IList<JsonElement> nodes,
+                                    INodeAccumulator accumulator,
                                     ResultOptions options)
         {
             if (current.ValueKind == JsonValueKind.Array)
             { 
                 if (_index >= 0 && _index < current.GetArrayLength())
                 {
-                    this.EvaluateTail(pathNode, root, current[_index], nodes, options);
+                    this.EvaluateTail(root, 
+                                      PathGenerator.Generate(pathTail, _index, options), 
+                                      current[_index], accumulator, options);
                 }
                 else
                 {
                     Int32 index = current.GetArrayLength() + _index;
                     if (index >= 0 && index < current.GetArrayLength())
                     {
-                        this.EvaluateTail(pathNode, root, current[index], nodes, options);
+                        this.EvaluateTail(root, 
+                                          PathGenerator.Generate(pathTail, _index, options), 
+                                          current[index], accumulator, options);
                     }
                 }
             }
@@ -157,15 +196,15 @@ namespace JsonCons.JsonPathLib
     {
         Slice _slice;
 
-        public SliceSelector(Slice slice)
+        internal SliceSelector(Slice slice)
         {
             _slice = slice;
         }
 
-        public override void Select(PathNode pathNode,
-                                    JsonElement root,
+        public override void Select(JsonElement root,
+                                    PathNode pathTail,
                                     JsonElement current,
-                                    IList<JsonElement> nodes,
+                                    INodeAccumulator accumulator,
                                     ResultOptions options) 
         {
             if (current.ValueKind == JsonValueKind.Array)
@@ -186,7 +225,9 @@ namespace JsonCons.JsonPathLib
                     }
                     for (Int32 i = start; i < end; i += step)
                     {
-                        this.EvaluateTail(pathNode, root, current[i], nodes, options);
+                        this.EvaluateTail(root, 
+                                          PathGenerator.Generate(pathTail, i, options), 
+                                          current[i], accumulator, options);
                     }
                 }
                 else if (step < 0)
@@ -203,7 +244,9 @@ namespace JsonCons.JsonPathLib
                     {
                         if (i < current.GetArrayLength())
                         {
-                            this.EvaluateTail(pathNode, root, current[i], nodes, options);
+                            this.EvaluateTail(root, 
+                                              PathGenerator.Generate(pathTail, i, options), 
+                                              current[i], accumulator, options);
                         }
                     }
                 }
@@ -213,29 +256,29 @@ namespace JsonCons.JsonPathLib
 
     class RecursiveDescentSelector : BaseSelector
     {
-        public override void Select(PathNode pathNode,
-                                    JsonElement root, 
+        public override void Select(JsonElement root, 
+                                    PathNode pathTail,
                                     JsonElement current,
-                                    IList<JsonElement> nodes,
+                                    INodeAccumulator accumulator,
                                     ResultOptions options)
         {
-            TestContext.WriteLine("RecursiveDescentSelector ...");
             if (current.ValueKind == JsonValueKind.Array)
             {
-                TestContext.WriteLine("RecursiveDescentSelector Array ...");
-                this.EvaluateTail(pathNode, root, current, nodes, options);
+                this.EvaluateTail(root, pathTail, current, accumulator, options);
+                Int32 index = 0;
                 foreach (var item in current.EnumerateArray())
                 {
-                    Select(pathNode, root, item, nodes, options);
+                    Select(root, PathGenerator.Generate(pathTail, index++, options), 
+                           item, accumulator, options);
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
-                TestContext.WriteLine("RecursiveDescentSelector Object ...");
-                this.EvaluateTail(pathNode, root, current, nodes, options);
+                this.EvaluateTail(root, pathTail, current, accumulator, options);
                 foreach (var prop in current.EnumerateObject())
                 {
-                    Select(pathNode, root, prop.Value, nodes, options);
+                    Select(root, PathGenerator.Generate(pathTail, prop.Name, options), 
+                           prop.Value, accumulator, options);
                 }
             }
         }
@@ -243,27 +286,27 @@ namespace JsonCons.JsonPathLib
 
     class WildcardSelector : BaseSelector
     {
-        public override void Select(PathNode pathNode,
-                                    JsonElement root, 
+        public override void Select(JsonElement root, 
+                                    PathNode pathTail,
                                     JsonElement current,
-                                    IList<JsonElement> nodes,
+                                    INodeAccumulator accumulator,
                                     ResultOptions options)
         {
-            TestContext.WriteLine("WildcardSelector ...");
             if (current.ValueKind == JsonValueKind.Array)
             {
-                TestContext.WriteLine("WildcardSelector Array ...");
+                Int32 index = 0;
                 foreach (var item in current.EnumerateArray())
                 {
-                    this.EvaluateTail(pathNode, root, item, nodes, options);
+                    this.EvaluateTail(root, PathGenerator.Generate(pathTail, index++, options), 
+                                      item, accumulator, options);
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
-                TestContext.WriteLine("WildcardSelector Object ...");
                 foreach (var prop in current.EnumerateObject())
                 {
-                    this.EvaluateTail(pathNode, root, prop.Value, nodes, options);
+                    this.EvaluateTail(root, PathGenerator.Generate(pathTail, prop.Name, options), 
+                                      prop.Value, accumulator, options);
                 }
             }
         }
@@ -286,15 +329,15 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public void Select(PathNode pathNode,
-                           JsonElement root, 
+        public void Select(JsonElement root, 
+                           PathNode pathTail,
                            JsonElement current,
-                           IList<JsonElement> nodes,
+                           INodeAccumulator accumulator,
                            ResultOptions options)
         {
             foreach (var selector in _selectors)
             {
-                selector.Select(pathNode, root, current, nodes, options);
+                selector.Select(root, pathTail, current, accumulator, options);
             }
         }
     }
@@ -303,19 +346,18 @@ namespace JsonCons.JsonPathLib
     {
         Expression _expr;
 
-        public FilterSelector(Expression expr)
+        internal FilterSelector(Expression expr)
         {
             _expr = expr;
         }
 
-        public override void Select(PathNode pathNode,
-                                    JsonElement root, 
+        public override void Select(JsonElement root, 
+                                    PathNode pathTail,
                                     JsonElement current,
-                                    IList<JsonElement> nodes,
+                                    INodeAccumulator accumulator,
                                     ResultOptions options)
         {
         }
     }
-
 
 } // namespace JsonCons.JsonPathLib

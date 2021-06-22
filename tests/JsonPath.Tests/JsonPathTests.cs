@@ -24,6 +24,18 @@ namespace JsonCons.JsonPathLib.Tests
                 var testCasesEnumeratable = testCases.EnumerateArray();
                 foreach (var testCase in testCasesEnumeratable)
                 {
+                    ResultOptions options = 0;
+
+                    JsonElement element;
+                    if (testCase.TryGetProperty("nodups", out element) && element.ValueKind == JsonValueKind.True)
+                    {
+                        options |= ResultOptions.NoDups;
+                    }
+                    if (testCase.TryGetProperty("sort", out element) && element.ValueKind == JsonValueKind.True)
+                    {
+                        options |= ResultOptions.Sort;
+                    }
+
                     var exprElement = testCase.GetProperty("expression");
                     var expr = JsonPath.Compile(exprElement.ToString());
 
@@ -31,7 +43,7 @@ namespace JsonCons.JsonPathLib.Tests
                     JsonElement expected;
                     if (testCase.TryGetProperty("result", out expected))
                     {
-                        var items = expr.Evaluate(given);
+                        var items = expr.Select(given, options);
 
                         bool success = items.Count == expected.GetArrayLength();
                         for (Int32 i = 0; success && i < items.Count; ++i)

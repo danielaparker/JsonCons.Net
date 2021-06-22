@@ -1416,19 +1416,16 @@ namespace JsonCons.JsonPathLib
 
     public class JsonPath
     {
-        ISelector _selector;
+        readonly PathExpression _expr;
 
         internal JsonPath(ISelector selector)
         {
-            _selector = selector;
+            _expr = new PathExpression(selector);
         }
 
-        public IReadOnlyList<JsonElement> Evaluate(JsonElement root, ResultOptions options = 0)
+        public IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options = 0)
         {
-            PathNode node = new PathNode("$");
-            var nodes = new List<JsonElement>();
-            _selector.Select(node, root, root, nodes, options);
-            return nodes;
+            return _expr.Select(root, options);
         }
 
         public static JsonPath Compile(string expr)
