@@ -13,14 +13,14 @@ namespace JsonCons.JsonPathLib
     {
         public PathNode Parent {get;}
 
-        private readonly PathNodeKind _nodeKind;
+        public PathNodeKind NodeKind {get;}
+
         private readonly string _name;
         private readonly Int32 _index;
-
         public PathNode(string name)
         {
             Parent = null;
-            _nodeKind = PathNodeKind.Root;
+            NodeKind = PathNodeKind.Root;
             _name = name;
             _index = 0;
         }
@@ -28,7 +28,7 @@ namespace JsonCons.JsonPathLib
         public PathNode(PathNode parent, string name)
         {
             Parent = parent;
-            _nodeKind = PathNodeKind.Name;
+            NodeKind = PathNodeKind.Name;
             _name = name;
             _index = 0;
         }
@@ -36,9 +36,19 @@ namespace JsonCons.JsonPathLib
         public PathNode(PathNode parent, Int32 index)
         {
             Parent = parent;
-            _nodeKind = PathNodeKind.Index;
+            NodeKind = PathNodeKind.Index;
             _name = null;
             _index = index;
+        }
+
+        public string GetName()
+        {
+            return _name;
+        }
+
+        public Int32 GetIndex()
+        {
+            return _index;
         }
 
         public int CompareTo(PathNode other)
@@ -48,13 +58,13 @@ namespace JsonCons.JsonPathLib
                return 1;
             }
             int diff = 0;
-            if (_nodeKind != other._nodeKind)
+            if (NodeKind != other.NodeKind)
             {
-                diff = _nodeKind - other._nodeKind;
+                diff = NodeKind - other.NodeKind;
             }
             else
             {
-                switch (_nodeKind)
+                switch (NodeKind)
                 {
                     case PathNodeKind.Root:
                         diff = string.Compare(_name, other._name);
@@ -72,14 +82,14 @@ namespace JsonCons.JsonPathLib
 
         public override int GetHashCode()
         {
-            int hashCode = _nodeKind == PathNodeKind.Index ? _index.GetHashCode() : _name.GetHashCode();
+            int hashCode = NodeKind == PathNodeKind.Index ? _index.GetHashCode() : _name.GetHashCode();
 
             return hashCode;
         }
 
         internal void ToStringBuilder(StringBuilder buffer) 
         {
-            switch (_nodeKind)
+            switch (NodeKind)
             {
                 case PathNodeKind.Root:
                     buffer.Append(_name);
@@ -87,7 +97,14 @@ namespace JsonCons.JsonPathLib
                 case PathNodeKind.Name:
                     buffer.Append('[');
                     buffer.Append('\'');
-                    buffer.Append(_name);
+                    if (_name.Contains('\''))
+                    {
+                        buffer.Append(_name.Replace(@"'",@"\'"));
+                    }
+                    else
+                    {
+                        buffer.Append(_name);
+                    }
                     buffer.Append('\'');
                     buffer.Append(']');
                     break;
@@ -133,6 +150,51 @@ namespace JsonCons.JsonPathLib
                 _nodes[i].ToStringBuilder(buffer);
             }
 
+            return buffer.ToString();
+        }
+
+        public string ToJsonPointer()
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            foreach (var node in _nodes)
+            {
+                switch (node.NodeKind)
+                {
+                    case PathNodeKind.Root:
+                    {
+                        break;
+                    }
+                    case PathNodeKind.Name:
+                    {
+                        buffer.Append('/');
+                        foreach (var c in node.GetName())
+                        {
+                            switch (c)
+                            {
+                                case '~':
+                                    buffer.Append('~');
+                                    buffer.Append('0');
+                                    break;
+                                case '/':
+                                    buffer.Append('~');
+                                    buffer.Append('1');
+                                    break;
+                                default:
+                                    buffer.Append(c);
+                                    break;
+                            }
+                        }
+                        break;
+                    }
+                    case PathNodeKind.Index:
+                    {
+                        buffer.Append('/');
+                        buffer.Append(node.GetIndex().ToString());
+                        break;
+                    }
+                }
+            }
             return buffer.ToString();
         }
 

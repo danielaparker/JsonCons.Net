@@ -41,5 +41,27 @@ namespace JsonCons.JsonPathLib.Tests
             NormalizedPath path1 = new NormalizedPath(node4);
             Assert.IsTrue(path1.ToString().Equals(@"$['foo']['bar'][0]"));
         }
+
+        [Test]
+        public void TestNormalizedPathWithSolidusToString()
+        {
+            PathNode node1 = new PathNode("$");
+            PathNode node2 = new PathNode(node1,"foo's");
+            PathNode node3 = new PathNode(node2,"bar");
+            PathNode node4 = new PathNode(node3,0);
+
+            NormalizedPath path = new NormalizedPath(node4);
+            Assert.IsTrue(path.ToString().Equals(@"$['foo\'s']['bar'][0]"));
+        }
+
+        [Test]
+        public void TestNormalizedPathToJsonPointer()
+        {
+            PathNode node1 = new PathNode("$");
+            PathNode node2 = new PathNode(node1,"a/b");
+
+            NormalizedPath path = new NormalizedPath(node2);
+            Assert.IsTrue(path.ToJsonPointer().Equals(@"/a~1b"));
+        }
     }
 }
