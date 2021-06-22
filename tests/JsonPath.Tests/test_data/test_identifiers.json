@@ -1,0 +1,20 @@
+[
+    {
+        "given": {
+               "key": "value"
+           },
+        "cases": [
+            {
+                "comment": "$key with error",
+                "expression": "$key",
+                "error": "Require dot after $"
+            },
+            {
+                "comment": "$.key",
+                "expression": "$.key",
+                "result": ["value"],
+                "path" : ["$['key']"]
+            }
+        ]
+    }
+]

@@ -84,24 +84,35 @@ namespace JsonCons.JsonPathLib
             PathNode pathTail = new PathNode("$");
             var values = new List<JsonElement>();
 
-            if (values.Count > 1 && (options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
+            if ((options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
             {
                 var nodes = new List<Node>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
                 _selector.Select(root, pathTail, root, accumulator, options);
-                if ((options & ResultOptions.Sort) == ResultOptions.Sort)
+
+                if (nodes.Count > 1)
                 {
-                    nodes.Sort();
-                }
-                if ((options & ResultOptions.NoDups) == ResultOptions.NoDups)
-                {
-                    var index = new HashSet<Node>(nodes);
-                    foreach (var node in nodes)
+                    if ((options & ResultOptions.Sort) == ResultOptions.Sort)
                     {
-                        if (index.Contains(node))
+                        nodes.Sort();
+                    }
+                    if ((options & ResultOptions.NoDups) == ResultOptions.NoDups)
+                    {
+                        var index = new HashSet<Node>(nodes);
+                        foreach (var node in nodes)
+                        {
+                            if (index.Contains(node))
+                            {
+                                values.Add(node.Value);
+                                index.Remove(node);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var node in nodes)
                         {
                             values.Add(node.Value);
-                            index.Remove(node);
                         }
                     }
                 }

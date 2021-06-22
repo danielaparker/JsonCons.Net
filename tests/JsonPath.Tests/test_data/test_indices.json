@@ -1,0 +1,12 @@
+[
+    {
+       "given":
+           {"bar": ["zero", "one", "two"]},
+        "cases": [
+            {
+               "expression": "$['bar']",
+               "result": [["zero", "one", "two"]]
+            }
+        ]
+   }
+]

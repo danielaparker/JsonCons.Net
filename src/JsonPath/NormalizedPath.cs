@@ -7,29 +7,29 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
+    public enum PathNodeKind {Root,Name,Index};
+
     public class PathNode
     {
-        enum PathNodeKind {Root,Identifier,Index};
-
         public PathNode Parent {get;}
 
         private readonly PathNodeKind _nodeKind;
-        private readonly string _identifier;
+        private readonly string _name;
         private readonly Int32 _index;
 
-        public PathNode(string identifier)
+        public PathNode(string name)
         {
             Parent = null;
             _nodeKind = PathNodeKind.Root;
-            _identifier = identifier;
+            _name = name;
             _index = 0;
         }
 
-        public PathNode(PathNode parent, string identifier)
+        public PathNode(PathNode parent, string name)
         {
             Parent = parent;
-            _nodeKind = PathNodeKind.Identifier;
-            _identifier = identifier;
+            _nodeKind = PathNodeKind.Name;
+            _name = name;
             _index = 0;
         }
 
@@ -37,7 +37,7 @@ namespace JsonCons.JsonPathLib
         {
             Parent = parent;
             _nodeKind = PathNodeKind.Index;
-            _identifier = null;
+            _name = null;
             _index = index;
         }
 
@@ -57,13 +57,13 @@ namespace JsonCons.JsonPathLib
                 switch (_nodeKind)
                 {
                     case PathNodeKind.Root:
-                        diff = string.Compare(_identifier, other._identifier);
+                        diff = string.Compare(_name, other._name);
                         break;
                     case PathNodeKind.Index:
                         diff = _index - other._index;
                         break;
-                    case PathNodeKind.Identifier:
-                        diff = string.Compare(_identifier, other._identifier);
+                    case PathNodeKind.Name:
+                        diff = string.Compare(_name, other._name);
                         break;
                 }
             }
@@ -72,7 +72,7 @@ namespace JsonCons.JsonPathLib
 
         public override int GetHashCode()
         {
-            int hashCode = _nodeKind == PathNodeKind.Index ? _index.GetHashCode() : _identifier.GetHashCode();
+            int hashCode = _nodeKind == PathNodeKind.Index ? _index.GetHashCode() : _name.GetHashCode();
 
             return hashCode;
         }
@@ -82,12 +82,12 @@ namespace JsonCons.JsonPathLib
             switch (_nodeKind)
             {
                 case PathNodeKind.Root:
-                    buffer.Append(_identifier);
+                    buffer.Append(_name);
                     break;
-                case PathNodeKind.Identifier:
+                case PathNodeKind.Name:
                     buffer.Append('[');
                     buffer.Append('\'');
-                    buffer.Append(_identifier);
+                    buffer.Append(_name);
                     buffer.Append('\'');
                     buffer.Append(']');
                     break;
