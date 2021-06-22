@@ -306,6 +306,11 @@ namespace JsonCons.JsonPathLib
                         }
                         break;
                     }
+                    case ExprState.Identifier:
+                        PushToken(new Token(new IdentifierSelector(buffer.ToString())));
+                        buffer.Clear();
+                        _stateStack.Pop(); 
+                        break;
                     case ExprState.SingleQuotedString:
                         switch (_input[_index])
                         {
@@ -1418,10 +1423,11 @@ namespace JsonCons.JsonPathLib
             _selector = selector;
         }
 
-        public IReadOnlyList<JsonElement> Evaluate(JsonElement root)
+        public IReadOnlyList<JsonElement> Evaluate(JsonElement root, ResultOptions options = 0)
         {
+            PathNode node = new PathNode("$");
             var nodes = new List<JsonElement>();
-            _selector.Select(root, root, nodes);
+            _selector.Select(node, root, root, nodes, options);
             return nodes;
         }
 
