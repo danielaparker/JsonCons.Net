@@ -8,8 +8,6 @@ using NUnit.Framework;
 
 namespace JsonCons.JsonPathLib
 {
-    public enum ResultOptions {Path=1, NoDups=Path|2, Sort=Path|4};
-
     interface INodeAccumulator
     {
         void Accumulate(PathNode pathTail, JsonElement value);

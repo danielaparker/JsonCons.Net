@@ -78,6 +78,7 @@
     <Compile Include="Expression.cs" />
     <Compile Include="JsonElementEqualityComparer.cs" />
     <Compile Include="JsonPath.cs" />
+    <Compile Include="JsonPathCompiler.cs" />
     <Compile Include="NormalizedPath.cs" />
     <Compile Include="PathExpression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

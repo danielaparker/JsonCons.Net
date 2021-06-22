@@ -102,7 +102,7 @@ namespace JsonCons.JsonPathLib
 
     public class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>
     {
-        PathNode[] _nodes;
+        IReadOnlyList<PathNode> _nodes;
 
         public NormalizedPath(PathNode node)
         {
@@ -117,19 +117,18 @@ namespace JsonCons.JsonPathLib
             
             nodes.Reverse();
 
-            _nodes = nodes.ToArray();
+            _nodes = nodes;
         }
 
-        PathNode Head()
-        {
-            return _nodes[0];
-        }
+        public PathNode Root { get {return _nodes[0]; } }
+
+        public PathNode Stem { get { return _nodes[_nodes.Count - 1]; } }
 
         public override string ToString()
         {
             StringBuilder buffer = new StringBuilder();
 
-            for (int i = 0; i < _nodes.Length; ++i)
+            for (int i = 0; i < _nodes.Count; ++i)
             {
                 _nodes[i].ToStringBuilder(buffer);
             }
@@ -161,7 +160,7 @@ namespace JsonCons.JsonPathLib
         {
             int i = 0;
 
-            while (i < _nodes.Length && i < other._nodes.Length)
+            while (i < _nodes.Count && i < other._nodes.Count)
             {
                 int diff = _nodes[i].CompareTo(other._nodes[i]);
                 if (diff != 0)
@@ -170,13 +169,13 @@ namespace JsonCons.JsonPathLib
                 }
                 ++i;
             }
-            return _nodes.Length - other._nodes.Length;
+            return _nodes.Count - other._nodes.Count;
         }
 
         public override int GetHashCode()
         {
             int hash = _nodes[0].GetHashCode();
-            for (int i = 1; i < _nodes.Length; ++i)
+            for (int i = 1; i < _nodes.Count; ++i)
             {
                 hash += 17*_nodes[i].GetHashCode();
             }
