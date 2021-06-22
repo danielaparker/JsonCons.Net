@@ -86,35 +86,6 @@ namespace JsonCons.JsonPathLib
 
             return hashCode;
         }
-
-        internal void ToStringBuilder(StringBuilder buffer) 
-        {
-            switch (NodeKind)
-            {
-                case PathNodeKind.Root:
-                    buffer.Append(_name);
-                    break;
-                case PathNodeKind.Name:
-                    buffer.Append('[');
-                    buffer.Append('\'');
-                    if (_name.Contains('\''))
-                    {
-                        buffer.Append(_name.Replace(@"'",@"\'"));
-                    }
-                    else
-                    {
-                        buffer.Append(_name);
-                    }
-                    buffer.Append('\'');
-                    buffer.Append(']');
-                    break;
-                case PathNodeKind.Index:
-                    buffer.Append('[');
-                    buffer.Append(_index.ToString());
-                    buffer.Append(']');
-                    break;
-            }
-        }
     };
 
     public class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>
@@ -145,9 +116,33 @@ namespace JsonCons.JsonPathLib
         {
             StringBuilder buffer = new StringBuilder();
 
-            for (int i = 0; i < _nodes.Count; ++i)
+            foreach (var item in _nodes)
             {
-                _nodes[i].ToStringBuilder(buffer);
+                switch (item.NodeKind)
+                {
+                    case PathNodeKind.Root:
+                        buffer.Append(item.GetName());
+                        break;
+                    case PathNodeKind.Name:
+                        buffer.Append('[');
+                        buffer.Append('\'');
+                        if (item.GetName().Contains('\''))
+                        {
+                            buffer.Append(item.GetName().Replace(@"'",@"\'"));
+                        }
+                        else
+                        {
+                            buffer.Append(item.GetName());
+                        }
+                        buffer.Append('\'');
+                        buffer.Append(']');
+                        break;
+                    case PathNodeKind.Index:
+                        buffer.Append('[');
+                        buffer.Append(item.GetIndex().ToString());
+                        buffer.Append(']');
+                        break;
+                }
             }
 
             return buffer.ToString();
