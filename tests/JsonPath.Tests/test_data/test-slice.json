@@ -1,0 +1,14 @@
+[
+    {
+        "source" : "https://github.com/cburgmer/json-path-comparison",
+        "given" : ["first", "second", "third", "forth", "fifth"],
+        "cases" : [
+
+            {
+                "comment" : "All items, reversed",
+                "expression" : "$[::-1]",
+                "result" : ["fifth","forth","third","second","first"]
+            }
+        ]
+    }
+]

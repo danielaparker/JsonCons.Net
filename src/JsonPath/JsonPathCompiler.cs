@@ -119,8 +119,9 @@ namespace JsonCons.JsonPathLib
                                 SkipWhiteSpace();
                                 break;
                             case '$':
+                            case '@':
                             {
-                                PushToken(new Token(new RootSelector(selector_id++)));
+                                PushToken(new Token(new CurrentNodeSelector()));
                                 _stateStack.Push(ExprState.PathRhs);
                                 ++_index;
                                 ++_column;
@@ -177,7 +178,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             default:
                             {
-                                throw new JsonException("Invalid state");
+                                throw new JsonException("Expected dot or left bracket");
                             }
                         }
                         break;
@@ -254,21 +255,20 @@ namespace JsonCons.JsonPathLib
                         }
                         break;
                     case ExprState.UnquotedString: 
-                        switch (_input[_index])
+                    {
+                        Char ch = _input[_index];
+                        if (Char.IsLetterOrDigit(ch) || ch == '_')
                         {
-                            case 'a':case 'b':case 'c':case 'd':case 'e':case 'f':case 'g':case 'h':case 'i':case 'j':case 'k':case 'l':case 'm':case 'n':case 'o':case 'p':case 'q':case 'r':case 's':case 't':case 'u':case 'v':case 'w':case 'x':case 'y':case 'z':
-                            case 'A':case 'B':case 'C':case 'D':case 'E':case 'F':case 'G':case 'H':case 'I':case 'J':case 'K':case 'L':case 'M':case 'N':case 'O':case 'P':case 'Q':case 'R':case 'S':case 'T':case 'U':case 'V':case 'W':case 'X':case 'Y':case 'Z':
-                            case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
-                            case '_':
-                                buffer.Append (_input[_index]);
-                                ++_index;
-                                ++_column;
-                                break;
-                            default:
-                                _stateStack.Pop(); // UnquotedString
-                                break;
-                        };
+                            buffer.Append (ch);
+                            ++_index;
+                            ++_column;
+                        }
+                        else
+                        {
+                            _stateStack.Pop(); // UnquotedString
+                        }
                         break;                    
+                    }
                     case ExprState.IdentifierOrFunctionExpr:
                     {
                         switch (_input[_index])
@@ -864,7 +864,7 @@ namespace JsonCons.JsonPathLib
                             {
                                 throw new JsonException("Slice step cannot be zero");
                             }
-                            sliceStop = n;
+                            sliceStep = n;
                             buffer.Clear();
                         }
                         switch (_input[_index])

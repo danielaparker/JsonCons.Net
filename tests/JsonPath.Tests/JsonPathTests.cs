@@ -49,14 +49,14 @@ namespace JsonCons.JsonPathLib.Tests
 
                     var exprElement = testCase.GetProperty("expression");
 
-                    JsonElement expected;
-                    if (testCase.TryGetProperty("error", out expected))
+                    try
                     {
-                        Assert.Throws(typeof(JsonException), delegate{ JsonPath.Compile(exprElement.ToString()); });
-                    }
-                    else if (testCase.TryGetProperty("result", out expected))
-                    {
-                        try
+                        JsonElement expected;
+                        if (testCase.TryGetProperty("error", out expected))
+                        {
+                            Assert.Throws<JsonException>(() => JsonPath.Compile(exprElement.ToString()));
+                        }
+                        else if (testCase.TryGetProperty("result", out expected))
                         {
                             var expr = JsonPath.Compile(exprElement.ToString());
                             var items = expr.Select(given, options);
@@ -95,14 +95,15 @@ namespace JsonCons.JsonPathLib.Tests
                             {
                                 Assert.IsTrue(comparer.Equals(items[i],expected[i]));
                             }
+                            
                         }
-                        catch (Exception e)
-                        {
-                            TestContext.WriteLine("File: {0}", path);
-                            TestContext.WriteLine(comment);
-                            TestContext.WriteLine("Error: {0}", e.Message);
-                            throw e;
-                        }
+                    }
+                    catch (Exception e)
+                    {
+                        TestContext.WriteLine("File: {0}", path);
+                        TestContext.WriteLine(comment);
+                        TestContext.WriteLine("Error: {0}", e.Message);
+                        throw e;
                     }
                 }
             }
@@ -113,10 +114,13 @@ namespace JsonCons.JsonPathLib.Tests
         {
             try
             {
-                //TestContext.WriteLine("Message...");
-                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\identifiers.json"));
-                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\indices.json"));
+                TestContext.WriteLine("Message...");
+                //RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\identifiers.json"));
+                //RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\indices.json"));
                 //RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\union.json"));
+                //RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\dot-notation.json"));
+                //RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\test-slice.json"));
+                //RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\syntax.json"));
             }
             catch (JsonException e)
             {
