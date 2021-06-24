@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,8 @@ namespace JsonCons.JsonPathLib
         RootNode,
         CurrentNode,
         Expression,
-        LParen,
-        RParen,
+        LeftParen,
+        RightParen,
         BeginUnion,
         EndUnion,
         BeginFilter,
@@ -22,7 +23,7 @@ namespace JsonCons.JsonPathLib
         EndExpression,
         EndArgument,
         Separator,
-        Literal,
+        Value,
         Selector,
         Function,
         EndFunction,
@@ -67,9 +68,49 @@ namespace JsonCons.JsonPathLib
             _expr = expr;
         }
 
+        internal Token(JsonElement expr)
+        {
+            _type = TokenKind.Value;
+            _expr = expr;
+        }
+
         internal TokenKind Type
         {
             get { return _type; }   
+        }
+
+        internal bool IsOperator
+        {
+            get
+            {
+                switch(_type)
+                {
+                    case TokenKind.UnaryOperator:
+                        return true;
+                    case TokenKind.BinaryOperator:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        }
+
+        internal bool IsRightAssociative
+        {
+            get
+            {
+                switch(_type)
+                {
+                    case TokenKind.Selector:
+                        return true;
+                    case TokenKind.UnaryOperator:
+                        return GetUnaryOperator().IsRightAssociative;
+                    case TokenKind.BinaryOperator:
+                        return GetBinaryOperator().IsRightAssociative;
+                    default:
+                        return false;
+                }
+            }
         }
 
         internal int PrecedenceLevel 
@@ -90,24 +131,34 @@ namespace JsonCons.JsonPathLib
             }
         }
 
+        internal JsonElement GetValue()
+        {
+            Debug.Assert(_type == TokenKind.Value);
+            return (JsonElement)_expr;
+        }
+
         internal ISelector GetSelector()
         {
-            return _type == TokenKind.Selector ? (ISelector)_expr : null;
+            Debug.Assert(_type == TokenKind.Selector);
+            return (ISelector)_expr;
         }
 
         internal IExpression GetExpression()
         {
-            return _type == TokenKind.Expression ? (IExpression)_expr : null;
+            Debug.Assert(_type == TokenKind.Expression);
+            return (IExpression)_expr;
         }
 
         internal IUnaryOperator GetUnaryOperator()
         {
-            return _type == TokenKind.UnaryOperator ? (IUnaryOperator)_expr : null;
+            Debug.Assert(_type == TokenKind.UnaryOperator);
+            return (IUnaryOperator)_expr;
         }
 
         internal IBinaryOperator GetBinaryOperator()
         {
-            return _type == TokenKind.BinaryOperator ? (IBinaryOperator)_expr : null;
+            Debug.Assert(_type == TokenKind.BinaryOperator);
+            return (IBinaryOperator)_expr;
         }
 
         public bool Equals(Token other)

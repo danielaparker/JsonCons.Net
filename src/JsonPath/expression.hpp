@@ -381,7 +381,7 @@ namespace detail {
         {
             return _precedenceLevel;
         }
-        bool IsRightAssociative()
+        bool IsRightAssociative
         {
             return _isRightAssociative;
         }
@@ -491,7 +491,7 @@ namespace detail {
         {
             return _precedenceLevel;
         }
-        bool IsRightAssociative()
+        bool IsRightAssociative
         {
             return _isRightAssociative;
         }
@@ -2244,7 +2244,7 @@ namespace detail {
             return _precedenceLevel;
         }
 
-        bool IsRightAssociative()
+        bool IsRightAssociative
         {
             return true;
         }
@@ -2694,17 +2694,17 @@ namespace detail {
             return _type;
         }
 
-        bool is_lparen()
+        bool IsLeftParen
         {
             return _type == TokenKind.lparen; 
         }
 
-        bool is_rparen()
+        bool IsRightParen
         {
             return _type == TokenKind.rparen; 
         }
 
-        bool is_current_node()
+        bool IsCurrentNode
         {
             return _type == TokenKind.current_node; 
         }
@@ -2714,22 +2714,22 @@ namespace detail {
             return _type == TokenKind.Selector && _selector.is_path(); 
         }
 
-        bool isOperator()
+        bool IsOperator
         {
             return _type == TokenKind.UnaryOperator || 
                    _type == TokenKind.BinaryOperator; 
         }
 
-        int PrecedenceLevel()
+        int PrecedenceLevel
         {
             switch(_type)
             {
                 case TokenKind.Selector:
-                    return _selector.PrecedenceLevel();
+                    return _selector.PrecedenceLevel;
                 case TokenKind.UnaryOperator:
-                    return _unaryOperator;.PrecedenceLevel();
+                    return _unaryOperator;.PrecedenceLevel;
                 case TokenKind.BinaryOperator:
-                    return _binaryOperator.PrecedenceLevel();
+                    return _binaryOperator.PrecedenceLevel;
                 default:
                     return 0;
             }
@@ -2740,16 +2740,16 @@ namespace detail {
             return _type == TokenKind.function ? function_.arity() : jsoncons.optional<int>();
         }
 
-        bool IsRightAssociative()
+        bool IsRightAssociative
         {
             switch(_type)
             {
                 case TokenKind.Selector:
-                    return _selector.IsRightAssociative();
+                    return _selector.IsRightAssociative;
                 case TokenKind.UnaryOperator:
-                    return _unaryOperator;.IsRightAssociative();
+                    return _unaryOperator;.IsRightAssociative;
                 case TokenKind.BinaryOperator:
-                    return _binaryOperator.IsRightAssociative();
+                    return _binaryOperator.IsRightAssociative;
                 default:
                     return false;
             }

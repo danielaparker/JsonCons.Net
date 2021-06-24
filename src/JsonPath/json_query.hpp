@@ -2876,7 +2876,7 @@ namespace jsoncons { namespace jsonpath {
             //}
             //std::cout << "\n";
 
-            if (_outputStack.empty() || !_operatorStack.empty())
+            if (_outputStack.empty() || !_operatorStack.Count == 0())
             {
                 ec = jsonpath_errc::unexpected_eof;
                 return pathExpression_type();
@@ -2913,7 +2913,7 @@ namespace jsoncons { namespace jsonpath {
         void unwind_rparen(std::error_code& ec)
         {
             auto it = _operatorStack.Rbegin();
-            while (it != _operatorStack.Rend() && !it.is_lparen())
+            while (it != _operatorStack.Rend() && !it.Type == TokenKind.LeftParen)
             {
                 _outputStack.Push(std::move(*it));
                 ++it;
@@ -3170,24 +3170,24 @@ namespace jsoncons { namespace jsonpath {
                 case TokenKind.current_node:
                     _outputStack.Push(token);
                     break;
-                case TokenKind.unary_operator:
-                case TokenKind.binary_operator:
+                case TokenKind.UnaryOperator:
+                case TokenKind.BinaryOperator:
                 {
-                    if (_operatorStack.empty() || _operatorStack.back().is_lparen())
+                    if (_operatorStack.Count == 0() || _operatorStack.Peek().Type == TokenKind.LeftParen)
                     {
                         _operatorStack.Push(token);
                     }
-                    else if (tok.precedence_level() < _operatorStack.back().precedence_level()
-                             || (tok.precedence_level() == _operatorStack.back().precedence_level() && tok.is_right_associative()))
+                    else if (tok.PrecedenceLevel < _operatorStack.Peek().PrecedenceLevel
+                             || (tok.PrecedenceLevel == _operatorStack.Peek().PrecedenceLevel && tok.is_right_associative()))
                     {
                         _operatorStack.Push(token);
                     }
                     else
                     {
                         auto it = _operatorStack.Rbegin();
-                        while (it != _operatorStack.Rend() && it.is_operator()
-                               && (tok.precedence_level() > it.precedence_level()
-                             || (tok.precedence_level() == it.precedence_level() && tok.is_right_associative())))
+                        while (it != _operatorStack.Rend() && it.IsOperator
+                               && (tok.PrecedenceLevel > it.PrecedenceLevel
+                             || (tok.PrecedenceLevel == it.PrecedenceLevel && tok.is_right_associative())))
                         {
                             _outputStack.Push(std::move(*it));
                             ++it;
@@ -3206,7 +3206,7 @@ namespace jsoncons { namespace jsonpath {
             //{
             //    std::cout << t.to_string(2) << "\n";
             //}
-            //if (!_operatorStack.empty())
+            //if (!_operatorStack.Count == 0())
             //{
             //    std::cout << "  " << "Operator Stack\n";
             //    for (auto&& t : _operatorStack)
