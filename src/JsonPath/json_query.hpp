@@ -118,7 +118,7 @@ namespace jsoncons { namespace jsonpath {
         FilterExpression,
         ExpressionRhs,
         RecursiveDescentOrPathExpression,
-        PathOrLiteralOrFunction,
+        PathOrValueOrFunction,
         JsonTextOrFunction,
         JsonTextOrFunctionName,
         JsonTextString,
@@ -1048,7 +1048,7 @@ namespace jsoncons { namespace jsonpath {
                         _stateStack.Pop(); // JsonValue
                         break;
                     }
-                    case ExprState.PathOrLiteralOrFunction: 
+                    case ExprState.PathOrValueOrFunction: 
                     {
                         switch (_input[_index])
                         {
@@ -1409,7 +1409,7 @@ namespace jsoncons { namespace jsonpath {
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Push(ExprState.Argument);
                                 _stateStack.Push(ExprState.ExpressionRhs);
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1450,7 +1450,7 @@ namespace jsoncons { namespace jsonpath {
                                 _stateStack.Pop(); _stateStack.Push(ExprState.OneOrMoreArguments);
                                 _stateStack.Push(ExprState.Argument);
                                 _stateStack.Push(ExprState.ExpressionRhs);
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 break;
                         }
                         break;
@@ -1470,7 +1470,7 @@ namespace jsoncons { namespace jsonpath {
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Push(ExprState.Argument);
                                 _stateStack.Push(ExprState.ExpressionRhs);
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1611,13 +1611,13 @@ namespace jsoncons { namespace jsonpath {
                             case '|':
                                 ++_index;
                                 ++_column;
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 _stateStack.Push(ExprState.ExpectOr);
                                 break;
                             case '&':
                                 ++_index;
                                 ++_column;
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 _stateStack.Push(ExprState.ExpectAnd);
                                 break;
                             case '<':
@@ -1637,33 +1637,33 @@ namespace jsoncons { namespace jsonpath {
                             {
                                 ++_index;
                                 ++_column;
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 _stateStack.Push(ExprState.CmpNe);
                                 break;
                             }
                             case '+':
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 PushToken(new Token(resources.get_plus_operator()));
                                 if (ec) {return pathExpression_type();}
                                 ++_index;
                                 ++_column;
                                 break;
                             case '-':
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 PushToken(new Token(resources.get_minus_operator()));
                                 if (ec) {return pathExpression_type();}
                                 ++_index;
                                 ++_column;
                                 break;
                             case '*':
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 PushToken(new Token(resources.get_mult_operator()));
                                 if (ec) {return pathExpression_type();}
                                 ++_index;
                                 ++_column;
                                 break;
                             case '/':
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 PushToken(new Token(resources.get_div_operator()));
                                 if (ec) {return pathExpression_type();}
                                 ++_index;
@@ -1721,13 +1721,13 @@ namespace jsoncons { namespace jsonpath {
                             case '<':
                                 ++_index;
                                 ++_column;
-                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 _stateStack.Push(ExprState.CmpLtOrLte);
                                 break;
                             case '>':
                                 ++_index;
                                 ++_column;
-                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 _stateStack.Push(ExprState.CmpGtOrGte);
                                 break;
                             default:
@@ -1751,9 +1751,9 @@ namespace jsoncons { namespace jsonpath {
                                 break;
                             case '=':
                             {
-                                PushToken(new Token(resources.get_eq_operator()));
+                                PushToken(new Token(resources.GetEqOperator()));
                                 if (ec) {return pathExpression_type();}
-                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1977,7 +1977,7 @@ namespace jsoncons { namespace jsonpath {
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
                                 _stateStack.Push(ExprState.Expression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++evalDepth[evalDepth.Count-1];
                                 ++_index;
                                 ++_column;
@@ -1991,7 +1991,7 @@ namespace jsoncons { namespace jsonpath {
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
                                 _stateStack.Push(ExprState.FilterExpression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -2064,7 +2064,7 @@ namespace jsoncons { namespace jsonpath {
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.Expression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++evalDepth[evalDepth.Count-1];
                                 ++_index;
                                 ++_column;
@@ -2076,7 +2076,7 @@ namespace jsoncons { namespace jsonpath {
                                 if (ec) {return pathExpression_type();}
                                 _stateStack.Pop(); _stateStack.Push(ExprState.FilterExpression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;

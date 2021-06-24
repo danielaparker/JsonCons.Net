@@ -17,7 +17,7 @@ namespace JsonCons.JsonPathLib
         FilterExpression,
         ExpressionRhs,
         RecursiveDescentOrPathExpression,
-        PathOrLiteralOrFunction,
+        PathOrValueOrFunction,
         JsonTextOrFunction,
         JsonTextOrFunctionName,
         JsonTextString,
@@ -517,7 +517,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
                                 _stateStack.Push(ExprState.Expression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++evalDepth[evalDepth.Count-1];
                                 ++_index;
                                 ++_column;
@@ -530,7 +530,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Pop(); _stateStack.Push(ExprState.UnionExpression); // union
                                 _stateStack.Push(ExprState.FilterExpression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -631,7 +631,7 @@ namespace JsonCons.JsonPathLib
                                 PushToken(new Token(TokenKind.LParen));
                                 _stateStack.Pop(); _stateStack.Push(ExprState.Expression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++evalDepth[evalDepth.Count-1];
                                 ++_index;
                                 ++_column;
@@ -642,7 +642,7 @@ namespace JsonCons.JsonPathLib
                                 PushToken(new Token(TokenKind.BeginFilter));
                                 _stateStack.Pop(); _stateStack.Push(ExprState.FilterExpression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
-                                _stateStack.Push(ExprState.PathOrLiteralOrFunction);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -961,7 +961,7 @@ namespace JsonCons.JsonPathLib
                         //_stateStack.Pop(); // JsonValue
                         break;
                     }
-                    case ExprState.PathOrLiteralOrFunction: 
+                    case ExprState.PathOrValueOrFunction: 
                     {
                         switch (_input[_index])
                         {
@@ -1177,6 +1177,145 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                         };
+                        break;
+                    case ExprState.ExpressionRhs: 
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            /* case '.':
+                                _stateStack.Push(ExprState.RecursiveDescentOrPathExpression);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '[':
+                                _stateStack.Push(ExprState.BracketSpecifierOrUnion);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ')':
+                            {
+                                if (evalStack.Count == 0)
+                                {
+                                    ec = jsonpath_errc::unbalanced_parentheses;
+                                    return pathExpression_type();
+                                }
+                                if (evalDepth[evalDepth.Count-1] > 0)
+                                {
+                                    ++_index;
+                                    ++_column;
+                                    --evalDepth[evalDepth.Count-1];
+                                    PushToken(TokenKind.RParen);
+                                    if (ec) {return pathExpression_type();}
+                                }
+                                else
+                                {
+                                    _stateStack.Pop();
+                                }
+                                break;
+                            }
+                            case '|':
+                                ++_index;
+                                ++_column;
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                _stateStack.Push(ExprState.ExpectOr);
+                                break;
+                            case '&':
+                                ++_index;
+                                ++_column;
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                _stateStack.Push(ExprState.ExpectAnd);
+                                break;
+                            case '<':
+                            case '>':
+                            {
+                                _stateStack.Push(ExprState.ComparatorExpression);
+                                break;
+                            }*/
+                            case '=':
+                            {
+                                _stateStack.Push(ExprState.EqOrRegex);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }/*
+                            case '!':
+                            {
+                                ++_index;
+                                ++_column;
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                _stateStack.Push(ExprState.CmpNe);
+                                break;
+                            }
+                            case '+':
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                PushToken(new Token(resources.get_plus_operator()));
+                                if (ec) {return pathExpression_type();}
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '-':
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                PushToken(new Token(resources.get_minus_operator()));
+                                if (ec) {return pathExpression_type();}
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '*':
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                PushToken(new Token(resources.get_mult_operator()));
+                                if (ec) {return pathExpression_type();}
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '/':
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                PushToken(new Token(resources.get_div_operator()));
+                                if (ec) {return pathExpression_type();}
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ']':
+                            case ',':
+                                _stateStack.Pop();
+                                break;*/
+                            default:
+                                throw new JsonException("Syntax error");
+                        };
+                        break;
+                    case ExprState.EqOrRegex:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '=':
+                            {
+                                PushToken(new Token(new EqOperator()));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            /* case '~':
+                            {
+                                ++_index;
+                                ++_column;
+                                _stateStack.Push(ExprState.ExpectRegex);
+                                break;
+                            }*/
+                            default:
+                                if (_stateStack.Count > 1)
+                                {
+                                    _stateStack.Pop();
+                                }
+                                else
+                                {
+                                    throw new JsonException("Syntax error");
+                                }
+                                break;
+                        }
                         break;
                     default:
                         ++_index;

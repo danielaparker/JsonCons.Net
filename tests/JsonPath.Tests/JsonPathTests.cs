@@ -121,6 +121,7 @@ namespace JsonCons.JsonPathLib.Tests
                 //RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\dot-notation.json"));
                 //RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\test-slice.json"));
                 //RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\syntax.json"));
+                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\test-filters.json"));
             }
             catch (JsonException e)
             {

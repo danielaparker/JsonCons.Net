@@ -32,52 +32,91 @@ namespace JsonCons.JsonPathLib
         BinaryOperator
     };
 
-    class Token : IEquatable<Token>
+    struct Token : IEquatable<Token>
     {
         TokenKind _type;
         object _expr;
 
-        public Token(TokenKind type)
+        internal Token(TokenKind type)
         {
             _type = type;
+            _expr = null;
         }
 
-        public Token(ISelector selector)
+        internal Token(ISelector selector)
         {
             _type = TokenKind.Selector;
             _expr = selector;
         }
 
-        public Token(IExpression expr)
+        internal Token(IExpression expr)
         {
             _type = TokenKind.Expression;
             _expr = expr;
         }
 
-        public TokenKind Type
+        internal Token(IUnaryOperator expr)
         {
-          get { return _type; }   
+            _type = TokenKind.UnaryOperator;
+            _expr = expr;
         }
 
-        public ISelector GetSelector()
+        internal Token(IBinaryOperator expr)
+        {
+            _type = TokenKind.BinaryOperator;
+            _expr = expr;
+        }
+
+        internal TokenKind Type
+        {
+            get { return _type; }   
+        }
+
+        internal int PrecedenceLevel 
+        {
+            get
+            {
+                switch(_type)
+                {
+                    case TokenKind.Selector:
+                        return 11;
+                    case TokenKind.UnaryOperator:
+                        return GetUnaryOperator().PrecedenceLevel;
+                    case TokenKind.BinaryOperator:
+                        return GetBinaryOperator().PrecedenceLevel;
+                    default:
+                        return 0;
+                }
+            }
+        }
+
+        internal ISelector GetSelector()
         {
             return _type == TokenKind.Selector ? (ISelector)_expr : null;
         }
 
-        public IExpression GetExpression()
+        internal IExpression GetExpression()
         {
             return _type == TokenKind.Expression ? (IExpression)_expr : null;
         }
 
+        internal IUnaryOperator GetUnaryOperator()
+        {
+            return _type == TokenKind.UnaryOperator ? (IUnaryOperator)_expr : null;
+        }
+
+        internal IBinaryOperator GetBinaryOperator()
+        {
+            return _type == TokenKind.BinaryOperator ? (IBinaryOperator)_expr : null;
+        }
+
         public bool Equals(Token other)
         {
-            if (other == null)
-                 return false;
-
             if (this._type == other._type)
                 return true;
             else
-                return false;        }
+                return false;        
+        }
     };
 
 } // namespace JsonCons.JsonPathLib

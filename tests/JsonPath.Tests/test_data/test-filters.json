@@ -1,0 +1,13 @@
+[
+  {
+       "given":
+           [{"name": "John Smith"}, {"name": null}],
+        "cases": [
+            {
+               "comment" : "Filter expression",
+               "expression": "$[?@.name == 'John Smith']",
+               "result": [{"name": "John Smith"}]
+            }
+        ]
+   }
+]
