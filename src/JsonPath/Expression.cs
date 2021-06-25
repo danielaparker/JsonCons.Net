@@ -94,7 +94,7 @@ namespace JsonCons.JsonPathLib
 
         public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs) 
         {
-            var comparer = new JsonElementEqualityComparer();
+            var comparer = JsonElementEqualityComparer.Instance;
             return comparer.Equals(lhs, rhs) ? JsonConstants.True : JsonConstants.False;
         }
     };
@@ -112,7 +112,7 @@ namespace JsonCons.JsonPathLib
         internal static bool IsFalse(JsonElement val)
         {
             TestContext.WriteLine($"IsFalse {val}");
-            var comparer = new JsonElementEqualityComparer();
+            var comparer = JsonElementEqualityComparer.Instance;
             switch (val.ValueKind)
             {
                 case JsonValueKind.False:

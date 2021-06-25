@@ -9,12 +9,9 @@ namespace JsonCons.JsonPathLib
 {
    public class JsonElementEqualityComparer : IEqualityComparer<JsonElement>
    {
-       public JsonElementEqualityComparer() : this(-1) {}
+       public static JsonElementEqualityComparer Instance { get; } = new JsonElementEqualityComparer();
 
-       public JsonElementEqualityComparer(int maxHashDepth)
-       {
-            this.MaxHashDepth = maxHashDepth;
-       }
+       JsonElementEqualityComparer() {}
 
        int MaxHashDepth { get; } = -1;
 
