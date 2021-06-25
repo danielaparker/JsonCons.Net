@@ -1069,7 +1069,7 @@ namespace JsonCons.JsonPathLib
                         {
                             case '(':
                             {
-                                /*evalStack.Push(0);
+                                /*evalDepth.Push(0);
                                 var f = resources.get_function(buffer);
                                 if (ec)
                                 {
@@ -1232,7 +1232,7 @@ namespace JsonCons.JsonPathLib
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
                                 break;
-                            /* case '.':
+                            case '.':
                                 _stateStack.Push(ExprState.RecursiveDescentOrPathExpression);
                                 ++_index;
                                 ++_column;
@@ -1244,18 +1244,16 @@ namespace JsonCons.JsonPathLib
                                 break;
                             case ')':
                             {
-                                if (evalStack.Count == 0)
+                                if (evalDepth.Count == 0)
                                 {
-                                    ec = jsonpath_errc::unbalanced_parentheses;
-                                    return pathExpression_type();
+                                    throw new JsonException("Unbalanced parentheses");;
                                 }
                                 if (evalDepth[evalDepth.Count-1] > 0)
                                 {
                                     ++_index;
                                     ++_column;
                                     --evalDepth[evalDepth.Count-1];
-                                    PushToken(TokenKind.RightParen);
-                                    if (ec) {return pathExpression_type();}
+                                    PushToken(new Token(TokenKind.RightParen));
                                 }
                                 else
                                 {
@@ -1280,14 +1278,14 @@ namespace JsonCons.JsonPathLib
                             {
                                 _stateStack.Push(ExprState.ComparatorExpression);
                                 break;
-                            }*/
+                            }
                             case '=':
                             {
                                 _stateStack.Push(ExprState.EqOrRegex);
                                 ++_index;
                                 ++_column;
                                 break;
-                            }/*
+                            }
                             case '!':
                             {
                                 ++_index;
@@ -1296,31 +1294,27 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Push(ExprState.CmpNe);
                                 break;
                             }
-                            case '+':
+                            /*case '+':
                                 _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 PushToken(new Token(resources.get_plus_operator()));
-                                if (ec) {return pathExpression_type();}
                                 ++_index;
                                 ++_column;
                                 break;
                             case '-':
                                 _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 PushToken(new Token(resources.get_minus_operator()));
-                                if (ec) {return pathExpression_type();}
                                 ++_index;
                                 ++_column;
                                 break;
                             case '*':
                                 _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 PushToken(new Token(resources.get_mult_operator()));
-                                if (ec) {return pathExpression_type();}
                                 ++_index;
                                 ++_column;
                                 break;
                             case '/':
                                 _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 PushToken(new Token(resources.get_div_operator()));
-                                if (ec) {return pathExpression_type();}
                                 ++_index;
                                 ++_column;
                                 break;*/
@@ -1340,19 +1334,19 @@ namespace JsonCons.JsonPathLib
                                 break;
                             case '=':
                             {
-                                PushToken(new Token(new EqOperator()));
+                                PushToken(new Token(EqOperator.Instance));
                                 _stateStack.Pop(); _stateStack.Push(ExprState.PathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
                             }
-                            /* case '~':
+                            case '~':
                             {
                                 ++_index;
                                 ++_column;
                                 _stateStack.Push(ExprState.ExpectRegex);
                                 break;
-                            }*/
+                            }
                             default:
                                 if (_stateStack.Count > 1)
                                 {
@@ -1365,6 +1359,144 @@ namespace JsonCons.JsonPathLib
                                 break;
                         }
                         break;
+                    case ExprState.ExpectAnd:
+                    {
+                        switch (_input[_index])
+                        {
+                            case '&':
+                                PushToken(new Token(AndOperator.Instance));
+                                _stateStack.Pop(); // ExpectAnd
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                throw new JsonException("Expected '&'");
+                        }
+                        break;
+                    }
+                    case ExprState.ComparatorExpression:
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '<':
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                _stateStack.Push(ExprState.CmpLtOrLte);
+                                break;
+                            case '>':
+                                ++_index;
+                                ++_column;
+                                _stateStack.Pop(); _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                _stateStack.Push(ExprState.CmpGtOrGte);
+                                break;
+                            default:
+                                if (_stateStack.Count > 1)
+                                {
+                                    _stateStack.Pop();
+                                }
+                                else
+                                {
+                                    throw new JsonException("Syntax error");
+                                }
+                                break;
+                        }
+                        break;
+                    case ExprState.ExpectRegex: 
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '/':
+                                _stateStack.Pop(); _stateStack.Push(ExprState.Regex);
+                                ++_index;
+                                ++_column;
+                                break;
+                            default: 
+                                throw new JsonException("Expected '/'");
+                        };
+                        break;
+                    case ExprState.Regex: 
+                    {
+                        switch (_input[_index])
+                        {                   
+                            case '/':
+                                /*{
+                                    std::regex::flag_type options = std::regex_constants::ECMAScript; 
+                                    if (p_+1  < end_input_ && *(p_+1) == 'i')
+                                    {
+                                        ++_index;
+                                        ++_column;
+                                        options |= std::regex_constants::icase;
+                                    }
+                                    std::basicRegex<char_type> pattern(buffer, options);
+                                    PushToken(resources.getRegex_operator(std::move(pattern)));
+                                    buffer.Clear();
+                                }*/
+                                _stateStack.Pop();
+                                break;
+
+                            default: 
+                                buffer.Append (_input[_index]);
+                                break;
+                        }
+                        ++_index;
+                        ++_column;
+                        break;
+                    }
+                    case ExprState.CmpLtOrLte:
+                    {
+                        switch (_input[_index])
+                        {
+                            case '=':
+                                PushToken(new Token(LteOperator.Instance));
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                PushToken(new Token(LtOperator.Instance));
+                                _stateStack.Pop();
+                                break;
+                        }
+                        break;
+                    }
+                    case ExprState.CmpGtOrGte:
+                    {
+                        switch (_input[_index])
+                        {
+                            case '=':
+                                PushToken(new Token(GteOperator.Instance));
+                                _stateStack.Pop(); 
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                //std::cout << "Parse: gt_operator\n";
+                                PushToken(new Token(GtOperator.Instance));
+                                _stateStack.Pop(); 
+                                break;
+                        }
+                        break;
+                    }
+                    case ExprState.CmpNe:
+                    {
+                        switch (_input[_index])
+                        {
+                            case '=':
+                                PushToken(new Token(NeOperator.Instance));
+                                _stateStack.Pop(); 
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                throw new JsonException("Expected '='");
+                        }
+                        break;
+                    }
                     default:
                         ++_index;
                         break;

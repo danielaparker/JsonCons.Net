@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinaryOperator.cs" />
     <Compile Include="Expression.cs" />
     <Compile Include="JsonElementEqualityComparer.cs" />
     <Compile Include="JsonPath.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="JsonPathSelector.cs" />
     <Compile Include="Slice.cs" />
     <Compile Include="Token.cs" />
+    <Compile Include="UnaryOperator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

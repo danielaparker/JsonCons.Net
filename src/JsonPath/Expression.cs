@@ -39,66 +39,6 @@ namespace JsonCons.JsonPathLib
         internal static JsonElement EmptyObject { get { return _emptyObject; } }
     };
 
-    interface IUnaryOperator 
-    {
-        int PrecedenceLevel {get;}
-        bool IsRightAssociative {get;}
-        JsonElement Evaluate(JsonElement elem);
-    };
-
-    interface IBinaryOperator 
-    {
-        int PrecedenceLevel {get;}
-        bool IsRightAssociative {get;}
-        JsonElement Evaluate(JsonElement lhs, JsonElement rhs);
-    };
-
-    abstract class UnaryOperator : IUnaryOperator
-    {
-        internal UnaryOperator(int precedenceLevel,
-                                bool isRightAssociative = false)
-        {
-            PrecedenceLevel = precedenceLevel;
-            IsRightAssociative = isRightAssociative;
-        }
-
-        public int PrecedenceLevel {get;} 
-
-        public bool IsRightAssociative {get;} 
-
-        public abstract JsonElement Evaluate(JsonElement elem);
-    };
-
-    abstract class BinaryOperator : IBinaryOperator
-    {
-        internal BinaryOperator(int precedenceLevel,
-                                bool isRightAssociative = false)
-        {
-            PrecedenceLevel = precedenceLevel;
-            IsRightAssociative = isRightAssociative;
-        }
-
-        public int PrecedenceLevel {get;} 
-
-        public bool IsRightAssociative {get;} 
-
-        public abstract JsonElement Evaluate(JsonElement lhs, JsonElement rhs);
-    };
-
-    class EqOperator : BinaryOperator
-    {
-        internal EqOperator()
-            : base(6)
-        {
-        }
-
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs) 
-        {
-            var comparer = JsonElementEqualityComparer.Instance;
-            return comparer.Equals(lhs, rhs) ? JsonConstants.True : JsonConstants.False;
-        }
-    };
-
     interface IExpression
     {
         JsonElement Evaluate(JsonElement root,

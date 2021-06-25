@@ -29,7 +29,24 @@ namespace JsonCons.JsonPathLib
                    return true;
 
                case JsonValueKind.Number:
-                   return lhs.GetDouble() == rhs.GetDouble();
+               {
+                   Decimal dec1;
+                   Decimal dec2;
+                   double val1;
+                   double val2;
+                   if (lhs.TryGetDecimal(out dec1) && rhs.TryGetDecimal(out dec2))
+                   {
+                       return dec1 == dec2;
+                   }
+                   else if (lhs.TryGetDouble(out val1) && rhs.TryGetDouble(out val2))
+                   {
+                       return val1 == val2;
+                   }
+                   else
+                   {
+                       return false;
+                   }
+               }
 
                case JsonValueKind.String:
                    return lhs.GetString() == rhs.GetString(); 

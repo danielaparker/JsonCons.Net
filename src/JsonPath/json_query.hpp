@@ -260,7 +260,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class identifier_selector final : public path_selector
+        class identifier_selector : public path_selector
         {
             string_type identifier_;
         public:
@@ -342,7 +342,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class root_selector final : public path_selector
+        class root_selector : public path_selector
         {
             std::size_t id_;
         public:
@@ -394,7 +394,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class current_node_selector final : public path_selector
+        class current_node_selector : public path_selector
         {
         public:
             using path_component_type = typename selector_base_type::path_component_type;
@@ -433,7 +433,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class index_selector final : public path_selector
+        class index_selector : public path_selector
         {
             Int32 _index;
         public:
@@ -478,7 +478,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class wildcard_selector final : public path_selector
+        class wildcard_selector : public path_selector
         {
         public:
             using path_component_type = typename selector_base_type::path_component_type;
@@ -533,7 +533,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class recursive_selector final : public path_selector
+        class recursive_selector : public path_selector
         {
         public:
             using path_component_type = typename selector_base_type::path_component_type;
@@ -587,7 +587,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class union_selector final : public path_selector
+        class union_selector : public path_selector
         {
             std::vector<pathExpression_type> expressions_;
 
@@ -641,7 +641,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class FilterSelector final : public path_selector
+        class FilterSelector : public path_selector
         {
             expression_type _expr;
 
@@ -668,7 +668,7 @@ namespace jsoncons { namespace jsonpath {
                     {
                         std::error_code ec;
                         value_type r = _expr.evaluate_single(resources, root, current[i], options);
-                        bool t = ec ? false : detail::is_true(r);
+                        bool t = ec ? false : detail::IsTrue(r);
                         if (t)
                         {
                             this.EvaluateTail(resources, path, root, current[i], nodes, ndtype, options);
@@ -681,7 +681,7 @@ namespace jsoncons { namespace jsonpath {
                     {
                         std::error_code ec;
                         value_type r = _expr.evaluate_single(resources, root, member.value(), options);
-                        bool t = ec ? false : detail::is_true(r);
+                        bool t = ec ? false : detail::IsTrue(r);
                         if (t)
                         {
                             this.EvaluateTail(resources, path, root, member.value(), nodes, ndtype, options);
@@ -705,7 +705,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class indexExpression_selector final : public path_selector
+        class indexExpression_selector : public path_selector
         {
             expression_type _expr;
 
@@ -761,7 +761,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class argumentExpression final : public expression_base<Json,JsonReference>
+        class argumentExpression : public expression_base<Json,JsonReference>
         {
             expression_type _expr;
 
@@ -799,7 +799,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class SliceSelector final : public path_selector
+        class SliceSelector : public path_selector
         {
             Slice slice_;
         public:
@@ -866,7 +866,7 @@ namespace jsoncons { namespace jsonpath {
             }
         };
 
-        class function_selector final : public path_selector
+        class function_selector : public path_selector
         {
         public:
             using path_component_type = typename selector_base_type::path_component_type;
@@ -1065,7 +1065,7 @@ namespace jsoncons { namespace jsonpath {
                             {
                                 ++_index;
                                 ++_column;
-                                ++evalDepth[evalDepth.Count-1];
+                                ++evalDepth.Peek();
                                 PushToken(TokenKind.LParen);
                                 if (ec) {return pathExpression_type();}
                                 break;
@@ -1415,9 +1415,9 @@ namespace jsoncons { namespace jsonpath {
                                 break;
                             case ')':
                             {
-                                if (evalStack.Count == 0 || (evalDepth[evalDepth.Count-1] != 0))
+                                if (evalStack.Count == 0 || (evalDepth.Peek() != 0))
                                 {
-                                    ec = jsonpath_errc::unbalanced_parentheses;
+                                    throw new JsonException("Unbalanced parentheses");;
                                     return pathExpression_type();
                                 }
                                 evalStack.Pop();
@@ -1545,14 +1545,14 @@ namespace jsoncons { namespace jsonpath {
                             {
                                 if (evalStack.Count == 0)
                                 {
-                                    ec = jsonpath_errc::unbalanced_parentheses;
+                                    throw new JsonException("Unbalanced parentheses");;
                                     return pathExpression_type();
                                 }
-                                if (evalDepth[evalDepth.Count-1] > 0)
+                                if (evalDepth.Peek() > 0)
                                 {
                                     ++_index;
                                     ++_column;
-                                    --evalDepth[evalDepth.Count-1];
+                                    --evalDepth.Peek();
                                     PushToken(TokenKind.RParen);
                                     if (ec) {return pathExpression_type();}
                                 }
@@ -1591,14 +1591,14 @@ namespace jsoncons { namespace jsonpath {
                             {
                                 if (evalStack.Count == 0)
                                 {
-                                    ec = jsonpath_errc::unbalanced_parentheses;
+                                    throw new JsonException("Unbalanced parentheses");;
                                     return pathExpression_type();
                                 }
-                                if (evalDepth[evalDepth.Count-1] > 0)
+                                if (evalDepth.Peek() > 0)
                                 {
                                     ++_index;
                                     ++_column;
-                                    --evalDepth[evalDepth.Count-1];
+                                    --evalDepth.Peek();
                                     PushToken(TokenKind.RParen);
                                     if (ec) {return pathExpression_type();}
                                 }
@@ -1978,7 +1978,7 @@ namespace jsoncons { namespace jsonpath {
                                 _stateStack.Push(ExprState.Expression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
                                 _stateStack.Push(ExprState.PathOrValueOrFunction);
-                                ++evalDepth[evalDepth.Count-1];
+                                ++evalDepth.Peek();
                                 ++_index;
                                 ++_column;
                                 break;
@@ -2065,7 +2065,7 @@ namespace jsoncons { namespace jsonpath {
                                 _stateStack.Pop(); _stateStack.Push(ExprState.Expression);
                                 _stateStack.Push(ExprState.ExpressionRhs);
                                 _stateStack.Push(ExprState.PathOrValueOrFunction);
-                                ++evalDepth[evalDepth.Count-1];
+                                ++evalDepth.Peek();
                                 ++_index;
                                 ++_column;
                                 break;
@@ -2863,9 +2863,9 @@ namespace jsoncons { namespace jsonpath {
                 ec = jsonpath_errc::unexpected_eof;
                 return pathExpression_type();
             }
-            if (evalStack.Count != 1 || evalDepth[evalDepth.Count-1] != 0)
+            if (evalStack.Count != 1 || evalDepth.Peek() != 0)
             {
-                ec = jsonpath_errc::unbalanced_parentheses;
+                throw new JsonException("Unbalanced parentheses");;
                 return pathExpression_type();
             }
 
@@ -2920,7 +2920,7 @@ namespace jsoncons { namespace jsonpath {
             }
             if (it == _operatorStack.Rend())
             {
-                ec = jsonpath_errc::unbalanced_parentheses;
+                throw new JsonException("Unbalanced parentheses");;
                 return;
             }
             ++it;
@@ -2952,7 +2952,7 @@ namespace jsoncons { namespace jsonpath {
                     }
                     if (it == _outputStack.Rend())
                     {
-                        ec = jsonpath_errc::unbalanced_parentheses;
+                        throw new JsonException("Unbalanced parentheses");;
                         return;
                     }
                     ++it;
@@ -2995,7 +2995,7 @@ namespace jsoncons { namespace jsonpath {
                     }
                     if (it == _outputStack.Rend())
                     {
-                        ec = jsonpath_errc::unbalanced_parentheses;
+                        throw new JsonException("Unbalanced parentheses");;
                         return;
                     }
                     ++it;
@@ -3033,7 +3033,7 @@ namespace jsoncons { namespace jsonpath {
                     }
                     if (it == _outputStack.Rend())
                     {
-                        ec = jsonpath_errc::unbalanced_parentheses;
+                        throw new JsonException("Unbalanced parentheses");;
                         return;
                     }
                     ++it;
@@ -3081,7 +3081,7 @@ namespace jsoncons { namespace jsonpath {
                     }
                     if (it == _outputStack.Rend())
                     {
-                        ec = jsonpath_errc::unbalanced_parentheses;
+                        throw new JsonException("Unbalanced parentheses");;
                         return;
                     }
                     ++it;
@@ -3127,7 +3127,7 @@ namespace jsoncons { namespace jsonpath {
                     }
                     if (it == _outputStack.Rend())
                     {
-                        ec = jsonpath_errc::unbalanced_parentheses;
+                        throw new JsonException("Unbalanced parentheses");;
                         return;
                     }
                     if (it.arity() && arg_count != *(it.arity()))

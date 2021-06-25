@@ -386,12 +386,12 @@ namespace detail {
             return _isRightAssociative;
         }
 
-        virtual Json Evaluate(JsonElement, 
+        virtual JsonElement Evaluate(JsonElement, 
                               std.error_code&) = 0;
     };
 
     template <class Json>
-    bool is_false(const Json& val)
+    bool IsFalse(const Json& val)
     {
         return ((val.ValueKind == JsonValueKind.Array && val.empty()) ||
                  (val.ValueKind == JsonValueKind.Object && val.empty()) ||
@@ -402,35 +402,35 @@ namespace detail {
     }
 
     template <class Json>
-    bool is_true(const Json& val)
+    bool IsTrue(const Json& val)
     {
-        return !is_false(val);
+        return !IsFalse(val);
     }
 
     template <class Json,class JsonElement>
-    class unary_notOperator final : public UnaryOperator<Json,JsonElement>
+    class NotOperator : public UnaryOperator<Json,JsonElement>
     {
     public:
-        unary_notOperator()
+        NotOperator()
             : UnaryOperator<Json,JsonElement>(1, true)
         {}
 
-        Json Evaluate(JsonElement val, 
+        JsonElement Evaluate(JsonElement val, 
                       std.error_code&) override
         {
-            return is_false(val) ? Json(true) : Json(false);
+            return IsFalse(val) ? JsonConstants::True : JsonConstants::False;
         }
     };
 
     template <class Json,class JsonElement>
-    class unary_minusOperator final : public UnaryOperator<Json,JsonElement>
+    class UnaryMinusOperator : public UnaryOperator<Json,JsonElement>
     {
     public:
-        unary_minusOperator()
+        UnaryMinusOperator()
             : UnaryOperator<Json,JsonElement>(1, true)
         {}
 
-        Json Evaluate(JsonElement val, 
+        JsonElement Evaluate(JsonElement val, 
                       std.error_code&) override
         {
             if (val.is_int64())
@@ -449,29 +449,29 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class regexOperator final : public UnaryOperator<Json,JsonElement>
+    class RegexOperator : public UnaryOperator<Json,JsonElement>
     {
         using char_type = typename Json.char_type;
         using string_type = std.basic_string<char_type>;
         std.basic_regex<char_type> pattern_;
     public:
-        regexOperator(std.basic_regex<char_type>&& pattern)
+        RegexOperator(std.basic_regex<char_type>&& pattern)
             : UnaryOperator<Json,JsonElement>(2, true),
               pattern_(std.move(pattern))
         {
         }
 
-        regexOperator(regexOperator&&) = default;
-        regexOperator& operator=(regexOperator&&) = default;
+        RegexOperator(RegexOperator&&) = default;
+        RegexOperator& operator=(RegexOperator&&) = default;
 
-        Json Evaluate(JsonElement val, 
+        JsonElement Evaluate(JsonElement val, 
                              std.error_code&) override
         {
             if (!val.ValueKind == JsonValueKind.String)
             {
                 return JsonConstants.Null;
             }
-            return std.regex_search(val.as_string(), pattern_) ? Json(true) : Json(false);
+            return std.regex_search(val.as_string(), pattern_) ? JsonConstants::True : JsonConstants::False;
         }
     };
 
@@ -496,14 +496,14 @@ namespace detail {
             return _isRightAssociative;
         }
 
-        virtual Json Evaluate(JsonElement, 
+        virtual JsonElement Evaluate(JsonElement, 
                              JsonElement);
     };
 
     // Implementations
 
     template <class Json,class JsonElement>
-    class OrOperator final : BinaryOperator
+    class OrOperator : BinaryOperator
     {
     public:
         OrOperator()
@@ -511,13 +511,13 @@ namespace detail {
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs)
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
         {
             if (lhs.ValueKind == JsonValueKind.Null && rhs.ValueKind == JsonValueKind.Null)
             {
                 return JsonConstants.Null;
             }
-            if (!is_false(lhs))
+            if (!IsFalse(lhs))
             {
                 return lhs;
             }
@@ -540,17 +540,17 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class andOperator final : BinaryOperator
+    class AndOperator : BinaryOperator
     {
     public:
-        andOperator()
-            : BinaryOperator(8)
+        AndOperator()
+            : base(8)
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs)
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
         {
-            if (is_true(lhs))
+            if (IsTrue(lhs))
             {
                 return rhs;
             }
@@ -574,17 +574,17 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class EqOperator final : BinaryOperator
+    class EqOperator : BinaryOperator
     {
     public:
         EqOperator()
-            : BinaryOperator(6)
+            : base(6)
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs) 
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs) 
         {
-            return lhs == rhs ? Json(true) : Json(false);
+            return lhs == rhs ? JsonConstants::True : JsonConstants::False;
         }
 
         std.string to_string(int level = 0) override
@@ -601,17 +601,17 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class neOperator final : BinaryOperator
+    class NeOperator : BinaryOperator
     {
     public:
-        neOperator()
-            : BinaryOperator(6)
+        NeOperator()
+            : base(6)
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs) 
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs) 
         {
-            return lhs != rhs ? Json(true) : Json(false);
+            return lhs != rhs ? JsonConstants::True : JsonConstants::False;
         }
 
         std.string to_string(int level = 0) override
@@ -628,23 +628,23 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class ltOperator final : BinaryOperator
+    class LtOperator : BinaryOperator
     {
     public:
-        ltOperator()
-            : BinaryOperator(5)
+        LtOperator()
+            : base(5)
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs) 
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs) 
         {
             if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
-                return lhs < rhs ? Json(true) : Json(false);
+                return lhs < rhs ? JsonConstants::True : JsonConstants::False;
             }
             else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
-                return lhs < rhs ? Json(true) : Json(false);
+                return lhs < rhs ? JsonConstants::True : JsonConstants::False;
             }
             return JsonConstants.Null;
         }
@@ -663,23 +663,23 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class lteOperator final : BinaryOperator
+    class LteOperator : BinaryOperator
     {
     public:
-        lteOperator()
-            : BinaryOperator(5)
+        LteOperator()
+            : base(5)
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs) 
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs) 
         {
             if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
-                return lhs <= rhs ? Json(true) : Json(false);
+                return lhs <= rhs ? JsonConstants::True : JsonConstants::False;
             }
             else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
-                return lhs <= rhs ? Json(true) : Json(false);
+                return lhs <= rhs ? JsonConstants::True : JsonConstants::False;
             }
             return JsonConstants.Null;
         }
@@ -698,25 +698,25 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class gtOperator final : BinaryOperator
+    class GtOperator : BinaryOperator
     {
     public:
-        gtOperator()
-            : BinaryOperator(5)
+        GtOperator()
+            : base(5)
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs)
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
         {
             //std.cout << "operator> lhs: " << lhs << ", rhs: " << rhs << "\n";
 
             if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
-                return lhs > rhs ? Json(true) : Json(false);
+                return lhs > rhs ? JsonConstants::True : JsonConstants::False;
             }
             else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
-                return lhs > rhs ? Json(true) : Json(false);
+                return lhs > rhs ? JsonConstants::True : JsonConstants::False;
             }
             return JsonConstants.Null;
         }
@@ -735,23 +735,23 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class gteOperator final : BinaryOperator
+    class GteOperator : BinaryOperator
     {
     public:
-        gteOperator()
-            : BinaryOperator(5)
+        GteOperator()
+            : base(5)
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs)
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
         {
             if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
-                return lhs >= rhs ? Json(true) : Json(false);
+                return lhs >= rhs ? JsonConstants::True : JsonConstants::False;
             }
             else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
-                return lhs >= rhs ? Json(true) : Json(false);
+                return lhs >= rhs ? JsonConstants::True : JsonConstants::False;
             }
             return JsonConstants.Null;
         }
@@ -770,15 +770,15 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class plusOperator final : BinaryOperator
+    class plusOperator : BinaryOperator
     {
     public:
         plusOperator()
-            : BinaryOperator(4)
+            : base(4)
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs)
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
@@ -812,15 +812,15 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class minusOperator final : BinaryOperator
+    class minusOperator : BinaryOperator
     {
     public:
         minusOperator()
-            : BinaryOperator(4)
+            : base(4)
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs)
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
@@ -854,15 +854,15 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class multOperator final : BinaryOperator
+    class muLtOperator : BinaryOperator
     {
     public:
-        multOperator()
-            : BinaryOperator(3)
+        muLtOperator()
+            : base(3)
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs)
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
@@ -896,15 +896,15 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class divOperator final : BinaryOperator
+    class divOperator : BinaryOperator
     {
     public:
         divOperator()
-            : BinaryOperator(3)
+            : base(3)
         {
         }
 
-        Json Evaluate(JsonElement lhs, JsonElement rhs)
+        JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
         {
             //std.cout << "operator/ lhs: " << lhs << ", rhs: " << rhs << "\n";
 
@@ -2369,19 +2369,19 @@ namespace detail {
 
         UnaryOperator get_unary_not()
         {
-            static unary_notOperator<Json,JsonElement> oper;
+            static NotOperator<Json,JsonElement> oper;
             return &oper;
         }
 
         UnaryOperator get_unary_minus()
         {
-            static unary_minusOperator<Json,JsonElement> oper;
+            static UnaryMinusOperator<Json,JsonElement> oper;
             return &oper;
         }
 
         UnaryOperator GetRegexOperator(std.basic_regex<char_type>&& pattern) 
         {
-            UnaryOperators_.push_back(jsoncons.make_unique<regexOperator<Json,JsonElement>>(std.move(pattern)));
+            UnaryOperators_.push_back(jsoncons.make_unique<RegexOperator<Json,JsonElement>>(std.move(pattern)));
             return UnaryOperators_.back().get();
         }
 
@@ -2394,7 +2394,7 @@ namespace detail {
 
         BinaryOperator GetAndOperator()
         {
-            static andOperator<Json,JsonElement> oper;
+            static AndOperator<Json,JsonElement> oper;
 
             return &oper;
         }
@@ -2407,31 +2407,31 @@ namespace detail {
 
         BinaryOperator GetNeOperator()
         {
-            static neOperator<Json,JsonElement> oper;
+            static NeOperator<Json,JsonElement> oper;
             return &oper;
         }
 
         BinaryOperator GetLtOperator()
         {
-            static ltOperator<Json,JsonElement> oper;
+            static LtOperator<Json,JsonElement> oper;
             return &oper;
         }
 
         BinaryOperator GetLeOperator()
         {
-            static lteOperator<Json,JsonElement> oper;
+            static LteOperator<Json,JsonElement> oper;
             return &oper;
         }
 
         BinaryOperator GetGtOperator()
         {
-            static gtOperator<Json,JsonElement> oper;
+            static GtOperator<Json,JsonElement> oper;
             return &oper;
         }
 
         BinaryOperator GetGteOperator()
         {
-            static gteOperator<Json,JsonElement> oper;
+            static GteOperator<Json,JsonElement> oper;
             return &oper;
         }
 
@@ -2447,9 +2447,9 @@ namespace detail {
             return &oper;
         }
 
-        BinaryOperator GetMultOperator()
+        BinaryOperator GetMuLtOperator()
         {
-            static multOperator<Json,JsonElement> oper;
+            static muLtOperator<Json,JsonElement> oper;
             return &oper;
         }
 
@@ -2926,7 +2926,7 @@ namespace detail {
 
         path_expression& operator=(path_expression&& expr) = default;
 
-        Json Evaluate(dynamic_resources<Json,JsonElement>& resources, 
+        JsonElement Evaluate(dynamic_resources<Json,JsonElement>& resources, 
                       reference root,
                       path_node_type& path, 
                       reference instance,
