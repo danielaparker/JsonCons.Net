@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using NUnit.Framework;
         
 namespace JsonCons.JsonPathLib
 {
@@ -24,7 +25,7 @@ namespace JsonCons.JsonPathLib
             _falseValue = JsonDocument.Parse("false").RootElement;
             _nullValue = JsonDocument.Parse("null").RootElement;
             _zeroValue = JsonDocument.Parse("0").RootElement;
-            _emptyString = JsonDocument.Parse(@"""").RootElement;
+            _emptyString = JsonDocument.Parse("\"\"").RootElement;
             _emptyArray = JsonDocument.Parse(@"[]").RootElement;
             _emptyObject = JsonDocument.Parse(@"{}").RootElement;
         }
@@ -110,13 +111,25 @@ namespace JsonCons.JsonPathLib
     {
         internal static bool IsFalse(JsonElement val)
         {
+            TestContext.WriteLine($"IsFalse {val}");
             var comparer = new JsonElementEqualityComparer();
-            return ((val.ValueKind == JsonValueKind.Array && val.GetArrayLength() == 0) ||
-                     comparer.Equals(val,JsonConstants.EmptyObject) ||
-                     comparer.Equals(val,JsonConstants.EmptyString) ||
-                     (val.ValueKind == JsonValueKind.False) ||
-                     comparer.Equals(val,JsonConstants.Zero) ||
-                     val.ValueKind == JsonValueKind.Null);
+            switch (val.ValueKind)
+            {
+                case JsonValueKind.False:
+                    return true;
+                case JsonValueKind.Null:
+                    return true;
+                case JsonValueKind.Array:
+                    return val.GetArrayLength() == 0;
+                case JsonValueKind.Object:
+                    return comparer.Equals(val,JsonConstants.EmptyObject);
+                case JsonValueKind.String:
+                    return comparer.Equals(val,JsonConstants.EmptyString);
+                case JsonValueKind.Number:
+                    return comparer.Equals(val,JsonConstants.Zero);
+                default:
+                    return false;
+            }
         }
 
         internal static bool IsTrue(JsonElement val)
@@ -130,6 +143,12 @@ namespace JsonCons.JsonPathLib
         internal Expression(IReadOnlyList<Token> tokens)
         {
             _tokens = tokens;
+
+            TestContext.WriteLine("Expression constructor");
+            foreach (var token in _tokens)
+            {
+                TestContext.WriteLine($"    {token}");
+            }
         }
 
         public JsonElement Evaluate(JsonElement root,
@@ -137,6 +156,8 @@ namespace JsonCons.JsonPathLib
                                     JsonElement current, 
                                     ResultOptions options)
         {
+            TestContext.WriteLine("Evaluate");
+
             Stack<JsonElement> stack = new Stack<JsonElement>();
 
             foreach (var token in _tokens)

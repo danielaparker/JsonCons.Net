@@ -2876,7 +2876,7 @@ namespace jsoncons { namespace jsonpath {
             //}
             //std::cout << "\n";
 
-            if (_outputStack.empty() || !_operatorStack.Count == 0())
+            if (_outputStack.Count == 0 || !_operatorStack.Count == 0())
             {
                 ec = jsonpath_errc::unexpected_eof;
                 return pathExpression_type();
@@ -2958,7 +2958,7 @@ namespace jsoncons { namespace jsonpath {
                     ++it;
                     _outputStack.erase(it.base(),_outputStack.end());
 
-                    if (!_outputStack.empty() && _outputStack.Peek().is_path())
+                    if (!_outputStack.Count == 0 && _outputStack.Peek().is_path())
                     {
                         _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<FilterSelector>(expression_type(std::move(toks))));
                     }
@@ -3001,7 +3001,7 @@ namespace jsoncons { namespace jsonpath {
                     ++it;
                     _outputStack.erase(it.base(),_outputStack.end());
 
-                    if (!_outputStack.empty() && _outputStack.Peek().is_path())
+                    if (!_outputStack.Count == 0 && _outputStack.Peek().is_path())
                     {
                         _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<indexExpression_selector>(expression_type(std::move(toks))));
                     }
@@ -3043,7 +3043,7 @@ namespace jsoncons { namespace jsonpath {
                 }
                 case TokenKind.selector:
                 {
-                    if (!_outputStack.empty() && _outputStack.Peek().is_path())
+                    if (!_outputStack.Count == 0 && _outputStack.Peek().is_path())
                     {
                         _outputStack.Peek().selector_.AppendSelector(std::move(tok.selector_));
                     }
@@ -3087,7 +3087,7 @@ namespace jsoncons { namespace jsonpath {
                     ++it;
                     _outputStack.erase(it.base(),_outputStack.end());
 
-                    if (!_outputStack.empty() && _outputStack.Peek().is_path())
+                    if (!_outputStack.Count == 0 && _outputStack.Peek().is_path())
                     {
                         _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<union_selector>(std::move(expressions)));
                     }
@@ -3139,7 +3139,7 @@ namespace jsoncons { namespace jsonpath {
                     ++it;
                     _outputStack.erase(it.base(),_outputStack.end());
 
-                    if (!_outputStack.empty() && _outputStack.Peek().is_path())
+                    if (!_outputStack.Count == 0 && _outputStack.Peek().is_path())
                     {
                         _outputStack.Peek().selector_.AppendSelector(jsoncons::make_unique<function_selector>(expression_type(std::move(toks))));
                     }
@@ -3150,7 +3150,7 @@ namespace jsoncons { namespace jsonpath {
                     break;
                 }
                 case TokenKind.literal:
-                    if (!_outputStack.empty() && (_outputStack.Peek().type() == TokenKind.CurrentNode || _outputStack.Peek().type() == TokenKind.RootNode))
+                    if (!_outputStack.Count == 0 && (_outputStack.Peek().Type == TokenKind.CurrentNode || _outputStack.Peek().Type == TokenKind.RootNode))
                     {
                         _outputStack.Peek() = std::move(tok);
                     }

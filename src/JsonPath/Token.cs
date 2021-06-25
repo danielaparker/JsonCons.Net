@@ -168,6 +168,31 @@ namespace JsonCons.JsonPathLib
             else
                 return false;        
         }
+
+        public override string ToString()
+        {
+            switch(_type)
+            {
+                case TokenKind.RootNode:
+                    return "RootNode";
+                case TokenKind.CurrentNode:
+                    return "CurrentNode";
+                case TokenKind.BeginFilter:
+                    return "BeginFilter";
+                case TokenKind.EndFilter:
+                    return "EndFilter";
+                case TokenKind.Value:
+                    return "Value";
+                case TokenKind.Selector:
+                    return $"Selector {_expr}";
+                case TokenKind.UnaryOperator:
+                    return "UnaryOperator";
+                case TokenKind.BinaryOperator:
+                    return "BinaryOperator";
+                default:
+                    return "Other";
+            }
+        }
     };
 
 } // namespace JsonCons.JsonPathLib

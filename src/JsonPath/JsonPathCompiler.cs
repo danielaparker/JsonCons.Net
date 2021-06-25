@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using NUnit.Framework;
         
 namespace JsonCons.JsonPathLib
 {
@@ -264,14 +265,14 @@ namespace JsonCons.JsonPathLib
                                 SkipWhiteSpace();
                                 break;
                             case '$':
-                                //PushToken(new Token(TokenKind.RootNode));
+                                PushToken(new Token(TokenKind.RootNode));
                                 PushToken(new Token(new RootSelector(selector_id++)));
                                 _stateStack.Pop();
                                 ++_index;
                                 ++_column;
                                 break;
                             case '@':
-                                //PushToken(new Token(TokenKind.CurrentNode));
+                                PushToken(new Token(TokenKind.CurrentNode));
                                 PushToken(new Token(new CurrentNodeSelector()));
                                 _stateStack.Pop();
                                 ++_index;
@@ -710,6 +711,25 @@ namespace JsonCons.JsonPathLib
                                 throw new JsonException("Expected bracket specifier or union");
                         }
                         break;
+                    case ExprState.FilterExpression:
+                    {
+                        switch (_input[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ',':
+                            case ']':
+                            {
+                                PushToken(new Token(TokenKind.EndFilter));
+                                _stateStack.Pop();
+                                break;
+                            }
+                            default:
+                                throw new JsonException("Expected comma or right bracket");
+                        }
+                        break;
+                    }
                     case ExprState.IdentifierOrUnion:
                         switch (_input[_index])
                         {
@@ -1402,6 +1422,8 @@ namespace JsonCons.JsonPathLib
             }
             Token token = _outputStack.Pop();
 
+            TestContext.WriteLine($"Main token: {token}");
+
             return new JsonPath(token.GetSelector());
         }
 
@@ -1555,6 +1577,21 @@ namespace JsonCons.JsonPathLib
                     }
                     break;
                 }
+                case TokenKind.Value:
+                    if (_outputStack.Count > 0 && (_outputStack.Peek().Type == TokenKind.CurrentNode || _outputStack.Peek().Type == TokenKind.RootNode))
+                    {
+                        _outputStack.Pop();
+                        _outputStack.Push(token);
+                    }
+                    else
+                    {
+                        _outputStack.Push(token);
+                    }
+                    break;
+                case TokenKind.RootNode:
+                case TokenKind.CurrentNode:
+                    _outputStack.Push(token);
+                    break;
             }
         }
 

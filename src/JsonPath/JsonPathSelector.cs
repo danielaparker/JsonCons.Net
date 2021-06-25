@@ -111,6 +111,11 @@ namespace JsonCons.JsonPathLib
         {
             this.EvaluateTail(root, pathTail, root, accumulator, options);        
         }
+
+        public override string ToString()
+        {
+            return "RootSelector";
+        }
     }
 
     class CurrentNodeSelector : BaseSelector
@@ -122,6 +127,11 @@ namespace JsonCons.JsonPathLib
                                     ResultOptions options)
         {
             this.EvaluateTail(root, pathTail, current, accumulator, options);        
+        }
+
+        public override string ToString()
+        {
+            return "CurrentNodeSelector";
         }
     }
 
@@ -150,6 +160,11 @@ namespace JsonCons.JsonPathLib
                                       value, accumulator, options);
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return $"IdentifierSelector {_identifier}";
         }
     }
 
@@ -187,6 +202,11 @@ namespace JsonCons.JsonPathLib
                     }
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return $"IndexSelector {_index}";
         }
     }
 
@@ -250,6 +270,11 @@ namespace JsonCons.JsonPathLib
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return "SliceSelector";
+        }
     };
 
     class RecursiveDescentSelector : BaseSelector
@@ -280,6 +305,11 @@ namespace JsonCons.JsonPathLib
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return "RecursiveDescentSelector";
+        }
     }
 
     class WildcardSelector : BaseSelector
@@ -307,6 +337,11 @@ namespace JsonCons.JsonPathLib
                                       prop.Value, accumulator, options);
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return "WildcardSelector";
         }
     }
 
@@ -338,6 +373,11 @@ namespace JsonCons.JsonPathLib
                 selector.Select(root, pathTail, current, accumulator, options);
             }
         }
+
+        public override string ToString()
+        {
+            return "UnionSelector";
+        }
     }
 
     class FilterSelector : BaseSelector
@@ -346,6 +386,8 @@ namespace JsonCons.JsonPathLib
 
         internal FilterSelector(Expression expr)
         {
+            TestContext.WriteLine("FilterSelector constructor");
+
             _expr = expr;
         }
 
@@ -355,6 +397,8 @@ namespace JsonCons.JsonPathLib
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
+            TestContext.WriteLine("FilterSelector");
+
             if (current.ValueKind == JsonValueKind.Array)
             {
                 foreach (var item in current.EnumerateArray())
@@ -377,6 +421,11 @@ namespace JsonCons.JsonPathLib
                     }
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return "FilterSelector";
         }
     }
 
