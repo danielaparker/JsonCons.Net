@@ -8,28 +8,34 @@ using System.Text.Json;
         
 namespace JsonCons.JsonPathLib
 {
-    class Resources 
-    {
-
-    };
-
     static class JsonConstants
     {
         static readonly JsonElement _trueValue;
         static readonly JsonElement _falseValue;
         static readonly JsonElement _nullValue;
+        static readonly JsonElement _zeroValue;
+        static readonly JsonElement _emptyString;
+        static readonly JsonElement _emptyArray;
+        static readonly JsonElement _emptyObject;
 
         static JsonConstants()
         {
             _trueValue = JsonDocument.Parse("true").RootElement;
             _falseValue = JsonDocument.Parse("false").RootElement;
             _nullValue = JsonDocument.Parse("null").RootElement;
+            _zeroValue = JsonDocument.Parse("0").RootElement;
+            _emptyString = JsonDocument.Parse(@"""").RootElement;
+            _emptyArray = JsonDocument.Parse(@"[]").RootElement;
+            _emptyObject = JsonDocument.Parse(@"{}").RootElement;
         }
-
 
         internal static JsonElement True {get {return _trueValue;}}
         internal static JsonElement False { get { return _falseValue; } }
         internal static JsonElement Null { get { return _falseValue; } }
+        internal static JsonElement Zero { get { return _zeroValue; } }
+        internal static JsonElement EmptyString { get { return _emptyString; } }
+        internal static JsonElement EmptyArray { get { return _emptyArray; } }
+        internal static JsonElement EmptyObject { get { return _emptyObject; } }
     };
 
     interface IUnaryOperator 
@@ -102,6 +108,23 @@ namespace JsonCons.JsonPathLib
 
     class Expression : IExpression
     {
+        internal static bool IsFalse(JsonElement val)
+        {
+            var comparer = new JsonElementEqualityComparer();
+            return ((val.ValueKind == JsonValueKind.Array && val.GetArrayLength() == 0) ||
+                     comparer.Equals(val,JsonConstants.EmptyObject) ||
+                     comparer.Equals(val,JsonConstants.EmptyString) ||
+                     (val.ValueKind == JsonValueKind.False) ||
+                     comparer.Equals(val,JsonConstants.Zero) ||
+                     val.ValueKind == JsonValueKind.Null);
+        }
+
+        internal static bool IsTrue(JsonElement val)
+        {
+            return !IsFalse(val);
+        }
+
+
         IReadOnlyList<Token> _tokens;
 
         internal Expression(IReadOnlyList<Token> tokens)
@@ -114,7 +137,69 @@ namespace JsonCons.JsonPathLib
                                     JsonElement current, 
                                     ResultOptions options)
         {
-            return root;
+            Stack<JsonElement> stack = new Stack<JsonElement>();
+
+            foreach (var token in _tokens)
+            {
+                switch (token.Type)
+                {
+                    case TokenKind.Value:
+                    {
+                        stack.Push(token.GetValue());
+                        break;
+                    }
+                    case TokenKind.UnaryOperator:
+                    {
+                        Debug.Assert(stack.Count >= 1);
+                        var item = stack.Pop();
+                        var val = token.GetUnaryOperator().Evaluate(item);
+                        stack.Push(val);
+                        break;
+                    }
+                    case TokenKind.BinaryOperator:
+                    {
+                        Debug.Assert(stack.Count >= 2);
+                        var rhs = stack.Pop();
+                        var lhs = stack.Pop();
+
+                        var val = token.GetBinaryOperator().Evaluate(lhs, rhs);
+                        stack.Push(val);
+                        break;
+                    }
+                    case TokenKind.RootNode:
+                        stack.Push(root);
+                        break;
+                    case TokenKind.CurrentNode:
+                        stack.Push(current);
+                        break;
+                    case TokenKind.Selector:
+                    {
+                        if (stack.Count == 0)
+                        {
+                            stack.Push(current);
+                        }
+
+                        var item = stack.Pop();
+                        var values = new List<JsonElement>();
+                        var accumulator = new ValueAccumulator(values);
+                        token.GetSelector().Select(root, 
+                                                   new PathNode("@"), 
+                                                   item, 
+                                                   accumulator, 
+                                                   options);
+                        if (values.Count == 1)
+                        {
+                            stack.Push(values[0]);
+                        }
+                        else
+                        {
+                            stack.Push(JsonConstants.Null);
+                        }
+                        break;
+                    }
+                }
+            }
+            return stack.Count == 0 ? JsonConstants.Null : stack.Pop();
         }
     };
 

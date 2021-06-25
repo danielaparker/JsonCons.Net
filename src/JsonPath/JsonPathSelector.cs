@@ -350,11 +350,33 @@ namespace JsonCons.JsonPathLib
         }
 
         public override void Select(JsonElement root, 
-                                    PathNode pathTail,
+                                    PathNode stem,
                                     JsonElement current,
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
+            if (current.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var item in current.EnumerateArray())
+                {
+                    var r = _expr.Evaluate(root, stem, item, options);
+                    if (Expression.IsTrue(r))
+                    {
+                        this.EvaluateTail(root, stem, item, accumulator, options);
+                    }
+                }
+            }
+            else if (current.ValueKind == JsonValueKind.Object)
+            {
+                foreach (var member in current.EnumerateObject())
+                {
+                    var r = _expr.Evaluate(root, stem, member.Value, options);
+                    if (Expression.IsTrue(r))
+                    {
+                        this.EvaluateTail(root, stem, member.Value, accumulator, options);
+                    }
+                }
+            }
         }
     }
 

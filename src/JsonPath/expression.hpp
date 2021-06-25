@@ -393,11 +393,11 @@ namespace detail {
     template <class Json>
     bool is_false(const Json& val)
     {
-        return ((val.is_array() && val.empty()) ||
-                 (val.is_object() && val.empty()) ||
-                 (val.is_string() && val.as_string_view().empty()) ||
+        return ((val.ValueKind == JsonValueKind.Array && val.empty()) ||
+                 (val.ValueKind == JsonValueKind.Object && val.empty()) ||
+                 (val.ValueKind == JsonValueKind.String && val.as_string_view().empty()) ||
                  (val.is_bool() && !val.as_bool()) ||
-                 (val.is_number() && (val == Json(0))) ||
+                 (val.ValueKind == JsonValueKind.Number && (val == Json(0))) ||
                  val.ValueKind == JsonValueKind.Null);
     }
 
@@ -443,7 +443,7 @@ namespace detail {
             }
             else
             {
-                return Json.null();
+                return JsonConstants.Null;
             }
         }
     };
@@ -467,9 +467,9 @@ namespace detail {
         Json Evaluate(JsonElement val, 
                              std.error_code&) override
         {
-            if (!val.is_string())
+            if (!val.ValueKind == JsonValueKind.String)
             {
-                return Json.null();
+                return JsonConstants.Null;
             }
             return std.regex_search(val.as_string(), pattern_) ? Json(true) : Json(false);
         }
@@ -515,7 +515,7 @@ namespace detail {
         {
             if (lhs.ValueKind == JsonValueKind.Null && rhs.ValueKind == JsonValueKind.Null)
             {
-                return Json.null();
+                return JsonConstants.Null;
             }
             if (!is_false(lhs))
             {
@@ -638,15 +638,15 @@ namespace detail {
 
         Json Evaluate(JsonElement lhs, JsonElement rhs) 
         {
-            if (lhs.is_number() && rhs.is_number())
+            if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
                 return lhs < rhs ? Json(true) : Json(false);
             }
-            else if (lhs.is_string() && rhs.is_string())
+            else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
                 return lhs < rhs ? Json(true) : Json(false);
             }
-            return Json.null();
+            return JsonConstants.Null;
         }
 
         std.string to_string(int level = 0) override
@@ -673,15 +673,15 @@ namespace detail {
 
         Json Evaluate(JsonElement lhs, JsonElement rhs) 
         {
-            if (lhs.is_number() && rhs.is_number())
+            if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
                 return lhs <= rhs ? Json(true) : Json(false);
             }
-            else if (lhs.is_string() && rhs.is_string())
+            else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
                 return lhs <= rhs ? Json(true) : Json(false);
             }
-            return Json.null();
+            return JsonConstants.Null;
         }
 
         std.string to_string(int level = 0) override
@@ -710,15 +710,15 @@ namespace detail {
         {
             //std.cout << "operator> lhs: " << lhs << ", rhs: " << rhs << "\n";
 
-            if (lhs.is_number() && rhs.is_number())
+            if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
                 return lhs > rhs ? Json(true) : Json(false);
             }
-            else if (lhs.is_string() && rhs.is_string())
+            else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
                 return lhs > rhs ? Json(true) : Json(false);
             }
-            return Json.null();
+            return JsonConstants.Null;
         }
 
         std.string to_string(int level = 0) override
@@ -745,15 +745,15 @@ namespace detail {
 
         Json Evaluate(JsonElement lhs, JsonElement rhs)
         {
-            if (lhs.is_number() && rhs.is_number())
+            if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
                 return lhs >= rhs ? Json(true) : Json(false);
             }
-            else if (lhs.is_string() && rhs.is_string())
+            else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
                 return lhs >= rhs ? Json(true) : Json(false);
             }
-            return Json.null();
+            return JsonConstants.Null;
         }
 
         std.string to_string(int level = 0) override
@@ -780,9 +780,9 @@ namespace detail {
 
         Json Evaluate(JsonElement lhs, JsonElement rhs)
         {
-            if (!(lhs.is_number() && rhs.is_number()))
+            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
-                return Json.null();
+                return JsonConstants.Null;
             }
             else if (lhs.is_int64() && rhs.is_int64())
             {
@@ -822,9 +822,9 @@ namespace detail {
 
         Json Evaluate(JsonElement lhs, JsonElement rhs)
         {
-            if (!(lhs.is_number() && rhs.is_number()))
+            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
-                return Json.null();
+                return JsonConstants.Null;
             }
             else if (lhs.is_int64() && rhs.is_int64())
             {
@@ -864,9 +864,9 @@ namespace detail {
 
         Json Evaluate(JsonElement lhs, JsonElement rhs)
         {
-            if (!(lhs.is_number() && rhs.is_number()))
+            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
-                return Json.null();
+                return JsonConstants.Null;
             }
             else if (lhs.is_int64() && rhs.is_int64())
             {
@@ -908,9 +908,9 @@ namespace detail {
         {
             //std.cout << "operator/ lhs: " << lhs << ", rhs: " << rhs << "\n";
 
-            if (!(lhs.is_number() && rhs.is_number()))
+            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
-                return Json.null();
+                return JsonConstants.Null;
             }
             else if (lhs.is_int64() && rhs.is_int64())
             {
@@ -1022,13 +1022,13 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
-            auto arg1= args[1].value();
+            var arg0= args[0].value();
+            var arg1= args[1].value();
 
             switch (arg0.type())
             {
                 case json_type.array_value:
-                    for (auto& j : arg0.array_range())
+                    for (var& j : arg0.array_range())
                     {
                         if (j == arg1)
                         {
@@ -1038,13 +1038,13 @@ namespace detail {
                     return value_type(false);
                 case json_type.string_value:
                 {
-                    if (!arg1.is_string())
+                    if (!arg1.ValueKind == JsonValueKind.String)
                     {
                         ec = jsonpath_errc.invalid_type;
                         return value_type.null();
                     }
-                    auto sv0 = arg0.template as<string_view_type>();
-                    auto sv1 = arg1.template as<string_view_type>();
+                    var sv0 = arg0.template as<string_view_type>();
+                    var sv1 = arg1.template as<string_view_type>();
                     return sv0.find(sv1) != string_view_type.npos ? value_type(true) : value_type(false);
                 }
                 default:
@@ -1090,22 +1090,22 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
-            if (!arg0.is_string())
+            var arg0= args[0].value();
+            if (!arg0.ValueKind == JsonValueKind.String)
             {
                 ec = jsonpath_errc.invalid_type;
                 return value_type.null();
             }
 
-            auto arg1= args[1].value();
-            if (!arg1.is_string())
+            var arg1= args[1].value();
+            if (!arg1.ValueKind == JsonValueKind.String)
             {
                 ec = jsonpath_errc.invalid_type;
                 return value_type.null();
             }
 
-            auto sv0 = arg0.template as<string_view_type>();
-            auto sv1 = arg1.template as<string_view_type>();
+            var sv0 = arg0.template as<string_view_type>();
+            var sv1 = arg1.template as<string_view_type>();
 
             if (sv1.length() <= sv0.length() && sv1 == sv0.substr(sv0.length() - sv1.length()))
             {
@@ -1152,22 +1152,22 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
-            if (!arg0.is_string())
+            var arg0= args[0].value();
+            if (!arg0.ValueKind == JsonValueKind.String)
             {
                 ec = jsonpath_errc.invalid_type;
                 return value_type.null();
             }
 
-            auto arg1= args[1].value();
-            if (!arg1.is_string())
+            var arg1= args[1].value();
+            if (!arg1.ValueKind == JsonValueKind.String)
             {
                 ec = jsonpath_errc.invalid_type;
                 return value_type.null();
             }
 
-            auto sv0 = arg0.template as<string_view_type>();
-            auto sv1 = arg1.template as<string_view_type>();
+            var sv0 = arg0.template as<string_view_type>();
+            var sv1 = arg1.template as<string_view_type>();
 
             if (sv1.length() <= sv0.length() && sv1 == sv0.substr(0, sv1.length()))
             {
@@ -1213,8 +1213,8 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
-            if (!arg0.is_array())
+            var arg0= args[0].value();
+            if (!arg0.ValueKind == JsonValueKind.Array)
             {
                 //std.cout << "arg: " << arg0 << "\n";
                 ec = jsonpath_errc.invalid_type;
@@ -1223,9 +1223,9 @@ namespace detail {
             //std.cout << "sum function arg: " << arg0 << "\n";
 
             double sum = 0;
-            for (auto& j : arg0.array_range())
+            for (var& j : arg0.array_range())
             {
-                if (!j.is_number())
+                if (!j.ValueKind == JsonValueKind.Number)
                 {
                     ec = jsonpath_errc.invalid_type;
                     return value_type.null();
@@ -1274,14 +1274,14 @@ namespace detail {
                 return value_type.null();
             }
 
-            if (!args[0].value().is_string() || !args[1].value().is_string())
+            if (!args[0].value().ValueKind == JsonValueKind.String || !args[1].value().ValueKind == JsonValueKind.String)
             {
                 //std.cout << "arg: " << arg0 << "\n";
                 ec = jsonpath_errc.invalid_type;
                 return value_type.null();
             }
-            auto arg0 = args[0].value().template as<string_type>();
-            auto arg1 = args[1].value().template as<string_type>();
+            var arg0 = args[0].value().template as<string_type>();
+            var arg1 = args[1].value().template as<string_type>();
 
             std.regex.flag_type options = std.regex_constants.ECMAScript; 
             std.basic_regex<char_type> pieces_regex(arg1, options);
@@ -1334,7 +1334,7 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
+            var arg0= args[0].value();
             switch (arg0.type())
             {
                 case json_type.uint64_value:
@@ -1386,7 +1386,7 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
+            var arg0= args[0].value();
             switch (arg0.type())
             {
                 case json_type.uint64_value:
@@ -1438,7 +1438,7 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
+            var arg0= args[0].value();
             switch (arg0.type())
             {
                 case json_type.int64_value:
@@ -1447,15 +1447,15 @@ namespace detail {
                     return arg0;
                 case json_type.string_value:
                 {
-                    auto sv = arg0.as_string_view();
+                    var sv = arg0.as_string_view();
                     uint64_t un{0};
-                    auto result1 = jsoncons.detail.to_integer(sv.data(), sv.length(), un);
+                    var result1 = jsoncons.detail.to_integer(sv.data(), sv.length(), un);
                     if (result1)
                     {
                         return value_type(un);
                     }
                     int64_t sn{0};
-                    auto result2 = jsoncons.detail.to_integer(sv.data(), sv.length(), sn);
+                    var result2 = jsoncons.detail.to_integer(sv.data(), sv.length(), sn);
                     if (result2)
                     {
                         return value_type(sn);
@@ -1463,7 +1463,7 @@ namespace detail {
                     jsoncons.detail.to_double_t to_double;
                     try
                     {
-                        auto s = arg0.as_string();
+                        var s = arg0.as_string();
                         double d = to_double(s.c_str(), s.length());
                         return value_type(d);
                     }
@@ -1512,17 +1512,17 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
-            if (!arg0.is_array() || arg0.empty())
+            var arg0= args[0].value();
+            if (!arg0.ValueKind == JsonValueKind.Array || arg0.empty())
             {
                 //std.cout << "arg: " << arg0 << "\n";
                 ec = jsonpath_errc.invalid_type;
                 return value_type.null();
             }
             double prod = 1;
-            for (auto& j : arg0.array_range())
+            for (var& j : arg0.array_range())
             {
-                if (!j.is_number())
+                if (!j.ValueKind == JsonValueKind.Number)
                 {
                     ec = jsonpath_errc.invalid_type;
                     return value_type.null();
@@ -1567,8 +1567,8 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
-            if (!arg0.is_array())
+            var arg0= args[0].value();
+            if (!arg0.ValueKind == JsonValueKind.Array)
             {
                 ec = jsonpath_errc.invalid_type;
                 return value_type.null();
@@ -1578,9 +1578,9 @@ namespace detail {
                 return value_type.null();
             }
             double sum = 0;
-            for (auto& j : arg0.array_range())
+            for (var& j : arg0.array_range())
             {
-                if (!j.is_number())
+                if (!j.ValueKind == JsonValueKind.Number)
                 {
                     ec = jsonpath_errc.invalid_type;
                     return value_type.null();
@@ -1625,8 +1625,8 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
-            if (!arg0.is_array())
+            var arg0= args[0].value();
+            if (!arg0.ValueKind == JsonValueKind.Array)
             {
                 //std.cout << "arg: " << arg0 << "\n";
                 ec = jsonpath_errc.invalid_type;
@@ -1636,8 +1636,8 @@ namespace detail {
             {
                 return value_type.null();
             }
-            bool is_number = arg0.at(0).is_number();
-            bool is_string = arg0.at(0).is_string();
+            bool is_number = arg0.at(0).ValueKind == JsonValueKind.Number;
+            bool is_string = arg0.at(0).ValueKind == JsonValueKind.String;
             if (!is_number && !is_string)
             {
                 ec = jsonpath_errc.invalid_type;
@@ -1647,7 +1647,7 @@ namespace detail {
             int index = 0;
             for (int i = 1; i < arg0.size(); ++i)
             {
-                if (!(arg0.at(i).is_number() == is_number && arg0.at(i).is_string() == is_string))
+                if (!(arg0.at(i).ValueKind == JsonValueKind.Number == is_number && arg0.at(i).ValueKind == JsonValueKind.String == is_string))
                 {
                     ec = jsonpath_errc.invalid_type;
                     return value_type.null();
@@ -1695,8 +1695,8 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
-            if (!arg0.is_array())
+            var arg0= args[0].value();
+            if (!arg0.ValueKind == JsonValueKind.Array)
             {
                 //std.cout << "arg: " << arg0 << "\n";
                 ec = jsonpath_errc.invalid_type;
@@ -1707,8 +1707,8 @@ namespace detail {
                 return value_type.null();
             }
 
-            bool is_number = arg0.at(0).is_number();
-            bool is_string = arg0.at(0).is_string();
+            bool is_number = arg0.at(0).ValueKind == JsonValueKind.Number;
+            bool is_string = arg0.at(0).ValueKind == JsonValueKind.String;
             if (!is_number && !is_string)
             {
                 ec = jsonpath_errc.invalid_type;
@@ -1718,7 +1718,7 @@ namespace detail {
             int index = 0;
             for (int i = 1; i < arg0.size(); ++i)
             {
-                if (!(arg0.at(i).is_number() == is_number && arg0.at(i).is_string() == is_string))
+                if (!(arg0.at(i).ValueKind == JsonValueKind.Number == is_number && arg0.at(i).ValueKind == JsonValueKind.String == is_string))
                 {
                     ec = jsonpath_errc.invalid_type;
                     return value_type.null();
@@ -1766,7 +1766,7 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
+            var arg0= args[0].value();
             switch (arg0.type())
             {
                 case json_type.uint64_value:
@@ -1822,7 +1822,7 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
+            var arg0= args[0].value();
             //std.cout << "length function arg: " << arg0 << "\n";
 
             switch (arg0.type())
@@ -1832,8 +1832,8 @@ namespace detail {
                     return value_type(arg0.size());
                 case json_type.string_value:
                 {
-                    auto sv0 = arg0.template as<string_view_type>();
-                    auto length = unicode_traits.count_codepoints(sv0.data(), sv0.size());
+                    var sv0 = arg0.template as<string_view_type>();
+                    var length = unicode_traits.count_codepoints(sv0.data(), sv0.size());
                     return value_type(length);
                 }
                 default:
@@ -1879,8 +1879,8 @@ namespace detail {
                 return value_type.null();
             }
 
-            auto arg0= args[0].value();
-            if (!arg0.is_object())
+            var arg0= args[0].value();
+            if (!arg0.ValueKind == JsonValueKind.Object)
             {
                 ec = jsonpath_errc.invalid_type;
                 return value_type.null();
@@ -1889,7 +1889,7 @@ namespace detail {
             value_type result(json_array_arg);
             result.reserve(args.size());
 
-            for (auto& item : arg0.object_range())
+            for (var& item : arg0.object_range())
             {
                 result.emplace_back(item.key());
             }
@@ -1939,9 +1939,9 @@ namespace detail {
     {
         switch (kind)
         {
-            case TokenKind.root_node:
+            case TokenKind.RootNode:
                 return "root_node";
-            case TokenKind.current_node:
+            case TokenKind.CurrentNode:
                 return "current_node";
             case TokenKind.lparen:
                 return "lparen";
@@ -2155,10 +2155,10 @@ namespace detail {
 
         void retrieve_from_cache(int id, node_accumulator_type& accumulator, node_kind& ndtype) 
         {
-            auto it = cache_.find(id);
+            var it = cache_.find(id);
             if (it != cache_.end())
             {
-                for (auto& item : it.second.first)
+                for (var& item : it.second.first)
                 {
                     accumulator.accumulate(item.stem(), item.value());
                 }
@@ -2169,7 +2169,7 @@ namespace detail {
         template <typename... Args>
         Json* new_json(Args&& ... args)
         {
-            auto temp = jsoncons.make_unique<Json>(std.forward<Args>(args)...);
+            var temp = jsoncons.make_unique<Json>(std.forward<Args>(args)...);
             Json* ptr = temp.get();
             temp_json_values_.emplace_back(std.move(temp));
             return ptr;
@@ -2190,7 +2190,7 @@ namespace detail {
         template <typename... Args>
         path_node_type* new_path_node(Args&& ... args)
         {
-            auto temp = jsoncons.make_unique<path_node_type>(std.forward<Args>(args)...);
+            var temp = jsoncons.make_unique<path_node_type>(std.forward<Args>(args)...);
             path_node_type* ptr = temp.get();
             temp_path_node_values_.emplace_back(std.move(temp));
             return ptr;
@@ -2288,7 +2288,7 @@ namespace detail {
 
         Resources(const custom_functions<Json>& functions)
         {
-            for (const auto& item : functions)
+            for (const var& item : functions)
             {
                 custom_functions_.emplace(item.name(),
                                           jsoncons.make_unique<decorator_function<Json>>(item.arity(),item.function()));
@@ -2347,10 +2347,10 @@ namespace detail {
                 {string_type{'c','o','u','n','t'}, &length_func}
             };
 
-            auto it = functions.find(name);
+            var it = functions.find(name);
             if (it == functions.end())
             {
-                auto it2 = custom_functions_.find(name);
+                var it2 = custom_functions_.find(name);
                 if (it2 == custom_functions_.end())
                 {
                     ec = jsonpath_errc.unknown_function;
@@ -2469,7 +2469,7 @@ namespace detail {
         template <typename... Args>
         Json* new_json(Args&& ... args)
         {
-            auto temp = jsoncons.make_unique<Json>(std.forward<Args>(args)...);
+            var temp = jsoncons.make_unique<Json>(std.forward<Args>(args)...);
             Json* ptr = temp.get();
             temp_json_values_.emplace_back(std.move(temp));
             return ptr;
@@ -2534,12 +2534,12 @@ namespace detail {
         }
 
         Token(current_node_arg_t) noexcept
-            : _type(TokenKind.current_node)
+            : _type(TokenKind.CurrentNode)
         {
         }
 
         Token(root_node_arg_t) noexcept
-            : _type(TokenKind.root_node)
+            : _type(TokenKind.RootNode)
         {
         }
 
@@ -2706,7 +2706,7 @@ namespace detail {
 
         bool IsCurrentNode
         {
-            return _type == TokenKind.current_node; 
+            return _type == TokenKind.CurrentNode; 
         }
 
         bool is_path()
@@ -2803,7 +2803,7 @@ namespace detail {
             std.string s;
             switch (_type)
             {
-                case TokenKind.root_node:
+                case TokenKind.RootNode:
                     if (level > 0)
                     {
                         s.append("\n");
@@ -2811,7 +2811,7 @@ namespace detail {
                     }
                     s.append("root node");
                     break;
-                case TokenKind.current_node:
+                case TokenKind.CurrentNode:
                     if (level > 0)
                     {
                         s.append("\n");
@@ -2840,7 +2840,7 @@ namespace detail {
                         s.append("\n");
                         s.append(level*2, ' ');
                     }
-                    auto sbuf = value_.to_string();
+                    var sbuf = value_.to_string();
                     unicode_traits.convert(sbuf.data(), sbuf.size(), s);
                     break;
                 }
@@ -2936,7 +2936,7 @@ namespace detail {
 
             if ((options & result_options.path) == result_options.path)
             {
-                auto callback = [&result](const normalized_path_type& path, reference)
+                var callback = [&result](const normalized_path_type& path, reference)
                 {
                     result.emplace_back(path.to_string());
                 };
@@ -2944,7 +2944,7 @@ namespace detail {
             }
             else
             {
-                auto callback = [&result](const normalized_path_type&, reference val)
+                var callback = [&result](const normalized_path_type&, reference val)
                 {
                     result.push_back(val);
                 };
@@ -2983,9 +2983,9 @@ namespace detail {
                 {
                     if ((options & result_options.sort) == result_options.sort)
                     {
-                        auto last = std.unique(accumulator.nodes.begin(),accumulator.nodes.end(),path_value_pair_equal_type());
+                        var last = std.unique(accumulator.nodes.begin(),accumulator.nodes.end(),path_value_pair_equal_type());
                         accumulator.nodes.erase(last,accumulator.nodes.end());
-                        for (auto& node : accumulator.nodes)
+                        for (var& node : accumulator.nodes)
                         {
                             callback(node.path(), node.value());
                         }
@@ -2994,21 +2994,21 @@ namespace detail {
                     {
                         std.vector<path_value_pair_type> index(accumulator.nodes);
                         std.sort(index.begin(), index.end(), path_value_pair_less_type());
-                        auto last = std.unique(index.begin(),index.end(),path_value_pair_equal_type());
+                        var last = std.unique(index.begin(),index.end(),path_value_pair_equal_type());
                         index.erase(last,index.end());
 
                         std.vector<path_value_pair_type> temp2;
                         temp2.reserve(index.size());
-                        for (auto&& node : accumulator.nodes)
+                        for (var&& node : accumulator.nodes)
                         {
-                            auto it = std.lower_bound(index.begin(),index.end(),node, path_value_pair_less_type());
+                            var it = std.lower_bound(index.begin(),index.end(),node, path_value_pair_less_type());
                             if (it != index.end() && it.path() == node.path()) 
                             {
                                 temp2.emplace_back(std.move(node));
                                 index.erase(it);
                             }
                         }
-                        for (auto& node : temp2)
+                        for (var& node : temp2)
                         {
                             callback(node.path(), node.value());
                         }
@@ -3016,7 +3016,7 @@ namespace detail {
                 }
                 else
                 {
-                    for (auto& node : accumulator.nodes)
+                    for (var& node : accumulator.nodes)
                     {
                         callback(node.path(), node.value());
                     }
@@ -3066,7 +3066,7 @@ namespace detail {
         using path_node_type = path_node<char_type>;
         using stack_item_type = value_or_pointer<Json,JsonElement>;
     private:
-        std.vector<token_type> token_list_;
+        std.vector<token_type> _tokens;
     public:
 
         expression()
@@ -3074,12 +3074,12 @@ namespace detail {
         }
 
         expression(expression&& expr)
-            : token_list_(std.move(expr.token_list_))
+            : _tokens(std.move(expr._tokens))
         {
         }
 
         expression(std.vector<token_type>&& token_stack)
-            : token_list_(std.move(token_stack))
+            : _tokens(std.move(token_stack))
         {
         }
 
@@ -3095,121 +3095,121 @@ namespace detail {
             std.vector<parameter_type> arg_stack;
 
             //std.cout << "EVALUATE TOKENS\n";
-            //for (auto& tok : token_list_)
+            //for (var& tok : _tokens)
             //{
             //    std.cout << tok.to_string() << "\n";
             //}
             //std.cout << "\n";
 
-            if (!token_list_.empty())
+            if (!_tokens.empty())
             {
-                for (auto& tok : token_list_)
+                for (var& token : _tokens)
                 {
-                    //std.cout << "Token: " << tok.to_string() << "\n";
-                    switch (tok.type())
+                    //std.cout << "Token: " << token.to_string() << "\n";
+                    switch (token.type())
                     { 
-                        case TokenKind.literal:
+                        case TokenKind.Value:
                         {
-                            stack.emplace_back(std.addressof(tok.get_value(reference_arg_type(), resources)));
+                            stack.emplace_back(std.addressof(token.get_value(reference_arg_type(), resources)));
                             break;
                         }
                         case TokenKind.UnaryOperator:
                         {
-                            JSONCONS_ASSERT(stack.size() >= 1);
-                            auto item = std.move(stack.back());
-                            stack.pop_back();
+                            Debug.Assert(stack.Count >= 1);
+                            var item = stack.Peek();
+                            stack.Pop();
 
-                            auto val = tok._unaryOperator;.Evaluate(item.value(), ec);
-                            stack.emplace_back(std.move(val));
+                            var val = token._unaryOperator.Evaluate(item.GetValue(), ec);
+                            stack.Push(val);
                             break;
                         }
                         case TokenKind.BinaryOperator:
                         {
-                            //std.cout << "binary operator: " << stack.size() << "\n";
-                            JSONCONS_ASSERT(stack.size() >= 2);
-                            auto rhs = std.move(stack.back());
+                            //std.cout << "binary operator: " << stack.Count << "\n";
+                            Debug.Assert(stack.Count >= 2);
+                            var rhs = stack.Peek();
                             //std.cout << "rhs: " << *rhs << "\n";
-                            stack.pop_back();
-                            auto lhs = std.move(stack.back());
+                            stack.Pop();
+                            var lhs = stack.Peek();
                             //std.cout << "lhs: " << *lhs << "\n";
-                            stack.pop_back();
+                            stack.Pop();
 
-                            auto val = tok._binaryOperator.Evaluate(lhs.value(), rhs.value(), ec);
+                            var val = token._binaryOperator.Evaluate(lhs.GetValue(), rhs.GetValue(), ec);
                             //std.cout << "Evaluate binary expression: " << r << "\n";
-                            stack.emplace_back(std.move(val));
+                            stack.Push(val);
                             break;
                         }
-                        case TokenKind.root_node:
+                        case TokenKind.RootNode:
                             //std.cout << "root: " << root << "\n";
-                            stack.emplace_back(std.addressof(root));
+                            stack.Push(root);
                             break;
-                        case TokenKind.current_node:
+                        case TokenKind.CurrentNode:
                             //std.cout << "current: " << current << "\n";
-                            stack.emplace_back(std.addressof(current));
+                            stack.Push(current);
                             break;
                         case TokenKind.argument:
-                            JSONCONS_ASSERT(!stack.empty());
-                            //std.cout << "argument stack items " << stack.size() << "\n";
-                            //for (auto& item : stack)
+                            Debug.Assert(!stack.Count == 0);
+                            //std.cout << "argument stack items " << stack.Count << "\n";
+                            //for (var& item : stack)
                             //{
                             //    std.cout << *item.to_pointer(resources) << "\n";
                             //}
                             //std.cout << "\n";
-                            arg_stack.emplace_back(std.move(stack.back()));
-                            //for (auto& item : arg_stack)
+                            arg_stack.emplace_back(stack.Peek());
+                            //for (var& item : arg_stack)
                             //{
                             //    std.cout << *item << "\n";
                             //}
                             //std.cout << "\n";
-                            stack.pop_back();
+                            stack.Pop();
                             break;
                         case TokenKind.function:
                         {
-                            if (tok.function_.arity() && *(tok.function_.arity()) != arg_stack.size())
+                            if (token.function_.arity() && *(token.function_.arity()) != arg_stack.size())
                             {
                                 ec = jsonpath_errc.invalid_arity;
-                                return Json.null();
+                                return JsonConstants.Null;
                             }
                             //std.cout << "function arg stack:\n";
-                            //for (auto& item : arg_stack)
+                            //for (var& item : arg_stack)
                             //{
                             //    std.cout << *item << "\n";
                             //}
                             //std.cout << "\n";
 
-                            value_type val = tok.function_.Evaluate(arg_stack, ec);
+                            value_type val = token.function_.Evaluate(arg_stack, ec);
                             if (ec)
                             {
-                                return Json.null();
+                                return JsonConstants.Null;
                             }
                             //std.cout << "function result: " << val << "\n";
                             arg_stack.clear();
-                            stack.emplace_back(std.move(val));
+                            stack.Push(val);
                             break;
                         }
                         case TokenKind.expression:
                         {
-                            if (stack.empty())
+                            if (stack.Count == 0)
                             {
-                                stack.emplace_back(std.addressof(current));
+                                stack.Push(current);
                             }
 
-                            auto item = std.move(stack.back());
-                            stack.pop_back();
-                            value_type val = tok.expression_.evaluate_single(resources, root, resources.current_path_node(), item.value(), options, ec);
+                            var item = stack.Peek();
+                            stack.Pop();
+                            value_type val = token.expression_.evaluate_single(resources, root, resources.current_path_node(), item.GetValue(), options, ec);
                             //std.cout << "ref2: " << ref << "\n";
-                            stack.emplace_back(std.move(val));
+                            stack.Push(val);
                             break;
                         }
                         case TokenKind.Selector:
                         {
-                            if (stack.empty())
+                            if (stack.Count == 0)
                             {
-                                stack.emplace_back(std.addressof(current));
+                                stack.Push(current);
                             }
 
-                            auto item = std.move(stack.back());
-                            //for (auto& item : stack)
+                            var item = stack.Peek();
+                            //for (var& item : stack)
                             //{
                                 //std.cout << "selector stack input:\n";
                                 //switch (item.tag)
@@ -3218,7 +3218,7 @@ namespace detail {
                                 //        std.cout << "single: " << *(item.node.ptr) << "\n";
                                 //        break;
                                 //    case node_set_tag.multi:
-                                //        for (auto& node : stack.back().ptr().nodes)
+                                //        for (var& node : stack.back().ptr().nodes)
                                 //        {
                                 //            std.cout << "multi: " << *node.ptr << "\n";
                                 //        }
@@ -3229,10 +3229,10 @@ namespace detail {
                             //std.cout << "\n";
                             //}
                             //std.cout << "selector item: " << *ptr << "\n";
-                            stack.pop_back();
+                            stack.Pop();
                             node_kind ndtype = node_kind();
                             path_value_accumulator<Json,JsonElement> accumulator;
-                            tok._selector.select(resources, root, resources.current_path_node(), item.value(), accumulator, ndtype, options);
+                            token.GetSelector().Select(resources, root, resources.current_path_node(), item.GetValue(), accumulator, ndtype, options);
                             
                             if ((options & result_options.sort) == result_options.sort)
                             {
@@ -3243,23 +3243,23 @@ namespace detail {
                             {
                                 if ((options & result_options.sort) == result_options.sort)
                                 {
-                                    auto last = std.unique(accumulator.nodes.begin(),accumulator.nodes.end(),path_value_pair_equal_type());
+                                    var last = std.unique(accumulator.nodes.begin(),accumulator.nodes.end(),path_value_pair_equal_type());
                                     accumulator.nodes.erase(last,accumulator.nodes.end());
-                                    stack.emplace_back(nodes_to_stack_item(accumulator.nodes, ndtype));
+                                    stack.Push(nodes_to_stack_item(accumulator.nodes, ndtype));
                                 }
                                 else
                                 {
                                     std.vector<path_value_pair_type> index(accumulator.nodes);
                                     std.sort(index.begin(), index.end(), path_value_pair_less_type());
-                                    auto last = std.unique(index.begin(),index.end(),path_value_pair_equal_type());
+                                    var last = std.unique(index.begin(),index.end(),path_value_pair_equal_type());
                                     index.erase(last,index.end());
 
                                     std.vector<path_value_pair_type> temp2;
                                     temp2.reserve(index.size());
-                                    for (auto&& node : accumulator.nodes)
+                                    for (var&& node : accumulator.nodes)
                                     {
                                         //std.cout << "node: " << node.path << ", " << *node.ptr << "\n";
-                                        auto it = std.lower_bound(index.begin(),index.end(),node, path_value_pair_less_type());
+                                        var it = std.lower_bound(index.begin(),index.end(),node, path_value_pair_less_type());
 
                                         if (it != index.end() && it.path() == node.path()) 
                                         {
@@ -3267,18 +3267,18 @@ namespace detail {
                                             index.erase(it);
                                         }
                                     }
-                                    stack.emplace_back(nodes_to_stack_item(temp2, ndtype));
+                                    stack.Push(nodes_to_stack_item(temp2, ndtype));
                                 }
                             }
                             else
                             {
                                 //std.cout << "selector output " << accumulator.nodes.size() << "\n";
-                                //for (auto& item : accumulator.nodes)
+                                //for (var& item : accumulator.nodes)
                                 //{
                                 //    std.cout << *item.ptr << "\n";
                                 //}
                                 //std.cout << "\n";
-                                stack.emplace_back(nodes_to_stack_item(accumulator.nodes, ndtype));
+                                stack.Push(nodes_to_stack_item(accumulator.nodes, ndtype));
                             }
 
                             
@@ -3290,11 +3290,11 @@ namespace detail {
                 }
             }
 
-            //if (stack.size() != 1)
+            //if (stack.Count != 1)
             //{
-            //    std.cout << "Stack size: " << stack.size() << "\n";
+            //    std.cout << "Stack size: " << stack.Count << "\n";
             //}
-            return stack.empty() ? Json.null() : stack.back().value();
+            return stack.Count == 0 ? JsonConstants.Null : stack.back().GetValue();
         }
  
         std.string to_string(int level)
@@ -3306,7 +3306,7 @@ namespace detail {
                 s.append(level*2, ' ');
             }
             s.append("expression ");
-            for (const auto& item : token_list_)
+            for (const var& item : _tokens)
             {
                 s.append(item.to_string(level+1));
             }
@@ -3329,9 +3329,9 @@ namespace detail {
             {
                 Json j(json_array_arg);
                 j.reserve(nodes.size());
-                for (auto& item : nodes)
+                for (var& item : nodes)
                 {
-                    j.emplace_back(item.value());
+                    j.emplace_back(item.GetValue());
                 }
                 return stack_item_type(std.move(j));
             }

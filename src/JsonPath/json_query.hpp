@@ -72,7 +72,7 @@ namespace jsoncons { namespace jsonpath {
         {
             if (start_)
             {
-                auto len = *start_ >= 0 ? *start_ : (static_cast<Int64>(size) + *start_);
+                var len = *start_ >= 0 ? *start_ : (static_cast<Int64>(size) + *start_);
                 return len <= static_cast<Int64>(size) ? len : static_cast<Int64>(size);
             }
             else
@@ -92,7 +92,7 @@ namespace jsoncons { namespace jsonpath {
         {
             if (stop_)
             {
-                auto len = *stop_ >= 0 ? *stop_ : (static_cast<Int64>(size) + *stop_);
+                var len = *stop_ >= 0 ? *stop_ : (static_cast<Int64>(size) + *stop_);
                 return len <= static_cast<Int64>(size) ? len : static_cast<Int64>(size);
             }
             else
@@ -287,7 +287,7 @@ namespace jsoncons { namespace jsonpath {
                 ndtype = node_kind::single;
                 if (val.ValueKind == JsonValueKind.Object)
                 {
-                    auto it = val.find(identifier_);
+                    var it = val.find(identifier_);
                     if (it != val.object_range().end())
                     {
                         this.EvaluateTail(resources, generate_path(path, identifier_, options), 
@@ -297,7 +297,7 @@ namespace jsoncons { namespace jsonpath {
                 else if (val.ValueKind == JsonValueKind.Array)
                 {
                     Int64 n{0};
-                    auto r = jsoncons::detail::to_integer_decimal(identifier_.data(), identifier_.Count, n);
+                    var r = jsoncons::detail::to_integer_decimal(identifier_.data(), identifier_.Count, n);
                     if (r)
                     {
                         std::size_t index = (n >= 0) ? static_cast<std::size_t>(n) : static_cast<std::size_t>(static_cast<Int64>(val.Count) + n);
@@ -314,7 +314,7 @@ namespace jsoncons { namespace jsonpath {
                                                 root, *ptr, nodes, ndtype, options);
                     }
                 }
-                else if (val.is_string() && identifier_ == length_literal<char_type>())
+                else if (val.ValueKind == JsonValueKind.String && identifier_ == length_literal<char_type>())
                 {
                     string_view_type sv = val.as_string_view();
                     std::size_t count = unicode_traits::count_codepoints(sv.data(), sv.Count);
@@ -372,7 +372,7 @@ namespace jsoncons { namespace jsonpath {
                     this.EvaluateTail(resources, path, 
                                         root, root, v, ndtype, options);
                     resources.add_to_cache(id_, v, ndtype);
-                    for (auto&& item : v)
+                    for (var&& item : v)
                     {
                         nodes.Add(std::move(item));
                     }
@@ -510,7 +510,7 @@ namespace jsoncons { namespace jsonpath {
                 }
                 else if (current.ValueKind == JsonValueKind.Object)
                 {
-                    for (auto& item : current.object_range())
+                    for (var& item : current.object_range())
                     {
                         this.EvaluateTail(resources, generate_path(path, item.key(), options), root, item.value(), nodes, tmptype, options);
                     }
@@ -564,7 +564,7 @@ namespace jsoncons { namespace jsonpath {
                 else if (current.ValueKind == JsonValueKind.Object)
                 {
                     this.EvaluateTail(resources, path, root, current, nodes, ndtype, options);
-                    for (auto& item : current.object_range())
+                    for (var& item : current.object_range())
                     {
                         Select(resources, generate_path(path, item.key(), options), root, item.value(), nodes, ndtype, options);
                     }
@@ -611,12 +611,12 @@ namespace jsoncons { namespace jsonpath {
                 //std::cout << "union_selector Select current: " << current << "\n";
                 ndtype = node_kind::multi;
 
-                auto callback = [&](const std::vector<path_component_type>& p, JsonElement v)
+                var callback = [&](const std::vector<path_component_type>& p, JsonElement v)
                 {
                     //std::cout << "union Select callback: node: " << *node.ptr << "\n";
                     this.EvaluateTail(resources, p, root, v, nodes, ndtype, options);
                 };
-                for (auto& expr : expressions_)
+                for (var& expr : expressions_)
                 {
                     expr.evaluate(resources, path, root, current, callback, options);
                 }
@@ -631,7 +631,7 @@ namespace jsoncons { namespace jsonpath {
                     s.append(level*2, ' ');
                 }
                 s.append("union selector ");
-                for (auto& expr : expressions_)
+                for (var& expr : expressions_)
                 {
                     s.append(expr.to_string(level+1));
                     //s.Add('\n');
@@ -677,7 +677,7 @@ namespace jsoncons { namespace jsonpath {
                 }
                 else if (current.ValueKind == JsonValueKind.Object)
                 {
-                    for (auto& member : current.object_range())
+                    for (var& member : current.object_range())
                     {
                         std::error_code ec;
                         value_type r = _expr.evaluate_single(resources, root, member.value(), options);
@@ -738,7 +738,7 @@ namespace jsoncons { namespace jsonpath {
                         Int32 start = j.template as<Int32>();
                         this.EvaluateTail(resources, path, root, current.at(start), nodes, ndtype, options);
                     }
-                    else if (j.is_string() && current.ValueKind == JsonValueKind.Object)
+                    else if (j.ValueKind == JsonValueKind.String && current.ValueKind == JsonValueKind.Object)
                     {
                         this.EvaluateTail(resources, path, root, current.at(j.as_string_view()), nodes, ndtype, options);
                     }
@@ -823,9 +823,9 @@ namespace jsoncons { namespace jsonpath {
 
                 if (current.ValueKind == JsonValueKind.Array)
                 {
-                    auto start = _slice.GetStart(current.GetArrayLength());
-                    auto end = _slice.GetStop(current.GetArrayLength());
-                    auto step = _slice.Step;
+                    var start = _slice.GetStart(current.GetArrayLength());
+                    var end = _slice.GetStop(current.GetArrayLength());
+                    var step = _slice.Step;
 
                     if (step > 0)
                     {
@@ -949,7 +949,7 @@ namespace jsoncons { namespace jsonpath {
         pathExpression_type compile(static_resources<value_type,JsonElement>& resources, const string_view_type& path)
         {
             std::error_code ec;
-            auto result = compile(resources, path);
+            var result = compile(resources, path);
             if (ec)
             {
                 JSONCONS_THROW(jsonpath_error(ec, line_, column_));
@@ -1111,7 +1111,7 @@ namespace jsoncons { namespace jsonpath {
                             case '(':
                             {
                                 evalStack.Push(0);
-                                auto f = resources.get_function(buffer);
+                                var f = resources.get_function(buffer);
                                 if (ec)
                                 {
                                     return pathExpression_type();
@@ -1334,7 +1334,7 @@ namespace jsoncons { namespace jsonpath {
                             case '(':
                             {
                                 evalStack.Push(0);
-                                auto f = resources.get_function(buffer);
+                                var f = resources.get_function(buffer);
                                 if (ec)
                                 {
                                     return pathExpression_type();
@@ -1370,7 +1370,7 @@ namespace jsoncons { namespace jsonpath {
                             case '(':
                             {
                                 evalStack.Push(0);
-                                auto f = resources.get_function(buffer);
+                                var f = resources.get_function(buffer);
                                 if (ec)
                                 {
                                     return pathExpression_type();
@@ -2163,7 +2163,7 @@ namespace jsoncons { namespace jsonpath {
                                     return pathExpression_type();
                                 }
                                 Int64 n{0};
-                                auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
+                                var r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                 if (!r)
                                 {
                                     ec = jsonpath_errc::invalid_number;
@@ -2189,7 +2189,7 @@ namespace jsoncons { namespace jsonpath {
                                 else
                                 {
                                     Int64 n{0};
-                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
+                                    var r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                     if (!r)
                                     {
                                         ec = jsonpath_errc::invalid_number;
@@ -2214,7 +2214,7 @@ namespace jsoncons { namespace jsonpath {
                                 if (!(buffer.Length == 0))
                                 {
                                     Int64 n{0};
-                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
+                                    var r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                     if (!r)
                                     {
                                         ec = jsonpath_errc::invalid_number;
@@ -2255,7 +2255,7 @@ namespace jsoncons { namespace jsonpath {
                                 else
                                 {
                                     Int64 n{0};
-                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
+                                    var r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                     if (!r)
                                     {
                                         ec = jsonpath_errc::invalid_number;
@@ -2279,7 +2279,7 @@ namespace jsoncons { namespace jsonpath {
                         if (!(buffer.Length == 0))
                         {
                             Int64 n{0};
-                            auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
+                            var r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                             if (!r)
                             {
                                 ec = jsonpath_errc::invalid_number;
@@ -2317,7 +2317,7 @@ namespace jsoncons { namespace jsonpath {
                         if (!(buffer.Length == 0))
                         {
                             Int64 n{0};
-                            auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
+                            var r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                             if (!r)
                             {
                                 ec = jsonpath_errc::invalid_number;
@@ -2504,7 +2504,7 @@ namespace jsoncons { namespace jsonpath {
                                 else
                                 {
                                     Int64 n{0};
-                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
+                                    var r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                     if (!r)
                                     {
                                         ec = jsonpath_errc::invalid_number;
@@ -2523,7 +2523,7 @@ namespace jsoncons { namespace jsonpath {
                                 if (!(buffer.Length == 0))
                                 {
                                     Int64 n{0};
-                                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
+                                    var r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                                     if (!r)
                                     {
                                         ec = jsonpath_errc::invalid_number;
@@ -2841,7 +2841,7 @@ namespace jsoncons { namespace jsonpath {
                         return pathExpression_type();
                     }
                     Int64 n{0};
-                    auto r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
+                    var r = jsoncons::detail::to_integer(buffer.data(), buffer.Length, n);
                     if (!r)
                     {
                         ec = jsonpath_errc::invalid_number;
@@ -2870,7 +2870,7 @@ namespace jsoncons { namespace jsonpath {
             }
 
             //std::cout << "\nTokens\n\n";
-            //for (const auto& tok : _outputStack)
+            //for (const var& tok : _outputStack)
             //{
             //    std::cout << tok.to_string() << "\n";
             //}
@@ -2912,7 +2912,7 @@ namespace jsoncons { namespace jsonpath {
 
         void unwind_rparen(std::error_code& ec)
         {
-            auto it = _operatorStack.Rbegin();
+            var it = _operatorStack.Rbegin();
             while (it != _operatorStack.Rend() && !it.Type == TokenKind.LeftParen)
             {
                 _outputStack.Push(std::move(*it));
@@ -2944,7 +2944,7 @@ namespace jsoncons { namespace jsonpath {
                         return;
                     }
                     std::vector<token_type> toks;
-                    auto it = _outputStack.Rbegin();
+                    var it = _outputStack.Rbegin();
                     while (it != _outputStack.Rend() && it.type() != TokenKind.BeginFilter)
                     {
                         toks.insert(toks.begin(), std::move(*it));
@@ -2976,7 +2976,7 @@ namespace jsoncons { namespace jsonpath {
                 case TokenKind.end_indexExpression:
                 {
                     //std::cout << "TokenKind.end_indexExpression\n";
-                    //for (const auto& t : _outputStack)
+                    //for (const var& t : _outputStack)
                     //{
                     //    std::cout << t.to_string() << "\n";
                     //}
@@ -2987,7 +2987,7 @@ namespace jsoncons { namespace jsonpath {
                         return;
                     }
                     std::vector<token_type> toks;
-                    auto it = _outputStack.Rbegin();
+                    var it = _outputStack.Rbegin();
                     while (it != _outputStack.Rend() && it.type() != TokenKind.beginExpression)
                     {
                         toks.insert(toks.begin(), std::move(*it));
@@ -3014,7 +3014,7 @@ namespace jsoncons { namespace jsonpath {
                 case TokenKind.end_argumentExpression:
                 {
                     //std::cout << "TokenKind.end_indexExpression\n";
-                    //for (const auto& t : _outputStack)
+                    //for (const var& t : _outputStack)
                     //{
                     //    std::cout << t.to_string() << "\n";
                     //}
@@ -3025,7 +3025,7 @@ namespace jsoncons { namespace jsonpath {
                         return;
                     }
                     std::vector<token_type> toks;
-                    auto it = _outputStack.Rbegin();
+                    var it = _outputStack.Rbegin();
                     while (it != _outputStack.Rend() && it.type() != TokenKind.beginExpression)
                     {
                         toks.insert(toks.begin(), std::move(*it));
@@ -3062,7 +3062,7 @@ namespace jsoncons { namespace jsonpath {
                 case TokenKind.EndUnion:
                 {
                     std::vector<pathExpression_type> expressions;
-                    auto it = _outputStack.Rbegin();
+                    var it = _outputStack.Rbegin();
                     while (it != _outputStack.Rend() && it.type() != TokenKind.BeginUnion)
                     {
                         if (it.type() == TokenKind.selector)
@@ -3114,7 +3114,7 @@ namespace jsoncons { namespace jsonpath {
                         return;
                     }
                     std::vector<token_type> toks;
-                    auto it = _outputStack.Rbegin();
+                    var it = _outputStack.Rbegin();
                     Int32 arg_count = 0;
                     while (it != _outputStack.Rend() && it.type() != TokenKind.function)
                     {
@@ -3150,7 +3150,7 @@ namespace jsoncons { namespace jsonpath {
                     break;
                 }
                 case TokenKind.literal:
-                    if (!_outputStack.empty() && (_outputStack.Peek().type() == TokenKind.current_node || _outputStack.Peek().type() == TokenKind.root_node))
+                    if (!_outputStack.empty() && (_outputStack.Peek().type() == TokenKind.CurrentNode || _outputStack.Peek().type() == TokenKind.RootNode))
                     {
                         _outputStack.Peek() = std::move(tok);
                     }
@@ -3166,8 +3166,8 @@ namespace jsoncons { namespace jsonpath {
                 case TokenKind.Argument:
                     _outputStack.Push(token);
                     break;
-                case TokenKind.root_node:
-                case TokenKind.current_node:
+                case TokenKind.RootNode:
+                case TokenKind.CurrentNode:
                     _outputStack.Push(token);
                     break;
                 case TokenKind.UnaryOperator:
@@ -3184,7 +3184,7 @@ namespace jsoncons { namespace jsonpath {
                     }
                     else
                     {
-                        auto it = _operatorStack.Rbegin();
+                        var it = _operatorStack.Rbegin();
                         while (it != _operatorStack.Rend() && it.IsOperator
                                && (tok.PrecedenceLevel > it.PrecedenceLevel
                              || (tok.PrecedenceLevel == it.PrecedenceLevel && tok.is_right_associative())))
@@ -3202,14 +3202,14 @@ namespace jsoncons { namespace jsonpath {
                     break;
             }
             //std::cout << "  " << "Output Stack\n";
-            //for (auto&& t : _outputStack)
+            //for (var&& t : _outputStack)
             //{
             //    std::cout << t.to_string(2) << "\n";
             //}
             //if (!_operatorStack.Count == 0())
             //{
             //    std::cout << "  " << "Operator Stack\n";
-            //    for (auto&& t : _operatorStack)
+            //    for (var&& t : _operatorStack)
             //    {
             //        std::cout << t.to_string(2) << "\n";
             //    }
@@ -3281,7 +3281,7 @@ namespace jsoncons { namespace jsonpath {
             std::vector<path_component_type> path = { path_component_type(root_node_arg) };
 
             jsoncons::jsonpath::detail::dynamic_resources<Json,JsonElement> resources;
-            auto f = [&callback](const std::vector<path_component_type>& path, JsonElement val)
+            var f = [&callback](const std::vector<path_component_type>& path, JsonElement val)
             {
                 callback(to_string(path), val);
             };
@@ -3297,7 +3297,7 @@ namespace jsoncons { namespace jsonpath {
                 jsoncons::jsonpath::detail::dynamic_resources<Json,JsonElement> resources;
 
                 Json result(json_array_arg);
-                auto callback = [&result](const std::vector<path_component_type>& p, JsonElement)
+                var callback = [&result](const std::vector<path_component_type>& p, JsonElement)
                 {
                     result.Add(to_string(p));
                 };
@@ -3376,7 +3376,7 @@ namespace jsoncons { namespace jsonpath {
                     result_options options = result_options(),
                     const custom_functions<Json>& functions = custom_functions<Json>())
     {
-        auto expr = makeExpression<Json>(path, functions);
+        var expr = makeExpression<Json>(path, functions);
         return expr.evaluate(instance, options);
     }
 
@@ -3388,7 +3388,7 @@ namespace jsoncons { namespace jsonpath {
                result_options options = result_options(),
                const custom_functions<Json>& functions = custom_functions<Json>())
     {
-        auto expr = makeExpression<Json>(path, functions);
+        var expr = makeExpression<Json>(path, functions);
         expr.evaluate(instance, callback, options);
     }
 
@@ -3412,7 +3412,7 @@ namespace jsoncons { namespace jsonpath {
         json_selector_t expr = e.compile(static_resources, path);
 
         jsoncons::jsonpath::detail::dynamic_resources<Json,JsonElement> resources;
-        auto callback = [&new_value](const std::vector<path_component_type>&, JsonElement v)
+        var callback = [&new_value](const std::vector<path_component_type>&, JsonElement v)
         {
             v = std::forward<T>(new_value);
         };
@@ -3437,7 +3437,7 @@ namespace jsoncons { namespace jsonpath {
         json_selector_t expr = e.compile(static_resources, path);
 
         jsoncons::jsonpath::detail::dynamic_resources<Json,JsonElement> resources;
-        auto f = [callback](const std::vector<path_component_type>&, JsonElement v)
+        var f = [callback](const std::vector<path_component_type>&, JsonElement v)
         {
             v = callback(v);
         };
@@ -3465,7 +3465,7 @@ namespace jsoncons { namespace jsonpath {
 
         jsoncons::jsonpath::detail::dynamic_resources<Json,JsonElement> resources;
 
-        auto f = [&callback](const std::vector<path_component_type>& path, JsonElement val)
+        var f = [&callback](const std::vector<path_component_type>& path, JsonElement val)
         {
             callback(to_string(path), val);
         };

@@ -307,7 +307,7 @@ namespace JsonCons.JsonPathLib
                             {
                                 evalDepth.Add(0);
                                 /*
-                                auto f = resources.get_function(buffer);
+                                var f = resources.get_function(buffer);
                                 if (ec)
                                 {
                                     return pathExpression_type();
@@ -1050,7 +1050,7 @@ namespace JsonCons.JsonPathLib
                             case '(':
                             {
                                 /*evalStack.Push(0);
-                                auto f = resources.get_function(buffer);
+                                var f = resources.get_function(buffer);
                                 if (ec)
                                 {
                                     return pathExpression_type();
