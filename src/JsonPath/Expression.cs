@@ -51,7 +51,7 @@ namespace JsonCons.JsonPathLib
     {
         internal static bool IsFalse(JsonElement val)
         {
-            TestContext.WriteLine($"IsFalse {val}");
+            //TestContext.WriteLine($"IsFalse {val}");
             var comparer = JsonElementEqualityComparer.Instance;
             switch (val.ValueKind)
             {
@@ -84,11 +84,11 @@ namespace JsonCons.JsonPathLib
         {
             _tokens = tokens;
 
-            TestContext.WriteLine("Expression constructor");
-            foreach (var token in _tokens)
-            {
-                TestContext.WriteLine($"    {token}");
-            }
+            //TestContext.WriteLine("Expression constructor");
+            //foreach (var token in _tokens)
+            //{
+            //    TestContext.WriteLine($"    {token}");
+            //}
         }
 
         public JsonElement Evaluate(JsonElement root,
@@ -96,7 +96,7 @@ namespace JsonCons.JsonPathLib
                                     JsonElement current, 
                                     ResultOptions options)
         {
-            TestContext.WriteLine("Evaluate");
+            //TestContext.WriteLine("Evaluate");
 
             Stack<JsonElement> stack = new Stack<JsonElement>();
 

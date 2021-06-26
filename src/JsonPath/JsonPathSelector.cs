@@ -348,17 +348,27 @@ namespace JsonCons.JsonPathLib
     class UnionSelector : ISelector
     {
         IList<ISelector> _selectors;
+        ISelector _tail;
 
         internal UnionSelector(IList<ISelector> selectors)
         {
             _selectors = selectors;
+            _tail = null;
         }
 
         public void AppendSelector(ISelector tail)
         {
-            foreach (var selector in _selectors)
+            if (_tail == null)
             {
-                selector.AppendSelector(tail);
+                _tail = tail;
+                foreach (var selector in _selectors)
+                {
+                    selector.AppendSelector(tail);
+                }
+            }
+            else
+            {
+                _tail.AppendSelector(tail);
             }
         }
 
@@ -386,7 +396,7 @@ namespace JsonCons.JsonPathLib
 
         internal FilterSelector(Expression expr)
         {
-            TestContext.WriteLine("FilterSelector constructor");
+            //TestContext.WriteLine("FilterSelector constructor");
 
             _expr = expr;
         }
@@ -397,7 +407,7 @@ namespace JsonCons.JsonPathLib
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
-            TestContext.WriteLine("FilterSelector");
+            //TestContext.WriteLine("FilterSelector");
 
             if (current.ValueKind == JsonValueKind.Array)
             {

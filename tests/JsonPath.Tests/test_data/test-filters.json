@@ -1,12 +1,11 @@
 [
-  {
-       "given":
-           [{"name": "John Smith"}, {"name": null}],
-        "cases": [
+   {
+        "given" :  [{"key1" : {"a" : {"a" : 2}}, "key2" : 1},{"key1" : {"a" : {"a" : 1}}, "key2" : 2}],
+        "cases" : [
             {
-               "comment" : "Filter expression",
-               "expression": "$[?@.name == 'John Smith']",
-               "result": [{"name": "John Smith"}]
+                "comment" : "Union of filters followed by multiple identifiers",
+                "expression" : "$[?(@.key2 == 1),?(@.key2 == 2)].key1.a.a",
+                "result" : [2,1]
             }
         ]
    }

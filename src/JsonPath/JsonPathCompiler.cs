@@ -1119,6 +1119,9 @@ namespace JsonCons.JsonPathLib
                     }
                     case ExprState.JsonValue:
                     {
+                        PushToken(new Token(JsonDocument.Parse(buffer.ToString()).RootElement));
+                        buffer.Clear();
+                        _stateStack.Pop(); // JsonValue
                         /*json_decoder<Json> decoder;
                         basic_json_parser<char_type> parser;
                         parser.update(buffer.data(),buffer.Length);
