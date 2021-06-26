@@ -85,10 +85,6 @@ namespace JsonCons.JsonPathLib
         Stack<ExprState> _stateStack = new Stack<ExprState>();
         Stack<Token>_outputStack = new Stack<Token>();
         Stack<Token>_operatorStack = new Stack<Token>();
-        Int32? sliceStart = null;
-        Int32? sliceStop = null;
-        Int32 sliceStep = 1;
-        Int32 selector_id = 0;
 
         internal JsonPathCompiler(string input)
         {
@@ -104,6 +100,11 @@ namespace JsonCons.JsonPathLib
             _stateStack.Push(ExprState.Start);
 
             StringBuilder buffer = new StringBuilder();
+
+            Int32? sliceStart = null;
+            Int32? sliceStop = null;
+            Int32 sliceStep = 1;
+            Int32 selector_id = 0;
             UInt32 cp = 0;
             UInt32 cp2 = 0;
 
@@ -823,11 +824,12 @@ namespace JsonCons.JsonPathLib
                                 if (!(buffer.Length == 0))
                                 {
                                     Int32 n;
-                                    if (!Int32.TryParse(buffer.ToString(), out n))
+                                    string s = buffer.ToString();
+                                    if (!Int32.TryParse(s, out n))
                                     {
-                                        throw new JsonException("Invalid index");
+                                        n = s.StartsWith("-") ? Int32.MinValue : Int32.MaxValue;
                                     }
-                                        sliceStart = n;
+                                    sliceStart = n;
                                     buffer.Clear();
                                 }
                                 PushToken(new Token(TokenKind.BeginUnion));
@@ -871,9 +873,10 @@ namespace JsonCons.JsonPathLib
                         if (!(buffer.Length == 0))
                         {
                             Int32 n;
-                            if (!Int32.TryParse(buffer.ToString(), out n))
+                            string s = buffer.ToString();
+                            if (!Int32.TryParse(s, out n))
                             {
-                                throw new JsonException("Invalid slice stop");
+                                n = s.StartsWith("-") ? Int32.MinValue : Int32.MaxValue;
                             }
                             sliceStop = n;
                             buffer.Clear();
@@ -962,9 +965,10 @@ namespace JsonCons.JsonPathLib
                                 if (!(buffer.Length == 0))
                                 {
                                     Int32 n;
-                                    if (!Int32.TryParse(buffer.ToString(), out n))
+                                    string s = buffer.ToString();
+                                    if (!Int32.TryParse(s, out n))
                                     {
-                                        throw new JsonException("Invalid slice start");
+                                        n = s.StartsWith("-") ? Int32.MinValue : Int32.MaxValue;
                                     }
                                     sliceStart = n;
                                     buffer.Clear();
@@ -1121,24 +1125,7 @@ namespace JsonCons.JsonPathLib
                     {
                         PushToken(new Token(JsonDocument.Parse(buffer.ToString()).RootElement));
                         buffer.Clear();
-                        _stateStack.Pop(); // JsonValue
-                        /*json_decoder<Json> decoder;
-                        basic_json_parser<char_type> parser;
-                        parser.update(buffer.data(),buffer.Length);
-                        parser.parse_some(decoder);
-                        if (ec)
-                        {
-                            return pathExpression_type();
-                        }
-                        parser.finish_parse(decoder);
-                        if (ec)
-                        {
-                            return pathExpression_type();
-                        }
-                        PushToken(new Token(literal_arg, decoder.get_result()));
-                        if (ec) {return pathExpression_type();}
-                        buffer.Clear();
-                        _stateStack.Pop();*/
+                        _stateStack.Pop(); 
                         break;
                     }
                     case ExprState.JsonTextOrFunctionName:
