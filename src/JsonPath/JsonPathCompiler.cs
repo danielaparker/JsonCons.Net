@@ -108,6 +108,10 @@ namespace JsonCons.JsonPathLib
             UInt32 cp = 0;
             UInt32 cp2 = 0;
 
+            var trueSpan = "true".AsSpan();
+            var falseSpan = "false".AsSpan();
+            var nullSpan = "null".AsSpan();
+
             while (_index < _input.Length)
             {
                 switch (_stateStack.Peek())
@@ -1061,12 +1065,57 @@ namespace JsonCons.JsonPathLib
                                 //PushToken(new Token(resources.get_unary_not()));
                                 break;
                             }
+                            case 't':
+                            {
+                                if (_index+4 <= _input.Length && _input.AsSpan().Slice(_index,4) == trueSpan)
+                                {
+                                    PushToken(new Token(JsonConstants.True));
+                                    _stateStack.Pop(); 
+                                    _index+= trueSpan.Length;
+                                    _column += trueSpan.Length;
+                                }
+                                else
+                                {
+                                }
+                                break;
+                            }
+                            case 'f':
+                            {
+                                if (_index+falseSpan.Length <= _input.Length && _input.AsSpan().Slice(_index,falseSpan.Length) == falseSpan)
+                                {
+                                    PushToken(new Token(JsonConstants.False));
+                                    _stateStack.Pop(); 
+                                    _index+= falseSpan.Length;
+                                    _column += falseSpan.Length;
+                                }
+                                else
+                                {
+                                }
+                                break;
+                            }
+                            case 'n':
+                            {
+                                if (_index+nullSpan.Length <= _input.Length && _input.AsSpan().Slice(_index,nullSpan.Length) == nullSpan)
+                                {
+                                    PushToken(new Token(JsonConstants.Null));
+                                    _stateStack.Pop(); 
+                                    _index+= nullSpan.Length;
+                                    _column += nullSpan.Length;
+                                }
+                                else
+                                {
+                                }
+                                break;
+                            }
                             case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
                             {
                                 _stateStack.Pop(); _stateStack.Push(ExprState.JsonValue);
                                 _stateStack.Push(ExprState.Number);
                                 break;
                             }
+                            case '{':
+                            case '[':
+                                break;
                             default:
                             {
                                 _stateStack.Pop(); _stateStack.Push(ExprState.JsonTextOrFunctionName);
