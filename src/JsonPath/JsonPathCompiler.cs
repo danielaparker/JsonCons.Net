@@ -21,12 +21,10 @@ namespace JsonCons.JsonPathLib
         ExpressionRhs,
         PathStepOrRecursiveDescent,
         PathOrValueOrFunction,
-        ExpectJsonText,
+        JsonText,
         Function,
         FunctionName,
-        JsonTextString,
         JsonValue,
-        JsonString,
         AppendDoubleQuote,
         IdentifierOrFunctionExpr,
         NameOrLeftBracket,
@@ -88,6 +86,7 @@ namespace JsonCons.JsonPathLib
         Stack<ExprState> _stateStack = new Stack<ExprState>();
         Stack<Token>_outputStack = new Stack<Token>();
         Stack<Token>_operatorStack = new Stack<Token>();
+        int jsonTextLevel = 0;
 
         internal JsonPathCompiler(string input)
         {
@@ -1163,71 +1162,60 @@ namespace JsonCons.JsonPathLib
                             }
                             default:
                             {
-                                /*json_decoder<Json> decoder;
-                                basic_json_parser<char_type> parser;
-                                parser.update(buffer.data(),buffer.Length);
-                                parser.parse_some(decoder);
-                                if (ec)
-                                {
-                                    return pathExpression_type();
-                                }
-                                parser.finish_parse(decoder);
-                                if (ec)
-                                {
-                                    return pathExpression_type();
-                                }
-                                PushToken(new Token(literal_arg, decoder.get_result()));
-                                if (ec) {return pathExpression_type();}
-                                buffer.Clear();
-                                _stateStack.Pop();*/
-                                break;
+                                throw new JsonException("Expected function");
                             }
                         }
                         break;
                     }
-                    case ExprState.ExpectJsonText:
+                    case ExprState.JsonText:
                     {
                         switch (_input[_index])
                         {
-                            case '(':
-                            {
-                                /*var f = resources.get_function(buffer);
-                                if (ec)
-                                {
-                                    return pathExpression_type();
-                                }
-                                buffer.Clear();
-                                PushToken(current_node_arg);
-                                if (ec) {return pathExpression_type();}
-                                PushToken(new Token(f));
-                                if (ec) {return pathExpression_type();}
-                                _stateStack.Pop(); _stateStack.Push(ExprState.FunctionExpression);
-                                _stateStack.Push(ExprState.ZeroOrOneArguments);
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '{':
+                            case '[':
+                                ++jsonTextLevel;
+                                buffer.Append(_input[_index]);
                                 ++_index;
-                                ++_column;*/
+                                ++_column;
                                 break;
-                            }
+                            case '}':
+                            case ']':
+                                --jsonTextLevel;
+                                if (jsonTextLevel == 0)
+                                {
+                                    _stateStack.Pop(); 
+                                }
+                                buffer.Append(_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                                _stateStack.Push(ExprState.Number);
+                                buffer.Append(_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                _stateStack.Push(ExprState.AppendDoubleQuote);
+                                _stateStack.Push(ExprState.DoubleQuotedString);
+                                buffer.Append(_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ':':
+                                buffer.Append(_input[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
                             default:
-                            {
-                                /*json_decoder<Json> decoder;
-                                basic_json_parser<char_type> parser;
-                                parser.update(buffer.data(),buffer.Length);
-                                parser.parse_some(decoder);
-                                if (ec)
-                                {
-                                    return pathExpression_type();
-                                }
-                                parser.finish_parse(decoder);
-                                if (ec)
-                                {
-                                    return pathExpression_type();
-                                }
-                                PushToken(new Token(literal_arg, decoder.get_result()));
-                                if (ec) {return pathExpression_type();}
-                                buffer.Clear();
-                                _stateStack.Pop();*/
+                                _stateStack.Push(ExprState.UnquotedString);
+                                buffer.Append(_input[_index]);
+                                ++_index;
+                                ++_column;
                                 break;
-                            }
                         }
                         break;
                     }
@@ -1249,34 +1237,6 @@ namespace JsonCons.JsonPathLib
                                 break;
                             default:
                                 _stateStack.Pop(); // Number
-                                break;
-                        };
-                        break;
-                    case ExprState.JsonTextString: 
-                        switch (_input[_index])
-                        {
-                            case '\\':
-                                buffer.Append (_input[_index]);
-                                ++_index;
-                                ++_column;
-                                if (_index >= _input.Length)
-                                {
-                                    throw new JsonException("Syntax error");
-                                }
-                                buffer.Append (_input[_index]);
-                                ++_index;
-                                ++_column;
-                                break;
-                            case '\"':
-                                buffer.Append (_input[_index]);
-                                _stateStack.Pop(); 
-                                ++_index;
-                                ++_column;
-                                break;
-                            default:
-                                buffer.Append (_input[_index]);
-                                ++_index;
-                                ++_column;
                                 break;
                         };
                         break;
@@ -1513,7 +1473,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                //std::cout << "Parse: gt_operator\n";
+                                //std.cout << "Parse: gt_operator\n";
                                 PushToken(new Token(GtOperator.Instance));
                                 _stateStack.Pop(); 
                                 break;
