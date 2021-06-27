@@ -870,7 +870,6 @@
             }
         ]
     },
-    // + operator
     {
         "given" : [{"key1": 100,"key2": 100},{"key1": 105,"key2": 200}],
         "cases" : [
@@ -902,7 +901,6 @@
         ]
     },
 
-    // < operator
     {
         "given" : [{"some": "value"}],
         "cases" : [
@@ -1299,7 +1297,6 @@
             }
         ]
     },
-    // > operator
     {
         "given" : [{"some": "value"}],
         "cases" : [
@@ -1340,7 +1337,6 @@
             }
         ]
     },
-    // <= operator
     {
         "given" : [{"some": "value"}],
         "cases" : [
@@ -1381,7 +1377,6 @@
             }
         ]
     },
-    // >= operator
     {
         "given" : [{"some": "value"}],
         "cases" : [
