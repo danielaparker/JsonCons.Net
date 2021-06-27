@@ -526,9 +526,9 @@ namespace detail {
                 return rhs;
             }
         }
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 //s.append("\n");
@@ -560,9 +560,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -587,9 +587,9 @@ namespace detail {
             return lhs == rhs ? JsonConstants::True : JsonConstants::False;
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -614,9 +614,9 @@ namespace detail {
             return lhs != rhs ? JsonConstants::True : JsonConstants::False;
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -649,9 +649,9 @@ namespace detail {
             return JsonConstants.Null;
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -684,9 +684,9 @@ namespace detail {
             return JsonConstants.Null;
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -721,9 +721,9 @@ namespace detail {
             return JsonConstants.Null;
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -756,9 +756,9 @@ namespace detail {
             return JsonConstants.Null;
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -770,10 +770,10 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class plusOperator : BinaryOperator
+    class PlusOperator : BinaryOperator
     {
     public:
-        plusOperator()
+        PlusOperator()
             : base(4)
         {
         }
@@ -798,9 +798,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -812,10 +812,10 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class minusOperator : BinaryOperator
+    class MinusOperator : BinaryOperator
     {
     public:
-        minusOperator()
+        MinusOperator()
             : base(4)
         {
         }
@@ -840,9 +840,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -854,10 +854,10 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class muLtOperator : BinaryOperator
+    class MultOperator : BinaryOperator
     {
     public:
-        muLtOperator()
+        MultOperator()
             : base(3)
         {
         }
@@ -882,9 +882,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -896,10 +896,10 @@ namespace detail {
     };
 
     template <class Json,class JsonElement>
-    class divOperator : BinaryOperator
+    class DivOperator : BinaryOperator
     {
     public:
-        divOperator()
+        DivOperator()
             : base(3)
         {
         }
@@ -926,9 +926,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -963,9 +963,9 @@ namespace detail {
         virtual value_type Evaluate(const std.vector<parameter_type>& args, 
                                     std.error_code& ec) = 0;
 
-        virtual std.string to_string(int level = 0)
+        virtual string to_string(int level = 0)
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1055,9 +1055,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1117,9 +1117,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1179,9 +1179,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1236,9 +1236,9 @@ namespace detail {
             return value_type(sum);
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1298,9 +1298,9 @@ namespace detail {
             return j;
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1352,9 +1352,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1404,9 +1404,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1478,9 +1478,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1533,9 +1533,9 @@ namespace detail {
             return value_type(prod);
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1591,9 +1591,9 @@ namespace detail {
             return value_type(sum / static_cast<double>(arg0.size()));
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1661,9 +1661,9 @@ namespace detail {
             return arg0.at(index);
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1732,9 +1732,9 @@ namespace detail {
             return arg0.at(index);
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1787,9 +1787,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1844,9 +1844,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1896,9 +1896,9 @@ namespace detail {
             return result;
         }
 
-        std.string to_string(int level = 0) override
+        public override string ToString()
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -1909,7 +1909,7 @@ namespace detail {
         }
     };
 
-    enum class TokenKind
+    enum class JsonPathTokenKind
     {
         root_node,
         current_node,
@@ -1935,49 +1935,49 @@ namespace detail {
     };
 
     inline
-    std.string to_string(TokenKind kind)
+    string to_string(JsonPathTokenKind kind)
     {
         switch (kind)
         {
-            case TokenKind.RootNode:
+            case JsonPathTokenKind.RootNode:
                 return "root_node";
-            case TokenKind.CurrentNode:
+            case JsonPathTokenKind.CurrentNode:
                 return "current_node";
-            case TokenKind.lparen:
+            case JsonPathTokenKind.lparen:
                 return "lparen";
-            case TokenKind.rparen:
+            case JsonPathTokenKind.rparen:
                 return "rparen";
-            case TokenKind.begin_union:
+            case JsonPathTokenKind.begin_union:
                 return "begin_union";
-            case TokenKind.end_union:
+            case JsonPathTokenKind.end_union:
                 return "end_union";
-            case TokenKind.begin_filter:
+            case JsonPathTokenKind.begin_filter:
                 return "begin_filter";
-            case TokenKind.end_filter:
+            case JsonPathTokenKind.end_filter:
                 return "end_filter";
-            case TokenKind.begin_expression:
+            case JsonPathTokenKind.begin_expression:
                 return "begin_expression";
-            case TokenKind.end_index_expression:
+            case JsonPathTokenKind.end_index_expression:
                 return "end_index_expression";
-            case TokenKind.end_argument_expression:
+            case JsonPathTokenKind.end_argument_expression:
                 return "end_argument_expression";
-            case TokenKind.Separator:
+            case JsonPathTokenKind.Separator:
                 return "separator";
-            case TokenKind.literal:
+            case JsonPathTokenKind.literal:
                 return "literal";
-            case TokenKind.Selector:
+            case JsonPathTokenKind.Selector:
                 return "selector";
-            case TokenKind.function:
+            case JsonPathTokenKind.function:
                 return "function";
-            case TokenKind.end_function:
+            case JsonPathTokenKind.end_function:
                 return "end_function";
-            case TokenKind.argument:
+            case JsonPathTokenKind.argument:
                 return "argument";
-            case TokenKind.end_of_expression:
+            case JsonPathTokenKind.end_of_expression:
                 return "end_of_expression";
-            case TokenKind.UnaryOperator:
+            case JsonPathTokenKind.UnaryOperator:
                 return "UnaryOperator";
-            case TokenKind.BinaryOperator:
+            case JsonPathTokenKind.BinaryOperator:
                 return "BinaryOperator";
             default:
                 return "";
@@ -2261,9 +2261,9 @@ namespace detail {
         {
         }
 
-        virtual std.string to_string(int = 0)
+        virtual string to_string(int = 0)
         {
-            return std.string();
+            return string();
         }
     };
 
@@ -2437,25 +2437,25 @@ namespace detail {
 
         BinaryOperator GetPlusOperator()
         {
-            static plusOperator<Json,JsonElement> oper;
+            static PlusOperator<Json,JsonElement> oper;
             return &oper;
         }
 
         BinaryOperator GetMinusOperator()
         {
-            static minusOperator<Json,JsonElement> oper;
+            static MinusOperator<Json,JsonElement> oper;
             return &oper;
         }
 
         BinaryOperator GetMuLtOperator()
         {
-            static muLtOperator<Json,JsonElement> oper;
+            static MultOperator<Json,JsonElement> oper;
             return &oper;
         }
 
         BinaryOperator GetDivOperator()
         {
-            static divOperator<Json,JsonElement> oper;
+            static DivOperator<Json,JsonElement> oper;
             return &oper;
         }
 
@@ -2498,7 +2498,7 @@ namespace detail {
                                            result_options options,
                                            std.error_code& ec) = 0;
 
-        virtual std.string to_string(int level = 0) = 0;
+        virtual string to_string(int level = 0) = 0;
     };
 
     template <class Json,class JsonElement>
@@ -2508,7 +2508,7 @@ namespace detail {
         using selector_type = jsonpath_selector<Json,JsonElement>;
         using expression_base_type = expression_base<Json,JsonElement>;
 
-        TokenKind _type;
+        JsonPathTokenKind _type;
 
         union
         {
@@ -2522,111 +2522,111 @@ namespace detail {
     public:
 
         Token(UnaryOperator expr) noexcept
-            : _type(TokenKind.UnaryOperator),
+            : _type(JsonPathTokenKind.UnaryOperator),
               _unaryOperator;(expr)
         {
         }
 
         Token(BinaryOperator expr) noexcept
-            : _type(TokenKind.BinaryOperator),
+            : _type(JsonPathTokenKind.BinaryOperator),
               _binaryOperator(expr)
         {
         }
 
         Token(current_node_arg_t) noexcept
-            : _type(TokenKind.CurrentNode)
+            : _type(JsonPathTokenKind.CurrentNode)
         {
         }
 
         Token(root_node_arg_t) noexcept
-            : _type(TokenKind.RootNode)
+            : _type(JsonPathTokenKind.RootNode)
         {
         }
 
         Token(end_function_arg_t) noexcept
-            : _type(TokenKind.end_function)
+            : _type(JsonPathTokenKind.end_function)
         {
         }
 
         Token(separator_arg_t) noexcept
-            : _type(TokenKind.Separator)
+            : _type(JsonPathTokenKind.Separator)
         {
         }
 
         Token(lparen_arg_t) noexcept
-            : _type(TokenKind.lparen)
+            : _type(JsonPathTokenKind.lparen)
         {
         }
 
         Token(rparen_arg_t) noexcept
-            : _type(TokenKind.rparen)
+            : _type(JsonPathTokenKind.rparen)
         {
         }
 
         Token(end_of_expression_arg_t) noexcept
-            : _type(TokenKind.end_of_expression)
+            : _type(JsonPathTokenKind.end_of_expression)
         {
         }
 
         Token(begin_union_arg_t) noexcept
-            : _type(TokenKind.begin_union)
+            : _type(JsonPathTokenKind.begin_union)
         {
         }
 
         Token(end_union_arg_t) noexcept
-            : _type(TokenKind.end_union)
+            : _type(JsonPathTokenKind.end_union)
         {
         }
 
         Token(begin_filter_arg_t) noexcept
-            : _type(TokenKind.begin_filter)
+            : _type(JsonPathTokenKind.begin_filter)
         {
         }
 
         Token(end_filter_arg_t) noexcept
-            : _type(TokenKind.end_filter)
+            : _type(JsonPathTokenKind.end_filter)
         {
         }
 
         Token(begin_expression_arg_t) noexcept
-            : _type(TokenKind.begin_expression)
+            : _type(JsonPathTokenKind.begin_expression)
         {
         }
 
         Token(end_index_expression_arg_t) noexcept
-            : _type(TokenKind.end_index_expression)
+            : _type(JsonPathTokenKind.end_index_expression)
         {
         }
 
         Token(end_argument_expression_arg_t) noexcept
-            : _type(TokenKind.end_argument_expression)
+            : _type(JsonPathTokenKind.end_argument_expression)
         {
         }
 
         Token(selector_type* selector)
-            : _type(TokenKind.Selector), _selector(selector)
+            : _type(JsonPathTokenKind.Selector), _selector(selector)
         {
         }
 
         Token(std.unique_ptr<expression_base_type>&& expr)
-            : _type(TokenKind.expression)
+            : _type(JsonPathTokenKind.expression)
         {
             new (&expression_) std.unique_ptr<expression_base_type>(std.move(expr));
         }
 
         Token(const function_base<Json>* function) noexcept
-            : _type(TokenKind.function),
+            : _type(JsonPathTokenKind.function),
               function_(function)
         {
         }
 
         Token(argument_arg_t) noexcept
-            : _type(TokenKind.argument)
+            : _type(JsonPathTokenKind.argument)
         {
         }
 
         Token(literal_arg_t, Json&& value) noexcept
-            : _type(TokenKind.literal), value_(std.move(value))
+            : _type(JsonPathTokenKind.literal), value_(std.move(value))
         {
         }
 
@@ -2653,22 +2653,22 @@ namespace detail {
                 {
                     switch (_type)
                     {
-                        case TokenKind.Selector:
+                        case JsonPathTokenKind.Selector:
                             _selector = other._selector;
                             break;
-                        case TokenKind.expression:
+                        case JsonPathTokenKind.expression:
                             expression_ = std.move(other.expression_);
                             break;
-                        case TokenKind.UnaryOperator:
+                        case JsonPathTokenKind.UnaryOperator:
                             _unaryOperator; = other._unaryOperator;;
                             break;
-                        case TokenKind.BinaryOperator:
+                        case JsonPathTokenKind.BinaryOperator:
                             _binaryOperator = other._binaryOperator;
                             break;
-                        case TokenKind.function:
+                        case JsonPathTokenKind.function:
                             function_ = other.function_;
                             break;
-                        case TokenKind.literal:
+                        case JsonPathTokenKind.literal:
                             value_ = std.move(other.value_);
                             break;
                         default:
@@ -2689,46 +2689,46 @@ namespace detail {
             destroy();
         }
 
-        TokenKind type()
+        JsonPathTokenKind type()
         {
             return _type;
         }
 
         bool IsLeftParen
         {
-            return _type == TokenKind.lparen; 
+            return _type == JsonPathTokenKind.lparen; 
         }
 
         bool IsRightParen
         {
-            return _type == TokenKind.rparen; 
+            return _type == JsonPathTokenKind.rparen; 
         }
 
         bool IsCurrentNode
         {
-            return _type == TokenKind.CurrentNode; 
+            return _type == JsonPathTokenKind.CurrentNode; 
         }
 
         bool is_path()
         {
-            return _type == TokenKind.Selector && _selector.is_path(); 
+            return _type == JsonPathTokenKind.Selector && _selector.is_path(); 
         }
 
         bool IsOperator
         {
-            return _type == TokenKind.UnaryOperator || 
-                   _type == TokenKind.BinaryOperator; 
+            return _type == JsonPathTokenKind.UnaryOperator || 
+                   _type == JsonPathTokenKind.BinaryOperator; 
         }
 
         int PrecedenceLevel
         {
             switch(_type)
             {
-                case TokenKind.Selector:
+                case JsonPathTokenKind.Selector:
                     return _selector.PrecedenceLevel;
-                case TokenKind.UnaryOperator:
+                case JsonPathTokenKind.UnaryOperator:
                     return _unaryOperator;.PrecedenceLevel;
-                case TokenKind.BinaryOperator:
+                case JsonPathTokenKind.BinaryOperator:
                     return _binaryOperator.PrecedenceLevel;
                 default:
                     return 0;
@@ -2737,18 +2737,18 @@ namespace detail {
 
         jsoncons.optional<int> arity()
         {
-            return _type == TokenKind.function ? function_.arity() : jsoncons.optional<int>();
+            return _type == JsonPathTokenKind.function ? function_.arity() : jsoncons.optional<int>();
         }
 
         bool IsRightAssociative
         {
             switch(_type)
             {
-                case TokenKind.Selector:
+                case JsonPathTokenKind.Selector:
                     return _selector.IsRightAssociative;
-                case TokenKind.UnaryOperator:
+                case JsonPathTokenKind.UnaryOperator:
                     return _unaryOperator;.IsRightAssociative;
-                case TokenKind.BinaryOperator:
+                case JsonPathTokenKind.BinaryOperator:
                     return _binaryOperator.IsRightAssociative;
                 default:
                     return false;
@@ -2760,22 +2760,22 @@ namespace detail {
             _type = other._type;
             switch (_type)
             {
-                case TokenKind.Selector:
+                case JsonPathTokenKind.Selector:
                     _selector = other._selector;
                     break;
-                case TokenKind.expression:
+                case JsonPathTokenKind.expression:
                     new (&expression_) std.unique_ptr<expression_base_type>(std.move(other.expression_));
                     break;
-                case TokenKind.UnaryOperator:
+                case JsonPathTokenKind.UnaryOperator:
                     _unaryOperator; = other._unaryOperator;;
                     break;
-                case TokenKind.BinaryOperator:
+                case JsonPathTokenKind.BinaryOperator:
                     _binaryOperator = other._binaryOperator;
                     break;
-                case TokenKind.function:
+                case JsonPathTokenKind.function:
                     function_ = other.function_;
                     break;
-                case TokenKind.literal:
+                case JsonPathTokenKind.literal:
                     new (&value_) Json(std.move(other.value_));
                     break;
                 default:
@@ -2787,10 +2787,10 @@ namespace detail {
         {
             switch(_type)
             {
-                case TokenKind.expression:
+                case JsonPathTokenKind.expression:
                     expression_.~unique_ptr();
                     break;
-                case TokenKind.literal:
+                case JsonPathTokenKind.literal:
                     value_.~Json();
                     break;
                 default:
@@ -2798,12 +2798,12 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level = 0)
+        string to_string(int level = 0)
         {
-            std.string s;
+            string s;
             switch (_type)
             {
-                case TokenKind.RootNode:
+                case JsonPathTokenKind.RootNode:
                     if (level > 0)
                     {
                         s.append("\n");
@@ -2811,7 +2811,7 @@ namespace detail {
                     }
                     s.append("root node");
                     break;
-                case TokenKind.CurrentNode:
+                case JsonPathTokenKind.CurrentNode:
                     if (level > 0)
                     {
                         s.append("\n");
@@ -2819,7 +2819,7 @@ namespace detail {
                     }
                     s.append("current node");
                     break;
-                case TokenKind.argument:
+                case JsonPathTokenKind.argument:
                     if (level > 0)
                     {
                         s.append("\n");
@@ -2827,13 +2827,13 @@ namespace detail {
                     }
                     s.append("argument");
                     break;
-                case TokenKind.Selector:
+                case JsonPathTokenKind.Selector:
                     s.append(_selector.to_string(level));
                     break;
-                case TokenKind.expression:
+                case JsonPathTokenKind.expression:
                     s.append(expression_.to_string(level));
                     break;
-                case TokenKind.literal:
+                case JsonPathTokenKind.literal:
                 {
                     if (level > 0)
                     {
@@ -2844,10 +2844,10 @@ namespace detail {
                     unicode_traits.convert(sbuf.data(), sbuf.size(), s);
                     break;
                 }
-                case TokenKind.BinaryOperator:
+                case JsonPathTokenKind.BinaryOperator:
                     s.append(_binaryOperator.to_string(level));
                     break;
-                case TokenKind.function:
+                case JsonPathTokenKind.function:
                     s.append(function_.to_string(level));
                     break;
                 default:
@@ -3029,9 +3029,9 @@ namespace detail {
             }
         }
 
-        std.string to_string(int level)
+        string to_string(int level)
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");
@@ -3108,12 +3108,12 @@ namespace detail {
                     //std.cout << "Token: " << token.to_string() << "\n";
                     switch (token.type())
                     { 
-                        case TokenKind.Value:
+                        case JsonPathTokenKind.Value:
                         {
                             stack.emplace_back(std.addressof(token.get_value(reference_arg_type(), resources)));
                             break;
                         }
-                        case TokenKind.UnaryOperator:
+                        case JsonPathTokenKind.UnaryOperator:
                         {
                             Debug.Assert(stack.Count >= 1);
                             var item = stack.Peek();
@@ -3123,7 +3123,7 @@ namespace detail {
                             stack.Push(val);
                             break;
                         }
-                        case TokenKind.BinaryOperator:
+                        case JsonPathTokenKind.BinaryOperator:
                         {
                             //std.cout << "binary operator: " << stack.Count << "\n";
                             Debug.Assert(stack.Count >= 2);
@@ -3139,15 +3139,15 @@ namespace detail {
                             stack.Push(val);
                             break;
                         }
-                        case TokenKind.RootNode:
+                        case JsonPathTokenKind.RootNode:
                             //std.cout << "root: " << root << "\n";
                             stack.Push(root);
                             break;
-                        case TokenKind.CurrentNode:
+                        case JsonPathTokenKind.CurrentNode:
                             //std.cout << "current: " << current << "\n";
                             stack.Push(current);
                             break;
-                        case TokenKind.argument:
+                        case JsonPathTokenKind.argument:
                             Debug.Assert(!stack.Count == 0);
                             //std.cout << "argument stack items " << stack.Count << "\n";
                             //for (var& item : stack)
@@ -3163,7 +3163,7 @@ namespace detail {
                             //std.cout << "\n";
                             stack.Pop();
                             break;
-                        case TokenKind.function:
+                        case JsonPathTokenKind.function:
                         {
                             if (token.function_.arity() && *(token.function_.arity()) != arg_stack.size())
                             {
@@ -3187,7 +3187,7 @@ namespace detail {
                             stack.Push(val);
                             break;
                         }
-                        case TokenKind.expression:
+                        case JsonPathTokenKind.expression:
                         {
                             if (stack.Count == 0)
                             {
@@ -3201,7 +3201,7 @@ namespace detail {
                             stack.Push(val);
                             break;
                         }
-                        case TokenKind.Selector:
+                        case JsonPathTokenKind.Selector:
                         {
                             if (stack.Count == 0)
                             {
@@ -3297,9 +3297,9 @@ namespace detail {
             return stack.Count == 0 ? JsonConstants.Null : stack.back().GetValue();
         }
  
-        std.string to_string(int level)
+        string to_string(int level)
         {
-            std.string s;
+            string s;
             if (level > 0)
             {
                 s.append("\n");

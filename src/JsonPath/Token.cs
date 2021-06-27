@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-    enum TokenKind
+    enum JsonPathTokenKind
     {
         RootNode,
         CurrentNode,
@@ -35,10 +35,10 @@ namespace JsonCons.JsonPathLib
 
     struct Token : IEquatable<Token>
     {
-        TokenKind _type;
+        JsonPathTokenKind _type;
         object _expr;
 
-        internal Token(TokenKind type)
+        internal Token(JsonPathTokenKind type)
         {
             _type = type;
             _expr = null;
@@ -46,35 +46,35 @@ namespace JsonCons.JsonPathLib
 
         internal Token(ISelector selector)
         {
-            _type = TokenKind.Selector;
+            _type = JsonPathTokenKind.Selector;
             _expr = selector;
         }
 
         internal Token(IExpression expr)
         {
-            _type = TokenKind.Expression;
+            _type = JsonPathTokenKind.Expression;
             _expr = expr;
         }
 
         internal Token(IUnaryOperator expr)
         {
-            _type = TokenKind.UnaryOperator;
+            _type = JsonPathTokenKind.UnaryOperator;
             _expr = expr;
         }
 
         internal Token(IBinaryOperator expr)
         {
-            _type = TokenKind.BinaryOperator;
+            _type = JsonPathTokenKind.BinaryOperator;
             _expr = expr;
         }
 
         internal Token(JsonElement expr)
         {
-            _type = TokenKind.Value;
+            _type = JsonPathTokenKind.Value;
             _expr = expr;
         }
 
-        internal TokenKind Type
+        internal JsonPathTokenKind TokenKind
         {
             get { return _type; }   
         }
@@ -85,9 +85,9 @@ namespace JsonCons.JsonPathLib
             {
                 switch(_type)
                 {
-                    case TokenKind.UnaryOperator:
+                    case JsonPathTokenKind.UnaryOperator:
                         return true;
-                    case TokenKind.BinaryOperator:
+                    case JsonPathTokenKind.BinaryOperator:
                         return true;
                     default:
                         return false;
@@ -101,11 +101,11 @@ namespace JsonCons.JsonPathLib
             {
                 switch(_type)
                 {
-                    case TokenKind.Selector:
+                    case JsonPathTokenKind.Selector:
                         return true;
-                    case TokenKind.UnaryOperator:
+                    case JsonPathTokenKind.UnaryOperator:
                         return GetUnaryOperator().IsRightAssociative;
-                    case TokenKind.BinaryOperator:
+                    case JsonPathTokenKind.BinaryOperator:
                         return GetBinaryOperator().IsRightAssociative;
                     default:
                         return false;
@@ -119,11 +119,11 @@ namespace JsonCons.JsonPathLib
             {
                 switch(_type)
                 {
-                    case TokenKind.Selector:
+                    case JsonPathTokenKind.Selector:
                         return 11;
-                    case TokenKind.UnaryOperator:
+                    case JsonPathTokenKind.UnaryOperator:
                         return GetUnaryOperator().PrecedenceLevel;
-                    case TokenKind.BinaryOperator:
+                    case JsonPathTokenKind.BinaryOperator:
                         return GetBinaryOperator().PrecedenceLevel;
                     default:
                         return 0;
@@ -133,31 +133,31 @@ namespace JsonCons.JsonPathLib
 
         internal JsonElement GetValue()
         {
-            Debug.Assert(_type == TokenKind.Value);
+            Debug.Assert(_type == JsonPathTokenKind.Value);
             return (JsonElement)_expr;
         }
 
         internal ISelector GetSelector()
         {
-            Debug.Assert(_type == TokenKind.Selector);
+            Debug.Assert(_type == JsonPathTokenKind.Selector);
             return (ISelector)_expr;
         }
 
         internal IExpression GetExpression()
         {
-            Debug.Assert(_type == TokenKind.Expression);
+            Debug.Assert(_type == JsonPathTokenKind.Expression);
             return (IExpression)_expr;
         }
 
         internal IUnaryOperator GetUnaryOperator()
         {
-            Debug.Assert(_type == TokenKind.UnaryOperator);
+            Debug.Assert(_type == JsonPathTokenKind.UnaryOperator);
             return (IUnaryOperator)_expr;
         }
 
         internal IBinaryOperator GetBinaryOperator()
         {
-            Debug.Assert(_type == TokenKind.BinaryOperator);
+            Debug.Assert(_type == JsonPathTokenKind.BinaryOperator);
             return (IBinaryOperator)_expr;
         }
 
@@ -173,21 +173,21 @@ namespace JsonCons.JsonPathLib
         {
             switch(_type)
             {
-                case TokenKind.RootNode:
+                case JsonPathTokenKind.RootNode:
                     return "RootNode";
-                case TokenKind.CurrentNode:
+                case JsonPathTokenKind.CurrentNode:
                     return "CurrentNode";
-                case TokenKind.BeginFilter:
+                case JsonPathTokenKind.BeginFilter:
                     return "BeginFilter";
-                case TokenKind.EndFilter:
+                case JsonPathTokenKind.EndFilter:
                     return "EndFilter";
-                case TokenKind.Value:
+                case JsonPathTokenKind.Value:
                     return "Value";
-                case TokenKind.Selector:
+                case JsonPathTokenKind.Selector:
                     return $"Selector {_expr}";
-                case TokenKind.UnaryOperator:
+                case JsonPathTokenKind.UnaryOperator:
                     return "UnaryOperator";
-                case TokenKind.BinaryOperator:
+                case JsonPathTokenKind.BinaryOperator:
                     return "BinaryOperator";
                 default:
                     return "Other";

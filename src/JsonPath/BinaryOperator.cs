@@ -241,5 +241,270 @@ namespace JsonCons.JsonPathLib
         }
     };
 
+    class PlusOperator : BinaryOperator
+    {
+        internal static PlusOperator Instance { get; } = new PlusOperator();
+
+        internal PlusOperator()
+            : base(4)
+        {
+        }
+
+        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        {
+            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
+            {
+                return JsonConstants.Null;
+            }
+
+            Int64 intVal1;
+            Decimal decVal1;
+            double dblVal1;
+            Int64 intVal2;
+            Decimal decVal2;
+            double dblVal2;
+
+            if (lhs.TryGetInt64(out intVal1) && rhs.TryGetInt64(out intVal2))
+            {
+                Int64 val = intVal1 + intVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
+            {
+                Decimal val = decVal1 + decVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
+            {
+                double val = dblVal1 + dblVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else
+            {
+                return JsonConstants.Null;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "PlusOperator";
+        }
+    };
+
+    class MinusOperator : BinaryOperator
+    {
+        internal static MinusOperator Instance { get; } = new MinusOperator();
+
+        internal MinusOperator()
+            : base(4)
+        {
+        }
+
+        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        {
+            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
+            {
+                return JsonConstants.Null;
+            }
+
+            Int64 intVal1;
+            Decimal decVal1;
+            double dblVal1;
+            Int64 intVal2;
+            Decimal decVal2;
+            double dblVal2;
+
+            if (lhs.TryGetInt64(out intVal1) && rhs.TryGetInt64(out intVal2))
+            {
+                Int64 val = intVal1 - intVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
+            {
+                Decimal val = decVal1 - decVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
+            {
+                double val = dblVal1 - dblVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else
+            {
+                return JsonConstants.Null;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "MinusOperator";
+        }
+    };
+
+    class MultOperator : BinaryOperator
+    {
+        internal static MultOperator Instance { get; } = new MultOperator();
+
+        internal MultOperator()
+            : base(3)
+        {
+        }
+
+        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        {
+            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
+            {
+                return JsonConstants.Null;
+            }
+
+            Int64 intVal1;
+            Decimal decVal1;
+            double dblVal1;
+            Int64 intVal2;
+            Decimal decVal2;
+            double dblVal2;
+
+            if (lhs.TryGetInt64(out intVal1) && rhs.TryGetInt64(out intVal2))
+            {
+                Int64 val = intVal1 * intVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
+            {
+                Decimal val = decVal1 * decVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
+            {
+                double val = dblVal1 * dblVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else
+            {
+                return JsonConstants.Null;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "MultOperator";
+        }
+    };
+
+    class DivOperator : BinaryOperator
+    {
+        internal static DivOperator Instance { get; } = new DivOperator();
+
+        internal DivOperator()
+            : base(3)
+        {
+        }
+
+        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        {
+            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
+            {
+                return JsonConstants.Null;
+            }
+
+            Decimal decVal1;
+            double dblVal1;
+            Decimal decVal2;
+            double dblVal2;
+
+            if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
+            {
+                if (decVal2 == 0)
+                {
+                    return JsonConstants.Null;
+                }
+                Decimal val = decVal1 - decVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
+            {
+                if (dblVal2 == 0)
+                {
+                    return JsonConstants.Null;
+                }
+                double val = dblVal1 - dblVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else
+            {
+                return JsonConstants.Null;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "DivOperator";
+        }
+    };
+
+
+    class ModulusOperator : BinaryOperator
+    {
+        internal static ModulusOperator Instance { get; } = new ModulusOperator();
+
+        internal ModulusOperator()
+            : base(3)
+        {
+        }
+
+        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        {
+            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
+            {
+                return JsonConstants.Null;
+            }
+
+            Int64 intVal1;
+            Decimal decVal1;
+            double dblVal1;
+            Int64 intVal2;
+            Decimal decVal2;
+            double dblVal2;
+
+            if (lhs.TryGetInt64(out intVal1) && rhs.TryGetInt64(out intVal2))
+            {
+                if (intVal2 == 0)
+                {
+                    return JsonConstants.Null;
+                }
+                Int64 val = intVal1 * intVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
+            {
+                if (decVal2 == 0)
+                {
+                    return JsonConstants.Null;
+                }
+                Decimal val = decVal1 % decVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
+            {
+                if (dblVal2 == 0)
+                {
+                    return JsonConstants.Null;
+                }
+                double val = dblVal1 % dblVal2;
+                return JsonDocument.Parse(val.ToString()).RootElement;
+            }
+            else
+            {
+                return JsonConstants.Null;
+            }
+        }
+
+
+        public override string ToString()
+        {
+            return "ModulusOperator";
+        }
+    };
+
 } // namespace JsonCons.JsonPathLib
 

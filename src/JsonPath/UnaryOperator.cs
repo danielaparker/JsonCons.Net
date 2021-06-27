@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
         
 namespace JsonCons.JsonPathLib
@@ -71,6 +72,26 @@ namespace JsonCons.JsonPathLib
                 builder.Append(s);
                 return JsonDocument.Parse(builder.ToString()).RootElement;
             }
+        }
+    };
+
+    class RegexOperator : UnaryOperator
+    {
+        Regex _regex;
+
+        internal RegexOperator(Regex regex)
+            : base(2, true)
+        {
+            _regex = regex;
+        }
+
+        public override JsonElement Evaluate(JsonElement val)
+        {
+            if (!(val.ValueKind == JsonValueKind.String))
+            {
+                return JsonConstants.Null;
+            }
+            return _regex.IsMatch(val.GetString()) ? JsonConstants.True : JsonConstants.False;
         }
     };
 

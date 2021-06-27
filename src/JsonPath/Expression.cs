@@ -102,14 +102,14 @@ namespace JsonCons.JsonPathLib
 
             foreach (var token in _tokens)
             {
-                switch (token.Type)
+                switch (token.TokenKind)
                 {
-                    case TokenKind.Value:
+                    case JsonPathTokenKind.Value:
                     {
                         stack.Push(token.GetValue());
                         break;
                     }
-                    case TokenKind.UnaryOperator:
+                    case JsonPathTokenKind.UnaryOperator:
                     {
                         Debug.Assert(stack.Count >= 1);
                         var item = stack.Pop();
@@ -117,7 +117,7 @@ namespace JsonCons.JsonPathLib
                         stack.Push(val);
                         break;
                     }
-                    case TokenKind.BinaryOperator:
+                    case JsonPathTokenKind.BinaryOperator:
                     {
                         Debug.Assert(stack.Count >= 2);
                         var rhs = stack.Pop();
@@ -127,13 +127,13 @@ namespace JsonCons.JsonPathLib
                         stack.Push(val);
                         break;
                     }
-                    case TokenKind.RootNode:
+                    case JsonPathTokenKind.RootNode:
                         stack.Push(root);
                         break;
-                    case TokenKind.CurrentNode:
+                    case JsonPathTokenKind.CurrentNode:
                         stack.Push(current);
                         break;
-                    case TokenKind.Selector:
+                    case JsonPathTokenKind.Selector:
                     {
                         if (stack.Count == 0)
                         {
