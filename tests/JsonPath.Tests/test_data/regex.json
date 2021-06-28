@@ -21,7 +21,7 @@
                 ]
             },
             {
-                "comment" : "Filter expression with regular expression",
+                "comment" : "Filter expression with regular expression and ignore case option",
                 "expression" : "$[?(@.name=~/hello.* /i)]",
                 "result" : [
                     {"name": "hello world"},

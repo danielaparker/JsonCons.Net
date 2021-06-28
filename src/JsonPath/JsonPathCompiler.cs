@@ -70,6 +70,8 @@ namespace JsonCons.JsonPathLib
         EqOrRegex,
         ExpectRegex,
         Regex,
+        RegexOptions,
+        RegexPattern,
         CmpLtOrLte,
         CmpGtOrGte,
         CmpNe,
@@ -1483,6 +1485,8 @@ namespace JsonCons.JsonPathLib
                             case '/':
                                 _stateStack.Pop(); 
                                 _stateStack.Push(ExprState.Regex);
+                                _stateStack.Push(ExprState.RegexOptions);
+                                _stateStack.Push(ExprState.RegexPattern);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1492,22 +1496,54 @@ namespace JsonCons.JsonPathLib
                         break;
                     case ExprState.Regex: 
                     {
+                        RegexOptions options = 0;
+                        if (buffer2.Length > 0)
+                        {
+                            var str = buffer2.ToString();
+                            if (str.Contains('i'))
+                            {
+                                options |= RegexOptions.IgnoreCase;
+                            }
+                        }
+                        Regex regex = new Regex(buffer.ToString(), options);
+                        PushToken(new Token(new RegexOperator(regex)));
+                        buffer.Clear();
+                        buffer2.Clear();
+                        _stateStack.Pop();
+                        break;
+                    }
+                    case ExprState.RegexPattern: 
+                    {
                         switch (_span[_index])
                         {                   
                             case '/':
                             {
-                                Regex regex = new Regex(buffer.ToString());
-                                PushToken(new Token(new RegexOperator(regex)));
-                                buffer.Clear();
                                 _stateStack.Pop();
+                                ++_index;
+                                ++_column;
                                 break;
                             }
                             default: 
-                                buffer.Append (_span[_index]);
+                                buffer.Append(_span[_index]);
+                                ++_index;
+                                ++_column;
                                 break;
                         }
-                        ++_index;
-                        ++_column;
+                        break;
+                    }
+                    case ExprState.RegexOptions: 
+                    {
+                        char c = _span[_index];
+                        if (c >= 0x61 && c <= 0x7a) // lowercase ascii letter
+                        {
+                            buffer2.Append(_span[_index]);
+                            ++_index;
+                            ++_column;
+                        }
+                        else
+                        {
+                            _stateStack.Pop();
+                        }
                         break;
                     }
                     case ExprState.CmpLtOrLte:
