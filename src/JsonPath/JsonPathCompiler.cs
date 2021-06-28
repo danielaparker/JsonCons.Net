@@ -1636,7 +1636,7 @@ namespace JsonCons.JsonPathLib
                         char c = _span[_index];
                         if (c == 'i') // ignore case
                         {
-                            buffer2.Append(_span[_index]);
+                            buffer2.Append(c);
                             ++_index;
                             ++_column;
                         }

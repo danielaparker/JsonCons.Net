@@ -42,7 +42,6 @@ namespace JsonCons.JsonPathLib
     interface IExpression
     {
         JsonElement Evaluate(JsonElement root,
-                             PathNode stem, 
                              JsonElement current, 
                              ResultOptions options);
     }
@@ -92,7 +91,6 @@ namespace JsonCons.JsonPathLib
         }
 
         public JsonElement Evaluate(JsonElement root,
-                                    PathNode stem, 
                                     JsonElement current, 
                                     ResultOptions options)
         {
@@ -189,7 +187,7 @@ namespace JsonCons.JsonPathLib
 
                         var item = stack.Peek();
                         stack.Pop();
-                        JsonElement val = token.GetExpression().Evaluate(root, new PathNode("@"), item, options);
+                        JsonElement val = token.GetExpression().Evaluate(root, item, options);
                         stack.Push(val);
                         break;
                     }

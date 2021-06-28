@@ -413,7 +413,7 @@ namespace JsonCons.JsonPathLib
             {
                 foreach (var item in current.EnumerateArray())
                 {
-                    var r = _expr.Evaluate(root, stem, item, options);
+                    var r = _expr.Evaluate(root, item, options);
                     if (Expression.IsTrue(r))
                     {
                         this.EvaluateTail(root, stem, item, accumulator, options);
@@ -424,7 +424,7 @@ namespace JsonCons.JsonPathLib
             {
                 foreach (var member in current.EnumerateObject())
                 {
-                    var r = _expr.Evaluate(root, stem, member.Value, options);
+                    var r = _expr.Evaluate(root, member.Value, options);
                     if (Expression.IsTrue(r))
                     {
                         this.EvaluateTail(root, stem, member.Value, accumulator, options);
