@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="BinaryOperator.cs" />
     <Compile Include="Expression.cs" />
+    <Compile Include="Function.cs" />
     <Compile Include="JsonElementEqualityComparer.cs" />
     <Compile Include="JsonPath.cs" />
     <Compile Include="JsonPathCompiler.cs" />

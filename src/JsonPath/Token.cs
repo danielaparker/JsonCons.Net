@@ -21,14 +21,13 @@ namespace JsonCons.JsonPathLib
         EndFilter,
         BeginExpression,
         EndExpression,
-        EndArgument,
         Separator,
         Value,
         Selector,
         Function,
         EndFunction,
         Argument,
-        EndOfExpression,
+        EndArgument,
         UnaryOperator,
         BinaryOperator
     };
@@ -65,6 +64,12 @@ namespace JsonCons.JsonPathLib
         internal Token(IBinaryOperator expr)
         {
             _type = JsonPathTokenKind.BinaryOperator;
+            _expr = expr;
+        }
+
+        internal Token(IFunction expr)
+        {
+            _type = JsonPathTokenKind.Function;
             _expr = expr;
         }
 
@@ -143,6 +148,12 @@ namespace JsonCons.JsonPathLib
             return (ISelector)_expr;
         }
 
+        internal IFunction GetFunction()
+        {
+            Debug.Assert(_type == JsonPathTokenKind.Function);
+            return (IFunction)_expr;
+        }
+
         internal IExpression GetExpression()
         {
             Debug.Assert(_type == JsonPathTokenKind.Expression);
@@ -181,14 +192,38 @@ namespace JsonCons.JsonPathLib
                     return "BeginFilter";
                 case JsonPathTokenKind.EndFilter:
                     return "EndFilter";
+                case JsonPathTokenKind.BeginUnion:
+                    return "BeginUnion";
+                case JsonPathTokenKind.EndUnion:
+                    return "EndUnion";
                 case JsonPathTokenKind.Value:
-                    return "Value";
+                    return $"Value {_expr}";
                 case JsonPathTokenKind.Selector:
                     return $"Selector {_expr}";
                 case JsonPathTokenKind.UnaryOperator:
-                    return "UnaryOperator";
+                    return $"UnaryOperator {_expr}";
                 case JsonPathTokenKind.BinaryOperator:
-                    return "BinaryOperator";
+                    return $"BinaryOperator {_expr}";
+                case JsonPathTokenKind.Function:
+                    return $"Function {_expr}";
+                case JsonPathTokenKind.EndFunction:
+                    return "EndFunction";
+                case JsonPathTokenKind.Argument:
+                    return "Argument";
+                case JsonPathTokenKind.EndArgument:
+                    return "EndArgument";
+                case JsonPathTokenKind.Expression:
+                    return "Expression";
+                case JsonPathTokenKind.BeginExpression:
+                    return "BeginExpression";
+                case JsonPathTokenKind.EndExpression:
+                    return "EndExpression";
+                case JsonPathTokenKind.LeftParen:
+                    return "LeftParen";
+                case JsonPathTokenKind.RightParen:
+                    return "RightParen";
+                case JsonPathTokenKind.Separator:
+                    return "Separator";
                 default:
                     return "Other";
             }

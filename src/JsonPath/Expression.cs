@@ -99,6 +99,7 @@ namespace JsonCons.JsonPathLib
             //TestContext.WriteLine("Evaluate");
 
             Stack<JsonElement> stack = new Stack<JsonElement>();
+            IList<JsonElement> argStack = new List<JsonElement>();
 
             foreach (var token in _tokens)
             {
@@ -158,6 +159,42 @@ namespace JsonCons.JsonPathLib
                         }
                         break;
                     }
+                    case JsonPathTokenKind.Argument:
+                        Debug.Assert(stack.Count != 0);
+                        argStack.Add(stack.Peek());
+                        stack.Pop();
+                        break;
+                    case JsonPathTokenKind.Function:
+                    {
+                        if (!(token.GetFunction().Arity == null || token.GetFunction().Arity.Value == argStack.Count))
+                        {
+                            return JsonConstants.Null;
+                        }
+
+                        JsonElement val;
+                        if (!token.GetFunction().TryEvaluate(argStack, out val))
+                        {
+                            return JsonConstants.Null;
+                        }
+                        argStack.Clear();
+                        stack.Push(val);
+                        break;
+                    }
+                    case JsonPathTokenKind.Expression:
+                    {
+                        if (stack.Count == 0)
+                        {
+                            stack.Push(current);
+                        }
+
+                        var item = stack.Peek();
+                        stack.Pop();
+                        JsonElement val = token.GetExpression().Evaluate(root, new PathNode("@"), item, options);
+                        stack.Push(val);
+                        break;
+                    }
+                    default:
+                        break;
                 }
             }
             return stack.Count == 0 ? JsonConstants.Null : stack.Pop();

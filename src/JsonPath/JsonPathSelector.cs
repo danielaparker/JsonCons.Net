@@ -439,4 +439,56 @@ namespace JsonCons.JsonPathLib
         }
     }
 
+    class FunctionSelector : BaseSelector
+    {
+        Expression _expr;
+
+        internal FunctionSelector(Expression expr)
+        {
+            _expr = expr;
+        }
+
+        public override void Select(JsonElement root, 
+                                    PathNode stem,
+                                    JsonElement current,
+                                    INodeAccumulator accumulator,
+                                    ResultOptions options)
+        {
+            JsonElement val = _expr.Evaluate(root, stem, current, options);
+            //if (!ec)
+            {
+                this.EvaluateTail(root, stem, val, accumulator, options);
+            }
+        }
+
+        public override string ToString()
+        {
+            return "Function selector";
+        }
+    };
+
+    class ArgumentExpression : IExpression
+    {
+        IExpression _expr;
+
+        internal ArgumentExpression(IExpression expr)
+        {
+            _expr = expr;
+        }
+
+        public JsonElement Evaluate(JsonElement root,
+                                    PathNode stem, 
+                                    JsonElement current, 
+                                    ResultOptions options)
+        {
+            JsonElement val = _expr.Evaluate(root, stem, current, options);
+            return val; 
+        }
+
+        public override string ToString()
+        {
+            return "ArgumentExpression";
+        }
+    };
+
 } // namespace JsonCons.JsonPathLib

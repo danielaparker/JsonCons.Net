@@ -45,6 +45,11 @@ namespace JsonCons.JsonPathLib
         {
             return Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
         }
+
+        public override string ToString()
+        {
+            return "Not";
+        }
     };
 
     class UnaryMinusOperator : UnaryOperator
@@ -73,6 +78,11 @@ namespace JsonCons.JsonPathLib
                 return JsonDocument.Parse(builder.ToString()).RootElement;
             }
         }
+
+        public override string ToString()
+        {
+            return "Unary minus";
+        }
     };
 
     class RegexOperator : UnaryOperator
@@ -92,6 +102,11 @@ namespace JsonCons.JsonPathLib
                 return JsonConstants.Null;
             }
             return _regex.IsMatch(val.GetString()) ? JsonConstants.True : JsonConstants.False;
+        }
+
+        public override string ToString()
+        {
+            return "Regex";
         }
     };
 

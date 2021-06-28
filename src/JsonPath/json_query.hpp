@@ -3011,7 +3011,7 @@ namespace jsoncons { namespace jsonpath {
                     }
                     break;
                 }
-                case JsonPathTokenKind.end_argumentExpression:
+                case JsonPathTokenKind.EndArgument:
                 {
                     //std::cout << "JsonPathTokenKind.end_indexExpression\n";
                     //for (const var& t : _outputStack)
@@ -3105,9 +3105,9 @@ namespace jsoncons { namespace jsonpath {
                     UnwindRParen();
                     break;
                 }
-                case JsonPathTokenKind.end_function:
+                case JsonPathTokenKind.EndFunction:
                 {
-                    //std::cout << "JsonPathTokenKind.end_function\n";
+                    //std::cout << "JsonPathTokenKind.EndFunction\n";
                     UnwindRParen();
                     if (ec)
                     {
@@ -3116,7 +3116,7 @@ namespace jsoncons { namespace jsonpath {
                     std::vector<token_type> toks;
                     var it = _outputStack.Rbegin();
                     Int32 arg_count = 0;
-                    while (it != _outputStack.Rend() && it.type() != JsonPathTokenKind.function)
+                    while (it != _outputStack.Rend() && it.type() != JsonPathTokenKind.Function)
                     {
                         if (it.type() == JsonPathTokenKind.Argument)
                         {
@@ -3159,7 +3159,7 @@ namespace jsoncons { namespace jsonpath {
                         _outputStack.Push(token);
                     }
                     break;
-                case JsonPathTokenKind.function:
+                case JsonPathTokenKind.Function:
                     _outputStack.Push(token);
                     _operatorStack.Push(new Token(JsonPathTokenKind.LParen));
                     break;

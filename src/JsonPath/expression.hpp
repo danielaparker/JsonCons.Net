@@ -1967,9 +1967,9 @@ namespace detail {
                 return "literal";
             case JsonPathTokenKind.Selector:
                 return "selector";
-            case JsonPathTokenKind.function:
+            case JsonPathTokenKind.Function:
                 return "function";
-            case JsonPathTokenKind.end_function:
+            case JsonPathTokenKind.EndFunction:
                 return "end_function";
             case JsonPathTokenKind.argument:
                 return "argument";
@@ -2544,7 +2544,7 @@ namespace detail {
         }
 
         Token(end_function_arg_t) noexcept
-            : _type(JsonPathTokenKind.end_function)
+            : _type(JsonPathTokenKind.EndFunction)
         {
         }
 
@@ -2615,7 +2615,7 @@ namespace detail {
         }
 
         Token(const function_base<Json>* function) noexcept
-            : _type(JsonPathTokenKind.function),
+            : _type(JsonPathTokenKind.Function),
               function_(function)
         {
         }
@@ -2665,7 +2665,7 @@ namespace detail {
                         case JsonPathTokenKind.BinaryOperator:
                             _binaryOperator = other._binaryOperator;
                             break;
-                        case JsonPathTokenKind.function:
+                        case JsonPathTokenKind.Function:
                             function_ = other.function_;
                             break;
                         case JsonPathTokenKind.literal:
@@ -2737,7 +2737,7 @@ namespace detail {
 
         jsoncons.optional<int> arity()
         {
-            return _type == JsonPathTokenKind.function ? function_.arity() : jsoncons.optional<int>();
+            return _type == JsonPathTokenKind.Function ? function_.arity() : jsoncons.optional<int>();
         }
 
         bool IsRightAssociative
@@ -2772,7 +2772,7 @@ namespace detail {
                 case JsonPathTokenKind.BinaryOperator:
                     _binaryOperator = other._binaryOperator;
                     break;
-                case JsonPathTokenKind.function:
+                case JsonPathTokenKind.Function:
                     function_ = other.function_;
                     break;
                 case JsonPathTokenKind.literal:
@@ -2847,7 +2847,7 @@ namespace detail {
                 case JsonPathTokenKind.BinaryOperator:
                     s.append(_binaryOperator.to_string(level));
                     break;
-                case JsonPathTokenKind.function:
+                case JsonPathTokenKind.Function:
                     s.append(function_.to_string(level));
                     break;
                 default:
@@ -3163,7 +3163,7 @@ namespace detail {
                             //std.cout << "\n";
                             stack.Pop();
                             break;
-                        case JsonPathTokenKind.function:
+                        case JsonPathTokenKind.Function:
                         {
                             if (token.function_.arity() && *(token.function_.arity()) != arg_stack.size())
                             {

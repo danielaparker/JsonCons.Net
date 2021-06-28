@@ -300,21 +300,19 @@ namespace JsonCons.JsonPathLib
                                 break;
                             case '(':
                             {
-                                /*
-                                var f = resources.get_function(buffer);
-                                if (ec)
+                                IFunction func; 
+                                if (!BuiltInFunctions.Instance.TryGetFunction(buffer.ToString(), out func))
                                 {
-                                    return pathExpression_type();
+                                    throw new JsonException("Function not found");
                                 }
                                 buffer.Clear();
-                                PushToken(current_node_arg);
-                                PushToken(new Token(f));
-                                if (ec) {return pathExpression_type();}
-                                _stateStack.Pop(); _stateStack.Push(ExprState.FunctionExpression);
+                                PushToken(new Token(JsonPathTokenKind.CurrentNode));
+                                PushToken(new Token(func));
+                                _stateStack.Pop(); 
+                                _stateStack.Push(ExprState.FunctionExpression);
                                 _stateStack.Push(ExprState.ZeroOrOneArguments);
                                 ++_index;
                                 ++_column;
-                                */
                                 break;
                             }
                             default:
@@ -1192,26 +1190,115 @@ namespace JsonCons.JsonPathLib
                         {
                             case '(':
                             {
-                                /*var f = resources.get_function(buffer);
-                                if (ec)
+                                IFunction func; 
+                                if (!BuiltInFunctions.Instance.TryGetFunction(buffer.ToString(), out func))
                                 {
-                                    return pathExpression_type();
+                                    throw new JsonException("Function not found");
                                 }
                                 buffer.Clear();
-                                PushToken(current_node_arg);
-                                if (ec) {return pathExpression_type();}
-                                PushToken(new Token(f));
-                                if (ec) {return pathExpression_type();}
-                                _stateStack.Pop(); _stateStack.Push(ExprState.FunctionExpression);
+                                PushToken(new Token(JsonPathTokenKind.CurrentNode));
+                                PushToken(new Token(func));
+                                _stateStack.Pop(); 
+                                _stateStack.Push(ExprState.FunctionExpression);
                                 _stateStack.Push(ExprState.ZeroOrOneArguments);
                                 ++_index;
-                                ++_column;*/
+                                ++_column;
                                 break;
                             }
                             default:
                             {
                                 throw new JsonException("Expected function");
                             }
+                        }
+                        break;
+                    }
+                    case ExprState.FunctionExpression:
+                    {
+                        switch (_span[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ',':
+                                PushToken(new Token(JsonPathTokenKind.CurrentNode));
+                                PushToken(new Token(JsonPathTokenKind.BeginExpression));
+                                _stateStack.Push(ExprState.Argument);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ')':
+                            {
+                                PushToken(new Token(JsonPathTokenKind.EndFunction));
+                                _stateStack.Pop(); 
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            default:
+                                throw new JsonException("Syntax error");
+                        }
+                        break;
+                    }
+                    case ExprState.ZeroOrOneArguments:
+                    {
+                        switch (_span[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ')':
+                                _stateStack.Pop();
+                                break;
+                            default:
+                                PushToken(new Token(JsonPathTokenKind.BeginExpression));
+                                _stateStack.Pop(); _stateStack.Push(ExprState.OneOrMoreArguments);
+                                _stateStack.Push(ExprState.Argument);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                break;
+                        }
+                        break;
+                    }
+                    case ExprState.OneOrMoreArguments:
+                    {
+                        switch (_span[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ')':
+                                _stateStack.Pop();
+                                break;
+                            case ',':
+                                PushToken(new Token(JsonPathTokenKind.BeginExpression));
+                                _stateStack.Push(ExprState.Argument);
+                                _stateStack.Push(ExprState.ExpressionRhs);
+                                _stateStack.Push(ExprState.PathOrValueOrFunction);
+                                ++_index;
+                                ++_column;
+                                break;
+                        }
+                        break;
+                    }
+                    case ExprState.Argument:
+                    {
+                        switch (_span[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ',':
+                            case ')':
+                            {
+                                PushToken(new Token(JsonPathTokenKind.EndArgument));
+                                PushToken(new Token(JsonPathTokenKind.Argument));
+                                _stateStack.Pop();
+                                break;
+                            }
+                            default:
+                                throw new JsonException("Expected comma or right parenthesis");
                         }
                         break;
                     }
@@ -1643,7 +1730,7 @@ namespace JsonCons.JsonPathLib
                 }
             }
 
-            if (_outputStack.Count != 1)
+            if (_outputStack.Count < 1)
             {
                 throw new JsonException("Invalid state");
             }
@@ -1673,6 +1760,19 @@ namespace JsonCons.JsonPathLib
 
         private void PushToken(Token token)
         {
+            TestContext.WriteLine($"Token {token}");
+            TestContext.WriteLine("OutputStack:");
+            foreach (var item in _outputStack)
+            {
+                TestContext.WriteLine($"    {item}");
+            }
+            TestContext.WriteLine("OperatorStack:");
+            foreach (var item in _operatorStack)
+            {
+                TestContext.WriteLine($"    {item}");
+            }
+            TestContext.WriteLine("---");
+
             switch (token.TokenKind)
             {
                 case JsonPathTokenKind.BeginFilter:
@@ -1823,6 +1923,67 @@ namespace JsonCons.JsonPathLib
                 case JsonPathTokenKind.CurrentNode:
                     _outputStack.Push(token);
                     break;
+                case JsonPathTokenKind.Function:
+                    _outputStack.Push(token);
+                    _operatorStack.Push(new Token(JsonPathTokenKind.LeftParen));
+                    break;
+                case JsonPathTokenKind.Argument:
+                    _outputStack.Push(token);
+                    break;
+                case JsonPathTokenKind.EndFunction:
+                {
+                    UnwindRParen();
+
+                    Int32 argCount = 0;
+                    List<Token> tokens = new List<Token>();
+                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.Function)
+                    {
+                        if (_outputStack.Peek().TokenKind == JsonPathTokenKind.Argument)
+                        {
+                            ++argCount;
+                        }
+                        tokens.Add(_outputStack.Pop());
+                    }
+                    if (_outputStack.Count == 0)
+                    {
+                        throw new JsonException("Unbalanced parentheses");
+                    }
+                    tokens.Reverse();
+
+                    TestContext.WriteLine($"ARITY: {_outputStack.Peek().GetFunction().Arity}, ARG COUNT: {argCount}");
+                    if (!(_outputStack.Peek().GetFunction().Arity == null || _outputStack.Peek().GetFunction().Arity.Value == argCount))
+                    {
+                        throw new JsonException("Invalid arity");
+                    }
+                    tokens.Add(_outputStack.Pop()); // Function
+
+                    if (_outputStack.Count != 0 && _outputStack.Peek().TokenKind == JsonPathTokenKind.Selector)
+                    {
+                        _outputStack.Peek().GetSelector().AppendSelector(new FunctionSelector(new Expression(tokens)));
+                    }
+                    else
+                    {
+                        _outputStack.Push(new Token(new FunctionSelector(new Expression(tokens))));
+                    }
+                    break;
+                }
+                case JsonPathTokenKind.EndArgument:
+                {
+                    UnwindRParen();
+                    List<Token> tokens = new List<Token>();
+                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginExpression)
+                    {
+                        tokens.Add(_outputStack.Pop());
+                    }
+                    if (_outputStack.Count == 0)
+                    {
+                        throw new JsonException("Unbalanced parentheses");
+                    }
+                    tokens.Reverse();
+                    _outputStack.Pop(); // JsonPathTokenKind.BeginExpression
+                    _outputStack.Push(new Token(new ArgumentExpression(new Expression(tokens))));
+                    break;
+                }
             }
         }
 
