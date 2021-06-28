@@ -25,6 +25,7 @@ namespace JsonCons.JsonPathLib
         Function,
         FunctionName,
         JsonValue,
+        JsonValue2,
         AppendDoubleQuote,
         IdentifierOrFunctionExpr,
         NameOrLeftBracket,
@@ -121,6 +122,7 @@ namespace JsonCons.JsonPathLib
             var falseSpan = "false".AsSpan();
             var nullSpan = "null".AsSpan();
             int jsonTextLevel = 0;
+            int mark = 0;
 
             while (_index < _span.Length)
             {
@@ -1173,6 +1175,10 @@ namespace JsonCons.JsonPathLib
                             }
                             case '{':
                             case '[':
+                                _stateStack.Pop(); 
+                                _stateStack.Push(ExprState.JsonValue2);
+                                _stateStack.Push(ExprState.JsonText);
+                                mark = _index;
                                 break;
                             default:
                             {
@@ -1355,6 +1361,13 @@ namespace JsonCons.JsonPathLib
                         break;
                     }
                     case ExprState.JsonValue:
+                    {
+                        PushToken(new Token(JsonDocument.Parse(buffer.ToString()).RootElement));
+                        buffer.Clear();
+                        _stateStack.Pop(); 
+                        break;
+                    }
+                    case ExprState.JsonValue2:
                     {
                         PushToken(new Token(JsonDocument.Parse(buffer.ToString()).RootElement));
                         buffer.Clear();

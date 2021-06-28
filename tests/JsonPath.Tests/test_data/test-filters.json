@@ -1,13 +1,64 @@
 [
-   {
-       "given":
-           [{"name": "John Smith"}, {"name": null}],
-        "cases": [
+    {
+        "given" : [
+           {
+             "d": [
+               "v1",
+               "v2"
+             ]
+           },
+           {
+             "d": [
+               "a",
+               "b"
+             ]
+           },
+           {
+             "d": "v1"
+           },
+           {
+             "d": "v2"
+           },
+           {
+             "d": {}
+           },
+           {
+             "d": []
+           },
+           {
+             "d": null
+           },
+           {
+             "d": -1
+           },
+           {
+             "d": 0
+           },
+           {
+             "d": 1
+           },
+           {
+             "d": "['v1','v2']"
+           },
+           {
+             "d": "['v1', 'v2']"
+           },
+           {
+             "d": "v1,v2"
+           },
+           {
+             "d": "[\"v1\", \"v2\"]"
+           },
+           {
+             "d": "[\"v1\",\"v2\"]"
+           }
+         ],
+        "cases" : [
             {
-               "comment" : "Filter expression 1",
-               "expression": "$[?(@.name == 'John Smith')]",
-               "result": [{"name": "John Smith"}]
+                "comment" : "Filter expression with equals array",
+                "expression" : "$[?(@.d==[\"v1\",\"v2\"])]",
+                "result" :  [{"d": ["v1", "v2"]}]
             }
         ]
-   }
+    }
 ]
