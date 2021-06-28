@@ -1957,14 +1957,7 @@ namespace JsonCons.JsonPathLib
                     }
                     tokens.Add(_outputStack.Pop()); // Function
 
-                    if (_outputStack.Count != 0 && _outputStack.Peek().TokenKind == JsonPathTokenKind.Selector)
-                    {
-                        _outputStack.Peek().GetSelector().AppendSelector(new FunctionSelector(new Expression(tokens)));
-                    }
-                    else
-                    {
-                        _outputStack.Push(new Token(new FunctionSelector(new Expression(tokens))));
-                    }
+                    _outputStack.Push(new Token(new Expression(tokens)));
                     break;
                 }
                 case JsonPathTokenKind.EndArgument:
@@ -1981,7 +1974,7 @@ namespace JsonCons.JsonPathLib
                     }
                     tokens.Reverse();
                     _outputStack.Pop(); // JsonPathTokenKind.BeginExpression
-                    _outputStack.Push(new Token(new ArgumentExpression(new Expression(tokens))));
+                    _outputStack.Push(new Token(new Expression(tokens)));
                     break;
                 }
             }
