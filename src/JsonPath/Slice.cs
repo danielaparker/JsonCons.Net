@@ -24,7 +24,7 @@ namespace JsonCons.JsonPathLib
 
         public Int32 GetStart(Int32 size)
         {
-            if (_start != null)
+            if (_start.HasValue)
             {
                 Int32 len = _start.Value >= 0 ? _start.Value : size + _start.Value;
                 return len <= size ? len : size;
@@ -44,7 +44,7 @@ namespace JsonCons.JsonPathLib
 
         public Int32 GetStop(Int32 size)
         {
-            if (_stop != null)
+            if (_stop.HasValue)
             {
                 Int32 len = _stop.Value >= 0 ? _stop.Value : size + _stop.Value;
                 return len <= size ? len : size;

@@ -1951,7 +1951,7 @@ namespace JsonCons.JsonPathLib
                     tokens.Reverse();
 
                     TestContext.WriteLine($"ARITY: {_outputStack.Peek().GetFunction().Arity}, ARG COUNT: {argCount}");
-                    if (!(_outputStack.Peek().GetFunction().Arity == null || _outputStack.Peek().GetFunction().Arity.Value == argCount))
+                    if (_outputStack.Peek().GetFunction().Arity.HasValue && _outputStack.Peek().GetFunction().Arity.Value != argCount)
                     {
                         throw new JsonException("Invalid arity");
                     }

@@ -37,7 +37,7 @@ namespace JsonCons.JsonPathLib
 
         public override bool TryEvaluate(IList<JsonElement> args, out JsonElement element) 
         {
-            if (this.Arity != null)
+            if (this.Arity.HasValue)
             {
                 Debug.Assert(args.Count == this.Arity.Value);
             }
