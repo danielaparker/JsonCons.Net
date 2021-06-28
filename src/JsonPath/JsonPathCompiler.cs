@@ -1534,7 +1534,7 @@ namespace JsonCons.JsonPathLib
                     case ExprState.RegexOptions: 
                     {
                         char c = _span[_index];
-                        if (c >= 0x61 && c <= 0x7a) // lowercase ascii letter
+                        if (c == 'i') // ignore case
                         {
                             buffer2.Append(_span[_index]);
                             ++_index;
