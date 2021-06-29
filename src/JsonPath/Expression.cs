@@ -111,16 +111,8 @@ namespace JsonCons.JsonPathLib
 
                         var item = stack.Pop();
                         var values = new List<IJsonValue>();
-                        var accumulator = new ValueAccumulator2(values);
-                        token.GetSelector().Evaluate(root, item, accumulator, options);
-                        if (values.Count == 1)
-                        {
-                            stack.Push(values[0]);
-                        }
-                        else
-                        {
-                            stack.Push(JsonConstants.Null);
-                        }
+                        var result = token.GetSelector().Evaluate(root, item, options);
+                        stack.Push(result);
                         break;
                     }
                     case JsonPathTokenKind.Argument:
