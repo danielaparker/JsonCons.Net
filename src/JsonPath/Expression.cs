@@ -112,11 +112,7 @@ namespace JsonCons.JsonPathLib
                         var item = stack.Pop();
                         var values = new List<IJsonValue>();
                         var accumulator = new ValueAccumulator2(values);
-                        token.GetSelector().Select(root, 
-                                                   new PathNode("@"), 
-                                                   item, 
-                                                   accumulator, 
-                                                   options);
+                        token.GetSelector().Evaluate(root, item, accumulator, options);
                         if (values.Count == 1)
                         {
                             stack.Push(values[0]);

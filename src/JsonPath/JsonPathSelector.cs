@@ -14,7 +14,7 @@ namespace JsonCons.JsonPathLib
     };
     interface INodeAccumulator2
     {
-        void Accumulate(PathNode pathTail, IJsonValue value);
+        void Accumulate(IJsonValue value);
     };
 
     static class PathGenerator 
@@ -56,11 +56,10 @@ namespace JsonCons.JsonPathLib
                     INodeAccumulator accumulator,
                     ResultOptions options);
 
-        void Select(IJsonValue root,
-                    PathNode pathTail,
-                    IJsonValue current, 
-                    INodeAccumulator2 accumulator,
-                    ResultOptions options);
+        void Evaluate(IJsonValue root,
+                      IJsonValue current, 
+                      INodeAccumulator2 accumulator,
+                      ResultOptions options);
 
         void AppendSelector(ISelector tail);
     };
@@ -75,8 +74,7 @@ namespace JsonCons.JsonPathLib
                                     INodeAccumulator accumulator,
                                     ResultOptions options);
 
-        public abstract void Select(IJsonValue root, 
-                                    PathNode pathTail,
+        public abstract void Evaluate(IJsonValue root, 
                                     IJsonValue current,
                                     INodeAccumulator2 accumulator,
                                     ResultOptions options);
@@ -110,18 +108,17 @@ namespace JsonCons.JsonPathLib
         }
 
         protected void EvaluateTail2(IJsonValue root, 
-                                    PathNode pathTail,
                                     IJsonValue current,
                                     INodeAccumulator2 accumulator,
                                     ResultOptions options)
         {
             if (Tail == null)
             {
-                accumulator.Accumulate(pathTail, current);
+                accumulator.Accumulate(current);
             }
             else
             {
-                Tail.Select(root, pathTail, current, accumulator, options);
+                Tail.Evaluate(root, current, accumulator, options);
             }
         }
     }
@@ -143,13 +140,12 @@ namespace JsonCons.JsonPathLib
         {
             this.EvaluateTail(root, pathTail, root, accumulator, options);        
         }
-        public override void Select(IJsonValue root, 
-                                    PathNode pathTail,
+        public override void Evaluate(IJsonValue root, 
                                     IJsonValue current,
                                     INodeAccumulator2 accumulator,
                                     ResultOptions options)
         {
-            this.EvaluateTail2(root, pathTail, root, accumulator, options);        
+            this.EvaluateTail2(root, root, accumulator, options);        
         }
 
         public override string ToString()
@@ -168,13 +164,12 @@ namespace JsonCons.JsonPathLib
         {
             this.EvaluateTail(root, pathTail, current, accumulator, options);        
         }
-        public override void Select(IJsonValue root, 
-                                    PathNode pathTail,
+        public override void Evaluate(IJsonValue root, 
                                     IJsonValue current,
                                     INodeAccumulator2 accumulator,
                                     ResultOptions options)
         {
-            this.EvaluateTail2(root, pathTail, current, accumulator, options);        
+            this.EvaluateTail2(root, current, accumulator, options);        
         }
 
         public override string ToString()
@@ -210,8 +205,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public override void Select(IJsonValue root, 
-                                    PathNode pathTail,
+        public override void Evaluate(IJsonValue root, 
                                     IJsonValue current,
                                     INodeAccumulator2 accumulator,
                                     ResultOptions options)
@@ -221,9 +215,7 @@ namespace JsonCons.JsonPathLib
                 IJsonValue value;
                 if (current.TryGetProperty(_identifier, out value))
                 {
-                    this.EvaluateTail2(root, 
-                                      PathGenerator.Generate(pathTail, _identifier, options), 
-                                      value, accumulator, options);
+                    this.EvaluateTail2(root, value, accumulator, options);
                 }
             }
         }
@@ -270,8 +262,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public override void Select(IJsonValue root, 
-                                    PathNode pathTail,
+        public override void Evaluate(IJsonValue root, 
                                     IJsonValue current,
                                     INodeAccumulator2 accumulator,
                                     ResultOptions options)
@@ -280,18 +271,14 @@ namespace JsonCons.JsonPathLib
             { 
                 if (_index >= 0 && _index < current.GetArrayLength())
                 {
-                    this.EvaluateTail2(root, 
-                                      PathGenerator.Generate(pathTail, _index, options), 
-                                      current[_index], accumulator, options);
+                    this.EvaluateTail2(root, current[_index], accumulator, options);
                 }
                 else
                 {
                     Int32 index = current.GetArrayLength() + _index;
                     if (index >= 0 && index < current.GetArrayLength())
                     {
-                        this.EvaluateTail2(root, 
-                                          PathGenerator.Generate(pathTail, _index, options), 
-                                          current[index], accumulator, options);
+                        this.EvaluateTail2(root, current[index], accumulator, options);
                     }
                 }
             }
@@ -364,8 +351,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public override void Select(IJsonValue root,
-                                    PathNode pathTail,
+        public override void Evaluate(IJsonValue root,
                                     IJsonValue current,
                                     INodeAccumulator2 accumulator,
                                     ResultOptions options) 
@@ -388,9 +374,7 @@ namespace JsonCons.JsonPathLib
                     }
                     for (Int32 i = start; i < end; i += step)
                     {
-                        this.EvaluateTail2(root, 
-                                          PathGenerator.Generate(pathTail, i, options), 
-                                          current[i], accumulator, options);
+                        this.EvaluateTail2(root, current[i], accumulator, options);
                     }
                 }
                 else if (step < 0)
@@ -407,9 +391,7 @@ namespace JsonCons.JsonPathLib
                     {
                         if (i < current.GetArrayLength())
                         {
-                            this.EvaluateTail2(root, 
-                                              PathGenerator.Generate(pathTail, i, options), 
-                                              current[i], accumulator, options);
+                            this.EvaluateTail2(root, current[i], accumulator, options);
                         }
                     }
                 }
@@ -450,29 +432,25 @@ namespace JsonCons.JsonPathLib
                 }
             }
         }
-        public override void Select(IJsonValue root, 
-                                    PathNode pathTail,
+        public override void Evaluate(IJsonValue root, 
                                     IJsonValue current,
                                     INodeAccumulator2 accumulator,
                                     ResultOptions options)
         {
             if (current.ValueKind == JsonValueKind.Array)
             {
-                this.EvaluateTail2(root, pathTail, current, accumulator, options);
-                Int32 index = 0;
+                this.EvaluateTail2(root, current, accumulator, options);
                 foreach (var item in current.EnumerateArray())
                 {
-                    Select(root, PathGenerator.Generate(pathTail, index++, options), 
-                           item, accumulator, options);
+                    Evaluate(root, item, accumulator, options);
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
-                this.EvaluateTail2(root, pathTail, current, accumulator, options);
+                this.EvaluateTail2(root, current, accumulator, options);
                 foreach (var prop in current.EnumerateObject())
                 {
-                    Select(root, PathGenerator.Generate(pathTail, prop.Name, options), 
-                           prop.Value, accumulator, options);
+                    Evaluate(root, prop.Value, accumulator, options);
                 }
             }
         }
@@ -509,27 +487,23 @@ namespace JsonCons.JsonPathLib
                 }
             }
         }
-        public override void Select(IJsonValue root, 
-                                    PathNode pathTail,
+        public override void Evaluate(IJsonValue root, 
                                     IJsonValue current,
                                     INodeAccumulator2 accumulator,
                                     ResultOptions options)
         {
             if (current.ValueKind == JsonValueKind.Array)
             {
-                Int32 index = 0;
                 foreach (var item in current.EnumerateArray())
                 {
-                    this.EvaluateTail2(root, PathGenerator.Generate(pathTail, index++, options), 
-                                      item, accumulator, options);
+                    this.EvaluateTail2(root, item, accumulator, options);
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
                 foreach (var prop in current.EnumerateObject())
                 {
-                    this.EvaluateTail2(root, PathGenerator.Generate(pathTail, prop.Name, options), 
-                                      prop.Value, accumulator, options);
+                    this.EvaluateTail2(root, prop.Value, accumulator, options);
                 }
             }
         }
@@ -579,15 +553,14 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public void Select(IJsonValue root, 
-                           PathNode pathTail,
+        public void Evaluate(IJsonValue root, 
                            IJsonValue current,
                            INodeAccumulator2 accumulator,
                            ResultOptions options)
         {
             foreach (var selector in _selectors)
             {
-                selector.Select(root, pathTail, current, accumulator, options);
+                selector.Evaluate(root, current, accumulator, options);
             }
         }
 
@@ -640,8 +613,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public override void Select(IJsonValue root, 
-                                    PathNode stem,
+        public override void Evaluate(IJsonValue root, 
                                     IJsonValue current,
                                     INodeAccumulator2 accumulator,
                                     ResultOptions options)
@@ -655,7 +627,7 @@ namespace JsonCons.JsonPathLib
                     var r = _expr.Evaluate(root, item, options);
                     if (Expression.IsTrue(r))
                     {
-                        this.EvaluateTail2(root, stem, item, accumulator, options);
+                        this.EvaluateTail2(root, item, accumulator, options);
                     }
                 }
             }
@@ -666,7 +638,7 @@ namespace JsonCons.JsonPathLib
                     var r = _expr.Evaluate(root, member.Value, options);
                     if (Expression.IsTrue(r))
                     {
-                        this.EvaluateTail2(root, stem, member.Value, accumulator, options);
+                        this.EvaluateTail2(root, member.Value, accumulator, options);
                     }
                 }
             }

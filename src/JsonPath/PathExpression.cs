@@ -64,7 +64,7 @@ namespace JsonCons.JsonPathLib
             _values = values;
         }
 
-        public void Accumulate(PathNode pathTail, IJsonValue value)
+        public void Accumulate(IJsonValue value)
         {
             _values.Add(value);
         }
