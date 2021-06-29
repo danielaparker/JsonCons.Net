@@ -30,6 +30,7 @@ namespace JsonCons.JsonPathLib
             var compiler = new JsonPathCompiler(expr);
             return compiler.Compile();
         }
+
     }
 
 } // namespace JsonCons.JsonPathLib

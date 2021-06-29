@@ -12,6 +12,10 @@ namespace JsonCons.JsonPathLib
     {
         void Accumulate(PathNode pathTail, JsonElement value);
     };
+    interface INodeAccumulator2
+    {
+        void Accumulate(PathNode pathTail, IJsonValue value);
+    };
 
     static class PathGenerator 
     {
@@ -52,6 +56,12 @@ namespace JsonCons.JsonPathLib
                     INodeAccumulator accumulator,
                     ResultOptions options);
 
+        void Select(IJsonValue root,
+                    PathNode pathTail,
+                    IJsonValue current, 
+                    INodeAccumulator2 accumulator,
+                    ResultOptions options);
+
         void AppendSelector(ISelector tail);
     };
 
@@ -63,6 +73,12 @@ namespace JsonCons.JsonPathLib
                                     PathNode pathTail,
                                     JsonElement current,
                                     INodeAccumulator accumulator,
+                                    ResultOptions options);
+
+        public abstract void Select(IJsonValue root, 
+                                    PathNode pathTail,
+                                    IJsonValue current,
+                                    INodeAccumulator2 accumulator,
                                     ResultOptions options);
 
         public void AppendSelector(ISelector tail)
@@ -81,6 +97,22 @@ namespace JsonCons.JsonPathLib
                                     PathNode pathTail,
                                     JsonElement current,
                                     INodeAccumulator accumulator,
+                                    ResultOptions options)
+        {
+            if (Tail == null)
+            {
+                accumulator.Accumulate(pathTail, current);
+            }
+            else
+            {
+                Tail.Select(root, pathTail, current, accumulator, options);
+            }
+        }
+
+        protected void EvaluateTail2(IJsonValue root, 
+                                    PathNode pathTail,
+                                    IJsonValue current,
+                                    INodeAccumulator2 accumulator,
                                     ResultOptions options)
         {
             if (Tail == null)
@@ -111,6 +143,14 @@ namespace JsonCons.JsonPathLib
         {
             this.EvaluateTail(root, pathTail, root, accumulator, options);        
         }
+        public override void Select(IJsonValue root, 
+                                    PathNode pathTail,
+                                    IJsonValue current,
+                                    INodeAccumulator2 accumulator,
+                                    ResultOptions options)
+        {
+            this.EvaluateTail2(root, pathTail, root, accumulator, options);        
+        }
 
         public override string ToString()
         {
@@ -127,6 +167,14 @@ namespace JsonCons.JsonPathLib
                                     ResultOptions options)
         {
             this.EvaluateTail(root, pathTail, current, accumulator, options);        
+        }
+        public override void Select(IJsonValue root, 
+                                    PathNode pathTail,
+                                    IJsonValue current,
+                                    INodeAccumulator2 accumulator,
+                                    ResultOptions options)
+        {
+            this.EvaluateTail2(root, pathTail, current, accumulator, options);        
         }
 
         public override string ToString()
@@ -156,6 +204,24 @@ namespace JsonCons.JsonPathLib
                 if (current.TryGetProperty(_identifier, out value))
                 {
                     this.EvaluateTail(root, 
+                                      PathGenerator.Generate(pathTail, _identifier, options), 
+                                      value, accumulator, options);
+                }
+            }
+        }
+
+        public override void Select(IJsonValue root, 
+                                    PathNode pathTail,
+                                    IJsonValue current,
+                                    INodeAccumulator2 accumulator,
+                                    ResultOptions options)
+        {
+            if (current.ValueKind == JsonValueKind.Object)
+            { 
+                IJsonValue value;
+                if (current.TryGetProperty(_identifier, out value))
+                {
+                    this.EvaluateTail2(root, 
                                       PathGenerator.Generate(pathTail, _identifier, options), 
                                       value, accumulator, options);
                 }
@@ -197,6 +263,33 @@ namespace JsonCons.JsonPathLib
                     if (index >= 0 && index < current.GetArrayLength())
                     {
                         this.EvaluateTail(root, 
+                                          PathGenerator.Generate(pathTail, _index, options), 
+                                          current[index], accumulator, options);
+                    }
+                }
+            }
+        }
+
+        public override void Select(IJsonValue root, 
+                                    PathNode pathTail,
+                                    IJsonValue current,
+                                    INodeAccumulator2 accumulator,
+                                    ResultOptions options)
+        {
+            if (current.ValueKind == JsonValueKind.Array)
+            { 
+                if (_index >= 0 && _index < current.GetArrayLength())
+                {
+                    this.EvaluateTail2(root, 
+                                      PathGenerator.Generate(pathTail, _index, options), 
+                                      current[_index], accumulator, options);
+                }
+                else
+                {
+                    Int32 index = current.GetArrayLength() + _index;
+                    if (index >= 0 && index < current.GetArrayLength())
+                    {
+                        this.EvaluateTail2(root, 
                                           PathGenerator.Generate(pathTail, _index, options), 
                                           current[index], accumulator, options);
                     }
@@ -271,6 +364,58 @@ namespace JsonCons.JsonPathLib
             }
         }
 
+        public override void Select(IJsonValue root,
+                                    PathNode pathTail,
+                                    IJsonValue current,
+                                    INodeAccumulator2 accumulator,
+                                    ResultOptions options) 
+        {
+            if (current.ValueKind == JsonValueKind.Array)
+            {
+                Int32 start = _slice.GetStart(current.GetArrayLength());
+                Int32 end = _slice.GetStop(current.GetArrayLength());
+                Int32 step = _slice.Step;
+
+                if (step > 0)
+                {
+                    if (start < 0)
+                    {
+                        start = 0;
+                    }
+                    if (end > current.GetArrayLength())
+                    {
+                        end = current.GetArrayLength();
+                    }
+                    for (Int32 i = start; i < end; i += step)
+                    {
+                        this.EvaluateTail2(root, 
+                                          PathGenerator.Generate(pathTail, i, options), 
+                                          current[i], accumulator, options);
+                    }
+                }
+                else if (step < 0)
+                {
+                    if (start >= current.GetArrayLength())
+                    {
+                        start = current.GetArrayLength() - 1;
+                    }
+                    if (end < -1)
+                    {
+                        end = -1;
+                    }
+                    for (Int32 i = start; i > end; i += step)
+                    {
+                        if (i < current.GetArrayLength())
+                        {
+                            this.EvaluateTail2(root, 
+                                              PathGenerator.Generate(pathTail, i, options), 
+                                              current[i], accumulator, options);
+                        }
+                    }
+                }
+            }
+        }
+
         public override string ToString()
         {
             return "SliceSelector";
@@ -298,6 +443,32 @@ namespace JsonCons.JsonPathLib
             else if (current.ValueKind == JsonValueKind.Object)
             {
                 this.EvaluateTail(root, pathTail, current, accumulator, options);
+                foreach (var prop in current.EnumerateObject())
+                {
+                    Select(root, PathGenerator.Generate(pathTail, prop.Name, options), 
+                           prop.Value, accumulator, options);
+                }
+            }
+        }
+        public override void Select(IJsonValue root, 
+                                    PathNode pathTail,
+                                    IJsonValue current,
+                                    INodeAccumulator2 accumulator,
+                                    ResultOptions options)
+        {
+            if (current.ValueKind == JsonValueKind.Array)
+            {
+                this.EvaluateTail2(root, pathTail, current, accumulator, options);
+                Int32 index = 0;
+                foreach (var item in current.EnumerateArray())
+                {
+                    Select(root, PathGenerator.Generate(pathTail, index++, options), 
+                           item, accumulator, options);
+                }
+            }
+            else if (current.ValueKind == JsonValueKind.Object)
+            {
+                this.EvaluateTail2(root, pathTail, current, accumulator, options);
                 foreach (var prop in current.EnumerateObject())
                 {
                     Select(root, PathGenerator.Generate(pathTail, prop.Name, options), 
@@ -334,6 +505,30 @@ namespace JsonCons.JsonPathLib
                 foreach (var prop in current.EnumerateObject())
                 {
                     this.EvaluateTail(root, PathGenerator.Generate(pathTail, prop.Name, options), 
+                                      prop.Value, accumulator, options);
+                }
+            }
+        }
+        public override void Select(IJsonValue root, 
+                                    PathNode pathTail,
+                                    IJsonValue current,
+                                    INodeAccumulator2 accumulator,
+                                    ResultOptions options)
+        {
+            if (current.ValueKind == JsonValueKind.Array)
+            {
+                Int32 index = 0;
+                foreach (var item in current.EnumerateArray())
+                {
+                    this.EvaluateTail2(root, PathGenerator.Generate(pathTail, index++, options), 
+                                      item, accumulator, options);
+                }
+            }
+            else if (current.ValueKind == JsonValueKind.Object)
+            {
+                foreach (var prop in current.EnumerateObject())
+                {
+                    this.EvaluateTail2(root, PathGenerator.Generate(pathTail, prop.Name, options), 
                                       prop.Value, accumulator, options);
                 }
             }
@@ -384,6 +579,18 @@ namespace JsonCons.JsonPathLib
             }
         }
 
+        public void Select(IJsonValue root, 
+                           PathNode pathTail,
+                           IJsonValue current,
+                           INodeAccumulator2 accumulator,
+                           ResultOptions options)
+        {
+            foreach (var selector in _selectors)
+            {
+                selector.Select(root, pathTail, current, accumulator, options);
+            }
+        }
+
         public override string ToString()
         {
             return "UnionSelector";
@@ -413,7 +620,7 @@ namespace JsonCons.JsonPathLib
             {
                 foreach (var item in current.EnumerateArray())
                 {
-                    var r = _expr.Evaluate(root, item, options);
+                    var r = _expr.Evaluate(new JsonElementJsonValue(root), new JsonElementJsonValue(item), options);
                     if (Expression.IsTrue(r))
                     {
                         this.EvaluateTail(root, stem, item, accumulator, options);
@@ -424,10 +631,42 @@ namespace JsonCons.JsonPathLib
             {
                 foreach (var member in current.EnumerateObject())
                 {
-                    var r = _expr.Evaluate(root, member.Value, options);
+                    var r = _expr.Evaluate(new JsonElementJsonValue(root), new JsonElementJsonValue(member.Value), options);
                     if (Expression.IsTrue(r))
                     {
                         this.EvaluateTail(root, stem, member.Value, accumulator, options);
+                    }
+                }
+            }
+        }
+
+        public override void Select(IJsonValue root, 
+                                    PathNode stem,
+                                    IJsonValue current,
+                                    INodeAccumulator2 accumulator,
+                                    ResultOptions options)
+        {
+            //TestContext.WriteLine("FilterSelector");
+
+            if (current.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var item in current.EnumerateArray())
+                {
+                    var r = _expr.Evaluate(root, item, options);
+                    if (Expression.IsTrue(r))
+                    {
+                        this.EvaluateTail2(root, stem, item, accumulator, options);
+                    }
+                }
+            }
+            else if (current.ValueKind == JsonValueKind.Object)
+            {
+                foreach (var member in current.EnumerateObject())
+                {
+                    var r = _expr.Evaluate(root, member.Value, options);
+                    if (Expression.IsTrue(r))
+                    {
+                        this.EvaluateTail2(root, stem, member.Value, accumulator, options);
                     }
                 }
             }

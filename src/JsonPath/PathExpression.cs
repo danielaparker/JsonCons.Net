@@ -55,6 +55,21 @@ namespace JsonCons.JsonPathLib
         }
     };
 
+    class ValueAccumulator2 : INodeAccumulator2
+    {
+        IList<IJsonValue> _values;
+
+        internal ValueAccumulator2(IList<IJsonValue> values)
+        {
+            _values = values;
+        }
+
+        public void Accumulate(PathNode pathTail, IJsonValue value)
+        {
+            _values.Add(value);
+        }
+    };
+
     class NodeAccumulator : INodeAccumulator
     {
         IList<Node> _nodes;

@@ -81,10 +81,12 @@
     <Compile Include="JsonElementEqualityComparer.cs" />
     <Compile Include="JsonPath.cs" />
     <Compile Include="JsonPathCompiler.cs" />
+    <Compile Include="JsonPathSelector.cs" />
+    <Compile Include="JsonValue.cs" />
+    <Compile Include="JsonValueEqualityComparer.cs" />
     <Compile Include="NormalizedPath.cs" />
     <Compile Include="PathExpression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="JsonPathSelector.cs" />
     <Compile Include="Slice.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="UnaryOperator.cs" />

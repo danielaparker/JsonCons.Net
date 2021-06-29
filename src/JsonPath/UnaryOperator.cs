@@ -14,7 +14,7 @@ namespace JsonCons.JsonPathLib
     {
         int PrecedenceLevel {get;}
         bool IsRightAssociative {get;}
-        JsonElement Evaluate(JsonElement elem);
+        IJsonValue Evaluate(IJsonValue elem);
     };
 
     abstract class UnaryOperator : IUnaryOperator
@@ -30,7 +30,7 @@ namespace JsonCons.JsonPathLib
 
         public bool IsRightAssociative {get;} 
 
-        public abstract JsonElement Evaluate(JsonElement elem);
+        public abstract IJsonValue Evaluate(IJsonValue elem);
     };
 
     class NotOperator : UnaryOperator
@@ -41,7 +41,7 @@ namespace JsonCons.JsonPathLib
             : base(1, true)
         {}
 
-        public override JsonElement Evaluate(JsonElement val)
+        public override IJsonValue Evaluate(IJsonValue val)
         {
             return Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
         }
@@ -60,22 +60,27 @@ namespace JsonCons.JsonPathLib
             : base(1, true)
         {}
 
-        public override JsonElement Evaluate(JsonElement val)
+        public override IJsonValue Evaluate(IJsonValue val)
         {
             if (!(val.ValueKind == JsonValueKind.Number))
             {
                 return JsonConstants.Null;
             }
-            var s = val.ToString();
-            if (s.StartsWith("-"))
+
+            Decimal decVal;
+            double dblVal;
+
+            if (val.TryGetDecimal(out decVal))
             {
-                return JsonDocument.Parse(s.Substring(1)).RootElement;
+                return new DecimalJsonValue(-decVal);
+            }
+            else if (val.TryGetDouble(out dblVal))
+            {
+                return new DoubleJsonValue(-dblVal);
             }
             else
             {
-                StringBuilder builder = new StringBuilder("-", 50);
-                builder.Append(s);
-                return JsonDocument.Parse(builder.ToString()).RootElement;
+                return JsonConstants.Null;
             }
         }
 
@@ -95,7 +100,7 @@ namespace JsonCons.JsonPathLib
             _regex = regex;
         }
 
-        public override JsonElement Evaluate(JsonElement val)
+        public override IJsonValue Evaluate(IJsonValue val)
         {
             if (!(val.ValueKind == JsonValueKind.String))
             {

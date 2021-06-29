@@ -7,15 +7,15 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-   public class JsonElementEqualityComparer : IEqualityComparer<JsonElement>
+   public class JsonValueEqualityComparer : IEqualityComparer<IJsonValue>
    {
-       public static JsonElementEqualityComparer Instance { get; } = new JsonElementEqualityComparer();
+       public static JsonValueEqualityComparer Instance { get; } = new JsonValueEqualityComparer();
 
        private int _maxHashDepth { get; } = 100;
 
-       JsonElementEqualityComparer() {}
+       JsonValueEqualityComparer() {}
 
-       public bool Equals(JsonElement lhs, JsonElement rhs)
+       public bool Equals(IJsonValue lhs, IJsonValue rhs)
        {
            if (lhs.ValueKind != rhs.ValueKind)
                return false;
@@ -56,7 +56,7 @@ namespace JsonCons.JsonPathLib
 
                case JsonValueKind.Object:
                {
-                   // OrderBy performs a stable sort (Note that JsonElement supports duplicate property names)
+                   // OrderBy performs a stable sort (Note that IJsonValue supports duplicate property names)
                    var enumerator1 = lhs.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
                    var enumerator2 = rhs.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
 
@@ -84,12 +84,12 @@ namespace JsonCons.JsonPathLib
            }
        }
 
-       public int GetHashCode(JsonElement obj)
+       public int GetHashCode(IJsonValue obj)
        {
            return ComputeHashCode(obj, 0);
        }
 
-       int ComputeHashCode(JsonElement element, int depth)
+       int ComputeHashCode(IJsonValue element, int depth)
        {
            int hashCode = element.ValueKind.GetHashCode();
 
@@ -102,8 +102,12 @@ namespace JsonCons.JsonPathLib
                    break;
 
                case JsonValueKind.Number:
-                       hashCode += 17*element.GetDouble().GetHashCode();
-                       break;
+                    {
+                        double dbl;
+                        element.TryGetDouble(out dbl);
+                        hashCode += 17 * dbl.GetHashCode();
+                        break;
+                    }
 
                case JsonValueKind.String:
                     hashCode += 17 * element.GetString().GetHashCode();

@@ -13,7 +13,7 @@ namespace JsonCons.JsonPathLib
     interface IFunction 
     {
         int? Arity {get;}
-        bool TryEvaluate(IList<JsonElement> parameters, out JsonElement element);
+        bool TryEvaluate(IList<IJsonValue> parameters, out IJsonValue element);
     };
 
     abstract class BaseFunction : IFunction
@@ -25,7 +25,7 @@ namespace JsonCons.JsonPathLib
 
         public int? Arity {get;}
 
-        public abstract bool TryEvaluate(IList<JsonElement> parameters, out JsonElement element);
+        public abstract bool TryEvaluate(IList<IJsonValue> parameters, out IJsonValue element);
     };  
 
     class AbsFunction : BaseFunction
@@ -35,30 +35,33 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<JsonElement> args, out JsonElement element) 
+        public override bool TryEvaluate(IList<IJsonValue> args, out IJsonValue element) 
         {
             if (this.Arity.HasValue)
             {
                 Debug.Assert(args.Count == this.Arity.Value);
             }
 
-            var arg= args[0];
-            if (arg.ValueKind != JsonValueKind.Number)
-            {
-                element = JsonConstants.Null;
-            }
+            var arg = args[0];
 
-            StringBuilder builder = new StringBuilder(arg.ToString());
-            if (arg.ToString().StartsWith("-"))
+            Decimal decVal;
+            double dblVal;
+
+            if (arg.TryGetDecimal(out decVal))
             {
-                builder.Remove(0,1);
+                element = new DecimalJsonValue(decVal >= 0 ? decVal : -decVal);
+                return true;
+            }
+            else if (arg.TryGetDouble(out dblVal))
+            {
+                element = new DecimalJsonValue(dblVal >= 0 ? decVal : new Decimal(-dblVal));
+                return true;
             }
             else
             {
-                builder.Insert(0,'-');
+                element = JsonConstants.Null;
+                return false;
             }
-            element = JsonDocument.Parse(builder.ToString()).RootElement;
-            return true;
         }
 
         public override string ToString()

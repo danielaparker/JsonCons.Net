@@ -13,7 +13,7 @@ namespace JsonCons.JsonPathLib
     {
         int PrecedenceLevel {get;}
         bool IsRightAssociative {get;}
-        JsonElement Evaluate(JsonElement lhs, JsonElement rhs);
+        IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs);
     };
 
     abstract class BinaryOperator : IBinaryOperator
@@ -29,7 +29,7 @@ namespace JsonCons.JsonPathLib
 
         public bool IsRightAssociative {get;} 
 
-        public abstract JsonElement Evaluate(JsonElement lhs, JsonElement rhs);
+        public abstract IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs);
     };
 
     class OrOperator : BinaryOperator
@@ -41,7 +41,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
             if (lhs.ValueKind == JsonValueKind.Null && rhs.ValueKind == JsonValueKind.Null)
             {
@@ -72,7 +72,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
             if (Expression.IsTrue(lhs))
             {
@@ -99,9 +99,9 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs) 
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs) 
         {
-            var comparer = JsonElementEqualityComparer.Instance;
+            var comparer = JsonValueEqualityComparer.Instance;
             return comparer.Equals(lhs, rhs) ? JsonConstants.True : JsonConstants.False;
         }
 
@@ -120,7 +120,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs) 
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs) 
         {
             return Expression.IsFalse(EqOperator.Instance.Evaluate(lhs, rhs)) ? JsonConstants.True : JsonConstants.False;
         }
@@ -140,7 +140,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs) 
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs) 
         {
             if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
@@ -186,7 +186,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs) 
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs) 
         {
             var val = GtOperator.Instance.Evaluate(lhs, rhs);
             return Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
@@ -208,7 +208,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
             var val = LteOperator.Instance.Evaluate(lhs, rhs);
             return Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
@@ -229,7 +229,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
             var val = LtOperator.Instance.Evaluate(lhs, rhs);
             return Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
@@ -250,34 +250,27 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
                 return JsonConstants.Null;
             }
 
-            Int64 intVal1;
             Decimal decVal1;
             double dblVal1;
-            Int64 intVal2;
             Decimal decVal2;
             double dblVal2;
 
-            if (lhs.TryGetInt64(out intVal1) && rhs.TryGetInt64(out intVal2))
-            {
-                Int64 val = intVal1 + intVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
-            }
-            else if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
+            if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
             {
                 Decimal val = decVal1 + decVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
+                return new DecimalJsonValue(val);
             }
             else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
             {
                 double val = dblVal1 + dblVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
+                return new DoubleJsonValue(val);
             }
             else
             {
@@ -300,34 +293,27 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
                 return JsonConstants.Null;
             }
 
-            Int64 intVal1;
             Decimal decVal1;
             double dblVal1;
-            Int64 intVal2;
             Decimal decVal2;
             double dblVal2;
 
-            if (lhs.TryGetInt64(out intVal1) && rhs.TryGetInt64(out intVal2))
-            {
-                Int64 val = intVal1 - intVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
-            }
-            else if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
+            if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
             {
                 Decimal val = decVal1 - decVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
+                return new DecimalJsonValue(val);
             }
             else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
             {
                 double val = dblVal1 - dblVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
+                return new DoubleJsonValue(val);
             }
             else
             {
@@ -350,34 +336,27 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
                 return JsonConstants.Null;
             }
 
-            Int64 intVal1;
             Decimal decVal1;
             double dblVal1;
-            Int64 intVal2;
             Decimal decVal2;
             double dblVal2;
 
-            if (lhs.TryGetInt64(out intVal1) && rhs.TryGetInt64(out intVal2))
-            {
-                Int64 val = intVal1 * intVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
-            }
-            else if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
+            if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
             {
                 Decimal val = decVal1 * decVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
+                return new DecimalJsonValue(val);
             }
             else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
             {
                 double val = dblVal1 * dblVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
+                return new DoubleJsonValue(val);
             }
             else
             {
@@ -400,7 +379,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
@@ -419,7 +398,7 @@ namespace JsonCons.JsonPathLib
                     return JsonConstants.Null;
                 }
                 Decimal val = decVal1 - decVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
+                return new DecimalJsonValue(val);
             }
             else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
             {
@@ -428,7 +407,7 @@ namespace JsonCons.JsonPathLib
                     return JsonConstants.Null;
                 }
                 double val = dblVal1 - dblVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
+                return new DoubleJsonValue(val);
             }
             else
             {
@@ -452,37 +431,26 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override JsonElement Evaluate(JsonElement lhs, JsonElement rhs)
+        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
                 return JsonConstants.Null;
             }
 
-            Int64 intVal1;
             Decimal decVal1;
             double dblVal1;
-            Int64 intVal2;
             Decimal decVal2;
             double dblVal2;
 
-            if (lhs.TryGetInt64(out intVal1) && rhs.TryGetInt64(out intVal2))
-            {
-                if (intVal2 == 0)
-                {
-                    return JsonConstants.Null;
-                }
-                Int64 val = intVal1 * intVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
-            }
-            else if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
+            if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
             {
                 if (decVal2 == 0)
                 {
                     return JsonConstants.Null;
                 }
                 Decimal val = decVal1 % decVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
+                return new DecimalJsonValue(val);
             }
             else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
             {
@@ -491,7 +459,7 @@ namespace JsonCons.JsonPathLib
                     return JsonConstants.Null;
                 }
                 double val = dblVal1 % dblVal2;
-                return JsonDocument.Parse(val.ToString()).RootElement;
+                return new DoubleJsonValue(val);
             }
             else
             {

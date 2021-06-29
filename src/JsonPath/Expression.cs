@@ -9,49 +9,20 @@ using NUnit.Framework;
         
 namespace JsonCons.JsonPathLib
 {
-    static class JsonConstants
-    {
-        static readonly JsonElement _trueValue;
-        static readonly JsonElement _falseValue;
-        static readonly JsonElement _nullValue;
-        static readonly JsonElement _zeroValue;
-        static readonly JsonElement _emptyString;
-        static readonly JsonElement _emptyArray;
-        static readonly JsonElement _emptyObject;
-
-        static JsonConstants()
-        {
-            _trueValue = JsonDocument.Parse("true").RootElement;
-            _falseValue = JsonDocument.Parse("false").RootElement;
-            _nullValue = JsonDocument.Parse("null").RootElement;
-            _zeroValue = JsonDocument.Parse("0").RootElement;
-            _emptyString = JsonDocument.Parse("\"\"").RootElement;
-            _emptyArray = JsonDocument.Parse(@"[]").RootElement;
-            _emptyObject = JsonDocument.Parse(@"{}").RootElement;
-        }
-
-        internal static JsonElement True {get {return _trueValue;}}
-        internal static JsonElement False { get { return _falseValue; } }
-        internal static JsonElement Null { get { return _falseValue; } }
-        internal static JsonElement Zero { get { return _zeroValue; } }
-        internal static JsonElement EmptyString { get { return _emptyString; } }
-        internal static JsonElement EmptyArray { get { return _emptyArray; } }
-        internal static JsonElement EmptyObject { get { return _emptyObject; } }
-    };
 
     interface IExpression
     {
-        JsonElement Evaluate(JsonElement root,
-                             JsonElement current, 
-                             ResultOptions options);
+        IJsonValue Evaluate(IJsonValue root,
+                            IJsonValue current, 
+                            ResultOptions options);
     }
 
     class Expression : IExpression
     {
-        internal static bool IsFalse(JsonElement val)
+        internal static bool IsFalse(IJsonValue val)
         {
             //TestContext.WriteLine($"IsFalse {val}");
-            var comparer = JsonElementEqualityComparer.Instance;
+            var comparer = JsonValueEqualityComparer.Instance;
             switch (val.ValueKind)
             {
                 case JsonValueKind.False:
@@ -71,11 +42,10 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        internal static bool IsTrue(JsonElement val)
+        internal static bool IsTrue(IJsonValue val)
         {
             return !IsFalse(val);
         }
-
 
         IReadOnlyList<Token> _tokens;
 
@@ -90,14 +60,14 @@ namespace JsonCons.JsonPathLib
             //}
         }
 
-        public JsonElement Evaluate(JsonElement root,
-                                    JsonElement current, 
+        public IJsonValue Evaluate(IJsonValue root,
+                                    IJsonValue current, 
                                     ResultOptions options)
         {
             //TestContext.WriteLine("Evaluate");
 
-            Stack<JsonElement> stack = new Stack<JsonElement>();
-            IList<JsonElement> argStack = new List<JsonElement>();
+            Stack<IJsonValue> stack = new Stack<IJsonValue>();
+            IList<IJsonValue> argStack = new List<IJsonValue>();
 
             foreach (var token in _tokens)
             {
@@ -140,8 +110,8 @@ namespace JsonCons.JsonPathLib
                         }
 
                         var item = stack.Pop();
-                        var values = new List<JsonElement>();
-                        var accumulator = new ValueAccumulator(values);
+                        var values = new List<IJsonValue>();
+                        var accumulator = new ValueAccumulator2(values);
                         token.GetSelector().Select(root, 
                                                    new PathNode("@"), 
                                                    item, 
@@ -169,7 +139,7 @@ namespace JsonCons.JsonPathLib
                             return JsonConstants.Null;
                         }
 
-                        JsonElement val;
+                        IJsonValue val;
                         if (!token.GetFunction().TryEvaluate(argStack, out val))
                         {
                             return JsonConstants.Null;
@@ -187,7 +157,7 @@ namespace JsonCons.JsonPathLib
 
                         var item = stack.Peek();
                         stack.Pop();
-                        JsonElement val = token.GetExpression().Evaluate(root, item, options);
+                        IJsonValue val = token.GetExpression().Evaluate(root, item, options);
                         stack.Push(val);
                         break;
                     }
