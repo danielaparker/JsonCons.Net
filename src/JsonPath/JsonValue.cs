@@ -8,19 +8,6 @@ using NUnit.Framework;
 
 namespace JsonCons.JsonPathLib
 {
-    public interface IJsonValue 
-    {
-        JsonValueKind ValueKind {get;}
-        IJsonValue this[int index] {get;}
-        int GetArrayLength();
-        string GetString();
-        bool TryGetDecimal(out decimal value);
-        bool TryGetDouble(out double value);
-        bool TryGetProperty(string propertyName, out IJsonValue property);
-        JsonElementJsonValue.ArrayEnumerator EnumerateArray();
-        JsonElementJsonValue.ObjectEnumerator EnumerateObject();
-    };
-
     public struct NameValuePair
     {
         public string Name { get; }
@@ -33,9 +20,30 @@ namespace JsonCons.JsonPathLib
         }
     }
 
+    public interface IJsonArrayEnumerator : IEnumerator<IJsonValue>, IEnumerable<IJsonValue>
+    {
+    }
+
+    public interface IJsonObjectEnumerator : IEnumerator<NameValuePair>, IEnumerable<NameValuePair>
+    {
+    }
+
+    public interface IJsonValue 
+    {
+        JsonValueKind ValueKind {get;}
+        IJsonValue this[int index] {get;}
+        int GetArrayLength();
+        string GetString();
+        bool TryGetDecimal(out decimal value);
+        bool TryGetDouble(out double value);
+        bool TryGetProperty(string propertyName, out IJsonValue property);
+        IJsonArrayEnumerator EnumerateArray();
+        IJsonObjectEnumerator EnumerateObject();
+    };
+
     public struct JsonElementJsonValue : IJsonValue
     {
-        public class ArrayEnumerator : IEnumerator<IJsonValue>, IEnumerable<IJsonValue>
+        public class ArrayEnumerator : IJsonArrayEnumerator
         {
             JsonElement.ArrayEnumerator _enumerator;
 
@@ -65,7 +73,7 @@ namespace JsonCons.JsonPathLib
 
             public IEnumerator<IJsonValue> GetEnumerator()
             {
-                return new ArrayEnumerator(_enumerator);
+                return new ArrayEnumerator(_enumerator.GetEnumerator());
             }
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -74,7 +82,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public class ObjectEnumerator : IEnumerator<NameValuePair>, IEnumerable<NameValuePair>
+        public class ObjectEnumerator : IJsonObjectEnumerator
         {
             JsonElement.ObjectEnumerator _enumerator;
 
@@ -149,12 +157,12 @@ namespace JsonCons.JsonPathLib
             return r;
         }
 
-        public ArrayEnumerator EnumerateArray()
+        public IJsonArrayEnumerator EnumerateArray()
         {
             return new ArrayEnumerator(_element.EnumerateArray());
         }
 
-        public ObjectEnumerator EnumerateObject()
+        public IJsonObjectEnumerator EnumerateObject()
         {
             return new ObjectEnumerator(_element.EnumerateObject());
         }
@@ -205,12 +213,12 @@ namespace JsonCons.JsonPathLib
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ArrayEnumerator EnumerateArray()
+        public IJsonArrayEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ObjectEnumerator EnumerateObject()
+        public IJsonObjectEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
@@ -253,12 +261,12 @@ namespace JsonCons.JsonPathLib
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ArrayEnumerator EnumerateArray()
+        public IJsonArrayEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ObjectEnumerator EnumerateObject()
+        public IJsonObjectEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
@@ -299,12 +307,12 @@ namespace JsonCons.JsonPathLib
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ArrayEnumerator EnumerateArray()
+        public IJsonArrayEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ObjectEnumerator EnumerateObject()
+        public IJsonObjectEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
@@ -335,12 +343,12 @@ namespace JsonCons.JsonPathLib
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ArrayEnumerator EnumerateArray()
+        public IJsonArrayEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ObjectEnumerator EnumerateObject()
+        public IJsonObjectEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
@@ -371,12 +379,12 @@ namespace JsonCons.JsonPathLib
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ArrayEnumerator EnumerateArray()
+        public IJsonArrayEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ObjectEnumerator EnumerateObject()
+        public IJsonObjectEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
@@ -407,12 +415,99 @@ namespace JsonCons.JsonPathLib
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ArrayEnumerator EnumerateArray()
+        public IJsonArrayEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public JsonElementJsonValue.ObjectEnumerator EnumerateObject()
+        public IJsonObjectEnumerator EnumerateObject()
+        {
+            throw new InvalidOperationException();
+        }
+    };
+
+    struct ArrayJsonValue : IJsonValue
+    {
+        public class ArrayEnumerator : IJsonArrayEnumerator
+        {   
+            IList<IJsonValue> _value;
+            System.Collections.IEnumerator _enumerator;
+
+            public ArrayEnumerator(IList<IJsonValue> value)
+            {
+                _value = value;
+                _enumerator = value.GetEnumerator();
+            }
+
+            public bool MoveNext()
+            {
+                return _enumerator.MoveNext();
+            }
+
+            public void Reset() { _enumerator.Reset(); }
+
+            void IDisposable.Dispose() {}
+
+            public IJsonValue Current
+            {
+                get { return _enumerator.Current as IJsonValue; }
+            }
+
+            object System.Collections.IEnumerator.Current
+            {
+                get { return Current; }
+            }
+
+            public IEnumerator<IJsonValue> GetEnumerator()
+            {
+                return _value.GetEnumerator();
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+               return (System.Collections.IEnumerator) GetEnumerator();
+            }
+        }
+
+        private IList<IJsonValue> _value;
+
+        internal ArrayJsonValue(IList<IJsonValue> value)
+        {
+            _value = value;
+        }
+
+        public JsonValueKind ValueKind {get{return JsonValueKind.Array;}}
+
+        public IJsonValue this[int index] { get { return _value[index]; } }
+
+        public int GetArrayLength() { return _value.Count; }
+
+        public string GetString()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool TryGetDecimal(out Decimal value)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool TryGetDouble(out double value)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool TryGetProperty(string propertyName, out IJsonValue property)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public IJsonArrayEnumerator EnumerateArray()
+        {
+            return new ArrayEnumerator(_value);
+        }
+
+        public IJsonObjectEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
