@@ -12,54 +12,52 @@ namespace JsonCons.JsonPathLib
 
     public static class JsonPath
     {
-        static readonly JsonElement NullJsonElement = JsonDocument.Parse("null").RootElement;
-
-        public static JsonElement Select(JsonElement root, NormalizedPath path)
+        public static bool TrySelect(JsonElement root, NormalizedPath path, out JsonElement element)
         {
-            JsonElement current = root;
+            element = root;
             foreach (var pathNode in path)
             {
                 if (pathNode.NodeKind == PathNodeKind.Index)
                 {
-                    if (current.ValueKind != JsonValueKind.Array || pathNode.GetIndex() >= current.GetArrayLength())
+                    if (element.ValueKind != JsonValueKind.Array || pathNode.GetIndex() >= element.GetArrayLength())
                     {
-                        return NullJsonElement; 
+                        return false; 
                     }
-                    current = current[pathNode.GetIndex()];
+                    element = element[pathNode.GetIndex()];
                 }
                 else if (pathNode.NodeKind == PathNodeKind.Name)
                 {
-                    if (current.ValueKind != JsonValueKind.Object || !current.TryGetProperty(pathNode.GetName(), out current))
+                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(pathNode.GetName(), out element))
                     {
-                        return NullJsonElement;
+                        return false;
                     }
                 }
             }
-            return current;
+            return true;
         }
 
-        public static IJsonValue Select(IJsonValue root, NormalizedPath path)
+        public static bool TrySelect(IJsonValue root, NormalizedPath path, out IJsonValue value)
         {
-            IJsonValue current = root;
+            value = root;
             foreach (var pathNode in path)
             {
                 if (pathNode.NodeKind == PathNodeKind.Index)
                 {
-                    if (current.ValueKind != JsonValueKind.Array || pathNode.GetIndex() >= current.GetArrayLength())
+                    if (value.ValueKind != JsonValueKind.Array || pathNode.GetIndex() >= value.GetArrayLength())
                     {
-                        return new NullJsonValue(); 
+                        return false; 
                     }
-                    current = current[pathNode.GetIndex()];
+                    value = value[pathNode.GetIndex()];
                 }
                 else if (pathNode.NodeKind == PathNodeKind.Name)
                 {
-                    if (current.ValueKind != JsonValueKind.Object || !current.TryGetProperty(pathNode.GetName(), out current))
+                    if (value.ValueKind != JsonValueKind.Object || !value.TryGetProperty(pathNode.GetName(), out value))
                     {
-                        return new NullJsonValue();
+                        return false;
                     }
                 }
             }
-            return current;
+            return false;
         }
 
         public static JsonPathExpression Compile(string expr)

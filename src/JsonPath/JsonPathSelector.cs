@@ -184,8 +184,11 @@ namespace JsonCons.JsonPathLib
             if (pathStem.Parent != null)
             {
                 NormalizedPath path = new NormalizedPath(pathStem.Parent);
-                JsonElement parent = JsonPath.Select(root, path);
-                this.EvaluateTail(root, path.Stem, parent, accumulator, options);        
+                JsonElement parent;
+                if (JsonPath.TrySelect(root, path, out parent))
+                {
+                    this.EvaluateTail(root, path.Stem, parent, accumulator, options);        
+                }
             }
         }
         public override IJsonValue Evaluate(IJsonValue root, 
@@ -196,8 +199,16 @@ namespace JsonCons.JsonPathLib
             if (pathStem.Parent != null)
             {
                 NormalizedPath path = new NormalizedPath(pathStem.Parent);
-                IJsonValue parent = JsonPath.Select(root, path);
-                return this.EvaluateTail(root, path.Stem, current, options);        
+                IJsonValue parent;
+                if (JsonPath.TrySelect(root, path, out parent))
+                {
+
+                    return this.EvaluateTail(root, path.Stem, current, options);        
+                }
+                else
+                {
+                    return JsonConstants.Null;
+                }
             }
             else
             {
@@ -674,8 +685,9 @@ namespace JsonCons.JsonPathLib
                 Int32 index = 0;
                 foreach (var item in current.EnumerateArray())
                 {
-                    var r = _expr.Evaluate(new JsonElementJsonValue(root), new JsonElementJsonValue(item), options);
-                    if (Expression.IsTrue(r))
+                    IJsonValue val;
+                    if (_expr.TryEvaluate(new JsonElementJsonValue(root), new JsonElementJsonValue(item), options, out val) 
+                        && Expression.IsTrue(val)) 
                     {
                         this.EvaluateTail(root, 
                                           PathGenerator.Generate(pathStem, index++, options), 
@@ -687,8 +699,9 @@ namespace JsonCons.JsonPathLib
             {
                 foreach (var property in current.EnumerateObject())
                 {
-                    var r = _expr.Evaluate(new JsonElementJsonValue(root), new JsonElementJsonValue(property.Value), options);
-                    if (Expression.IsTrue(r))
+                    IJsonValue val;
+                    if (_expr.TryEvaluate(new JsonElementJsonValue(root), new JsonElementJsonValue(property.Value), options, out val) 
+                        && Expression.IsTrue(val))
                     {
                         this.EvaluateTail(root, 
                                           PathGenerator.Generate(pathStem, property.Name, options), 
@@ -711,8 +724,8 @@ namespace JsonCons.JsonPathLib
                 Int32 index = 0;
                 foreach (var item in current.EnumerateArray())
                 {
-                    var r = _expr.Evaluate(root, item, options);
-                    if (Expression.IsTrue(r))
+                    IJsonValue val;
+                    if (_expr.TryEvaluate(root, item, options, out val) && Expression.IsTrue(val))
                     {
                         results.Add(this.EvaluateTail(root, 
                                                       PathGenerator.Generate(pathStem, index++, options), 
@@ -724,8 +737,8 @@ namespace JsonCons.JsonPathLib
             {
                 foreach (var property in current.EnumerateObject())
                 {
-                    var r = _expr.Evaluate(root, property.Value, options);
-                    if (Expression.IsTrue(r))
+                    IJsonValue val;
+                    if (_expr.TryEvaluate(root, property.Value, options, out val) && Expression.IsTrue(val))
                     {
                         results.Add(this.EvaluateTail(root, 
                                                       PathGenerator.Generate(pathStem, property.Name, options), 

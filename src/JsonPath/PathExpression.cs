@@ -81,7 +81,7 @@ namespace JsonCons.JsonPathLib
             PathNode pathTail = new PathNode("$");
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
-            _selector.Select(root, pathTail, root, accumulator, options);
+            _selector.Select(root, pathTail, root, accumulator, options | ResultOptions.Path);
 
             if ((options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
             {
