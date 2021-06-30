@@ -518,26 +518,17 @@ namespace JsonCons.JsonPathLib
         static readonly IJsonValue _trueValue;
         static readonly IJsonValue _falseValue;
         static readonly IJsonValue _nullValue;
-        static readonly IJsonValue _zeroValue;
-        static readonly IJsonValue _emptyString;
-        static readonly IJsonValue _emptyObject;
 
         static JsonConstants()
         {
             _trueValue = new TrueJsonValue();
             _falseValue = new FalseJsonValue();
             _nullValue = new NullJsonValue();
-            _zeroValue = new JsonElementJsonValue(JsonDocument.Parse("0").RootElement);
-            _emptyString = new JsonElementJsonValue(JsonDocument.Parse("\"\"").RootElement);
-            _emptyObject = new JsonElementJsonValue(JsonDocument.Parse(@"{}").RootElement);
         }
 
         internal static IJsonValue True {get {return _trueValue;}}
         internal static IJsonValue False { get { return _falseValue; } }
-        internal static IJsonValue Null { get { return _falseValue; } }
-        internal static IJsonValue Zero { get { return _zeroValue; } }
-        internal static IJsonValue EmptyString { get { return _emptyString; } }
-        //internal static IJsonValue EmptyObject { get { return _emptyObject; } }
+        internal static IJsonValue Null { get { return _nullValue; } }
     }
 
 } // namespace JsonCons.JsonPathLib

@@ -36,7 +36,17 @@ namespace JsonCons.JsonPathLib
                 case JsonValueKind.String:
                     return val.GetString().Length == 0;
                 case JsonValueKind.Number:
-                    return comparer.Equals(val,JsonConstants.Zero);
+                {
+                    Decimal dec;
+                    if (val.TryGetDecimal(out dec))
+                    {
+                        return dec == 0;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
                 default:
                     return false;
             }
