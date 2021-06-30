@@ -32,9 +32,9 @@ namespace JsonCons.JsonPathLib
                 case JsonValueKind.Array:
                     return val.GetArrayLength() == 0;
                 case JsonValueKind.Object:
-                    return comparer.Equals(val,JsonConstants.EmptyObject);
+                    return val.EnumerateObject().MoveNext() == false;
                 case JsonValueKind.String:
-                    return comparer.Equals(val,JsonConstants.EmptyString);
+                    return val.GetString().Length == 0;
                 case JsonValueKind.Number:
                     return comparer.Equals(val,JsonConstants.Zero);
                 default:
@@ -111,7 +111,7 @@ namespace JsonCons.JsonPathLib
 
                         var item = stack.Pop();
                         var values = new List<IJsonValue>();
-                        var result = token.GetSelector().Evaluate(root, item, options);
+                        var result = token.GetSelector().Evaluate(root, new PathNode("@"), item, options);
                         stack.Push(result);
                         break;
                     }

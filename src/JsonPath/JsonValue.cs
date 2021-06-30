@@ -520,7 +520,6 @@ namespace JsonCons.JsonPathLib
         static readonly IJsonValue _nullValue;
         static readonly IJsonValue _zeroValue;
         static readonly IJsonValue _emptyString;
-        static readonly IJsonValue _emptyArray;
         static readonly IJsonValue _emptyObject;
 
         static JsonConstants()
@@ -530,7 +529,6 @@ namespace JsonCons.JsonPathLib
             _nullValue = new NullJsonValue();
             _zeroValue = new JsonElementJsonValue(JsonDocument.Parse("0").RootElement);
             _emptyString = new JsonElementJsonValue(JsonDocument.Parse("\"\"").RootElement);
-            _emptyArray = new JsonElementJsonValue(JsonDocument.Parse(@"[]").RootElement);
             _emptyObject = new JsonElementJsonValue(JsonDocument.Parse(@"{}").RootElement);
         }
 
@@ -539,8 +537,7 @@ namespace JsonCons.JsonPathLib
         internal static IJsonValue Null { get { return _falseValue; } }
         internal static IJsonValue Zero { get { return _zeroValue; } }
         internal static IJsonValue EmptyString { get { return _emptyString; } }
-        internal static IJsonValue EmptyArray { get { return _emptyArray; } }
-        internal static IJsonValue EmptyObject { get { return _emptyObject; } }
+        //internal static IJsonValue EmptyObject { get { return _emptyObject; } }
     }
 
 } // namespace JsonCons.JsonPathLib

@@ -101,7 +101,7 @@ namespace JsonCons.JsonPathLib
             _operatorStack = new Stack<Token>();
         }
 
-        internal JsonPath Compile()
+        internal JsonPathExpression Compile()
         {
             _stateStack = new Stack<ExprState>();
             _index = 0;
@@ -123,6 +123,7 @@ namespace JsonCons.JsonPathLib
             var nullSpan = "null".AsSpan();
             int jsonTextLevel = 0;
             int mark = 0;
+            bool pathsRequired = false;
 
             while (_index < _span.Length)
             {
@@ -146,7 +147,7 @@ namespace JsonCons.JsonPathLib
                             }
                             default:
                             {
-                                throw new JsonException("Invalid state");
+                                throw new JsonException($"Invalid state {_span[_index]}");
                             }
                         }
                         break;
@@ -170,8 +171,15 @@ namespace JsonCons.JsonPathLib
                                 ++_index;
                                 ++_column;
                                 break;
+                            case '^':
+                                PushToken(new Token(new ParentNodeSelector()));
+                                pathsRequired = true;
+                                ++_index;
+                                ++_column;
+                                break;
                             default:
                             {
+                                //TestContext.WriteLine("PathRhs DEFAULT");
                                 _stateStack.Pop();
                                 break;
                             }
@@ -648,6 +656,34 @@ namespace JsonCons.JsonPathLib
                                 break;
                             default:
                                 throw new JsonException("Expected bracket specifier or union");
+                        }
+                        break;
+                    case ExprState.WildcardOrUnion:
+                        switch (_span[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case ']': 
+                                PushToken(new Token(new WildcardSelector()));
+                                buffer.Clear();
+                                _stateStack.Pop();
+                                ++_index;
+                                ++_column;
+                                break;
+                            case ',': 
+                                PushToken(new Token(JsonPathTokenKind.BeginUnion));
+                                PushToken(new Token(new WildcardSelector()));
+                                PushToken(new Token(JsonPathTokenKind.Separator));
+                                buffer.Clear();
+                                _stateStack.Pop(); 
+                                _stateStack.Push(ExprState.UnionExpression); 
+                                _stateStack.Push(ExprState.UnionElement);                                
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                throw new JsonException("Expected right bracket");
                         }
                         break;
                     case ExprState.UnionExpression:
@@ -1745,17 +1781,17 @@ namespace JsonCons.JsonPathLib
 
             if (_outputStack.Count < 1)
             {
-                throw new JsonException("Invalid state");
+                throw new JsonException("Invalid state 1");
             }
             if (_outputStack.Peek().TokenKind != JsonPathTokenKind.Selector)
             {
-                throw new JsonException("Invalid state");
+                throw new JsonException("Invalid state 2");
             }
             Token token = _outputStack.Pop();
 
             //TestContext.WriteLine($"Main token: {token}");
 
-            return new JsonPath(token.GetSelector());
+            return new JsonPathExpression(token.GetSelector(), pathsRequired);
         }
 
         void UnwindRParen()
@@ -1773,18 +1809,18 @@ namespace JsonCons.JsonPathLib
 
         private void PushToken(Token token)
         {
-            TestContext.WriteLine($"Token {token}");
-            TestContext.WriteLine("OutputStack:");
-            foreach (var item in _outputStack)
-            {
-                TestContext.WriteLine($"    {item}");
-            }
-            TestContext.WriteLine("OperatorStack:");
-            foreach (var item in _operatorStack)
-            {
-                TestContext.WriteLine($"    {item}");
-            }
-            TestContext.WriteLine("---");
+            //TestContext.WriteLine($"Token {token}");
+            //TestContext.WriteLine("OutputStack:");
+            //foreach (var item in _outputStack)
+            //{
+            //    TestContext.WriteLine($"    {item}");
+            //}
+            //TestContext.WriteLine("OperatorStack:");
+            //foreach (var item in _operatorStack)
+            //{
+            //   TestContext.WriteLine($"    {item}");
+            //}
+            //TestContext.WriteLine("---");
 
             switch (token.TokenKind)
             {
@@ -1963,7 +1999,7 @@ namespace JsonCons.JsonPathLib
                     }
                     tokens.Reverse();
 
-                    TestContext.WriteLine($"ARITY: {_outputStack.Peek().GetFunction().Arity}, ARG COUNT: {argCount}");
+                    //TestContext.WriteLine($"ARITY: {_outputStack.Peek().GetFunction().Arity}, ARG COUNT: {argCount}");
                     if (_outputStack.Peek().GetFunction().Arity.HasValue && _outputStack.Peek().GetFunction().Arity.Value != argCount)
                     {
                         throw new JsonException("Invalid arity");

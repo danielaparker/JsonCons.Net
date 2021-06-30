@@ -13,63 +13,6 @@ namespace JsonCons.JsonPathLib
         IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options);
     };
 
-    public struct Node : IEquatable<Node>, IComparable<Node>
-    {
-        public NormalizedPath Path {get;}
-        public JsonElement Value {get;}
-
-        internal Node(NormalizedPath path, JsonElement value)
-        {
-            Path = path;
-            Value = value;
-        }
-
-        public bool Equals(Node other)
-        {
-            return Path.Equals(other.Path);
-        }
-
-        public int CompareTo(Node other)
-        {
-            return Path.CompareTo(other.Path);
-        }
-
-        public override int GetHashCode()
-        {
-            return Path.GetHashCode();
-        }
-    };
-
-    class ValueAccumulator : INodeAccumulator
-    {
-        IList<JsonElement> _values;
-
-        internal ValueAccumulator(IList<JsonElement> values)
-        {
-            _values = values;
-        }
-
-        public void Accumulate(PathNode pathTail, JsonElement value)
-        {
-            _values.Add(value);
-        }
-    }
-
-    class NodeAccumulator : INodeAccumulator
-    {
-        IList<Node> _nodes;
-
-        internal NodeAccumulator(IList<Node> nodes)
-        {
-            _nodes = nodes;
-        }
-
-        public void Accumulate(PathNode pathTail, JsonElement value)
-        {
-            _nodes.Add(new Node(new NormalizedPath(pathTail), value));
-        }
-    }
-
     public class PathExpression : IPathExpression
     {
         ISelector _selector;
@@ -86,7 +29,7 @@ namespace JsonCons.JsonPathLib
 
             if ((options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
             {
-                var nodes = new List<Node>();
+                var nodes = new List<JsonPathNode>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
                 _selector.Select(root, pathTail, root, accumulator, options);
 
@@ -98,7 +41,7 @@ namespace JsonCons.JsonPathLib
                     }
                     if ((options & ResultOptions.NoDups) == ResultOptions.NoDups)
                     {
-                        var index = new HashSet<Node>(nodes);
+                        var index = new HashSet<JsonPathNode>(nodes);
                         foreach (var node in nodes)
                         {
                             if (index.Contains(node))
@@ -131,6 +74,41 @@ namespace JsonCons.JsonPathLib
             }
 
             return values;
+        }
+
+        public IReadOnlyList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options)
+        {
+            PathNode pathTail = new PathNode("$");
+            var paths = new List<NormalizedPath>();
+            INodeAccumulator accumulator = new PathAccumulator(paths);
+            _selector.Select(root, pathTail, root, accumulator, options);
+
+            if ((options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
+            {
+                if (paths.Count > 1)
+                {
+                    if ((options & ResultOptions.Sort) == ResultOptions.Sort)
+                    {
+                        paths.Sort();
+                    }
+                    if ((options & ResultOptions.NoDups) == ResultOptions.NoDups)
+                    {
+                        var temp = new List<NormalizedPath>();
+                        var index = new HashSet<NormalizedPath>(paths);
+                        foreach (var path in paths)
+                        {
+                            if (index.Contains(path))
+                            {
+                                temp.Add(path);
+                                index.Remove(path);
+                            }
+                        }
+                        paths = temp;
+                    }
+                }
+            }
+
+            return paths;
         }
     }
 

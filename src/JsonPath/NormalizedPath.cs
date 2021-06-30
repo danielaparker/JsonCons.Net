@@ -88,7 +88,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    public class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>
+    public class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>, IEnumerable<PathNode>
     {
         IReadOnlyList<PathNode> _nodes;
 
@@ -111,6 +111,16 @@ namespace JsonCons.JsonPathLib
         public PathNode Root { get {return _nodes[0]; } }
 
         public PathNode Stem { get { return _nodes[_nodes.Count - 1]; } }
+
+        public IEnumerator<PathNode> GetEnumerator()
+        {
+            return _nodes.GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+           return (System.Collections.IEnumerator) GetEnumerator();
+        }
 
         public override string ToString()
         {

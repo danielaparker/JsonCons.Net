@@ -84,6 +84,7 @@
     <Compile Include="JsonPathSelector.cs" />
     <Compile Include="JsonValue.cs" />
     <Compile Include="JsonValueEqualityComparer.cs" />
+    <Compile Include="JsonPathNode.cs" />
     <Compile Include="NormalizedPath.cs" />
     <Compile Include="PathExpression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
