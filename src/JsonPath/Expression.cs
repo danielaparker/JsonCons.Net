@@ -74,7 +74,7 @@ namespace JsonCons.JsonPathLib
         public  bool TryEvaluate(IJsonValue root,
                                  IJsonValue current, 
                                  ResultOptions options,
-                                 out IJsonValue value)
+                                 out IJsonValue result)
         {
             //TestContext.WriteLine("Evaluate");
 
@@ -94,8 +94,13 @@ namespace JsonCons.JsonPathLib
                     {
                         Debug.Assert(stack.Count >= 1);
                         var item = stack.Pop();
-                        var val = token.GetUnaryOperator().Evaluate(item);
-                        stack.Push(val);
+                        var value = token.GetUnaryOperator().Evaluate(item);
+                        if (value == JsonConstants.Null)
+                        {
+                            result = JsonConstants.Null;
+                            return false;
+                        }
+                        stack.Push(value);
                         break;
                     }
                     case JsonPathTokenKind.BinaryOperator:
@@ -104,8 +109,13 @@ namespace JsonCons.JsonPathLib
                         var rhs = stack.Pop();
                         var lhs = stack.Pop();
 
-                        var val = token.GetBinaryOperator().Evaluate(lhs, rhs);
-                        stack.Push(val);
+                        var value = token.GetBinaryOperator().Evaluate(lhs, rhs);
+                        if (value == JsonConstants.Null)
+                        {
+                            result = JsonConstants.Null;
+                            return false;
+                        }
+                        stack.Push(value);
                         break;
                     }
                     case JsonPathTokenKind.RootNode:
@@ -123,13 +133,13 @@ namespace JsonCons.JsonPathLib
 
                         var item = stack.Pop();
                         var values = new List<IJsonValue>();
-                        IJsonValue result;
-                        if (!token.GetSelector().TryEvaluate(root, new PathNode("@"), item, options, out result))
+                        IJsonValue value;
+                        if (!token.GetSelector().TryEvaluate(root, new PathNode("@"), item, options, out value))
                         {
-                            value = JsonConstants.Null;
+                            result = JsonConstants.Null;
                             return false;
                         }
-                        stack.Push(result);
+                        stack.Push(value);
                         break;
                     }
                     case JsonPathTokenKind.Argument:
@@ -141,18 +151,18 @@ namespace JsonCons.JsonPathLib
                     {
                         if (token.GetFunction().Arity.HasValue && token.GetFunction().Arity.Value != argStack.Count)
                         {
-                            value = JsonConstants.Null;
+                            result = JsonConstants.Null;
                             return false;
                         }
 
-                        IJsonValue val;
-                        if (!token.GetFunction().TryEvaluate(argStack, out val))
+                        IJsonValue value;
+                        if (!token.GetFunction().TryEvaluate(argStack, out value))
                         {
-                            value = JsonConstants.Null;
+                            result = JsonConstants.Null;
                             return false;
                         }
                         argStack.Clear();
-                        stack.Push(val);
+                        stack.Push(value);
                         break;
                     }
                     case JsonPathTokenKind.Expression:
@@ -164,13 +174,13 @@ namespace JsonCons.JsonPathLib
 
                         var item = stack.Peek();
                         stack.Pop();
-                        IJsonValue val;
-                        if (!token.GetExpression().TryEvaluate(root, item, options, out val))
+                        IJsonValue value;
+                        if (!token.GetExpression().TryEvaluate(root, item, options, out value))
                         {
-                            value = JsonConstants.Null;
+                            result = JsonConstants.Null;
                             return false;
                         }
-                        stack.Push(val);
+                        stack.Push(value);
                         break;
                     }
                     default:
@@ -180,12 +190,12 @@ namespace JsonCons.JsonPathLib
 
             if (stack.Count == 0)
             {
-                value = JsonConstants.Null;
+                result = JsonConstants.Null;
                 return false;
             }
             else
             {
-                value = stack.Pop();
+                result = stack.Pop();
                 return true;
             }
         }
