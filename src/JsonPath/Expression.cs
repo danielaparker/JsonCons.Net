@@ -123,7 +123,12 @@ namespace JsonCons.JsonPathLib
 
                         var item = stack.Pop();
                         var values = new List<IJsonValue>();
-                        var result = token.GetSelector().Evaluate(root, new PathNode("@"), item, options);
+                        IJsonValue result;
+                        if (!token.GetSelector().TryEvaluate(root, new PathNode("@"), item, options, out result))
+                        {
+                            value = JsonConstants.Null;
+                            return false;
+                        }
                         stack.Push(result);
                         break;
                     }
