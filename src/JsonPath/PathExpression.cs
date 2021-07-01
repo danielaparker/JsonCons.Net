@@ -8,13 +8,53 @@ using System.Text.Json;
         
 namespace JsonCons.JsonPathLib
 {
-    interface IPathExpression 
+    class StaticResources : IDisposable
+    {
+        private bool _disposed = false;
+        IList<IDisposable> _disposables = new List<IDisposable>();
+
+        internal JsonElement CreateJsonElement(string json)
+        {
+            var doc = JsonDocument.Parse(json); 
+            _disposables.Add(doc);
+            return doc.RootElement;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    foreach (var item in _disposables)
+                    {
+                        item.Dispose();
+                    }
+                }
+                _disposed = true;
+            }
+        }
+
+        ~StaticResources()
+        {
+            Dispose(false);
+        }
+    };
+
+    interface IPathExpression : IDisposable
     {
         IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options);
     };
 
     public class PathExpression : IPathExpression
     {
+        private bool _disposed = false;
         ISelector _selector;
 
         internal PathExpression(ISelector selector)
@@ -109,6 +149,32 @@ namespace JsonCons.JsonPathLib
             }
 
             return paths;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    //foreach (var item in _disposables)
+                    //{
+                    //    item.Dispose();
+                    //}
+                }
+                _disposed = true;
+            }
+        }
+
+        ~PathExpression()
+        {
+            Dispose(false);
         }
     }
 
