@@ -177,8 +177,11 @@ namespace JsonCons.JsonPathLib
 
     class ParentNodeSelector : BaseSelector
     {
-        internal ParentNodeSelector()
+        int _ancestorDepth;
+
+        internal ParentNodeSelector(int ancestorDepth)
         {
+            _ancestorDepth = ancestorDepth;
         }
 
         public override void Select(JsonElement root, 
@@ -187,13 +190,21 @@ namespace JsonCons.JsonPathLib
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
-            if (pathStem.Parent != null)
+            PathNode ancestor = pathStem;
+            int index = 0;
+            while (ancestor != null && index < _ancestorDepth)
             {
-                NormalizedPath path = new NormalizedPath(pathStem.Parent);
-                JsonElement parent;
-                if (JsonPath.TrySelect(root, path, out parent))
+                ancestor = ancestor.Parent;
+                ++index;
+            }
+
+            if (ancestor != null)
+            {
+                NormalizedPath path = new NormalizedPath(ancestor);
+                JsonElement value;
+                if (JsonPath.TrySelect(root, path, out value))
                 {
-                    this.TailSelect(root, path.Stem, parent, accumulator, options);        
+                    this.TailSelect(root, path.Stem, value, accumulator, options);        
                 }
             }
         }
@@ -201,26 +212,34 @@ namespace JsonCons.JsonPathLib
                                             PathNode pathStem, 
                                             IJsonValue current,
                                             ResultOptions options,
-                                            out IJsonValue value)
+                                            out IJsonValue result)
         {
-            if (pathStem.Parent != null)
+            PathNode ancestor = pathStem;
+            int index = 0;
+            while (ancestor != null && index < _ancestorDepth)
             {
-                NormalizedPath path = new NormalizedPath(pathStem.Parent);
-                IJsonValue parent;
-                if (JsonPath.TrySelect(root, path, out parent))
+                ancestor = ancestor.Parent;
+                ++index;
+            }
+
+            if (ancestor != null)
+            {
+                NormalizedPath path = new NormalizedPath(ancestor);
+                IJsonValue value;
+                if (JsonPath.TrySelect(root, path, out value))
                 {
 
-                    return this.TryEvaluateTail(root, path.Stem, current, options, out value);        
+                    return this.TryEvaluateTail(root, path.Stem, value, options, out result);        
                 }
                 else
                 {
-                    value = JsonConstants.Null;
+                    result = JsonConstants.Null;
                     return false;
                 }
             }
             else
             {
-                value = JsonConstants.Null;
+                result = JsonConstants.Null;
                 return false;
             }
         }

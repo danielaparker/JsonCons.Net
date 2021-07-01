@@ -17,6 +17,8 @@ namespace JsonCons.JsonPathLib
         ExpectFunctionExpr,
         PathExpression,
         PathRhs,
+        ParentOperator,
+        AncestorDepth,
         FilterExpression,
         ExpressionRhs,
         PathStepOrRecursiveDescent,
@@ -124,6 +126,7 @@ namespace JsonCons.JsonPathLib
             int jsonTextLevel = 0;
             int mark = 0;
             bool pathsRequired = false;
+            int ancestorDepth = 0;
 
             while (_index < _span.Length)
             {
@@ -172,14 +175,45 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             case '^':
-                                PushToken(new Token(new ParentNodeSelector()));
-                                pathsRequired = true;
-                                ++_index;
-                                ++_column;
+                                ancestorDepth = 0;
+                                _stateStack.Push(ExprState.ParentOperator);
+                                _stateStack.Push(ExprState.AncestorDepth);
                                 break;
                             default:
                             {
                                 //TestContext.WriteLine("PathRhs DEFAULT");
+                                _stateStack.Pop();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case ExprState.ParentOperator: 
+                    {
+                        PushToken(new Token(new ParentNodeSelector(ancestorDepth)));
+                        pathsRequired = true;
+                        ancestorDepth = 0;
+                        ++_index;
+                        ++_column;
+                        _stateStack.Pop();
+                        break;
+                    }
+                    case ExprState.AncestorDepth: 
+                    {
+                        switch (_span[_index])
+                        {
+                            case ' ':case '\t':case '\r':case '\n':
+                                SkipWhiteSpace();
+                                break;
+                            case '^':
+                            {
+                                ++ancestorDepth;
+                                ++_index;
+                                ++_column;
+                                break;
+                            }
+                            default:
+                            {
                                 _stateStack.Pop();
                                 break;
                             }
@@ -1773,6 +1807,16 @@ namespace JsonCons.JsonPathLib
                             PushToken(new Token(new IdentifierSelector(buffer.ToString())));
                         }
                         _stateStack.Pop(); 
+                        break;
+                    case ExprState.ParentOperator: 
+                    {
+                        PushToken(new Token(new ParentNodeSelector(ancestorDepth)));
+                        pathsRequired = true;
+                        _stateStack.Pop();
+                        break;
+                    }
+                    case ExprState.AncestorDepth: 
+                        _stateStack.Pop();
                         break;
                     default:
                         throw new JsonException("Syntax error");
