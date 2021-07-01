@@ -47,14 +47,13 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    interface IPathExpression : IDisposable
+    interface IPathExpression 
     {
         IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options);
     };
 
     public class PathExpression : IPathExpression
     {
-        private bool _disposed = false;
         ISelector _selector;
 
         internal PathExpression(ISelector selector)
@@ -149,32 +148,6 @@ namespace JsonCons.JsonPathLib
             }
 
             return paths;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    //foreach (var item in _disposables)
-                    //{
-                    //    item.Dispose();
-                    //}
-                }
-                _disposed = true;
-            }
-        }
-
-        ~PathExpression()
-        {
-            Dispose(false);
         }
     }
 

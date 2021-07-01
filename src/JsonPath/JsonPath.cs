@@ -69,13 +69,16 @@ namespace JsonCons.JsonPathLib
 
     }
 
-    public class JsonPathExpression
+    public class JsonPathExpression : IDisposable
     {
+        private bool _disposed = false;
+        StaticResources _resources;
         readonly PathExpression _expr;
         ResultOptions _requiredOptions;
 
-        internal JsonPathExpression(ISelector selector, bool pathsRequired)
+        internal JsonPathExpression(StaticResources resources, ISelector selector, bool pathsRequired)
         {
+            _resources = resources;
             _expr = new PathExpression(selector);
             if (pathsRequired)
             {
@@ -91,6 +94,29 @@ namespace JsonCons.JsonPathLib
         public IReadOnlyList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options = 0)
         {
             return _expr.SelectPaths(root, options | _requiredOptions);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    _resources.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
+        ~JsonPathExpression()
+        {
+            Dispose(false);
         }
     }
 

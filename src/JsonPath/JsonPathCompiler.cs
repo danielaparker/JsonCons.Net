@@ -105,6 +105,25 @@ namespace JsonCons.JsonPathLib
 
         internal JsonPathExpression Compile()
         {
+            StaticResources resources = null;
+            try
+            {
+                resources = new StaticResources();
+                var expr = DoCompile(resources);
+                return expr;
+            }
+            catch (Exception ex)
+            {
+                if (resources != null)
+                {
+                    resources.Dispose();
+                }
+                throw ex;
+            }
+        }
+
+        private JsonPathExpression DoCompile(StaticResources resources)
+        {
             _stateStack = new Stack<ExprState>();
             _index = 0;
             _column = 1;
@@ -1835,7 +1854,7 @@ namespace JsonCons.JsonPathLib
 
             //TestContext.WriteLine($"Main token: {token}");
 
-            return new JsonPathExpression(token.GetSelector(), pathsRequired);
+            return new JsonPathExpression(resources, token.GetSelector(), pathsRequired);
         }
 
         void UnwindRParen()
