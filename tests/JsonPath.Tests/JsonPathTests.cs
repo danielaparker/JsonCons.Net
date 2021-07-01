@@ -13,7 +13,9 @@ namespace JsonCons.JsonPathLib.Tests
         public void RunJsonPathTests(string path)
         {
             string text = System.IO.File.ReadAllText(path);
-            JsonDocument doc = JsonDocument.Parse(text);
+            var jsonOptions = new JsonDocumentOptions();
+            jsonOptions.CommentHandling = JsonCommentHandling.Skip; 
+            JsonDocument doc = JsonDocument.Parse(text, jsonOptions);
             var testsEnumeratable = doc.RootElement.EnumerateArray();
             var comparer = JsonElementEqualityComparer.Instance;
 
@@ -114,17 +116,17 @@ namespace JsonCons.JsonPathLib.Tests
         {
             try
             {
+                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\dot-notation.json"));
+                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\filters.json"));
+                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\functions.json"));              
                 RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\identifiers.json"));
                 RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\indices.json"));
-                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\union.json"));
-                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\dot-notation.json"));
+                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\parent-operator.json"));
+                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\regex.json"));
                 RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\slice.json"));
                 RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\syntax.json"));
-                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\test-filters.json"));
-                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\test-regex.json"));
-                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\test-functions.json"));
-                
-                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\parent-operator.json"));
+                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\union.json"));
+                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\wildcard.json"));
             }
             catch (Exception e)
             {

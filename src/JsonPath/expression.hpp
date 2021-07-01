@@ -941,19 +941,19 @@ namespace detail {
 
     // function_base
     template <class Json>
-    class function_base
+    class BaseFunction
     {
         jsoncons.optional<int> arg_count_;
     public:
         using value_type = Json;
         using parameter_type = parameter<Json>;
 
-        function_base(jsoncons.optional<int> arg_count)
+        BaseFunction(jsoncons.optional<int> arg_count)
             : arg_count_(arg_count)
         {
         }
 
-        virtual ~function_base() noexcept = default;
+        virtual ~BaseFunction() noexcept = default;
 
         jsoncons.optional<int> arity()
         {
@@ -977,7 +977,7 @@ namespace detail {
     };  
 
     template <class Json>
-    class decorator_function : public function_base<Json>
+    class decorator_function : public BaseFunction<Json>
     {
     public:
         using value_type = Json;
@@ -989,7 +989,7 @@ namespace detail {
     public:
         decorator_function(jsoncons.optional<int> arity,
             function_type& f)
-            : function_base<Json>(arity), f_(f)
+            : BaseFunction<Json>(arity), f_(f)
         {
         }
 
@@ -1001,20 +1001,20 @@ namespace detail {
     };
 
     template <class Json>
-    class contains_function : public function_base<Json>
+    class ContainsFunction : public BaseFunction
     {
     public:
         using value_type = Json;
         using parameter_type = parameter<Json>;
         using string_view_type = typename Json.string_view_type;
 
-        contains_function()
-            : function_base<Json>(2)
+        ContainsFunction()
+            : BaseFunction(2)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1069,7 +1069,7 @@ namespace detail {
     };
 
     template <class Json>
-    class ends_with_function : public function_base<Json>
+    class ends_with_function : public BaseFunction
     {
     public:
         using value_type = Json;
@@ -1077,12 +1077,12 @@ namespace detail {
         using string_view_type = typename Json.string_view_type;
 
         ends_with_function()
-            : function_base<Json>(2)
+            : BaseFunction(2)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1131,7 +1131,7 @@ namespace detail {
     };
 
     template <class Json>
-    class starts_with_function : public function_base<Json>
+    class starts_with_function : public BaseFunction
     {
     public:
         using value_type = Json;
@@ -1139,12 +1139,12 @@ namespace detail {
         using string_view_type = typename Json.string_view_type;
 
         starts_with_function()
-            : function_base<Json>(2)
+            : BaseFunction(2)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1193,19 +1193,19 @@ namespace detail {
     };
 
     template <class Json>
-    class sum_function : public function_base<Json>
+    class sum_function : public BaseFunction
     {
     public:
         using value_type = Json;
         using parameter_type = parameter<Json>;
 
         sum_function()
-            : function_base<Json>(1)
+            : BaseFunction(1)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1252,7 +1252,7 @@ namespace detail {
 #if defined(JSONCONS_HAS_STD_REGEX)
 
     template <class Json>
-    class tokenize_function : public function_base<Json>
+    class tokenize_function : public BaseFunction
     {
     public:
         using value_type = Json;
@@ -1261,12 +1261,12 @@ namespace detail {
         using string_type = std.basic_string<char_type>;
 
         tokenize_function()
-            : function_base<Json>(2)
+            : BaseFunction(2)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1314,19 +1314,19 @@ namespace detail {
 #endif // defined(JSONCONS_HAS_STD_REGEX)
 
     template <class Json>
-    class ceil_function : public function_base<Json>
+    class ceil_function : public BaseFunction
     {
     public:
         using value_type = Json;
         using parameter_type = parameter<Json>;
 
         ceil_function()
-            : function_base<Json>(1)
+            : BaseFunction(1)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1366,19 +1366,19 @@ namespace detail {
     };
 
     template <class Json>
-    class floor_function : public function_base<Json>
+    class floor_function : public BaseFunction
     {
     public:
         using value_type = Json;
         using parameter_type = parameter<Json>;
 
         floor_function()
-            : function_base<Json>(1)
+            : BaseFunction(1)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1418,19 +1418,19 @@ namespace detail {
     };
 
     template <class Json>
-    class to_number_function : public function_base<Json>
+    class to_number_function : public BaseFunction
     {
     public:
         using value_type = Json;
         using parameter_type = parameter<Json>;
 
         to_number_function()
-            : function_base<Json>(1)
+            : BaseFunction(1)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1492,19 +1492,19 @@ namespace detail {
     };
 
     template <class Json>
-    class prod_function : public function_base<Json>
+    class prod_function : public BaseFunction
     {
     public:
         using value_type = Json;
         using parameter_type = parameter<Json>;
 
         prod_function()
-            : function_base<Json>(1)
+            : BaseFunction(1)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1547,19 +1547,19 @@ namespace detail {
     };
 
     template <class Json>
-    class avg_function : public function_base<Json>
+    class avg_function : public BaseFunction
     {
     public:
         using value_type = Json;
         using parameter_type = parameter<Json>;
 
         avg_function()
-            : function_base<Json>(1)
+            : BaseFunction(1)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1605,19 +1605,19 @@ namespace detail {
     };
 
     template <class Json>
-    class min_function : public function_base<Json>
+    class min_function : public BaseFunction
     {
     public:
         using value_type = Json;
         using parameter_type = parameter<Json>;
 
         min_function()
-            : function_base<Json>(1)
+            : BaseFunction(1)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1675,19 +1675,19 @@ namespace detail {
     };
 
     template <class Json>
-    class max_function : public function_base<Json>
+    class max_function : public BaseFunction
     {
     public:
         using value_type = Json;
         using parameter_type = parameter<Json>;
 
         max_function()
-            : function_base<Json>(1)
+            : BaseFunction(1)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1746,19 +1746,19 @@ namespace detail {
     };
 
     template <class Json>
-    class abs_function : public function_base<Json>
+    class abs_function : public BaseFunction
     {
     public:
         using value_type = Json;
         using parameter_type = parameter<Json>;
 
         abs_function()
-            : function_base<Json>(1)
+            : BaseFunction(1)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1801,7 +1801,7 @@ namespace detail {
     };
 
     template <class Json>
-    class length_function : public function_base<Json>
+    class length_function : public BaseFunction
     {
     public:
         using value_type = Json;
@@ -1809,12 +1809,12 @@ namespace detail {
         using parameter_type = parameter<Json>;
 
         length_function()
-            : function_base<Json>(1)
+            : BaseFunction(1)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -1858,7 +1858,7 @@ namespace detail {
     };
 
     template <class Json>
-    class keys_function : public function_base<Json>
+    class keys_function : public BaseFunction
     {
     public:
         using value_type = Json;
@@ -1866,12 +1866,12 @@ namespace detail {
         using string_view_type = typename Json.string_view_type;
 
         keys_function()
-            : function_base<Json>(1)
+            : BaseFunction(1)
         {
         }
 
-        value_type Evaluate(const std.vector<parameter_type>& args, 
-                            std.error_code& ec) override
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                            out IJsonValue result) override
         {
             if (args.size() != *this.arity())
             {
@@ -2274,7 +2274,7 @@ namespace detail {
         using string_type = std.basic_string<char_type>;
         using value_type = Json;
         using reference = JsonElement;
-        using function_base_type = function_base<Json>;
+        using function_base_type = BaseFunction;
         using selector_type = jsonpath_selector<Json,JsonElement>;
 
         std.vector<std.unique_ptr<selector_type>> selectors_;
@@ -2308,7 +2308,7 @@ namespace detail {
         function_base_type* get_function(const string_type& name, std.error_code& ec)
         {
             static abs_function<Json> abs_func;
-            static contains_function<Json> contains_func;
+            static ContainsFunction<Json> contains_func;
             static starts_with_function<Json> starts_with_func;
             static ends_with_function<Json> ends_with_func;
             static ceil_function<Json> ceil_func;
@@ -2516,7 +2516,7 @@ namespace detail {
             std.unique_ptr<expression_base_type> expression_;
             UnaryOperator _unaryOperator;;
             BinaryOperator _binaryOperator;
-            function_base<Json>* function_;
+            BaseFunction* function_;
             Json value_;
         };
     public:
@@ -2614,7 +2614,7 @@ namespace detail {
             new (&expression_) std.unique_ptr<expression_base_type>(std.move(expr));
         }
 
-        Token(const function_base<Json>* function) noexcept
+        Token(const BaseFunction* function) noexcept
             : _type(JsonPathTokenKind.Function),
               function_(function)
         {
@@ -2926,7 +2926,7 @@ namespace detail {
 
         path_expression& operator=(path_expression&& expr) = default;
 
-        JsonElement Evaluate(dynamic_resources<Json,JsonElement>& resources, 
+        JsonElement TryEvaluate(dynamic_resources<Json,JsonElement>& resources, 
                       reference root,
                       path_node_type& path, 
                       reference instance,
@@ -2940,7 +2940,7 @@ namespace detail {
                 {
                     result.emplace_back(path.to_string());
                 };
-                Evaluate(resources, root, path, instance, callback, options);
+                TryEvaluate(resources, root, path, instance, callback, options);
             }
             else
             {
@@ -2948,7 +2948,7 @@ namespace detail {
                 {
                     result.push_back(val);
                 };
-                Evaluate(resources, root, path, instance, callback, options);
+                TryEvaluate(resources, root, path, instance, callback, options);
             }
 
             return result;
@@ -2956,7 +2956,7 @@ namespace detail {
 
         template <class Callback>
         typename std.enable_if<type_traits.is_binary_function_object<Callback,const normalized_path_type&,reference>.value,void>.type
-        Evaluate(dynamic_resources<Json,JsonElement>& resources, 
+        TryEvaluate(dynamic_resources<Json,JsonElement>& resources, 
                  reference root,
                  path_node_type& path, 
                  reference current, 
@@ -3119,7 +3119,7 @@ namespace detail {
                             var item = stack.Peek();
                             stack.Pop();
 
-                            var val = token._unaryOperator.Evaluate(item.GetValue(), ec);
+                            var val = token._unaryOperator.TryEvaluate(item.GetValue(), ec);
                             stack.Push(val);
                             break;
                         }
@@ -3134,8 +3134,8 @@ namespace detail {
                             //std.cout << "lhs: " << *lhs << "\n";
                             stack.Pop();
 
-                            var val = token._binaryOperator.Evaluate(lhs.GetValue(), rhs.GetValue(), ec);
-                            //std.cout << "Evaluate binary expression: " << r << "\n";
+                            var val = token._binaryOperator.TryEvaluate(lhs.GetValue(), rhs.GetValue(), ec);
+                            //std.cout << "TryEvaluate binary expression: " << r << "\n";
                             stack.Push(val);
                             break;
                         }
@@ -3177,7 +3177,7 @@ namespace detail {
                             //}
                             //std.cout << "\n";
 
-                            value_type val = token.function_.Evaluate(arg_stack, ec);
+                            value_type val = token.function_.TryEvaluate(arg_stack, ec);
                             if (ec)
                             {
                                 return JsonConstants.Null;

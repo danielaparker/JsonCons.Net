@@ -35,7 +35,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, out IJsonValue element) 
+        public override bool TryEvaluate(IList<IJsonValue> args, out IJsonValue result) 
         {
             if (this.Arity.HasValue)
             {
@@ -49,17 +49,17 @@ namespace JsonCons.JsonPathLib
 
             if (arg.TryGetDecimal(out decVal))
             {
-                element = new DecimalJsonValue(decVal >= 0 ? decVal : -decVal);
+                result = new DecimalJsonValue(decVal >= 0 ? decVal : -decVal);
                 return true;
             }
             else if (arg.TryGetDouble(out dblVal))
             {
-                element = new DecimalJsonValue(dblVal >= 0 ? decVal : new Decimal(-dblVal));
+                result = new DecimalJsonValue(dblVal >= 0 ? decVal : new Decimal(-dblVal));
                 return true;
             }
             else
             {
-                element = JsonConstants.Null;
+                result = JsonConstants.Null;
                 return false;
             }
         }
@@ -67,6 +67,742 @@ namespace JsonCons.JsonPathLib
         public override string ToString()
         {
             return "abs";
+        }
+    };
+
+    class ContainsFunction : BaseFunction
+    {
+        internal ContainsFunction()
+            : base(2)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var arg0 = args[0];
+            var arg1 = args[1];
+
+            var comparer = JsonValueEqualityComparer.Instance;
+
+            switch (arg0.ValueKind)
+            {
+                case JsonValueKind.Array:
+                    foreach (var item in arg0.EnumerateArray())
+                    {
+                        if (comparer.Equals(item, arg1))
+                        {
+                            result = JsonConstants.True;
+                            return true;
+                        }
+                    }
+                    result = JsonConstants.False;
+                    return false;
+                case JsonValueKind.String:
+                {
+                    if (arg1.ValueKind != JsonValueKind.String)
+                    {
+                        result = JsonConstants.Null;
+                        return false;
+                    }
+                    var s0 = arg0.GetString();
+                    var s1 = arg1.GetString();
+                    if (s0.Contains(s1))
+                    {
+                        result = JsonConstants.True;
+                        return true;
+                    }
+                    else
+                    {
+                        result = JsonConstants.False;
+                        return false;
+                    }
+                }
+                default:
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            return "contains";
+        }
+    };
+
+    class EndsWithFunction : BaseFunction
+    {
+        internal EndsWithFunction()
+            : base(2)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var arg0 = args[0];
+            var arg1 = args[1];
+            if (arg0.ValueKind != JsonValueKind.String
+                || arg1.ValueKind != JsonValueKind.String)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            var s0 = arg0.GetString();
+            var s1 = arg1.GetString();
+
+            if (s0.EndsWith(s1))
+            {
+                result = JsonConstants.True;
+            }
+            else
+            {
+                result = JsonConstants.False;
+            }
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "ends_with";
+        }
+    };
+
+    class StartsWithFunction : BaseFunction
+    {
+        internal StartsWithFunction()
+            : base(2)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var arg0 = args[0];
+            var arg1 = args[1];
+            if (arg0.ValueKind != JsonValueKind.String
+                || arg1.ValueKind != JsonValueKind.String)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            var s0 = arg0.GetString();
+            var s1 = arg1.GetString();
+            if (s0.StartsWith(s1))
+            {
+                result = JsonConstants.True;
+            }
+            else
+            {
+                result = JsonConstants.False;
+            }
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "starts_with";
+        }
+    };
+
+    class SumFunction : BaseFunction
+    {
+        internal static SumFunction Instance { get; } = new SumFunction();
+
+        internal SumFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var arg0 = args[0];
+            if (arg0.ValueKind != JsonValueKind.Array)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+            foreach (var item in arg0.EnumerateArray())
+            {
+                if (item.ValueKind != JsonValueKind.Number)
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+            }
+
+            bool success = true;
+            decimal decSum = 0;
+            foreach (var item in arg0.EnumerateArray())
+            {
+                decimal dec;
+                if (!item.TryGetDecimal(out dec))
+                {
+                    success = false;
+                    break;
+                }
+                decSum += dec;
+            }
+            if (success)
+            {
+                result = new DecimalJsonValue(decSum); 
+                return true;
+            }
+            else
+            {
+                double dblSum = 0;
+                foreach (var item in arg0.EnumerateArray())
+                {
+                    double dbl;
+                    if (!item.TryGetDouble(out dbl))
+                    {
+                        result = JsonConstants.Null;
+                        return false;
+                    }
+                    dblSum += dbl;
+                }
+                result = new DoubleJsonValue(dblSum); 
+                return true;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "sum";
+        }
+    };
+
+    class ProdFunction : BaseFunction
+    {
+        internal ProdFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var arg0 = args[0];
+            if (arg0.ValueKind != JsonValueKind.Array || arg0.GetArrayLength() == 0)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+            foreach (var item in arg0.EnumerateArray())
+            {
+                if (item.ValueKind != JsonValueKind.Number)
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+            }
+
+            double prod = 1;
+            foreach (var item in arg0.EnumerateArray())
+            {
+                double dbl;
+                if (!item.TryGetDouble(out dbl))
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+                prod *= dbl;
+            }
+            result = new DoubleJsonValue(prod);
+
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "prod";
+        }
+    };
+
+    class AvgFunction : BaseFunction
+    {
+        internal AvgFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+            var arg0 = args[0];
+            if (arg0.ValueKind != JsonValueKind.Array || arg0.GetArrayLength() == 0)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            IJsonValue sum;
+            if (!SumFunction.Instance.TryEvaluate(args, out sum))
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            Decimal decVal;
+            double dblVal;
+
+            if (sum.TryGetDecimal(out decVal))
+            {
+                result = new DecimalJsonValue(decVal/arg0.GetArrayLength());
+                return true;
+            }
+            else if (sum.TryGetDouble(out dblVal))
+            {
+                result = new DoubleJsonValue(dblVal/arg0.GetArrayLength());
+                return true;
+            }
+            else
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "to_string";
+        }
+    };
+
+    class TokenizeFunction : BaseFunction
+    {
+        internal TokenizeFunction()
+            : base(2)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            if (args[0].ValueKind != JsonValueKind.String || args[1].ValueKind != JsonValueKind.String)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+            var sourceStr = args[0].GetString();
+            var patternStr = args[1].GetString();
+
+            Regex regex = new Regex(patternStr);
+
+            MatchCollection matches = regex.Matches(sourceStr);
+
+            var values = new List<IJsonValue>();
+            foreach (Match match in matches)
+            {
+                values.Add(new StringJsonValue(match.Value));
+            }
+
+            result = new ArrayJsonValue(values);
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "tokenize";
+        }
+    };
+
+    class CeilFunction : BaseFunction
+    {
+        internal CeilFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var val = args[0];
+            if (val.ValueKind != JsonValueKind.Number)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            Decimal decVal;
+            double dblVal;
+
+            if (val.TryGetDecimal(out decVal))
+            {
+                result = new DecimalJsonValue(decimal.Ceiling(decVal));
+                return true;
+            }
+            else if (val.TryGetDouble(out dblVal))
+            {
+                result = new DoubleJsonValue(Math.Ceiling(dblVal));
+                return true;
+            }
+            else
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+        }
+        
+        public override string ToString()
+        {
+            return "ceil";
+        }
+    };
+    
+    class FloorFunction : BaseFunction
+    {
+        internal FloorFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var val = args[0];
+            if (val.ValueKind != JsonValueKind.Number)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            Decimal decVal;
+            double dblVal;
+
+            if (val.TryGetDecimal(out decVal))
+            {
+                result = new DecimalJsonValue(decimal.Floor(decVal));
+                return true;
+            }
+            else if (val.TryGetDouble(out dblVal))
+            {
+                result = new DoubleJsonValue(Math.Floor(dblVal));
+                return true;
+            }
+            else
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "floor";
+        }
+    };
+
+    class ToNumberFunction : BaseFunction
+    {
+        internal ToNumberFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var arg0 = args[0];
+            switch (arg0.ValueKind)
+            {
+                case JsonValueKind.Number:
+                    result = arg0;
+                    return true;
+                case JsonValueKind.String:
+                {
+                    var s = arg0.GetString();
+                    Decimal dec;
+                    double dbl;
+                    if (Decimal.TryParse(s, out dec))
+                    {
+                        result = new DecimalJsonValue(dec);
+                        return true;
+                    }
+                    else if (Double.TryParse(s, out dbl))
+                    {
+                        result = new DoubleJsonValue(dbl);
+                        return true;
+                    }
+                    else
+                    {
+                        result = JsonConstants.Null;
+                        return false;
+                    }
+                }
+                default:
+                    result = JsonConstants.Null;
+                    return false;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "to_number";
+        }
+    };
+
+    class MinFunction : BaseFunction
+    {
+        internal MinFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var arg0 = args[0];
+            if (arg0.ValueKind != JsonValueKind.Array)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+            if (arg0.GetArrayLength() == 0)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+            bool isNumber = arg0[0].ValueKind == JsonValueKind.Number;
+            bool isString = arg0[0].ValueKind == JsonValueKind.String;
+            if (!isNumber && !isString)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            var less = LtOperator.Instance;
+            int index = 0;
+            for (int i = 1; i < arg0.GetArrayLength(); ++i)
+            {
+                if (!(((arg0[i].ValueKind == JsonValueKind.Number) == isNumber) && (arg0[i].ValueKind == JsonValueKind.String) == isString))
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+                if (less.Evaluate(arg0[i],arg0[index]).ValueKind == JsonValueKind.True )
+                {
+                    index = i;
+                }
+            }
+
+            result = arg0[index];
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "min";
+        }
+    };
+
+    class MaxFunction : BaseFunction
+    {
+        internal MaxFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var arg0 = args[0];
+            if (arg0.ValueKind != JsonValueKind.Array)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+            if (arg0.GetArrayLength() == 0)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+            bool isNumber = arg0[0].ValueKind == JsonValueKind.Number;
+            bool isString = arg0[0].ValueKind == JsonValueKind.String;
+            if (!isNumber && !isString)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            var less = GtOperator.Instance;
+            int index = 0;
+            for (int i = 1; i < arg0.GetArrayLength(); ++i)
+            {
+                if (!(((arg0[i].ValueKind == JsonValueKind.Number) == isNumber) && (arg0[i].ValueKind == JsonValueKind.String) == isString))
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+                if (less.Evaluate(arg0[i],arg0[index]).ValueKind == JsonValueKind.True )
+                {
+                    index = i;
+                }
+            }
+
+            result = arg0[index];
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "max";
+        }
+    };
+
+    class LengthFunction : BaseFunction
+    {
+        internal LengthFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var arg0 = args[0];
+
+            switch (arg0.ValueKind)
+            {
+                case JsonValueKind.Object:
+                {
+                    int count = 0;
+                    foreach (var item in arg0.EnumerateObject())
+                    {
+                        ++count;
+                    }
+                    result = new DecimalJsonValue(new Decimal(count));
+                    return true;
+                }
+                case JsonValueKind.Array:
+                    result = new DecimalJsonValue(new Decimal(arg0.GetArrayLength()));
+                    return true;
+                case JsonValueKind.String:
+                {
+                    var s = arg0.GetString();
+                    var chars = s.ToCharArray();
+                    byte[] bytes = Encoding.UTF32.GetBytes( chars );
+                    result = new DecimalJsonValue(new Decimal(bytes.Length/4));
+                    return true;
+                }
+                default:
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            return "length";
+        }
+    };
+
+    class KeysFunction : BaseFunction
+    {
+        internal KeysFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(IList<IJsonValue> args, 
+                                         out IJsonValue result)
+        {
+            if (this.Arity.HasValue)
+            {
+                Debug.Assert(args.Count == this.Arity.Value);
+            }
+
+            var arg0 = args[0];
+            if (arg0.ValueKind != JsonValueKind.Object)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            var values = new List<IJsonValue>();
+
+            foreach (var property in arg0.EnumerateObject())
+            {
+                values.Add(new StringJsonValue(property.Name));
+            }
+            result = new ArrayJsonValue(values);
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "keys";
         }
     };
 
@@ -79,6 +815,19 @@ namespace JsonCons.JsonPathLib
         internal BuiltInFunctions()
         {
             _functions.Add("abs", new AbsFunction());
+            _functions.Add("contains", new ContainsFunction());
+            _functions.Add("ends_with", new EndsWithFunction());
+            _functions.Add("starts_with", new StartsWithFunction());
+            _functions.Add("sum", new SumFunction());
+            _functions.Add("prod", new ProdFunction());
+            _functions.Add("tokenize", new TokenizeFunction());
+            _functions.Add("ceil", new CeilFunction());
+            _functions.Add("floor", new FloorFunction());
+            _functions.Add("to_number", new ToNumberFunction());
+            _functions.Add("min", new MinFunction());
+            _functions.Add("max", new MaxFunction());
+            _functions.Add("length", new LengthFunction());
+            _functions.Add("keys", new KeysFunction());
         }
 
         internal bool TryGetFunction(string name, out IFunction func)
