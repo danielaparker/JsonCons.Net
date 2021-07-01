@@ -1451,14 +1451,14 @@ namespace JsonCons.JsonPathLib
                     }
                     case ExprState.JsonValue:
                     {
-                        PushToken(new Token(new JsonElementJsonValue(JsonDocument.Parse(buffer.ToString()).RootElement)));
+                        PushToken(new Token(new JsonElementJsonValue(resources.CreateJsonElement(buffer.ToString()))));
                         buffer.Clear();
                         _stateStack.Pop(); 
                         break;
                     }
                     case ExprState.JsonValue2:
                     {
-                        PushToken(new Token(new JsonElementJsonValue(JsonDocument.Parse(buffer.ToString()).RootElement)));
+                        PushToken(new Token(new JsonElementJsonValue(resources.CreateJsonElement(buffer.ToString()))));
                         buffer.Clear();
                         _stateStack.Pop(); 
                         break;
