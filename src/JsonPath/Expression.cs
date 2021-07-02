@@ -12,7 +12,8 @@ namespace JsonCons.JsonPathLib
 
     interface IExpression
     {
-         bool TryEvaluate(IJsonValue root,
+         bool TryEvaluate(DynamicResources resources,
+                          IJsonValue root,
                           IJsonValue current, 
                           ResultOptions options,
                           out IJsonValue value);
@@ -71,7 +72,8 @@ namespace JsonCons.JsonPathLib
             //}
         }
 
-        public  bool TryEvaluate(IJsonValue root,
+        public  bool TryEvaluate(DynamicResources resources,
+                                 IJsonValue root,
                                  IJsonValue current, 
                                  ResultOptions options,
                                  out IJsonValue result)
@@ -134,7 +136,7 @@ namespace JsonCons.JsonPathLib
                         var item = stack.Pop();
                         var values = new List<IJsonValue>();
                         IJsonValue value;
-                        if (!token.GetSelector().TryEvaluate(root, new PathNode("@"), item, options, out value))
+                        if (!token.GetSelector().TryEvaluate(resources, root, new PathNode("@"), item, options, out value))
                         {
                             result = JsonConstants.Null;
                             return false;
@@ -175,7 +177,7 @@ namespace JsonCons.JsonPathLib
                         var item = stack.Peek();
                         stack.Pop();
                         IJsonValue value;
-                        if (!token.GetExpression().TryEvaluate(root, item, options, out value))
+                        if (!token.GetExpression().TryEvaluate(resources, root, item, options, out value))
                         {
                             result = JsonConstants.Null;
                             return false;

@@ -8,6 +8,45 @@ using System.Text.Json;
         
 namespace JsonCons.JsonPathLib
 {
+    struct CacheEntry
+    {
+        internal CacheEntry(PathNode pathStem, JsonElement value)
+        {
+            PathStem = pathStem;
+            Value = value;
+        }
+
+        internal PathNode PathStem {get;}
+        internal JsonElement Value {get;}
+    }
+
+    class DynamicResources 
+    {
+        Dictionary<Int32,IList<CacheEntry>> _cache = new Dictionary<Int32,IList<CacheEntry>>();
+
+        bool IsCached(Int32 id)
+        {
+            return _cache.ContainsKey(id);
+        }
+
+        void AddToCache(Int32 id, IList<CacheEntry> items) 
+        {
+            _cache.Add(id, items);
+        }
+
+        void RetrieveFromCache(Int32 id, NodeAccumulator accumulator) 
+        {
+            IList<CacheEntry> items;
+            if (_cache.TryGetValue(id, out items))
+            {
+                foreach (var item in items)
+                {
+                    accumulator.Accumulate(item.PathStem, item.Value);
+                }
+            }
+        }
+    };
+
     public enum ResultOptions {Path=1, NoDups=Path|2, Sort=Path|4};
 
     public static class JsonPath

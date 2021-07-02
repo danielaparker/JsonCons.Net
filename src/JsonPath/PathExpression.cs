@@ -8,45 +8,6 @@ using System.Text.Json;
         
 namespace JsonCons.JsonPathLib
 {
-    class StaticResources : IDisposable
-    {
-        private bool _disposed = false;
-        IList<IDisposable> _disposables = new List<IDisposable>();
-
-        internal JsonElement CreateJsonElement(string json)
-        {
-            var doc = JsonDocument.Parse(json); 
-            _disposables.Add(doc);
-            return doc.RootElement;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    foreach (var item in _disposables)
-                    {
-                        item.Dispose();
-                    }
-                }
-                _disposed = true;
-            }
-        }
-
-        ~StaticResources()
-        {
-            Dispose(false);
-        }
-    };
-
     interface IPathExpression 
     {
         IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options);
@@ -63,6 +24,7 @@ namespace JsonCons.JsonPathLib
 
         public IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options)
         {
+            var resources = new DynamicResources();
             PathNode pathTail = new PathNode("$");
             var values = new List<JsonElement>();
 
@@ -70,7 +32,7 @@ namespace JsonCons.JsonPathLib
             {
                 var nodes = new List<JsonPathNode>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
-                _selector.Select(root, pathTail, root, accumulator, options);
+                _selector.Select(resources, root, pathTail, root, accumulator, options);
 
                 if (nodes.Count > 1)
                 {
@@ -109,7 +71,7 @@ namespace JsonCons.JsonPathLib
             else
             {
                 INodeAccumulator accumulator = new ValueAccumulator(values);            
-                _selector.Select(root, pathTail, root, accumulator, options);
+                _selector.Select(resources, root, pathTail, root, accumulator, options);
             }
 
             return values;
@@ -117,10 +79,12 @@ namespace JsonCons.JsonPathLib
 
         public IReadOnlyList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options)
         {
+            var resources = new DynamicResources();
+
             PathNode pathTail = new PathNode("$");
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
-            _selector.Select(root, pathTail, root, accumulator, options | ResultOptions.Path);
+            _selector.Select(resources, root, pathTail, root, accumulator, options | ResultOptions.Path);
 
             if ((options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
             {
