@@ -209,10 +209,10 @@ namespace JsonCons.JsonPathLib
             }
         }
         public override bool TryEvaluate(IJsonValue root, 
-                                            PathNode pathStem, 
-                                            IJsonValue current,
-                                            ResultOptions options,
-                                            out IJsonValue result)
+                                         PathNode pathStem, 
+                                         IJsonValue current,
+                                         ResultOptions options,
+                                         out IJsonValue result)
         {
             PathNode ancestor = pathStem;
             int index = 0;

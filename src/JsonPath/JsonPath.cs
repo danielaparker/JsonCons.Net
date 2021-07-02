@@ -57,7 +57,7 @@ namespace JsonCons.JsonPathLib
                     }
                 }
             }
-            return false;
+            return true;
         }
 
         public static JsonPathExpression Compile(string expr)
