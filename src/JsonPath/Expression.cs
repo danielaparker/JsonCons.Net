@@ -12,7 +12,7 @@ namespace JsonCons.JsonPathLib
 
     interface IExpression
     {
-         bool TryEvaluate(DynamicResources resources,
+         bool Evaluate(DynamicResources resources,
                           IJsonValue root,
                           IJsonValue current, 
                           ResultOptions options,
@@ -72,7 +72,7 @@ namespace JsonCons.JsonPathLib
             //}
         }
 
-        public  bool TryEvaluate(DynamicResources resources,
+        public  bool Evaluate(DynamicResources resources,
                                  IJsonValue root,
                                  IJsonValue current, 
                                  ResultOptions options,
@@ -139,17 +139,7 @@ namespace JsonCons.JsonPathLib
 
                         var item = stack.Pop();
                         var values = new List<IJsonValue>();
-                        IJsonValue value;
-                        if (!token.GetSelector().TryEvaluate(resources, root, new PathNode("@"), item, options, out value))
-                        {
-                            stack.Push(JsonConstants.Null);
-                            //result = JsonConstants.Null;
-                            //return false;
-                        }
-                        else
-                        {
-                            stack.Push(value);
-                        }
+                        stack.Push(token.GetSelector().Evaluate(resources, root, new PathNode("@"), item, options));
                         break;
                     }
                     case JsonPathTokenKind.Argument:
@@ -166,7 +156,7 @@ namespace JsonCons.JsonPathLib
                         }
 
                         IJsonValue value;
-                        if (!token.GetFunction().TryEvaluate(argStack, out value))
+                        if (!token.GetFunction().Evaluate(argStack, out value))
                         {
                             result = JsonConstants.Null;
                             return false;
@@ -185,7 +175,7 @@ namespace JsonCons.JsonPathLib
                         var item = stack.Peek();
                         stack.Pop();
                         IJsonValue value;
-                        if (!token.GetExpression().TryEvaluate(resources, root, item, options, out value))
+                        if (!token.GetExpression().Evaluate(resources, root, item, options, out value))
                         {
                             stack.Push(JsonConstants.Null);
                             //result = JsonConstants.Null;

@@ -1013,7 +1013,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1081,7 +1081,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1143,7 +1143,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1204,7 +1204,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1265,7 +1265,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1325,7 +1325,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1377,7 +1377,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1429,7 +1429,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1503,7 +1503,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1558,7 +1558,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1616,7 +1616,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1686,7 +1686,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1757,7 +1757,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1813,7 +1813,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -1870,7 +1870,7 @@ namespace detail {
         {
         }
 
-        public override bool TryEvaluate(IList<IJsonValue> args, 
+        public override bool Evaluate(IList<IJsonValue> args, 
                             out IJsonValue result) override
         {
             if (args.size() != *this.arity())
@@ -2926,7 +2926,7 @@ namespace detail {
 
         path_expression& operator=(path_expression&& expr) = default;
 
-        JsonElement TryEvaluate(dynamic_resources<Json,JsonElement>& resources, 
+        JsonElement Evaluate(dynamic_resources<Json,JsonElement>& resources, 
                       reference root,
                       path_node_type& path, 
                       reference instance,
@@ -2940,7 +2940,7 @@ namespace detail {
                 {
                     result.emplace_back(path.to_string());
                 };
-                TryEvaluate(resources, root, path, instance, callback, options);
+                Evaluate(resources, root, path, instance, callback, options);
             }
             else
             {
@@ -2948,7 +2948,7 @@ namespace detail {
                 {
                     result.push_back(val);
                 };
-                TryEvaluate(resources, root, path, instance, callback, options);
+                Evaluate(resources, root, path, instance, callback, options);
             }
 
             return result;
@@ -2956,7 +2956,7 @@ namespace detail {
 
         template <class Callback>
         typename std.enable_if<type_traits.is_binary_function_object<Callback,const normalized_path_type&,reference>.value,void>.type
-        TryEvaluate(dynamic_resources<Json,JsonElement>& resources, 
+        Evaluate(dynamic_resources<Json,JsonElement>& resources, 
                  reference root,
                  path_node_type& path, 
                  reference current, 
@@ -3119,7 +3119,7 @@ namespace detail {
                             var item = stack.Peek();
                             stack.Pop();
 
-                            var val = token._unaryOperator.TryEvaluate(item.GetValue(), ec);
+                            var val = token._unaryOperator.Evaluate(item.GetValue(), ec);
                             stack.Push(val);
                             break;
                         }
@@ -3134,8 +3134,8 @@ namespace detail {
                             //std.cout << "lhs: " << *lhs << "\n";
                             stack.Pop();
 
-                            var val = token._binaryOperator.TryEvaluate(lhs.GetValue(), rhs.GetValue(), ec);
-                            //std.cout << "TryEvaluate binary expression: " << r << "\n";
+                            var val = token._binaryOperator.Evaluate(lhs.GetValue(), rhs.GetValue(), ec);
+                            //std.cout << "Evaluate binary expression: " << r << "\n";
                             stack.Push(val);
                             break;
                         }
@@ -3177,7 +3177,7 @@ namespace detail {
                             //}
                             //std.cout << "\n";
 
-                            value_type val = token.function_.TryEvaluate(arg_stack, ec);
+                            value_type val = token.function_.Evaluate(arg_stack, ec);
                             if (ec)
                             {
                                 return JsonConstants.Null;
