@@ -13,7 +13,7 @@ namespace JsonCons.JsonPathLib
     interface IFunction 
     {
         int? Arity {get;}
-        bool Evaluate(IList<IJsonValue> parameters, out IJsonValue element);
+        bool TryEvaluate(IList<IJsonValue> parameters, out IJsonValue element);
     };
 
     abstract class BaseFunction : IFunction
@@ -25,7 +25,7 @@ namespace JsonCons.JsonPathLib
 
         public int? Arity {get;}
 
-        public abstract bool Evaluate(IList<IJsonValue> parameters, out IJsonValue element);
+        public abstract bool TryEvaluate(IList<IJsonValue> parameters, out IJsonValue element);
     };  
 
     class AbsFunction : BaseFunction
@@ -35,7 +35,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, out IJsonValue result) 
+        public override bool TryEvaluate(IList<IJsonValue> args, out IJsonValue result) 
         {
             if (this.Arity.HasValue)
             {
@@ -77,7 +77,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -144,7 +144,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -188,7 +188,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -233,7 +233,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -304,7 +304,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -356,7 +356,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -371,7 +371,7 @@ namespace JsonCons.JsonPathLib
             }
 
             IJsonValue sum;
-            if (!SumFunction.Instance.Evaluate(args, out sum))
+            if (!SumFunction.Instance.TryEvaluate(args, out sum))
             {
                 result = JsonConstants.Null;
                 return false;
@@ -410,7 +410,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -453,7 +453,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -501,7 +501,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -549,7 +549,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -603,7 +603,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -662,7 +662,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -721,7 +721,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
@@ -773,7 +773,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool Evaluate(IList<IJsonValue> args, 
+        public override bool TryEvaluate(IList<IJsonValue> args, 
                                          out IJsonValue result)
         {
             if (this.Arity.HasValue)
