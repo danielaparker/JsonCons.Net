@@ -94,15 +94,13 @@ namespace JsonCons.JsonPathLib
                     {
                         Debug.Assert(stack.Count >= 1);
                         var item = stack.Pop();
-                        var value = token.GetUnaryOperator().Evaluate(item);
-                        if (value == JsonConstants.Null)
+                        IJsonValue value;
+                        if (!token.GetUnaryOperator().TryEvaluate(item, out value))
                         {
-                            stack.Push(JsonConstants.Null);
+                            result = JsonConstants.Null;
+                            return false;
                         }
-                        else
-                        {
-                            stack.Push(value);
-                        }
+                        stack.Push(value);
                         break;
                     }
                     case JsonPathTokenKind.BinaryOperator:

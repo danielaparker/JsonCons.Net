@@ -14,7 +14,7 @@ namespace JsonCons.JsonPathLib
     {
         int PrecedenceLevel {get;}
         bool IsRightAssociative {get;}
-        IJsonValue Evaluate(IJsonValue elem);
+        bool TryEvaluate(IJsonValue elem, out IJsonValue result);
     };
 
     abstract class UnaryOperator : IUnaryOperator
@@ -30,7 +30,7 @@ namespace JsonCons.JsonPathLib
 
         public bool IsRightAssociative {get;} 
 
-        public abstract IJsonValue Evaluate(IJsonValue elem);
+        public abstract bool TryEvaluate(IJsonValue elem, out IJsonValue result);
     };
 
     class NotOperator : UnaryOperator
@@ -41,9 +41,10 @@ namespace JsonCons.JsonPathLib
             : base(1, true)
         {}
 
-        public override IJsonValue Evaluate(IJsonValue val)
+        public override bool TryEvaluate(IJsonValue val, out IJsonValue result)
         {
-            return Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
+            result = Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
+            return true;
         }
 
         public override string ToString()
@@ -60,11 +61,12 @@ namespace JsonCons.JsonPathLib
             : base(1, true)
         {}
 
-        public override IJsonValue Evaluate(IJsonValue val)
+        public override bool TryEvaluate(IJsonValue val, out IJsonValue result)
         {
             if (!(val.ValueKind == JsonValueKind.Number))
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false; // type error
             }
 
             Decimal decVal;
@@ -72,15 +74,18 @@ namespace JsonCons.JsonPathLib
 
             if (val.TryGetDecimal(out decVal))
             {
-                return new DecimalJsonValue(-decVal);
+                result = new DecimalJsonValue(-decVal);
+                return true;
             }
             else if (val.TryGetDouble(out dblVal))
             {
-                return new DoubleJsonValue(-dblVal);
+                result = new DoubleJsonValue(-dblVal);
+                return true;
             }
             else
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false;
             }
         }
 
@@ -100,13 +105,15 @@ namespace JsonCons.JsonPathLib
             _regex = regex;
         }
 
-        public override IJsonValue Evaluate(IJsonValue val)
+        public override bool TryEvaluate(IJsonValue val, out IJsonValue result)
         {
             if (!(val.ValueKind == JsonValueKind.String))
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false; // type error
             }
-            return _regex.IsMatch(val.GetString()) ? JsonConstants.True : JsonConstants.False;
+            result = _regex.IsMatch(val.GetString()) ? JsonConstants.True : JsonConstants.False;
+            return true;
         }
 
         public override string ToString()
