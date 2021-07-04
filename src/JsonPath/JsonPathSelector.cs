@@ -140,19 +140,6 @@ namespace JsonCons.JsonPathLib
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
-            TestContext.WriteLine("CACHED Select");
-            /*if (resources.IsCached(_id))
-            {
-                resources.RetrieveFromCache(_id, accumulator);
-            }
-            else
-            {
-                var accum = new CacheEntryAccumulator();
-
-                this.TailSelect(resources, root, pathStem, root, accum, options);
-                resources.AddToCache(_id, accum.CacheEntries);
-                resources.RetrieveFromCache(_id, accumulator);
-            }*/
             this.TailSelect(resources, root, pathStem, root, accumulator, options);        
         }
         public override bool TryEvaluate(DynamicResources resources, 
@@ -160,10 +147,22 @@ namespace JsonCons.JsonPathLib
                                          PathNode pathStem, 
                                          IJsonValue current,
                                          ResultOptions options,
-                                         out IJsonValue value)
+                                         out IJsonValue result)
         {
-            TestContext.WriteLine("CACHED TryEvaluate");
-            return this.TryEvaluateTail(resources, root, pathStem, root, options, out value);        
+            if (resources.TryRetrieveFromCache(_id, out result))
+            {
+                return true;
+            }
+            else
+            {
+                if (!this.TryEvaluateTail(resources, root, pathStem, root, options, out result))
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+                resources.AddToCache(_id, result);
+                return true;
+            }
         }
 
         public override string ToString()

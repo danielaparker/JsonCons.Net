@@ -8,52 +8,23 @@ using System.Text.Json;
         
 namespace JsonCons.JsonPathLib
 {
-    struct CacheEntry
-    {
-        internal CacheEntry(PathNode pathStem, JsonElement value)
-        {
-            PathStem = pathStem;
-            Value = value;
-        }
-
-        internal PathNode PathStem {get;}
-        internal JsonElement Value {get;}
-    }
-
-    class CacheEntryAccumulator : INodeAccumulator
-    {
-        internal List<CacheEntry> CacheEntries {get;} = new List<CacheEntry>();
-
-        public void Accumulate(PathNode pathStem, JsonElement value)
-        {
-            CacheEntries.Add(new CacheEntry(pathStem, value));
-        }
-    };
-
     class DynamicResources 
     {
-        Dictionary<Int32,IList<CacheEntry>> _cache = new Dictionary<Int32,IList<CacheEntry>>();
+        Dictionary<Int32,IJsonValue> _cache = new Dictionary<Int32,IJsonValue>();
 
         internal bool IsCached(Int32 id)
         {
             return _cache.ContainsKey(id);
         }
 
-        internal void AddToCache(Int32 id, IList<CacheEntry> items) 
+        internal void AddToCache(Int32 id, IJsonValue value) 
         {
-            _cache.Add(id, items);
+            _cache.Add(id, value);
         }
 
-        internal void RetrieveFromCache(Int32 id, INodeAccumulator accumulator) 
+        internal bool TryRetrieveFromCache(Int32 id, out IJsonValue result) 
         {
-            IList<CacheEntry> items;
-            if (_cache.TryGetValue(id, out items))
-            {
-                foreach (var item in items)
-                {
-                    accumulator.Accumulate(item.PathStem, item.Value);
-                }
-            }
+            return _cache.TryGetValue(id, out result);
         }
     };
 
