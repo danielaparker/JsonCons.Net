@@ -692,7 +692,7 @@
             }
         ]
     },
-    {
+    /*{
         "given" : [
               {
                 "d": [
@@ -753,7 +753,7 @@
                 "error" : "syntax error"
             }
         ]
-    },
+    },*/
     {
         "given" : [{"key": 42}, {"key": 43}, {"key": 44}],
         "cases" : [
@@ -845,7 +845,41 @@
             { 
                 "comment" : "Filter expression with subfilter",
                 "expression" : "$[?(@.a[?(@.price>10)])]",
-                "result" : [{"a":[{"price":11}]},{"a":[{"price":8},{"price":12},{"price":3}]}]
+                "result" : [
+  {
+    "a": [
+      {
+        "price": 1
+      },
+      {
+        "price": 3
+      }
+    ]
+  },
+  {
+    "a": [
+      {
+        "price": 11
+      }
+    ]
+  },
+  {
+    "a": [
+      {
+        "price": 8
+      },
+      {
+        "price": 12
+      },
+      {
+        "price": 3
+      }
+    ]
+  },
+  {
+    "a": []
+  }
+]
             }
         ]
     },

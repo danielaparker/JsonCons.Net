@@ -188,8 +188,33 @@ namespace JsonCons.JsonPathLib
 
         public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs) 
         {
-            var val = LtOperator.Instance.Evaluate(rhs, lhs);
-            return Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
+            if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
+            {
+                Decimal dec1;
+                Decimal dec2;
+                double val1;
+                double val2;
+                if (lhs.TryGetDecimal(out dec1) && rhs.TryGetDecimal(out dec2))
+                {
+                    return dec1 <= dec2 ? JsonConstants.True : JsonConstants.False;
+                }
+                else if (lhs.TryGetDouble(out val1) && rhs.TryGetDouble(out val2))
+                {
+                    return val1 <= val2 ? JsonConstants.True : JsonConstants.False;
+                }
+                else
+                {
+                    return JsonConstants.Null;
+                }
+            }
+            else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
+            {
+                return String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+            }
+            else
+            {
+                return JsonConstants.Null;
+            }
         }
 
 
@@ -210,8 +235,33 @@ namespace JsonCons.JsonPathLib
 
         public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
-            var val = LtOperator.Instance.Evaluate(rhs,lhs);
-            return Expression.IsTrue(val) ? JsonConstants.True : JsonConstants.False;
+            if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
+            {
+                Decimal dec1;
+                Decimal dec2;
+                double val1;
+                double val2;
+                if (lhs.TryGetDecimal(out dec1) && rhs.TryGetDecimal(out dec2))
+                {
+                    return dec1 > dec2 ? JsonConstants.True : JsonConstants.False;
+                }
+                else if (lhs.TryGetDouble(out val1) && rhs.TryGetDouble(out val2))
+                {
+                    return val1 > val2 ? JsonConstants.True : JsonConstants.False;
+                }
+                else
+                {
+                    return JsonConstants.Null;
+                }
+            }
+            else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
+            {
+                return String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+            }
+            else
+            {
+                return JsonConstants.Null;
+            }
         }
 
         public override string ToString()
@@ -231,8 +281,33 @@ namespace JsonCons.JsonPathLib
 
         public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
-            var val = LtOperator.Instance.Evaluate(lhs, rhs);
-            return Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
+            if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
+            {
+                Decimal dec1;
+                Decimal dec2;
+                double val1;
+                double val2;
+                if (lhs.TryGetDecimal(out dec1) && rhs.TryGetDecimal(out dec2))
+                {
+                    return dec1 >= dec2 ? JsonConstants.True : JsonConstants.False;
+                }
+                else if (lhs.TryGetDouble(out val1) && rhs.TryGetDouble(out val2))
+                {
+                    return val1 >= val2 ? JsonConstants.True : JsonConstants.False;
+                }
+                else
+                {
+                    return JsonConstants.Null;
+                }
+            }
+            else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
+            {
+                return String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+            }
+            else
+            {
+                return JsonConstants.Null;
+            }
         }
 
         public override string ToString()

@@ -322,6 +322,17 @@ namespace JsonCons.JsonPathLib
                     return true;
                 }
             }
+            else if (current.ValueKind == JsonValueKind.Array && _identifier == "length")
+            {
+                value = new DecimalJsonValue(new Decimal(current.GetArrayLength()));
+                return true;
+            }
+            else if (current.ValueKind == JsonValueKind.String && _identifier == "length")
+            {
+                byte[] bytes = Encoding.UTF32.GetBytes(current.GetString().ToCharArray());
+                value = new DecimalJsonValue(new Decimal(current.GetString().Length));
+                return true;
+            }
             else
             {
                 value = JsonConstants.Null;
@@ -637,8 +648,8 @@ namespace JsonCons.JsonPathLib
                 foreach (var item in current.EnumerateArray())
                 {
                     this.TailSelect(resources, root, 
-                                      PathGenerator.Generate(pathStem, index, options), 
-                                      item, accumulator, options);
+                                    PathGenerator.Generate(pathStem, index, options), 
+                                    item, accumulator, options);
                     ++index;
                 }
             }
@@ -647,8 +658,8 @@ namespace JsonCons.JsonPathLib
                 foreach (var prop in current.EnumerateObject())
                 {
                     this.TailSelect(resources, root, 
-                                      PathGenerator.Generate(pathStem, prop.Name, options), 
-                                      prop.Value, accumulator, options);
+                                    PathGenerator.Generate(pathStem, prop.Name, options), 
+                                    prop.Value, accumulator, options);
                 }
             }
         }

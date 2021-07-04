@@ -748,9 +748,7 @@ namespace JsonCons.JsonPathLib
                     return true;
                 case JsonValueKind.String:
                 {
-                    var s = arg0.GetString();
-                    var chars = s.ToCharArray();
-                    byte[] bytes = Encoding.UTF32.GetBytes( chars );
+                    byte[] bytes = Encoding.UTF32.GetBytes(arg0.GetString().ToCharArray());
                     result = new DecimalJsonValue(new Decimal(bytes.Length/4));
                     return true;
                 }
@@ -819,6 +817,7 @@ namespace JsonCons.JsonPathLib
             _functions.Add("ends_with", new EndsWithFunction());
             _functions.Add("starts_with", new StartsWithFunction());
             _functions.Add("sum", new SumFunction());
+            _functions.Add("avg", new AvgFunction());
             _functions.Add("prod", new ProdFunction());
             _functions.Add("tokenize", new TokenizeFunction());
             _functions.Add("ceil", new CeilFunction());

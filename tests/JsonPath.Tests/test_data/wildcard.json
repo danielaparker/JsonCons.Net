@@ -81,7 +81,7 @@
             {
                 "comment" : "Wildcard bracket notation on object",
                 "expression" : "$[*]",
-                "result" : [[0,1],42,{"key":"value"},"string"]
+                "result" : ["string",42,{"key":"value"},[0,1]]
             }
         ]
     },
@@ -112,7 +112,7 @@
             {
                 "comment" : "Wildcard dot notation on object",
                 "expression" : "$.*",
-                "result" : [[0,1],42,{"key":"value"},"string"]
+                "result" : ["string",42,{"key":"value"},[0,1]]
             }
         ]
     }
