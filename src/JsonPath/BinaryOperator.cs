@@ -188,7 +188,7 @@ namespace JsonCons.JsonPathLib
 
         public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs) 
         {
-            var val = GtOperator.Instance.Evaluate(lhs, rhs);
+            var val = LtOperator.Instance.Evaluate(rhs, lhs);
             return Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
         }
 
@@ -210,8 +210,8 @@ namespace JsonCons.JsonPathLib
 
         public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
         {
-            var val = LteOperator.Instance.Evaluate(lhs, rhs);
-            return Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
+            var val = LtOperator.Instance.Evaluate(rhs,lhs);
+            return Expression.IsTrue(val) ? JsonConstants.True : JsonConstants.False;
         }
 
         public override string ToString()
@@ -397,7 +397,7 @@ namespace JsonCons.JsonPathLib
                 {
                     return JsonConstants.Null;
                 }
-                Decimal val = decVal1 - decVal2;
+                Decimal val = decVal1 / decVal2;
                 return new DecimalJsonValue(val);
             }
             else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
@@ -406,7 +406,7 @@ namespace JsonCons.JsonPathLib
                 {
                     return JsonConstants.Null;
                 }
-                double val = dblVal1 - dblVal2;
+                double val = dblVal1 / dblVal2;
                 return new DoubleJsonValue(val);
             }
             else

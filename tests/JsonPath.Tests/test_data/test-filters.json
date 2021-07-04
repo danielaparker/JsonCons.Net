@@ -1,64 +1,65 @@
 [
-    {
-        "given" : [
-           {
-             "d": [
-               "v1",
-               "v2"
-             ]
-           },
-           {
-             "d": [
-               "a",
-               "b"
-             ]
-           },
-           {
-             "d": "v1"
-           },
-           {
-             "d": "v2"
-           },
-           {
-             "d": {}
-           },
-           {
-             "d": []
-           },
-           {
-             "d": null
-           },
-           {
-             "d": -1
-           },
-           {
-             "d": 0
-           },
-           {
-             "d": 1
-           },
-           {
-             "d": "['v1','v2']"
-           },
-           {
-             "d": "['v1', 'v2']"
-           },
-           {
-             "d": "v1,v2"
-           },
-           {
-             "d": "[\"v1\", \"v2\"]"
-           },
-           {
-             "d": "[\"v1\",\"v2\"]"
-           }
-         ],
-        "cases" : [
+   {
+       "source" : "https://cburgmer.github.io/json-path-comparison/",       
+       "given": [
+              {
+                "a": true,
+                "b": true
+              },
+              {
+                "a": true,
+                "b": true,
+                "c": true
+              },
+              {
+                "b": true,
+                "c": true
+              },
+              {
+                "a": true,
+                "c": true
+              },
+              {
+                "a": true
+              },
+              {
+                "b": true
+              },
+              {
+                "c": true
+              },
+              {
+                "d": true
+              },
+              {}
+            ],
+        "cases": [
             {
-                "comment" : "Filter expression with equals array",
-                "expression" : "$[?(@.d==[\"v1\",\"v2\"])]",
-                "result" :  [{"d": ["v1", "v2"]}]
+               "comment" : "Filter expression with different ungrouped operators",
+               "expression": "$[?(@.a && @.b || @.c)]",
+               "result": [
+                 {
+                   "a": true,
+                   "b": true
+                 },
+                 {
+                   "a": true,
+                   "b": true,
+                   "c": true
+                 },
+                 {
+                   "b": true,
+                   "c": true
+                 },
+                 {
+                   "a": true,
+                   "c": true
+                 },
+                 {
+                   "c": true
+                 }
+               ]
             }
         ]
-    }
+   }
 ]

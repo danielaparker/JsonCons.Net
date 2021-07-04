@@ -176,9 +176,6 @@ namespace JsonCons.JsonPathLib
             Int32 sliceStep = 1;
             UInt32 cp = 0;
             UInt32 cp2 = 0;
-            var trueSpan = "true".AsSpan();
-            var falseSpan = "false".AsSpan();
-            var nullSpan = "null".AsSpan();
             int jsonTextLevel = 0;
             int mark = 0;
             bool pathsRequired = false;
@@ -206,7 +203,7 @@ namespace JsonCons.JsonPathLib
                             }
                             default:
                             {
-                                throw new JsonException($"Invalid state {_span[_index]}");
+                                throw new JsonException($"Invalid state");
                             }
                         }
                         break;
@@ -1243,12 +1240,12 @@ namespace JsonCons.JsonPathLib
                             }
                             case 't':
                             {
-                                if (_index+4 <= _span.Length && _span.Slice(_index,4) == trueSpan)
+                                if (_index+4 <= _span.Length && _span[_index+1] == 'r' && _span[_index+2] == 'u' && _span[_index+3] == 'e')
                                 {
                                     PushToken(new Token(JsonConstants.True));
                                     _stateStack.Pop(); 
-                                    _index+= trueSpan.Length;
-                                    _column += trueSpan.Length;
+                                    _index += 4;
+                                    _column += 4;
                                 }
                                 else
                                 {
@@ -1260,12 +1257,12 @@ namespace JsonCons.JsonPathLib
                             }
                             case 'f':
                             {
-                                if (_index+falseSpan.Length <= _span.Length && _span.Slice(_index,falseSpan.Length) == falseSpan)
+                                if (_index+5 <= _span.Length && _span[_index+1] == 'a' && _span[_index+2] == 'l' && _span[_index+3] == 's' && _span[_index+4] == 'e')
                                 {
                                     PushToken(new Token(JsonConstants.False));
                                     _stateStack.Pop(); 
-                                    _index+= falseSpan.Length;
-                                    _column += falseSpan.Length;
+                                    _index += 5;
+                                    _column += 5;
                                 }
                                 else
                                 {
@@ -1277,12 +1274,12 @@ namespace JsonCons.JsonPathLib
                             }
                             case 'n':
                             {
-                                if (_index+nullSpan.Length <= _span.Length && _span.Slice(_index,nullSpan.Length) == nullSpan)
+                                if (_index+4 <= _span.Length && _span[_index+1] == 'u' && _span[_index+2] == 'l' && _span[_index+3] == 'l')
                                 {
                                     PushToken(new Token(JsonConstants.Null));
                                     _stateStack.Pop(); 
-                                    _index+= nullSpan.Length;
-                                    _column += nullSpan.Length;
+                                    _index += 4;
+                                    _column += 4;
                                 }
                                 else
                                 {

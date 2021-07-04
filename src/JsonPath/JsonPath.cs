@@ -20,21 +20,31 @@ namespace JsonCons.JsonPathLib
         internal JsonElement Value {get;}
     }
 
+    class CacheEntryAccumulator : INodeAccumulator
+    {
+        internal List<CacheEntry> CacheEntries {get;} = new List<CacheEntry>();
+
+        public void Accumulate(PathNode pathStem, JsonElement value)
+        {
+            CacheEntries.Add(new CacheEntry(pathStem, value));
+        }
+    };
+
     class DynamicResources 
     {
         Dictionary<Int32,IList<CacheEntry>> _cache = new Dictionary<Int32,IList<CacheEntry>>();
 
-        bool IsCached(Int32 id)
+        internal bool IsCached(Int32 id)
         {
             return _cache.ContainsKey(id);
         }
 
-        void AddToCache(Int32 id, IList<CacheEntry> items) 
+        internal void AddToCache(Int32 id, IList<CacheEntry> items) 
         {
             _cache.Add(id, items);
         }
 
-        void RetrieveFromCache(Int32 id, NodeAccumulator accumulator) 
+        internal void RetrieveFromCache(Int32 id, INodeAccumulator accumulator) 
         {
             IList<CacheEntry> items;
             if (_cache.TryGetValue(id, out items))

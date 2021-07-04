@@ -126,11 +126,11 @@ namespace JsonCons.JsonPathLib
 
     class RootSelector : BaseSelector
     {
-        Int32 _selector_id;
+        Int32 _id;
 
-        internal RootSelector(Int32 selector_id)
+        internal RootSelector(Int32 id)
         {
-            _selector_id = selector_id;
+            _id = id;
         }
 
         public override void Select(DynamicResources resources, 
@@ -140,6 +140,19 @@ namespace JsonCons.JsonPathLib
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
+            TestContext.WriteLine("CACHED Select");
+            /*if (resources.IsCached(_id))
+            {
+                resources.RetrieveFromCache(_id, accumulator);
+            }
+            else
+            {
+                var accum = new CacheEntryAccumulator();
+
+                this.TailSelect(resources, root, pathStem, root, accum, options);
+                resources.AddToCache(_id, accum.CacheEntries);
+                resources.RetrieveFromCache(_id, accumulator);
+            }*/
             this.TailSelect(resources, root, pathStem, root, accumulator, options);        
         }
         public override bool TryEvaluate(DynamicResources resources, 
@@ -149,6 +162,7 @@ namespace JsonCons.JsonPathLib
                                          ResultOptions options,
                                          out IJsonValue value)
         {
+            TestContext.WriteLine("CACHED TryEvaluate");
             return this.TryEvaluateTail(resources, root, pathStem, root, options, out value);        
         }
 
@@ -244,13 +258,13 @@ namespace JsonCons.JsonPathLib
                 else
                 {
                     result = JsonConstants.Null;
-                    return false;
+                    return true;
                 }
             }
             else
             {
                 result = JsonConstants.Null;
-                return false;
+                return true;
             }
         }
 
@@ -305,13 +319,13 @@ namespace JsonCons.JsonPathLib
                 else
                 {
                     value = JsonConstants.Null;
-                    return false;
+                    return true;
                 }
             }
             else
             {
                 value = JsonConstants.Null;
-                return false;
+                return true;
             }
         }
 
@@ -384,14 +398,14 @@ namespace JsonCons.JsonPathLib
                     else
                     {
                         value = JsonConstants.Null;
-                        return false;
+                        return true;
                     }
                 }
             }
             else
             {
                 value = JsonConstants.Null;
-                return false;
+                return true;
             }
         }
 
@@ -549,8 +563,9 @@ namespace JsonCons.JsonPathLib
                 foreach (var item in current.EnumerateArray())
                 {
                     Select(resources, root, 
-                           PathGenerator.Generate(pathStem, index++, options), 
+                           PathGenerator.Generate(pathStem, index, options), 
                            item, accumulator, options);
+                    ++index;
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
@@ -622,8 +637,9 @@ namespace JsonCons.JsonPathLib
                 foreach (var item in current.EnumerateArray())
                 {
                     this.TailSelect(resources, root, 
-                                      PathGenerator.Generate(pathStem, index++, options), 
+                                      PathGenerator.Generate(pathStem, index, options), 
                                       item, accumulator, options);
+                    ++index;
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
@@ -650,11 +666,12 @@ namespace JsonCons.JsonPathLib
                 {
                     IJsonValue value;
                     if (this.TryEvaluateTail(resources, root,
-                                             PathGenerator.Generate(pathStem, index++, options),
+                                             PathGenerator.Generate(pathStem, index, options),
                                              item, options, out value))
                     {
                         list.Add(value);
                     }
+                    ++index;
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
@@ -774,10 +791,12 @@ namespace JsonCons.JsonPathLib
                     if (_expr.TryEvaluate(resources, new JsonElementJsonValue(root), new JsonElementJsonValue(item), options, out val) 
                         && Expression.IsTrue(val)) 
                     {
+                        //TestContext.WriteLine("Select check");
                         this.TailSelect(resources, root, 
-                                        PathGenerator.Generate(pathStem, index++, options), 
+                                        PathGenerator.Generate(pathStem, index, options), 
                                         item, accumulator, options);
                     }
+                    ++index;
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
@@ -813,14 +832,17 @@ namespace JsonCons.JsonPathLib
                     IJsonValue indicator;
                     if (_expr.TryEvaluate(resources, root, item, options, out indicator) && Expression.IsTrue(indicator))
                     {
+                        TestContext.WriteLine("TryEvaluate check");
                         IJsonValue value;
                         if (this.TryEvaluateTail(resources, root, 
-                                                 PathGenerator.Generate(pathStem, index++, options), 
+                                                 PathGenerator.Generate(pathStem, index, options), 
                                                  item, options, out value))
                         {
                             list.Add(value);
                         }
                     }
+                    TestContext.WriteLine($"{Expression.IsTrue(indicator)}");
+                    ++index;
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
