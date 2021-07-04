@@ -78,8 +78,6 @@ namespace JsonCons.JsonPathLib
                                  ResultOptions options,
                                  out IJsonValue result)
         {
-            //TestContext.WriteLine("Evaluate");
-
             Stack<IJsonValue> stack = new Stack<IJsonValue>();
             IList<IJsonValue> argStack = new List<IJsonValue>();
 
@@ -113,15 +111,13 @@ namespace JsonCons.JsonPathLib
                         var rhs = stack.Pop();
                         var lhs = stack.Pop();
 
-                        var value = token.GetBinaryOperator().Evaluate(lhs, rhs);
-                        if (value == JsonConstants.Null)
+                        IJsonValue value;
+                        if (!token.GetBinaryOperator().TryEvaluate(lhs, rhs, out value))
                         {
-                            stack.Push(JsonConstants.Null);
+                            result = JsonConstants.Null;
+                            return false;
                         }
-                        else
-                        {
-                            stack.Push(value);
-                        }
+                        stack.Push(value);
                         break;
                     }
                     case JsonPathTokenKind.RootNode:

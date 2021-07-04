@@ -639,7 +639,13 @@ namespace JsonCons.JsonPathLib
                     result = JsonConstants.Null;
                     return false;
                 }
-                if (less.Evaluate(arg0[i],arg0[index]).ValueKind == JsonValueKind.True )
+                IJsonValue value;
+                if (!less.TryEvaluate(arg0[i],arg0[index], out value))
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+                if (value.ValueKind == JsonValueKind.True )
                 {
                     index = i;
                 }
@@ -689,7 +695,7 @@ namespace JsonCons.JsonPathLib
                 return false;
             }
 
-            var less = GtOperator.Instance;
+            var greater = GtOperator.Instance;
             int index = 0;
             for (int i = 1; i < arg0.GetArrayLength(); ++i)
             {
@@ -698,7 +704,13 @@ namespace JsonCons.JsonPathLib
                     result = JsonConstants.Null;
                     return false;
                 }
-                if (less.Evaluate(arg0[i],arg0[index]).ValueKind == JsonValueKind.True )
+                IJsonValue value;
+                if (!greater.TryEvaluate(arg0[i],arg0[index], out value))
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+                if (value.ValueKind == JsonValueKind.True )
                 {
                     index = i;
                 }

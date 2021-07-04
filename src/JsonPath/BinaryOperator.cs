@@ -13,7 +13,7 @@ namespace JsonCons.JsonPathLib
     {
         int PrecedenceLevel {get;}
         bool IsRightAssociative {get;}
-        IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs);
+        bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result);
     };
 
     abstract class BinaryOperator : IBinaryOperator
@@ -29,7 +29,7 @@ namespace JsonCons.JsonPathLib
 
         public bool IsRightAssociative {get;} 
 
-        public abstract IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs);
+        public abstract bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result);
     };
 
     class OrOperator : BinaryOperator
@@ -41,20 +41,21 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result)
         {
             if (lhs.ValueKind == JsonValueKind.Null && rhs.ValueKind == JsonValueKind.Null)
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
             }
             if (!Expression.IsFalse(lhs))
             {
-                return lhs;
+                result = lhs;
             }
             else
             {
-                return rhs;
+                result = rhs;
             }
+            return true;
         }
 
         public override string ToString()
@@ -72,16 +73,17 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result)
         {
             if (Expression.IsTrue(lhs))
             {
-                return rhs;
+                result = rhs;
             }
             else
             {
-                return lhs;
+                result = lhs;
             }
+            return true;
         }
 
         public override string ToString()
@@ -99,10 +101,18 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs) 
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result) 
         {
             var comparer = JsonValueEqualityComparer.Instance;
-            return comparer.Equals(lhs, rhs) ? JsonConstants.True : JsonConstants.False;
+            if (comparer.Equals(lhs, rhs))
+            {
+                result = JsonConstants.True;
+            }
+            else
+            {
+                result = JsonConstants.False;
+            }
+            return true;
         }
 
         public override string ToString()
@@ -120,9 +130,24 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs) 
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result) 
         {
-            return Expression.IsFalse(EqOperator.Instance.Evaluate(lhs, rhs)) ? JsonConstants.True : JsonConstants.False;
+            IJsonValue value;
+            if (!EqOperator.Instance.TryEvaluate(lhs, rhs, out value))
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+                
+            if (Expression.IsFalse(value)) 
+            {
+                result = JsonConstants.True;
+            }
+            else
+            {
+                result =  JsonConstants.False;
+            }
+            return true;
         }
 
         public override string ToString()
@@ -140,7 +165,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs) 
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result) 
         {
             if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
@@ -150,25 +175,26 @@ namespace JsonCons.JsonPathLib
                 double val2;
                 if (lhs.TryGetDecimal(out dec1) && rhs.TryGetDecimal(out dec2))
                 {
-                    return dec1 < dec2 ? JsonConstants.True : JsonConstants.False;
+                    result = dec1 < dec2 ? JsonConstants.True : JsonConstants.False;
                 }
                 else if (lhs.TryGetDouble(out val1) && rhs.TryGetDouble(out val2))
                 {
-                    return val1 < val2 ? JsonConstants.True : JsonConstants.False;
+                    result = val1 < val2 ? JsonConstants.True : JsonConstants.False;
                 }
                 else
                 {
-                    return JsonConstants.Null;
+                    result = JsonConstants.Null;
                 }
             }
             else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
-                return String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
             }
             else
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
             }
+            return true;
         }
 
         public override string ToString()
@@ -186,7 +212,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs) 
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result) 
         {
             if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
@@ -196,25 +222,26 @@ namespace JsonCons.JsonPathLib
                 double val2;
                 if (lhs.TryGetDecimal(out dec1) && rhs.TryGetDecimal(out dec2))
                 {
-                    return dec1 <= dec2 ? JsonConstants.True : JsonConstants.False;
+                    result = dec1 <= dec2 ? JsonConstants.True : JsonConstants.False;
                 }
                 else if (lhs.TryGetDouble(out val1) && rhs.TryGetDouble(out val2))
                 {
-                    return val1 <= val2 ? JsonConstants.True : JsonConstants.False;
+                    result = val1 <= val2 ? JsonConstants.True : JsonConstants.False;
                 }
                 else
                 {
-                    return JsonConstants.Null;
+                    result = JsonConstants.Null;
                 }
             }
             else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
-                return String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
             }
             else
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
             }
+            return true;
         }
 
 
@@ -233,7 +260,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result)
         {
             if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
@@ -243,25 +270,26 @@ namespace JsonCons.JsonPathLib
                 double val2;
                 if (lhs.TryGetDecimal(out dec1) && rhs.TryGetDecimal(out dec2))
                 {
-                    return dec1 > dec2 ? JsonConstants.True : JsonConstants.False;
+                    result = dec1 > dec2 ? JsonConstants.True : JsonConstants.False;
                 }
                 else if (lhs.TryGetDouble(out val1) && rhs.TryGetDouble(out val2))
                 {
-                    return val1 > val2 ? JsonConstants.True : JsonConstants.False;
+                    result = val1 > val2 ? JsonConstants.True : JsonConstants.False;
                 }
                 else
                 {
-                    return JsonConstants.Null;
+                    result = JsonConstants.Null;
                 }
             }
             else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
-                return String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
             }
             else
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
             }
+            return true;
         }
 
         public override string ToString()
@@ -279,7 +307,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result)
         {
             if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
             {
@@ -289,25 +317,26 @@ namespace JsonCons.JsonPathLib
                 double val2;
                 if (lhs.TryGetDecimal(out dec1) && rhs.TryGetDecimal(out dec2))
                 {
-                    return dec1 >= dec2 ? JsonConstants.True : JsonConstants.False;
+                    result = dec1 >= dec2 ? JsonConstants.True : JsonConstants.False;
                 }
                 else if (lhs.TryGetDouble(out val1) && rhs.TryGetDouble(out val2))
                 {
-                    return val1 >= val2 ? JsonConstants.True : JsonConstants.False;
+                    result = val1 >= val2 ? JsonConstants.True : JsonConstants.False;
                 }
                 else
                 {
-                    return JsonConstants.Null;
+                    result = JsonConstants.Null;
                 }
             }
             else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
-                return String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
             }
             else
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
             }
+            return true;
         }
 
         public override string ToString()
@@ -325,11 +354,12 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false;
             }
 
             Decimal decVal1;
@@ -340,16 +370,19 @@ namespace JsonCons.JsonPathLib
             if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
             {
                 Decimal val = decVal1 + decVal2;
-                return new DecimalJsonValue(val);
+                result = new DecimalJsonValue(val);
+                return true;
             }
             else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
             {
                 double val = dblVal1 + dblVal2;
-                return new DoubleJsonValue(val);
+                result = new DoubleJsonValue(val);
+                return true;
             }
             else
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false;
             }
         }
 
@@ -368,11 +401,12 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false;
             }
 
             Decimal decVal1;
@@ -383,16 +417,19 @@ namespace JsonCons.JsonPathLib
             if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
             {
                 Decimal val = decVal1 - decVal2;
-                return new DecimalJsonValue(val);
+                result = new DecimalJsonValue(val);
+                return true;
             }
             else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
             {
                 double val = dblVal1 - dblVal2;
-                return new DoubleJsonValue(val);
+                result = new DoubleJsonValue(val);
+                return true;
             }
             else
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false;
             }
         }
 
@@ -411,11 +448,12 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false;
             }
 
             Decimal decVal1;
@@ -426,16 +464,19 @@ namespace JsonCons.JsonPathLib
             if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
             {
                 Decimal val = decVal1 * decVal2;
-                return new DecimalJsonValue(val);
+                result = new DecimalJsonValue(val);
+                return true;
             }
             else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
             {
                 double val = dblVal1 * dblVal2;
-                return new DoubleJsonValue(val);
+                result = new DoubleJsonValue(val);
+                return true;
             }
             else
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false;
             }
         }
 
@@ -454,11 +495,12 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false;
             }
 
             Decimal decVal1;
@@ -470,23 +512,28 @@ namespace JsonCons.JsonPathLib
             {
                 if (decVal2 == 0)
                 {
-                    return JsonConstants.Null;
+                    result = JsonConstants.Null;
+                    return false;
                 }
                 Decimal val = decVal1 / decVal2;
-                return new DecimalJsonValue(val);
+                result = new DecimalJsonValue(val);
+                return true;
             }
             else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
             {
                 if (dblVal2 == 0)
                 {
-                    return JsonConstants.Null;
+                    result = JsonConstants.Null;
+                    return false;
                 }
                 double val = dblVal1 / dblVal2;
-                return new DoubleJsonValue(val);
+                result = new DoubleJsonValue(val);
+                return true;
             }
             else
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false;
             }
         }
 
@@ -506,11 +553,12 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override IJsonValue Evaluate(IJsonValue lhs, IJsonValue rhs)
+        public override bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result)
         {
             if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false;
             }
 
             Decimal decVal1;
@@ -522,23 +570,28 @@ namespace JsonCons.JsonPathLib
             {
                 if (decVal2 == 0)
                 {
-                    return JsonConstants.Null;
+                    result = JsonConstants.Null;
+                    return false;
                 }
                 Decimal val = decVal1 % decVal2;
-                return new DecimalJsonValue(val);
+                result = new DecimalJsonValue(val);
+                return true;
             }
             else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
             {
                 if (dblVal2 == 0)
                 {
-                    return JsonConstants.Null;
+                    result = JsonConstants.Null;
+                    return false;
                 }
                 double val = dblVal1 % dblVal2;
-                return new DoubleJsonValue(val);
+                result = new DoubleJsonValue(val);
+                return true;
             }
             else
             {
-                return JsonConstants.Null;
+                result = JsonConstants.Null;
+                return false;
             }
         }
 
