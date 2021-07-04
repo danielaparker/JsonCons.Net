@@ -25,14 +25,14 @@ namespace JsonCons.JsonPathLib
         public IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options)
         {
             var resources = new DynamicResources();
-            PathNode pathTail = new PathNode("$");
+            PathNode pathStem = new PathNode("$");
             var values = new List<JsonElement>();
 
             if ((options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
             {
                 var nodes = new List<JsonPathNode>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
-                _selector.Select(resources, root, pathTail, root, accumulator, options);
+                _selector.Select(resources, root, pathStem, root, accumulator, options);
 
                 if (nodes.Count > 1)
                 {
@@ -71,7 +71,7 @@ namespace JsonCons.JsonPathLib
             else
             {
                 INodeAccumulator accumulator = new ValueAccumulator(values);            
-                _selector.Select(resources, root, pathTail, root, accumulator, options);
+                _selector.Select(resources, root, pathStem, root, accumulator, options);
             }
 
             return values;
@@ -81,10 +81,10 @@ namespace JsonCons.JsonPathLib
         {
             var resources = new DynamicResources();
 
-            PathNode pathTail = new PathNode("$");
+            PathNode pathStem = new PathNode("$");
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
-            _selector.Select(resources, root, pathTail, root, accumulator, options | ResultOptions.Path);
+            _selector.Select(resources, root, pathStem, root, accumulator, options | ResultOptions.Path);
 
             if ((options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
             {
