@@ -132,7 +132,6 @@ namespace JsonCons.JsonPathLib
                         }
 
                         var item = stack.Pop();
-                        var values = new List<IJsonValue>();
                         IJsonValue value;
                         if (token.GetSelector().TryEvaluate(resources, root.GetJsonElement(), new PathNode("@"), item.GetJsonElement(), options, out value))
                         {
