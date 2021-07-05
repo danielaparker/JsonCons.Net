@@ -37,7 +37,7 @@ namespace JsonCons.JsonPathLib
 
     interface INodeAccumulator
     {
-        void Accumulate(PathNode pathStem, JsonElement value);
+        void AddNode(PathNode pathStem, JsonElement value);
     };
 
     class ValueAccumulator : INodeAccumulator
@@ -49,7 +49,7 @@ namespace JsonCons.JsonPathLib
             _values = values;
         }
 
-        public void Accumulate(PathNode pathStem, JsonElement value)
+        public void AddNode(PathNode pathStem, JsonElement value)
         {
             _values.Add(value);
         }
@@ -64,7 +64,7 @@ namespace JsonCons.JsonPathLib
             _values = values;
         }
 
-        public void Accumulate(PathNode pathStem, JsonElement value)
+        public void AddNode(PathNode pathStem, JsonElement value)
         {
             _values.Add(new NormalizedPath(pathStem));
         }
@@ -79,7 +79,7 @@ namespace JsonCons.JsonPathLib
             _nodes = nodes;
         }
 
-        public void Accumulate(PathNode pathStem, JsonElement value)
+        public void AddNode(PathNode pathStem, JsonElement value)
         {
             _nodes.Add(new JsonPathNode(new NormalizedPath(pathStem), value));
         }

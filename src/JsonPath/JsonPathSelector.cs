@@ -97,7 +97,7 @@ namespace JsonCons.JsonPathLib
         {
             if (Tail == null)
             {
-                accumulator.Accumulate(pathStem, current);
+                accumulator.AddNode(pathStem, current);
             }
             else
             {
