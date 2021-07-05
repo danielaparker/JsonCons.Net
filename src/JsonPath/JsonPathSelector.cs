@@ -733,7 +733,7 @@ namespace JsonCons.JsonPathLib
                 foreach (var item in current.EnumerateArray())
                 {
                     IJsonValue val;
-                    if (_expr.TryEvaluate(resources, new JsonElementJsonValue(root), new JsonElementJsonValue(item), options, out val) 
+                    if (_expr.TryEvaluate(resources, root, new JsonElementJsonValue(item), options, out val) 
                         && Expression.IsTrue(val)) 
                     {
                         //TestContext.WriteLine("Select check");
@@ -749,7 +749,7 @@ namespace JsonCons.JsonPathLib
                 foreach (var property in current.EnumerateObject())
                 {
                     IJsonValue val;
-                    if (_expr.TryEvaluate(resources, new JsonElementJsonValue(root), new JsonElementJsonValue(property.Value), options, out val) 
+                    if (_expr.TryEvaluate(resources, root, new JsonElementJsonValue(property.Value), options, out val) 
                         && Expression.IsTrue(val))
                     {
                         this.TailSelect(resources, root, 

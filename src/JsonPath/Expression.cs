@@ -13,7 +13,7 @@ namespace JsonCons.JsonPathLib
     interface IExpression
     {
          bool TryEvaluate(DynamicResources resources,
-                          IJsonValue root,
+                          JsonElement root,
                           IJsonValue current, 
                           ResultOptions options,
                           out IJsonValue value);
@@ -73,7 +73,7 @@ namespace JsonCons.JsonPathLib
         }
 
         public  bool TryEvaluate(DynamicResources resources,
-                                 IJsonValue root,
+                                 JsonElement root,
                                  IJsonValue current, 
                                  ResultOptions options,
                                  out IJsonValue result)
@@ -119,7 +119,7 @@ namespace JsonCons.JsonPathLib
                         break;
                     }
                     case JsonPathTokenKind.RootNode:
-                        stack.Push(root);
+                        stack.Push(new JsonElementJsonValue(root));
                         break;
                     case JsonPathTokenKind.CurrentNode:
                         stack.Push(current);
@@ -133,7 +133,7 @@ namespace JsonCons.JsonPathLib
 
                         var item = stack.Pop();
                         IJsonValue value;
-                        if (token.GetSelector().TryEvaluate(resources, root.GetJsonElement(), new PathNode("@"), item.GetJsonElement(), options, out value))
+                        if (token.GetSelector().TryEvaluate(resources, root, new PathNode("@"), item.GetJsonElement(), options, out value))
                         {
                             stack.Push(value);
                         }

@@ -56,30 +56,6 @@ namespace JsonCons.JsonPathLib
             return true;
         }
 
-        public static bool TrySelect(IJsonValue root, NormalizedPath path, out IJsonValue value)
-        {
-            value = root;
-            foreach (var pathNode in path)
-            {
-                if (pathNode.NodeKind == PathNodeKind.Index)
-                {
-                    if (value.ValueKind != JsonValueKind.Array || pathNode.GetIndex() >= value.GetArrayLength())
-                    {
-                        return false; 
-                    }
-                    value = value[pathNode.GetIndex()];
-                }
-                else if (pathNode.NodeKind == PathNodeKind.Name)
-                {
-                    if (value.ValueKind != JsonValueKind.Object || !value.TryGetProperty(pathNode.GetName(), out value))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
         public static JsonPathExpression Compile(string expr)
         {
 
