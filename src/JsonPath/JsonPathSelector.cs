@@ -487,67 +487,27 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public override bool TryEvaluate(DynamicResources resources, IJsonValue root,
+        public override bool TryEvaluate(DynamicResources resources, 
+                                         IJsonValue root,
                                          PathNode pathStem,
                                          IJsonValue current,
                                          ResultOptions options,
                                          out IJsonValue results) 
         {
-            var list = new List<IJsonValue>();
-            if (current.ValueKind == JsonValueKind.Array)
+            var elements = new List<JsonElement>();
+            INodeAccumulator accumulator = new JsonElementAccumulator(elements);  
+            Select(resources, 
+                   root.GetJsonElement(), 
+                   pathStem, 
+                   current.GetJsonElement(),
+                   accumulator,
+                   options);   
+            var values = new List<IJsonValue>();
+            foreach (var element in elements)
             {
-                Int32 start = _slice.GetStart(current.GetArrayLength());
-                Int32 end = _slice.GetStop(current.GetArrayLength());
-                Int32 step = _slice.Step;
-
-                if (step > 0)
-                {
-                    if (start < 0)
-                    {
-                        start = 0;
-                    }
-                    if (end > current.GetArrayLength())
-                    {
-                        end = current.GetArrayLength();
-                    }
-                    for (Int32 i = start; i < end; i += step)
-                    {
-                        IJsonValue value;
-                        if (this.TryEvaluateTail(resources, root, 
-                                                 PathGenerator.Generate(pathStem, i, options), 
-                                                 current[i], options, out value))
-                        {
-                            list.Add(value);
-                        }
-                    }
-                }
-                else if (step < 0)
-                {
-                    if (start >= current.GetArrayLength())
-                    {
-                        start = current.GetArrayLength() - 1;
-                    }
-                    if (end < -1)
-                    {
-                        end = -1;
-                    }
-                    for (Int32 i = start; i > end; i += step)
-                    {
-                        if (i < current.GetArrayLength())
-                        {
-                            IJsonValue value;
-                            if (this.TryEvaluateTail(resources, root, 
-                                                     PathGenerator.Generate(pathStem, i, options), 
-                                                     current[i], options, out value))
-                            {
-                                list.Add(value);
-                            }
-                        }
-                    }
-                }
+                values.Add(new JsonElementJsonValue(element));
             }
-
-            results = new ArrayJsonValue(list);
+            results = new ArrayJsonValue(values);
             return true;
         }
 
@@ -595,34 +555,20 @@ namespace JsonCons.JsonPathLib
                                          ResultOptions options,
                                          out IJsonValue results)
         {
-            var list = new List<IJsonValue>();
-            IJsonValue value;
-            if (this.TryEvaluateTail(resources, root, pathStem, current, options, out value))
+            var elements = new List<JsonElement>();
+            INodeAccumulator accumulator = new JsonElementAccumulator(elements);  
+            Select(resources, 
+                   root.GetJsonElement(), 
+                   pathStem, 
+                   current.GetJsonElement(),
+                   accumulator,
+                   options);   
+            var values = new List<IJsonValue>();
+            foreach (var element in elements)
             {
-                list.Add(value);
+                values.Add(new JsonElementJsonValue(element));
             }
-            if (current.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var item in current.EnumerateArray())
-                {
-                    if (TryEvaluate(resources, root, pathStem, item, options, out value))
-                    {
-                        list.Add(value);
-                    }
-                }
-            }
-            else if (current.ValueKind == JsonValueKind.Object)
-            {
-                foreach (var prop in current.EnumerateObject())
-                {
-                    if (TryEvaluate(resources, root, pathStem, prop.Value, options, out value))
-                    {
-                        list.Add(value);
-                    }
-                }
-            }
-
-            results = new ArrayJsonValue(list);
+            results = new ArrayJsonValue(values);
             return true;
         }
 
@@ -668,36 +614,20 @@ namespace JsonCons.JsonPathLib
                                          ResultOptions options,
                                          out IJsonValue results)
         {
-            var list = new List<IJsonValue>();
-            if (current.ValueKind == JsonValueKind.Array)
+            var elements = new List<JsonElement>();
+            INodeAccumulator accumulator = new JsonElementAccumulator(elements);  
+            Select(resources, 
+                   root.GetJsonElement(), 
+                   pathStem, 
+                   current.GetJsonElement(),
+                   accumulator,
+                   options);   
+            var values = new List<IJsonValue>();
+            foreach (var element in elements)
             {
-                Int32 index = 0;
-                foreach (var item in current.EnumerateArray())
-                {
-                    IJsonValue value;
-                    if (this.TryEvaluateTail(resources, root,
-                                             PathGenerator.Generate(pathStem, index, options),
-                                             item, options, out value))
-                    {
-                        list.Add(value);
-                    }
-                    ++index;
-                }
+                values.Add(new JsonElementJsonValue(element));
             }
-            else if (current.ValueKind == JsonValueKind.Object)
-            {
-                foreach (var prop in current.EnumerateObject())
-                {
-                    IJsonValue value;
-                    if (this.TryEvaluateTail(resources, root,
-                                             PathGenerator.Generate(pathStem, prop.Name, options),
-                                             prop.Value, options, out value))
-                    {
-                        list.Add(value);
-                    }
-                }
-            }
-            results = new ArrayJsonValue(list);
+            results = new ArrayJsonValue(values);
             return true;
         }
 
@@ -753,16 +683,20 @@ namespace JsonCons.JsonPathLib
                                 ResultOptions options,
                                 out IJsonValue results)
         {
-            var list = new List<IJsonValue>();
-            foreach (var selector in _selectors)
+            var elements = new List<JsonElement>();
+            INodeAccumulator accumulator = new JsonElementAccumulator(elements);  
+            Select(resources, 
+                   root.GetJsonElement(), 
+                   pathStem, 
+                   current.GetJsonElement(),
+                   accumulator,
+                   options);   
+            var values = new List<IJsonValue>();
+            foreach (var element in elements)
             {
-                IJsonValue value;
-                if (selector.TryEvaluate(resources, root, pathStem, current, options, out value))
-                {
-                    list.Add(value);
-                }
+                values.Add(new JsonElementJsonValue(element));
             }
-            results = new ArrayJsonValue(list);
+            results = new ArrayJsonValue(values);
             return true;
         }
 
@@ -831,48 +765,20 @@ namespace JsonCons.JsonPathLib
                                          ResultOptions options,
                                          out IJsonValue results)
         {
-            //TestContext.WriteLine("FilterSelector");
-
-            var list = new List<IJsonValue>();
-            if (current.ValueKind == JsonValueKind.Array)
+            var elements = new List<JsonElement>();
+            INodeAccumulator accumulator = new JsonElementAccumulator(elements);  
+            Select(resources, 
+                   root.GetJsonElement(), 
+                   pathStem, 
+                   current.GetJsonElement(),
+                   accumulator,
+                   options);   
+            var values = new List<IJsonValue>();
+            foreach (var element in elements)
             {
-                Int32 index = 0;
-                foreach (var item in current.EnumerateArray())
-                {
-                    IJsonValue indicator;
-                    if (_expr.TryEvaluate(resources, root, item, options, out indicator) && Expression.IsTrue(indicator))
-                    {
-                        TestContext.WriteLine("TryEvaluate check");
-                        IJsonValue value;
-                        if (this.TryEvaluateTail(resources, root, 
-                                                 PathGenerator.Generate(pathStem, index, options), 
-                                                 item, options, out value))
-                        {
-                            list.Add(value);
-                        }
-                    }
-                    TestContext.WriteLine($"{Expression.IsTrue(indicator)}");
-                    ++index;
-                }
+                values.Add(new JsonElementJsonValue(element));
             }
-            else if (current.ValueKind == JsonValueKind.Object)
-            {
-                foreach (var property in current.EnumerateObject())
-                {
-                    IJsonValue indicator;
-                    if (_expr.TryEvaluate(resources, root, property.Value, options, out indicator) && Expression.IsTrue(indicator))
-                    {
-                        IJsonValue value;
-                        if (this.TryEvaluateTail(resources, root, 
-                                                 PathGenerator.Generate(pathStem, property.Name, options), 
-                                                 property.Value, options, out value))
-                        {
-                            list.Add(value);
-                        }
-                    }
-                }
-            }
-            results = new ArrayJsonValue(list);
+            results = new ArrayJsonValue(values);
             return true;
         }
 

@@ -846,40 +846,13 @@
                 "comment" : "Filter expression with subfilter",
                 "expression" : "$[?(@.a[?(@.price>10)])]",
                 "result" : [
-  {
-    "a": [
-      {
-        "price": 1
-      },
-      {
-        "price": 3
-      }
-    ]
-  },
-  {
-    "a": [
-      {
-        "price": 11
-      }
-    ]
-  },
-  {
-    "a": [
-      {
-        "price": 8
-      },
-      {
-        "price": 12
-      },
-      {
-        "price": 3
-      }
-    ]
-  },
-  {
-    "a": []
-  }
-]
+                   {
+                       "a": [{"price": 11}]
+                   },
+                   {
+                       "a": [{"price": 8}, {"price": 12}, {"price": 3}]
+                   }
+                ]
             }
         ]
     },

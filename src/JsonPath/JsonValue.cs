@@ -39,6 +39,9 @@ namespace JsonCons.JsonPathLib
         bool TryGetProperty(string propertyName, out IJsonValue property);
         IJsonArrayEnumerator EnumerateArray();
         IJsonObjectEnumerator EnumerateObject();
+
+        bool IsJsonElement();
+        JsonElement GetJsonElement();
     };
 
     public struct JsonElementJsonValue : IJsonValue
@@ -166,6 +169,16 @@ namespace JsonCons.JsonPathLib
         {
             return new ObjectEnumerator(_element.EnumerateObject());
         }
+
+        public bool IsJsonElement()
+        {
+            return true;
+        }
+
+        public JsonElement GetJsonElement()
+        {
+            return _element;
+        }      
     };
 
     struct DoubleJsonValue : IJsonValue
@@ -222,6 +235,16 @@ namespace JsonCons.JsonPathLib
         {
             throw new InvalidOperationException();
         }
+
+        public bool IsJsonElement()
+        {
+            return false;
+        }
+
+        public JsonElement GetJsonElement()
+        {
+            throw new JsonException("Not a JsonElement");
+        }      
     };
 
     struct DecimalJsonValue : IJsonValue
@@ -270,6 +293,16 @@ namespace JsonCons.JsonPathLib
         {
             throw new InvalidOperationException();
         }
+
+        public bool IsJsonElement()
+        {
+            return false;
+        }
+
+        public JsonElement GetJsonElement()
+        {
+            throw new JsonException("Not a JsonElement");
+        }      
     };
 
     struct StringJsonValue : IJsonValue
@@ -316,6 +349,16 @@ namespace JsonCons.JsonPathLib
         {
             throw new InvalidOperationException();
         }
+
+        public bool IsJsonElement()
+        {
+            return false;
+        }
+
+        public JsonElement GetJsonElement()
+        {
+            throw new JsonException("Not a JsonElement");
+        }      
     };
 
     struct TrueJsonValue : IJsonValue
@@ -352,6 +395,16 @@ namespace JsonCons.JsonPathLib
         {
             throw new InvalidOperationException();
         }
+
+        public bool IsJsonElement()
+        {
+            return false;
+        }
+
+        public JsonElement GetJsonElement()
+        {
+            throw new JsonException("Not a JsonElement");
+        }      
     };
 
     struct FalseJsonValue : IJsonValue
@@ -388,6 +441,16 @@ namespace JsonCons.JsonPathLib
         {
             throw new InvalidOperationException();
         }
+
+        public bool IsJsonElement()
+        {
+            return false;
+        }
+
+        public JsonElement GetJsonElement()
+        {
+            throw new JsonException("Not a JsonElement");
+        }      
     };
 
     struct NullJsonValue : IJsonValue
@@ -424,6 +487,16 @@ namespace JsonCons.JsonPathLib
         {
             throw new InvalidOperationException();
         }
+
+        public bool IsJsonElement()
+        {
+            return false;
+        }
+
+        public JsonElement GetJsonElement()
+        {
+            throw new JsonException("Not a JsonElement");
+        }      
     };
 
     struct ArrayJsonValue : IJsonValue
@@ -511,6 +584,16 @@ namespace JsonCons.JsonPathLib
         {
             throw new InvalidOperationException();
         }
+
+        public bool IsJsonElement()
+        {
+            return false;
+        }
+
+        public JsonElement GetJsonElement()
+        {
+            throw new JsonException("Not a JsonElement");
+        }      
     };
 
     static class JsonConstants

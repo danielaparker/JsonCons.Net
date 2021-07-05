@@ -40,11 +40,11 @@ namespace JsonCons.JsonPathLib
         void AddNode(PathNode pathStem, JsonElement value);
     };
 
-    class ValueAccumulator : INodeAccumulator
+    class JsonElementAccumulator : INodeAccumulator
     {
         IList<JsonElement> _values;
 
-        internal ValueAccumulator(IList<JsonElement> values)
+        internal JsonElementAccumulator(IList<JsonElement> values)
         {
             _values = values;
         }

@@ -70,7 +70,7 @@ namespace JsonCons.JsonPathLib
             }
             else
             {
-                INodeAccumulator accumulator = new ValueAccumulator(values);            
+                INodeAccumulator accumulator = new JsonElementAccumulator(values);            
                 _selector.Select(resources, root, pathStem, root, accumulator, options);
             }
 
