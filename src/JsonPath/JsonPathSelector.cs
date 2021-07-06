@@ -56,6 +56,8 @@ namespace JsonCons.JsonPathLib
                          out IJsonValue value);
 
         void AppendSelector(ISelector tail);
+
+        bool IsRoot();
     };
 
     abstract class BaseSelector : ISelector 
@@ -122,6 +124,11 @@ namespace JsonCons.JsonPathLib
                 return Tail.TryEvaluate(resources, root, pathStem, current, options, out value);
             }
         }
+
+        public virtual bool IsRoot()
+        {
+            return false;
+        }
     }
 
     class RootSelector : BaseSelector
@@ -165,6 +172,11 @@ namespace JsonCons.JsonPathLib
             }
         }
 
+        public override bool IsRoot()
+        {
+            return true;
+        }
+
         public override string ToString()
         {
             return "RootSelector";
@@ -189,6 +201,11 @@ namespace JsonCons.JsonPathLib
                                          out IJsonValue value)
         {
             return this.TryEvaluateTail(resources, root, pathStem, current, options, out value);        
+        }
+
+        public override bool IsRoot()
+        {
+            return true;
         }
 
         public override string ToString()
@@ -699,6 +716,11 @@ namespace JsonCons.JsonPathLib
             }
             results = new ArrayJsonValue(values);
             return true;
+        }
+
+        public bool IsRoot()
+        {
+            return false;
         }
 
         public override string ToString()

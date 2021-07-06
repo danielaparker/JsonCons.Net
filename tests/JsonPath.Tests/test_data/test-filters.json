@@ -2,41 +2,37 @@
    {
        "source" : "https://cburgmer.github.io/json-path-comparison/",       
        "given": [
-              {
-                "a": true,
-                "b": true
-              },
-              {
-                "a": true,
-                "b": true,
-                "c": true
-              },
-              {
-                "b": true,
-                "c": true
-              },
-              {
-                "a": true,
-                "c": true
-              },
-              {
-                "a": true
-              },
-              {
-                "b": true
-              },
-              {
-                "c": true
-              },
-              {
-                "d": true
-              },
-              {}
-            ],
+           {
+             "a": true
+           },
+           {
+             "a": true,
+             "b": true
+           },
+           {
+             "a": true,
+             "b": true,
+             "c": true
+           },
+           {
+             "b": true,
+             "c": true
+           },
+           {
+             "a": true,
+             "c": true
+           },
+           {
+             "c": true
+           },
+           {
+             "b": true
+           }
+         ],
         "cases": [
             {
-               "comment" : "Filter expression with different ungrouped operators",
-               "expression": "$[?(@.a && @.b || @.c)]",
+               "comment" : "Filter expression with different grouped operators",
+               "expression": "$[?(@.a && (@.b || @.c))]",
                "result": [
                  {
                    "a": true,
@@ -48,14 +44,7 @@
                    "c": true
                  },
                  {
-                   "b": true,
-                   "c": true
-                 },
-                 {
                    "a": true,
-                   "c": true
-                 },
-                 {
                    "c": true
                  }
                ]

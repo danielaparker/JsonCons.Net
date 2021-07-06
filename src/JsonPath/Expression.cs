@@ -140,12 +140,12 @@ namespace JsonCons.JsonPathLib
                         break;
                     case JsonPathTokenKind.Selector:
                     {
-                        if (stack.Count == 0)
-                        {
-                            stack.Push(current);
-                        }
+                        //if (stack.Count == 0)
+                        //{
+                        //    stack.Push(current);
+                        //}
 
-                        var item = stack.Pop();
+                        //var item = stack.Pop();
                         IJsonValue value;
                         if (token.GetSelector().TryEvaluate(resources, root, new PathNode("@"), current.GetJsonElement(), options, out value))
                         {
