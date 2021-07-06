@@ -85,16 +85,6 @@
                 "result" : ["Nigel Rees","Herman Melville","J. R. R. Tolkien"]
             }
         ]
-    }/*,
-    {
-        "given" : "The cat sat on the mat",
-        "cases" : [
-            {
-                "comment" : "tokenize",
-                "expression" : "tokenize($,'\\\\s+')[*]",
-                "result" : ["The","cat","sat","on","the","mat"]
-            }
-        ]
-    }*/
+    }
     
 ]

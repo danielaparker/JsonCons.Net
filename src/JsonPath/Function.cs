@@ -426,14 +426,12 @@ namespace JsonCons.JsonPathLib
             var sourceStr = args[0].GetString();
             var patternStr = args[1].GetString();
 
-            Regex regex = new Regex(patternStr);
-
-            MatchCollection matches = regex.Matches(sourceStr);
+            string[] pieces = Regex.Split(sourceStr, patternStr);
 
             var values = new List<IJsonValue>();
-            foreach (Match match in matches)
+            foreach (var s in pieces)
             {
-                values.Add(new StringJsonValue(match.Value));
+                values.Add(new StringJsonValue(s));
             }
 
             result = new ArrayJsonValue(values);

@@ -65,7 +65,8 @@ namespace JsonCons.JsonPathLib
         JsonText,
         Function,
         FunctionName,
-        JsonValue,
+        JsonElement,
+        JsonStringValue,
         AppendDoubleQuote,
         IdentifierOrFunctionExpr,
         NameOrLeftBracket,
@@ -528,7 +529,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Push(JsonPathState.EscapeU1);
                                 break;
                             default:
-                                throw new JsonException("Illegal escape character");
+                                throw new JsonException($"Illegal escape character '{_span[_index]}'");
                         }
                         break;
                     case JsonPathState.EscapeU1:
@@ -1182,19 +1183,15 @@ namespace JsonCons.JsonPathLib
                             }
                             case '\'':
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.JsonValue);
-                                _stateStack.Push(JsonPathState.AppendDoubleQuote);
+                                _stateStack.Push(JsonPathState.JsonStringValue);
                                 _stateStack.Push(JsonPathState.SingleQuotedString);
-                                buffer.Append('\"');
                                 ++_index;
                                 ++_column;
                                 break;
                             case '\"':
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.JsonValue);
-                                _stateStack.Push(JsonPathState.AppendDoubleQuote);
+                                _stateStack.Push(JsonPathState.JsonStringValue);
                                 _stateStack.Push(JsonPathState.DoubleQuotedString);
-                                buffer.Append('\"');
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1259,14 +1256,14 @@ namespace JsonCons.JsonPathLib
                             case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
                             {
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.JsonValue);
+                                _stateStack.Push(JsonPathState.JsonElement);
                                 _stateStack.Push(JsonPathState.Number);
                                 break;
                             }
                             case '{':
                             case '[':
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.JsonValue);
+                                _stateStack.Push(JsonPathState.JsonElement);
                                 _stateStack.Push(JsonPathState.JsonText);
                                 mark = _index;
                                 break;
@@ -1448,9 +1445,16 @@ namespace JsonCons.JsonPathLib
                         }
                         break;
                     }
-                    case JsonPathState.JsonValue:
+                    case JsonPathState.JsonElement:
                     {
                         PushToken(new Token(new JsonElementJsonValue(resources.CreateJsonElement(buffer.ToString()))));
+                        buffer.Clear();
+                        _stateStack.Pop(); 
+                        break;
+                    }
+                    case JsonPathState.JsonStringValue:
+                    {
+                        PushToken(new Token(new StringJsonValue(buffer.ToString())));
                         buffer.Clear();
                         _stateStack.Pop(); 
                         break;

@@ -65,11 +65,11 @@ namespace JsonCons.JsonPathLib
         {
             _tokens = tokens;
 
-            //TestContext.WriteLine("Expression constructor");
-            //foreach (var token in _tokens)
-            //{
-            //    TestContext.WriteLine($"    {token}");
-            //}
+            TestContext.WriteLine("Expression constructor");
+            foreach (var token in _tokens)
+            {
+                TestContext.WriteLine($"    {token}");
+            }
         }
 
         public  bool TryEvaluate(DynamicResources resources,

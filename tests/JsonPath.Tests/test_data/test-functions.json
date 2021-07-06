@@ -1,6 +1,8 @@
 [
   {
-     "given":  [
+     "given": {
+         "store": {
+             "book": [
                  {
                      "category": "reference",
                      "author": "Nigel Rees",
@@ -28,10 +30,16 @@
                      "price": 22.99
                  }
              ],
+             "bicycle": {
+                 "color": "red",
+                 "price": 19.95
+             }
+         }
+     },
      "cases": [
        {
-         "comment" : "sum in filter",
-         "expression": "$[?(@.price > sum($[*].price) / length($[*]))].title",
+         "comment" : "All titles whose author's last name is Tolkien",
+         "expression": "$.store.book[?(tokenize(@.author,'\\\\s+')[-1] == 'Tolkien')].title",
          "result": ["The Lord of the Rings"]
        }
      ]
