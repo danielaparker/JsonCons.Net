@@ -51,6 +51,26 @@
          "comment" : "max in filter",
          "expression": "$.store.book[?(@.price < max($.store.book[*].price))].title",
          "result": ["Sayings of the Century","Sword of Honour","Moby Dick"]
+       },
+       {
+         "comment" : "ceil",
+         "expression": "$.store.book[?(ceil(@.price) == 9)].title",
+         "result": ["Sayings of the Century","Moby Dick"]
+       },
+       {
+         "comment" : "ceil with expression argument",
+         "expression": "$.store.book[?(ceil(@.price*100) == 899)].title",
+         "result": ["Moby Dick"]
+       },
+       {
+         "comment" : "floor",
+         "expression": "$.store.book[?(floor(@.price) == 8)].title",
+         "result": ["Sayings of the Century","Moby Dick"]
+       },
+       {
+         "comment" : "floor with expression argument",
+         "expression": "$.store.book[?(floor(@.price*100) == 899)].title",
+         "result": ["Moby Dick"]
        }
      ]
   }
