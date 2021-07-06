@@ -71,12 +71,12 @@
          "comment" : "floor with expression argument",
          "expression": "$.store.book[?(floor(@.price*100) == 899)].title",
          "result": ["Moby Dick"]
-       },
+       }/*,
        {
          "comment" : "All titles whose author's last name is Tolkien",
-         "expression": "$.store.book[?(tokenize(@.author,'\\s+')[-1] == Tolkien)].title",
+         "expression": "$.store.book[?(tokenize(@.author,'\\\\s+')[-1] == 'Tolkien')].title",
          "result": ["The Lord of the Rings"]
-       }
+       }*/
      ]
   }
 ]

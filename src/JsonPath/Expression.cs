@@ -9,12 +9,11 @@ using NUnit.Framework;
         
 namespace JsonCons.JsonPathLib
 {
-
     interface IExpression
     {
          bool TryEvaluate(DynamicResources resources,
-                          JsonElement root,
-                          JsonElement current, 
+                          IJsonValue root,
+                          IJsonValue current, 
                           ResultOptions options,
                           out IJsonValue value);
     }
@@ -73,8 +72,8 @@ namespace JsonCons.JsonPathLib
         }
 
         public  bool TryEvaluate(DynamicResources resources,
-                                 JsonElement root,
-                                 JsonElement current, 
+                                 IJsonValue root,
+                                 IJsonValue current, 
                                  ResultOptions options,
                                  out IJsonValue result)
         {

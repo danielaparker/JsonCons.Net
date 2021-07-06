@@ -32,7 +32,12 @@ namespace JsonCons.JsonPathLib
             {
                 var nodes = new List<JsonPathNode>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
-                _selector.Select(resources, root, pathStem, root, accumulator, options);
+                _selector.Select(resources, 
+                                 new JsonElementJsonValue(root), 
+                                 pathStem, 
+                                 new JsonElementJsonValue(root), 
+                                 accumulator, 
+                                 options);
 
                 if (nodes.Count > 1)
                 {
@@ -47,7 +52,7 @@ namespace JsonCons.JsonPathLib
                         {
                             if (index.Contains(node))
                             {
-                                values.Add(node.Value);
+                                values.Add(node.Value.GetJsonElement());
                                 index.Remove(node);
                             }
                         }
@@ -56,7 +61,7 @@ namespace JsonCons.JsonPathLib
                     {
                         foreach (var node in nodes)
                         {
-                            values.Add(node.Value);
+                            values.Add(node.Value.GetJsonElement());
                         }
                     }
                 }
@@ -64,14 +69,19 @@ namespace JsonCons.JsonPathLib
                 {
                     foreach (var node in nodes)
                     {
-                        values.Add(node.Value);
+                        values.Add(node.Value.GetJsonElement());
                     }
                 }
             }
             else
             {
                 INodeAccumulator accumulator = new JsonElementAccumulator(values);            
-                _selector.Select(resources, root, pathStem, root, accumulator, options);
+                _selector.Select(resources, 
+                                 new JsonElementJsonValue(root), 
+                                 pathStem, 
+                                 new JsonElementJsonValue(root), 
+                                 accumulator, 
+                                 options);
             }
 
             return values;
@@ -84,7 +94,12 @@ namespace JsonCons.JsonPathLib
             PathNode pathStem = new PathNode("$");
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
-            _selector.Select(resources, root, pathStem, root, accumulator, options | ResultOptions.Path);
+            _selector.Select(resources, 
+                             new JsonElementJsonValue(root), 
+                             pathStem, 
+                             new JsonElementJsonValue(root), 
+                             accumulator, 
+                             options | ResultOptions.Path);
 
             if ((options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
             {

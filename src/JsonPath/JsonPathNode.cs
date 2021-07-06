@@ -11,9 +11,9 @@ namespace JsonCons.JsonPathLib
     public struct JsonPathNode : IEquatable<JsonPathNode>, IComparable<JsonPathNode>
     {
         public NormalizedPath Path {get;}
-        public JsonElement Value {get;}
+        public IJsonValue Value {get;}
 
-        internal JsonPathNode(NormalizedPath path, JsonElement value)
+        internal JsonPathNode(NormalizedPath path, IJsonValue value)
         {
             Path = path;
             Value = value;
@@ -37,7 +37,7 @@ namespace JsonCons.JsonPathLib
 
     interface INodeAccumulator
     {
-        void AddNode(PathNode pathStem, JsonElement value);
+        void AddNode(PathNode pathStem, IJsonValue value);
     };
 
     class JsonElementAccumulator : INodeAccumulator
@@ -49,7 +49,22 @@ namespace JsonCons.JsonPathLib
             _values = values;
         }
 
-        public void AddNode(PathNode pathStem, JsonElement value)
+        public void AddNode(PathNode pathStem, IJsonValue value)
+        {
+            _values.Add(value.GetJsonElement());
+        }
+    }
+
+    class ValueAccumulator : INodeAccumulator
+    {
+        IList<IJsonValue> _values;
+
+        internal ValueAccumulator(IList<IJsonValue> values)
+        {
+            _values = values;
+        }
+
+        public void AddNode(PathNode pathStem, IJsonValue value)
         {
             _values.Add(value);
         }
@@ -64,7 +79,7 @@ namespace JsonCons.JsonPathLib
             _values = values;
         }
 
-        public void AddNode(PathNode pathStem, JsonElement value)
+        public void AddNode(PathNode pathStem, IJsonValue value)
         {
             _values.Add(new NormalizedPath(pathStem));
         }
@@ -79,7 +94,7 @@ namespace JsonCons.JsonPathLib
             _nodes = nodes;
         }
 
-        public void AddNode(PathNode pathStem, JsonElement value)
+        public void AddNode(PathNode pathStem, IJsonValue value)
         {
             _nodes.Add(new JsonPathNode(new NormalizedPath(pathStem), value));
         }

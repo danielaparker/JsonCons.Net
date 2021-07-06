@@ -1344,7 +1344,8 @@ namespace JsonCons.JsonPathLib
                                 break;
                             default:
                                 PushToken(new Token(JsonPathTokenKind.BeginArgument));
-                                _stateStack.Pop(); _stateStack.Push(JsonPathState.OneOrMoreArguments);
+                                _stateStack.Pop(); 
+                                _stateStack.Push(JsonPathState.OneOrMoreArguments);
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
                                 _stateStack.Push(JsonPathState.PathOrValueOrFunction);
