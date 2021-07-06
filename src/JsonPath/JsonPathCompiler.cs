@@ -401,7 +401,6 @@ namespace JsonCons.JsonPathLib
                                     throw new JsonException("Function not found");
                                 }
                                 buffer.Clear();
-                                PushToken(new Token(JsonPathTokenKind.CurrentNode));
                                 PushToken(new Token(func));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.FunctionExpression);
@@ -1293,7 +1292,6 @@ namespace JsonCons.JsonPathLib
                                     throw new JsonException("Function not found");
                                 }
                                 buffer.Clear();
-                                PushToken(new Token(JsonPathTokenKind.CurrentNode));
                                 PushToken(new Token(func));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.FunctionExpression);
@@ -1317,7 +1315,6 @@ namespace JsonCons.JsonPathLib
                                 SkipWhiteSpace();
                                 break;
                             case ',':
-                                PushToken(new Token(JsonPathTokenKind.CurrentNode));
                                 PushToken(new Token(JsonPathTokenKind.BeginArgument));
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
@@ -1999,18 +1996,6 @@ namespace JsonCons.JsonPathLib
                     break;
                 }
                 case JsonPathTokenKind.Value:
-                    if (_outputStack.Count > 0 && (_outputStack.Peek().TokenKind == JsonPathTokenKind.CurrentNode || _outputStack.Peek().TokenKind == JsonPathTokenKind.RootNode))
-                    {
-                        _outputStack.Pop();
-                        _outputStack.Push(token);
-                    }
-                    else
-                    {
-                        _outputStack.Push(token);
-                    }
-                    break;
-                case JsonPathTokenKind.RootNode:
-                case JsonPathTokenKind.CurrentNode:
                     _outputStack.Push(token);
                     break;
                 case JsonPathTokenKind.Function:

@@ -1,6 +1,6 @@
 [
   {
-     "given": {"books": [
+     "given":  [
                  {
                      "category": "reference",
                      "author": "Nigel Rees",
@@ -27,12 +27,11 @@
                      "isbn": "0-395-19395-8",
                      "price": 22.99
                  }
-             ]
-     },
+             ],
      "cases": [
        {
-         "comment" : "abs",
-         "expression": "$.books[?@.price == abs(-22.99)].title",
+         "comment" : "sum in filter",
+         "expression": "$[?(@.price > sum($[*].price) / length($[*]))].title",
          "result": ["The Lord of the Rings"]
        }
      ]

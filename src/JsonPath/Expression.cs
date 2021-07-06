@@ -95,6 +95,16 @@ namespace JsonCons.JsonPathLib
             Stack<IJsonValue> stack = new Stack<IJsonValue>();
             IList<IJsonValue> argStack = new List<IJsonValue>();
 
+            /*
+            TestContext.WriteLine("");
+            TestContext.WriteLine("Expression tokens:");
+            foreach (var item in _tokens)
+            {
+                TestContext.WriteLine($"    {item}");
+            }
+            TestContext.WriteLine("");
+            */
+
             foreach (var token in _tokens)
             {
                 switch (token.TokenKind)
@@ -132,20 +142,8 @@ namespace JsonCons.JsonPathLib
                         stack.Push(value);
                         break;
                     }
-                    case JsonPathTokenKind.RootNode:
-                        stack.Push(new JsonElementJsonValue(root));
-                        break;
-                    case JsonPathTokenKind.CurrentNode:
-                        stack.Push(current);
-                        break;
                     case JsonPathTokenKind.Selector:
                     {
-                        //if (stack.Count == 0)
-                        //{
-                        //    stack.Push(current);
-                        //}
-
-                        //var item = stack.Pop();
                         IJsonValue value;
                         if (token.GetSelector().TryEvaluate(resources, root, new PathNode("@"), current.GetJsonElement(), options, out value))
                         {
@@ -183,15 +181,8 @@ namespace JsonCons.JsonPathLib
                     }
                     case JsonPathTokenKind.Expression:
                     {
-                        if (stack.Count == 0)
-                        {
-                            stack.Push(current);
-                        }
-
-                        var item = stack.Peek();
-                        stack.Pop();
                         IJsonValue value;
-                        if (!token.GetExpression().TryEvaluate(resources, root, item, options, out value))
+                        if (!token.GetExpression().TryEvaluate(resources, root, current, options, out value))
                         {
                             result = JsonConstants.Null;
                             return false;

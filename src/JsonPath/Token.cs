@@ -10,8 +10,6 @@ namespace JsonCons.JsonPathLib
 {
     enum JsonPathTokenKind
     {
-        RootNode,
-        CurrentNode,
         Expression,
         LeftParen,
         RightParen,
@@ -183,10 +181,6 @@ namespace JsonCons.JsonPathLib
         {
             switch(_type)
             {
-                case JsonPathTokenKind.RootNode:
-                    return "RootNode";
-                case JsonPathTokenKind.CurrentNode:
-                    return "CurrentNode";
                 case JsonPathTokenKind.BeginFilter:
                     return "BeginFilter";
                 case JsonPathTokenKind.EndFilter:

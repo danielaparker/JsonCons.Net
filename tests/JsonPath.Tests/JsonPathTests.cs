@@ -129,6 +129,7 @@ namespace JsonCons.JsonPathLib.Tests
                 RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\wildcard.json"));
                 RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\parent-operator.json"));
 
+                RunJsonPathTests(System.IO.Path.Combine(TestContext.CurrentContext.WorkDirectory, @"..\..\test_data\test-functions.json"));              
             }
             catch (Exception e)
             {
