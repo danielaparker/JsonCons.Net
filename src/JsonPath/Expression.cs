@@ -14,12 +14,6 @@ namespace JsonCons.JsonPathLib
     {
          bool TryEvaluate(DynamicResources resources,
                           JsonElement root,
-                          IJsonValue current, 
-                          ResultOptions options,
-                          out IJsonValue value);
-
-         bool TryEvaluate(DynamicResources resources,
-                          JsonElement root,
                           JsonElement current, 
                           ResultOptions options,
                           out IJsonValue value);
@@ -77,18 +71,10 @@ namespace JsonCons.JsonPathLib
             //    TestContext.WriteLine($"    {token}");
             //}
         }
-        public  bool TryEvaluate(DynamicResources resources,
-                                 JsonElement root,
-                                 JsonElement current, 
-                                 ResultOptions options,
-                                 out IJsonValue result)
-        {
-            return this.TryEvaluate(resources, root, new JsonElementJsonValue(current), options, out result);
-        }
 
         public  bool TryEvaluate(DynamicResources resources,
                                  JsonElement root,
-                                 IJsonValue current, 
+                                 JsonElement current, 
                                  ResultOptions options,
                                  out IJsonValue result)
         {
@@ -145,7 +131,7 @@ namespace JsonCons.JsonPathLib
                     case JsonPathTokenKind.Selector:
                     {
                         IJsonValue value;
-                        if (token.GetSelector().TryEvaluate(resources, root, new PathNode("@"), current.GetJsonElement(), options, out value))
+                        if (token.GetSelector().TryEvaluate(resources, root, new PathNode("@"), current, options, out value))
                         {
                             stack.Push(value);
                         }
