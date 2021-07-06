@@ -19,8 +19,7 @@ namespace JsonCons.JsonPathLib
         EndUnion,
         BeginFilter,
         EndFilter,
-        BeginExpression,
-        EndExpression,
+        BeginArgument,
         Separator,
         Value,
         Selector,
@@ -214,10 +213,8 @@ namespace JsonCons.JsonPathLib
                     return "EndArgument";
                 case JsonPathTokenKind.Expression:
                     return "Expression";
-                case JsonPathTokenKind.BeginExpression:
-                    return "BeginExpression";
-                case JsonPathTokenKind.EndExpression:
-                    return "EndExpression";
+                case JsonPathTokenKind.BeginArgument:
+                    return "BeginArgument";
                 case JsonPathTokenKind.LeftParen:
                     return "LeftParen";
                 case JsonPathTokenKind.RightParen:

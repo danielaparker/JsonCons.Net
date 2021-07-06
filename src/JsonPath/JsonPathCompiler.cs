@@ -667,20 +667,6 @@ namespace JsonCons.JsonPathLib
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
                                 break;
-                            case '(':
-                            {
-                                PushToken(new Token(JsonPathTokenKind.BeginUnion));
-                                PushToken(new Token(JsonPathTokenKind.BeginExpression));
-                                PushToken(new Token(JsonPathTokenKind.LeftParen));
-                                _stateStack.Pop(); _stateStack.Push(JsonPathState.UnionExpression); // union
-                                _stateStack.Push(JsonPathState.Expression);
-                                _stateStack.Push(JsonPathState.ExpectRightParen);
-                                _stateStack.Push(JsonPathState.ExpressionRhs);
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
-                                ++_index;
-                                ++_column;
-                                break;
-                            }
                             case '?':
                             {
                                 PushToken(new Token(JsonPathTokenKind.BeginUnion));
@@ -820,19 +806,6 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Push(JsonPathState.IndexOrSlice);
                                 _stateStack.Push(JsonPathState.Integer);
                                 break;
-                            case '(':
-                            {
-                                PushToken(new Token(JsonPathTokenKind.BeginExpression));
-                                PushToken(new Token(JsonPathTokenKind.LeftParen));
-                                _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.Expression);
-                                _stateStack.Push(JsonPathState.ExpectRightParen);
-                                _stateStack.Push(JsonPathState.ExpressionRhs);
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
-                                ++_index;
-                                ++_column;
-                                break;
-                            }
                             case '?':
                             {
                                 PushToken(new Token(JsonPathTokenKind.BeginFilter));
@@ -1350,7 +1323,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             case ',':
                                 PushToken(new Token(JsonPathTokenKind.CurrentNode));
-                                PushToken(new Token(JsonPathTokenKind.BeginExpression));
+                                PushToken(new Token(JsonPathTokenKind.BeginArgument));
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
                                 _stateStack.Push(JsonPathState.PathOrValueOrFunction);
@@ -1381,7 +1354,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Pop();
                                 break;
                             default:
-                                PushToken(new Token(JsonPathTokenKind.BeginExpression));
+                                PushToken(new Token(JsonPathTokenKind.BeginArgument));
                                 _stateStack.Pop(); _stateStack.Push(JsonPathState.OneOrMoreArguments);
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
@@ -1401,7 +1374,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Pop();
                                 break;
                             case ',':
-                                PushToken(new Token(JsonPathTokenKind.BeginExpression));
+                                PushToken(new Token(JsonPathTokenKind.BeginArgument));
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
                                 _stateStack.Push(JsonPathState.PathOrValueOrFunction);
@@ -1921,7 +1894,7 @@ namespace JsonCons.JsonPathLib
                 case JsonPathTokenKind.EndFilter:
                 {
                     UnwindRParen();
-                    List<Token> tokens = new List<Token>();
+                    var tokens = new List<Token>();
                     while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginFilter)
                     {
                         tokens.Add(_outputStack.Pop());
@@ -1942,27 +1915,10 @@ namespace JsonCons.JsonPathLib
                     }
                     break;
                 }
-                case JsonPathTokenKind.BeginExpression:
+                case JsonPathTokenKind.BeginArgument:
                     _outputStack.Push(token);
                     _operatorStack.Push(new Token(JsonPathTokenKind.LeftParen));
                     break;
-                case JsonPathTokenKind.EndExpression:
-                {
-                    UnwindRParen();
-                    List<Token> tokens = new List<Token>();
-                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginExpression)
-                    {
-                        tokens.Add(_outputStack.Pop());
-                    }
-                    if (_outputStack.Count == 0)
-                    {
-                        throw new JsonException("Unbalanced parentheses");
-                    }
-                    _outputStack.Pop(); // JsonPathTokenKind.LeftParen
-                    tokens.Reverse();
-                    _outputStack.Push(new Token(new Expression(tokens)));
-                    break;
-                }
                 case JsonPathTokenKind.Selector:
                     if (_outputStack.Count != 0 && _outputStack.Peek().TokenKind == JsonPathTokenKind.Selector)
                     {
@@ -2074,7 +2030,7 @@ namespace JsonCons.JsonPathLib
                     UnwindRParen();
 
                     Int32 argCount = 0;
-                    List<Token> tokens = new List<Token>();
+                    var tokens = new List<Token>();
                     while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.Function)
                     {
                         if (_outputStack.Peek().TokenKind == JsonPathTokenKind.Argument)
@@ -2102,8 +2058,8 @@ namespace JsonCons.JsonPathLib
                 case JsonPathTokenKind.EndArgument:
                 {
                     UnwindRParen();
-                    List<Token> tokens = new List<Token>();
-                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginExpression)
+                    var tokens = new List<Token>();
+                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginArgument)
                     {
                         tokens.Add(_outputStack.Pop());
                     }
@@ -2112,7 +2068,7 @@ namespace JsonCons.JsonPathLib
                         throw new JsonException("Unbalanced parentheses");
                     }
                     tokens.Reverse();
-                    _outputStack.Pop(); // JsonPathTokenKind.BeginExpression
+                    _outputStack.Pop(); // JsonPathTokenKind.BeginArgument
                     _outputStack.Push(new Token(new Expression(tokens)));
                     break;
                 }
