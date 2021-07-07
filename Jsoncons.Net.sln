@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath.Tests", "tests\Jso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath", "src\JsonPath\JsonPath.csproj", "{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "examples", "examples\examples.csproj", "{16CE673F-9190-4A70-B88D-343E02EE3D48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16CE673F-9190-4A70-B88D-343E02EE3D48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16CE673F-9190-4A70-B88D-343E02EE3D48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16CE673F-9190-4A70-B88D-343E02EE3D48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16CE673F-9190-4A70-B88D-343E02EE3D48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
