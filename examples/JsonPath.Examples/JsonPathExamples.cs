@@ -9,7 +9,7 @@ namespace JsonCons.Examples
 {
     public static class JsonPathExamples
     {
-        public static void SelectExamples()
+        public static void SelectWithAndWithoutDuplicates()
         {
             string jsonString = @"
 {
@@ -36,37 +36,67 @@ namespace JsonCons.Examples
         {
             ""category"": ""memoir"",
             ""title"" : ""The Night Watch"",
-            ""author"" : ""Phillips, David Atlee""
+            ""author"" : ""David Atlee Phillips""
         }
     ]
 }
             ";
 
-            using (JsonDocument doc = JsonDocument.Parse(jsonString))
-            {
-                using (JsonPath jsonPath = JsonPath.Parse("$.books[1,1,3].title"))
-                {
-                    Console.WriteLine("Select values");
-                    IReadOnlyList<JsonElement> values = jsonPath.Select(doc.RootElement);
-                    foreach (var value in values)
-                    {
-                        Console.WriteLine(value);
-                    }
-                    Console.WriteLine();
+            JsonDocument doc = null;
+            JsonPath jsonPath = null;
 
-                    Console.WriteLine("Select paths");
-                    IReadOnlyList<NormalizedPath> paths = jsonPath.SelectPaths(doc.RootElement);
-                    foreach (var path in paths)
-                    {
-                        Console.WriteLine(path);
-                    }
+            try
+            {
+                doc = JsonDocument.Parse(jsonString);
+                jsonPath = JsonPath.Parse("$.books[3,1,1].title");
+
+                Console.WriteLine("Allow duplicates");
+                IReadOnlyList<JsonPathNode> nodes = jsonPath.SelectNodes(doc.RootElement);
+                foreach (var node in nodes)
+                {
+                    Console.WriteLine($"{node.Path} => {node.Value}");
                 }
+                Console.WriteLine();
+
+                Console.WriteLine("Allow duplicates and sort by path");
+                IReadOnlyList<JsonPathNode> nodesSort = jsonPath.SelectNodes(doc.RootElement,
+                                                                             ResultOptions.Sort);
+                foreach (var node in nodesSort)
+                {
+                    Console.WriteLine($"{node.Path} => {node.Value}");
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("Remove duplicates");
+                IReadOnlyList<JsonPathNode> nodesNoDups = jsonPath.SelectNodes(doc.RootElement, 
+                                                                               ResultOptions.NoDups);
+                foreach (var node in nodesNoDups)
+                {
+                    Console.WriteLine($"{node.Path} => {node.Value}");
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("Remove duplicates and sort by paths");
+                IReadOnlyList<JsonPathNode> nodesNoDupsSort = jsonPath.SelectNodes(doc.RootElement, 
+                                                                                   ResultOptions.NoDups | ResultOptions.Sort);
+                foreach (var node in nodesNoDupsSort)
+                {
+                    Console.WriteLine($"{node.Path} => {node.Value}");
+                }
+                Console.WriteLine();
+            }
+            finally
+            {
+                if (!Object.ReferenceEquals(null, doc)) 
+                    doc.Dispose();
+                if (!Object.ReferenceEquals(null, jsonPath)) 
+                    jsonPath.Dispose();
             }
 
         }
         public static void Main(string[] args)
         {
-            SelectExamples();
+            SelectWithAndWithoutDuplicates();
         }
     }
 }

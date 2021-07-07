@@ -121,7 +121,7 @@ namespace JsonCons.JsonPathLib
         ExpectAnd
     };
 
-    ref struct JsonPathCompiler 
+    ref struct JsonPathParser 
     {
         ReadOnlySpan<char> _span;
         int _index;
@@ -131,7 +131,7 @@ namespace JsonCons.JsonPathLib
         Stack<Token>_outputStack;
         Stack<Token>_operatorStack;
 
-        internal JsonPathCompiler(string input)
+        internal JsonPathParser(string input)
         {
             _span = input.AsSpan();
             _index = 0;

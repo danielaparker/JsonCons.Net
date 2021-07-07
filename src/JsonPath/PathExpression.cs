@@ -128,6 +128,48 @@ namespace JsonCons.JsonPathLib
 
             return paths;
         }
+
+        public IReadOnlyList<JsonPathNode> SelectNodes(JsonElement root, ResultOptions options)
+        {
+            var resources = new DynamicResources();
+
+            PathNode pathStem = new PathNode("$");
+            var nodes = new List<JsonPathNode>();
+            var accumulator = new NodeAccumulator(nodes);
+            _selector.Select(resources, 
+                             new JsonElementJsonValue(root), 
+                             pathStem, 
+                             new JsonElementJsonValue(root), 
+                             accumulator, 
+                             options | ResultOptions.Path);
+
+            if ((options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
+            {
+                if (nodes.Count > 1)
+                {
+                    if ((options & ResultOptions.Sort) == ResultOptions.Sort)
+                    {
+                        nodes.Sort();
+                    }
+                    if ((options & ResultOptions.NoDups) == ResultOptions.NoDups)
+                    {
+                        var temp = new List<JsonPathNode>();
+                        var index = new HashSet<JsonPathNode>(nodes);
+                        foreach (var path in nodes)
+                        {
+                            if (index.Contains(path))
+                            {
+                                temp.Add(path);
+                                index.Remove(path);
+                            }
+                        }
+                        nodes = temp;
+                    }
+                }
+            }
+
+            return nodes;
+        }
     }
 
 } // namespace JsonCons.JsonPathLib

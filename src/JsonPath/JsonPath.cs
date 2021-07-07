@@ -42,9 +42,9 @@ namespace JsonCons.JsonPathLib
     public sealed class JsonPath : IDisposable
     {
         private bool _disposed = false;
-        StaticResources _resources;
+        readonly StaticResources _resources;
         readonly PathExpression _expr;
-        ResultOptions _requiredOptions;
+        readonly ResultOptions _requiredOptions;
 
         internal JsonPath(StaticResources resources, ISelector selector, bool pathsRequired)
         {
@@ -81,9 +81,8 @@ namespace JsonCons.JsonPathLib
 
         public static JsonPath Parse(string expr)
         {
-
-            var compiler = new JsonPathCompiler(expr);
-            return compiler.Parse();
+            var parser = new JsonPathParser(expr);
+            return parser.Parse();
         }
 
         public IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options = 0)
@@ -94,6 +93,11 @@ namespace JsonCons.JsonPathLib
         public IReadOnlyList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options = 0)
         {
             return _expr.SelectPaths(root, options | _requiredOptions);
+        }
+
+        public IReadOnlyList<JsonPathNode> SelectNodes(JsonElement root, ResultOptions options = 0)
+        {
+            return _expr.SelectNodes(root, options | _requiredOptions);
         }
 
         /// <inheritdoc />
