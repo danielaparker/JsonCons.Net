@@ -80,7 +80,7 @@
     <Compile Include="Function.cs" />
     <Compile Include="JsonElementEqualityComparer.cs" />
     <Compile Include="JsonPath.cs" />
-    <Compile Include="JsonPathCompiler.cs" />
+    <Compile Include="JsonPathParser.cs" />
     <Compile Include="JsonPathSelector.cs" />
     <Compile Include="JsonValue.cs" />
     <Compile Include="JsonValueEqualityComparer.cs" />

@@ -30,8 +30,31 @@ namespace JsonCons.JsonPathLib
 
     public enum ResultOptions {Path=1, NoDups=Path|2, Sort=Path|4};
 
-    public static class JsonPath
+
+    /// <summary>
+    ///   Represents a JsonPath expression.
+    /// </summary>
+    /// <remarks>
+    ///   A JsonPath object may own references to some <see cref="JsonDocument"/> objects. 
+    ///   It should be disposed to ensure that these objects are properly disposed.
+    /// </remarks>
+
+    public sealed class JsonPath : IDisposable
     {
+        private bool _disposed = false;
+        StaticResources _resources;
+        readonly PathExpression _expr;
+        ResultOptions _requiredOptions;
+
+        internal JsonPath(StaticResources resources, ISelector selector, bool pathsRequired)
+        {
+            _resources = resources;
+            _expr = new PathExpression(selector);
+            if (pathsRequired)
+            {
+                _requiredOptions = ResultOptions.Path;
+            }
+        }
         public static bool TrySelect(JsonElement root, NormalizedPath path, out JsonElement element)
         {
             element = root;
@@ -56,54 +79,11 @@ namespace JsonCons.JsonPathLib
             return true;
         }
 
-        internal static bool TrySelect(IJsonValue root, NormalizedPath path, out IJsonValue element)
-        {
-            element = root;
-            foreach (var pathNode in path)
-            {
-                if (pathNode.NodeKind == PathNodeKind.Index)
-                {
-                    if (element.ValueKind != JsonValueKind.Array || pathNode.GetIndex() >= element.GetArrayLength())
-                    {
-                        return false; 
-                    }
-                    element = element[pathNode.GetIndex()];
-                }
-                else if (pathNode.NodeKind == PathNodeKind.Name)
-                {
-                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(pathNode.GetName(), out element))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
-        public static JsonPathExpression Compile(string expr)
+        public static JsonPath Parse(string expr)
         {
 
             var compiler = new JsonPathCompiler(expr);
-            return compiler.Compile();
-        }
-
-    }
-
-    public class JsonPathExpression : IDisposable
-    {
-        private bool _disposed = false;
-        StaticResources _resources;
-        readonly PathExpression _expr;
-        ResultOptions _requiredOptions;
-
-        internal JsonPathExpression(StaticResources resources, ISelector selector, bool pathsRequired)
-        {
-            _resources = resources;
-            _expr = new PathExpression(selector);
-            if (pathsRequired)
-            {
-                _requiredOptions = ResultOptions.Path;
-            }
+            return compiler.Parse();
         }
 
         public IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options = 0)
@@ -116,13 +96,14 @@ namespace JsonCons.JsonPathLib
             return _expr.SelectPaths(root, options | _requiredOptions);
         }
 
+        /// <inheritdoc />
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        void Dispose(bool disposing)
         {
             if (!this._disposed)
             {
@@ -134,7 +115,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        ~JsonPathExpression()
+        ~JsonPath()
         {
             Dispose(false);
         }

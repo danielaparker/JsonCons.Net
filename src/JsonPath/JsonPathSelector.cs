@@ -8,6 +8,33 @@ using NUnit.Framework;
 
 namespace JsonCons.JsonPathLib
 {
+    static class SelectHelper
+    {
+        internal static bool TrySelect(IJsonValue root, NormalizedPath path, out IJsonValue element)
+        {
+            element = root;
+            foreach (var pathNode in path)
+            {
+                if (pathNode.NodeKind == PathNodeKind.Index)
+                {
+                    if (element.ValueKind != JsonValueKind.Array || pathNode.GetIndex() >= element.GetArrayLength())
+                    {
+                        return false; 
+                    }
+                    element = element[pathNode.GetIndex()];
+                }
+                else if (pathNode.NodeKind == PathNodeKind.Name)
+                {
+                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(pathNode.GetName(), out element))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
     static class PathGenerator 
     {
         static internal PathNode Generate(PathNode pathStem, 
@@ -242,7 +269,7 @@ namespace JsonCons.JsonPathLib
             {
                 NormalizedPath path = new NormalizedPath(ancestor);
                 IJsonValue value;
-                if (JsonPath.TrySelect(root, path, out value))
+                if (SelectHelper.TrySelect(root, path, out value))
                 {
                     this.TailSelect(resources, root, path.Stem, value, accumulator, options);        
                 }
@@ -266,7 +293,7 @@ namespace JsonCons.JsonPathLib
             {
                 NormalizedPath path = new NormalizedPath(ancestor);
                 IJsonValue value;
-                if (JsonPath.TrySelect(root, path, out value))
+                if (SelectHelper.TrySelect(root, path, out value))
                 {
 
                     return this.TryEvaluateTail(resources, root, path.Stem, value, options, out result);        

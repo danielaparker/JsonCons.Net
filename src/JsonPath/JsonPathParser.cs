@@ -142,7 +142,7 @@ namespace JsonCons.JsonPathLib
             _operatorStack = new Stack<Token>();
         }
 
-        internal JsonPathExpression Compile()
+        internal JsonPath Parse()
         {
             StaticResources resources = null;
             try
@@ -161,7 +161,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        private JsonPathExpression DoCompile(StaticResources resources)
+        private JsonPath DoCompile(StaticResources resources)
         {
             _stateStack = new Stack<JsonPathState>();
             _index = 0;
@@ -1853,7 +1853,7 @@ namespace JsonCons.JsonPathLib
 
             //TestContext.WriteLine($"Main token: {token}");
 
-            return new JsonPathExpression(resources, token.GetSelector(), pathsRequired);
+            return new JsonPath(resources, token.GetSelector(), pathsRequired);
         }
 
         void UnwindRParen()
