@@ -36,7 +36,11 @@ namespace JsonCons.Examples
         ""isbn"": ""0-395-19395-8"",
         ""price"": 22.99
       }
-    ]
+    ],
+    ""bicycle"": {
+      ""color"": ""red"",
+      ""price"": 19.95
+    }
   }
 }
             ";
@@ -47,9 +51,81 @@ namespace JsonCons.Examples
             {
                 doc = JsonDocument.Parse(jsonString);
 
-                Console.WriteLine("The authors of all books in the store");
+                Console.WriteLine("(1) The authors of all books in the store");
                 IReadOnlyList<JsonElement> values1 = JsonPath.Select(doc.RootElement, "$.store.book[*].author");
                 foreach (var value in values1)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("(2) All authors");
+                IReadOnlyList<JsonElement> values2 = JsonPath.Select(doc.RootElement, "$..author");
+                foreach (var value in values2)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("(3) All things in store, which are some books and a red bicycle");
+                IReadOnlyList<JsonElement> values3 = JsonPath.Select(doc.RootElement, "$.store.*");
+                foreach (var value in values3)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("(4) The price of everything in the store.");
+                IReadOnlyList<JsonElement> values4 = JsonPath.Select(doc.RootElement, "$.store..price");
+                foreach (var value in values4)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("(5) The third book");
+                IReadOnlyList<JsonElement> values5 = JsonPath.Select(doc.RootElement, "$..book[2]");
+                foreach (var value in values5)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("(6) The last book");
+                IReadOnlyList<JsonElement> values6 = JsonPath.Select(doc.RootElement, "$..book[-1]");
+                foreach (var value in values6)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("(7) The first two books");
+                IReadOnlyList<JsonElement> values7 = JsonPath.Select(doc.RootElement, "$..book[:2]");
+                foreach (var value in values7)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("(8) Filter all books with isbn number");
+                IReadOnlyList<JsonElement> values8 = JsonPath.Select(doc.RootElement, "$..book[?(@.isbn)]");
+                foreach (var value in values8)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("(9) Filter all books cheaper than 10");
+                IReadOnlyList<JsonElement> values9 = JsonPath.Select(doc.RootElement, "$..book[?(@.price<10)]");
+                foreach (var value in values9)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("(10) All members of JSON value");
+                IReadOnlyList<JsonElement> values10 = JsonPath.Select(doc.RootElement, "$..*");
+                foreach (var value in values10)
                 {
                     Console.WriteLine(value);
                 }
@@ -104,7 +180,7 @@ namespace JsonCons.Examples
                 doc = JsonDocument.Parse(jsonString);
                 path = JsonPathExpression.Parse("$.books[3,1,1].title");
 
-                Console.WriteLine("Allow duplicates");
+                Console.WriteLine("Allow duplicate nodes");
                 IReadOnlyList<JsonPathNode> nodes = JsonPath.SelectNodes(doc.RootElement, path);
                 foreach (var node in nodes)
                 {
@@ -112,7 +188,7 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
 
-                Console.WriteLine("Allow duplicates and sort by path");
+                Console.WriteLine("Allow duplicate nodes and sort by path");
                 IReadOnlyList<JsonPathNode> nodesSort = JsonPath.SelectNodes(doc.RootElement, 
                                                                              path,
                                                                              ResultOptions.Sort);
@@ -122,7 +198,7 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
 
-                Console.WriteLine("Remove duplicates");
+                Console.WriteLine("Remove duplicate nodes");
                 IReadOnlyList<JsonPathNode> nodesNoDups = JsonPath.SelectNodes(doc.RootElement, 
                                                                                path, 
                                                                                ResultOptions.NoDups);
@@ -132,7 +208,7 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
 
-                Console.WriteLine("Remove duplicates and sort by paths");
+                Console.WriteLine("Remove duplicate nodes and sort by paths");
                 IReadOnlyList<JsonPathNode> nodesNoDupsSort = JsonPath.SelectNodes(doc.RootElement, 
                                                                                    path, 
                                                                                    ResultOptions.NoDups | ResultOptions.Sort);
