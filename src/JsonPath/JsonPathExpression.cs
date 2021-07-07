@@ -8,22 +8,35 @@ using System.Text.Json;
         
 namespace JsonCons.JsonPathLib
 {
-    interface IPathExpression 
+    public sealed class JsonPathExpression : IDisposable
     {
-        IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options);
-    };
+        private bool _disposed = false;
+        readonly StaticResources _resources;
+        readonly ISelector _selector;
+        readonly ResultOptions _requiredOptions;
 
-    public class PathExpression : IPathExpression
-    {
-        ISelector _selector;
-
-        internal PathExpression(ISelector selector)
+        public static JsonPathExpression Parse(string expr)
         {
+            var parser = new JsonPathParser(expr);
+            return parser.Parse();
+        }
+
+        internal JsonPathExpression(StaticResources resources, 
+                                    ISelector selector, 
+                                    bool pathsRequired)
+        {
+            _resources = resources;
             _selector = selector;
+            if (pathsRequired)
+            {
+                _requiredOptions = ResultOptions.Path;
+            }
         }
 
         public IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options)
         {
+            options |= _requiredOptions;
+
             var resources = new DynamicResources();
             PathNode pathStem = new PathNode("$");
             var values = new List<JsonElement>();
@@ -89,6 +102,8 @@ namespace JsonCons.JsonPathLib
 
         public IReadOnlyList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options)
         {
+            options |= _requiredOptions;
+
             var resources = new DynamicResources();
 
             PathNode pathStem = new PathNode("$");
@@ -131,6 +146,8 @@ namespace JsonCons.JsonPathLib
 
         public IReadOnlyList<JsonPathNode> SelectNodes(JsonElement root, ResultOptions options)
         {
+            options |= _requiredOptions;
+
             var resources = new DynamicResources();
 
             PathNode pathStem = new PathNode("$");
@@ -169,6 +186,30 @@ namespace JsonCons.JsonPathLib
             }
 
             return nodes;
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    _resources.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
+        ~JsonPathExpression()
+        {
+            Dispose(false);
         }
     }
 

@@ -39,22 +39,47 @@ namespace JsonCons.JsonPathLib
     ///   It should be disposed to ensure that these objects are properly disposed.
     /// </remarks>
 
-    public sealed class JsonPath : IDisposable
+    public static class JsonPath
     {
-        private bool _disposed = false;
-        readonly StaticResources _resources;
-        readonly PathExpression _expr;
-        readonly ResultOptions _requiredOptions;
-
-        internal JsonPath(StaticResources resources, ISelector selector, bool pathsRequired)
+        public static IReadOnlyList<JsonElement> Select(JsonElement root, string path, ResultOptions options = 0)
         {
-            _resources = resources;
-            _expr = new PathExpression(selector);
-            if (pathsRequired)
+            using (var expr = JsonPathExpression.Parse(path))
             {
-                _requiredOptions = ResultOptions.Path;
+                return expr.Select(root, options);
             }
         }
+
+        public static IReadOnlyList<JsonElement> Select(JsonElement root, JsonPathExpression expr, ResultOptions options = 0)
+        {
+            return expr.Select(root, options);
+        }
+
+        public static IReadOnlyList<NormalizedPath> SelectPaths(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
+        {
+            using (var expr = JsonPathExpression.Parse(path))
+            {
+                return expr.SelectPaths(root, options);
+            }
+        }
+
+        public static IReadOnlyList<NormalizedPath> SelectPaths(JsonElement root, JsonPathExpression expr, ResultOptions options = ResultOptions.Path)
+        {
+            return expr.SelectPaths(root, options);
+        }
+
+        public static IReadOnlyList<JsonPathNode> SelectNodes(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
+        {
+            using (var expr = JsonPathExpression.Parse(path))
+            {
+                return expr.SelectNodes(root, options);
+            }
+        }
+
+        public static IReadOnlyList<JsonPathNode> SelectNodes(JsonElement root, JsonPathExpression expr, ResultOptions options = ResultOptions.Path)
+        {
+            return expr.SelectNodes(root, options);
+        }
+
         public static bool TrySelect(JsonElement root, NormalizedPath path, out JsonElement element)
         {
             element = root;
@@ -77,51 +102,6 @@ namespace JsonCons.JsonPathLib
                 }
             }
             return true;
-        }
-
-        public static JsonPath Parse(string expr)
-        {
-            var parser = new JsonPathParser(expr);
-            return parser.Parse();
-        }
-
-        public IReadOnlyList<JsonElement> Select(JsonElement root, ResultOptions options = 0)
-        {
-            return _expr.Select(root, options | _requiredOptions);
-        }
-
-        public IReadOnlyList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options = 0)
-        {
-            return _expr.SelectPaths(root, options | _requiredOptions);
-        }
-
-        public IReadOnlyList<JsonPathNode> SelectNodes(JsonElement root, ResultOptions options = 0)
-        {
-            return _expr.SelectNodes(root, options | _requiredOptions);
-        }
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        void Dispose(bool disposing)
-        {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    _resources.Dispose();
-                }
-                _disposed = true;
-            }
-        }
-
-        ~JsonPath()
-        {
-            Dispose(false);
         }
     }
 

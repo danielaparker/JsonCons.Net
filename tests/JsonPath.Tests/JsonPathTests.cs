@@ -57,12 +57,12 @@ namespace JsonCons.JsonPathLib.Tests
                         JsonElement expected;
                         if (testCase.TryGetProperty("error", out expected))
                         {
-                            Assert.Throws<JsonException>(() => JsonPath.Parse(exprElement.ToString()));
+                            Assert.Throws<JsonException>(() => JsonPathExpression.Parse(exprElement.ToString()));
                         }
                         else if (testCase.TryGetProperty("result", out expected))
                         {
-                            var expr = JsonPath.Parse(exprElement.ToString());
-                            var items = expr.Select(given, options);
+                            var expr = JsonPathExpression.Parse(exprElement.ToString());
+                            var items = JsonPath.Select(given, expr, options);
 
                             bool success = items.Count == expected.GetArrayLength();
                             for (Int32 i = 0; success && i < items.Count; ++i)
