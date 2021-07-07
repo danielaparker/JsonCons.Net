@@ -52,7 +52,7 @@ namespace JsonCons.JsonPathLib
                         {
                             if (index.Contains(node))
                             {
-                                values.Add(node.Value.GetJsonElement());
+                                values.Add(node.Value);
                                 index.Remove(node);
                             }
                         }
@@ -61,7 +61,7 @@ namespace JsonCons.JsonPathLib
                     {
                         foreach (var node in nodes)
                         {
-                            values.Add(node.Value.GetJsonElement());
+                            values.Add(node.Value);
                         }
                     }
                 }
@@ -69,7 +69,7 @@ namespace JsonCons.JsonPathLib
                 {
                     foreach (var node in nodes)
                     {
-                        values.Add(node.Value.GetJsonElement());
+                        values.Add(node.Value);
                     }
                 }
             }

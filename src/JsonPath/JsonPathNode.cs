@@ -11,9 +11,9 @@ namespace JsonCons.JsonPathLib
     public struct JsonPathNode : IEquatable<JsonPathNode>, IComparable<JsonPathNode>
     {
         public NormalizedPath Path {get;}
-        public IJsonValue Value {get;}
+        public JsonElement Value {get;}
 
-        internal JsonPathNode(NormalizedPath path, IJsonValue value)
+        internal JsonPathNode(NormalizedPath path, JsonElement value)
         {
             Path = path;
             Value = value;
@@ -96,7 +96,7 @@ namespace JsonCons.JsonPathLib
 
         public void AddNode(PathNode pathStem, IJsonValue value)
         {
-            _nodes.Add(new JsonPathNode(new NormalizedPath(pathStem), value));
+            _nodes.Add(new JsonPathNode(new NormalizedPath(pathStem), value.GetJsonElement()));
         }
     }
 

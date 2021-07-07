@@ -357,12 +357,14 @@ namespace JsonCons.JsonPathLib
                                 SkipWhiteSpace();
                                 break;
                             case '$':
+                                PushToken(new Token(JsonPathTokenKind.RootNode));
                                 PushToken(new Token(new RootSelector(_index)));
                                 _stateStack.Pop();
                                 ++_index;
                                 ++_column;
                                 break;
                             case '@':
+                                PushToken(new Token(JsonPathTokenKind.CurrentNode));
                                 PushToken(new Token(new CurrentNodeSelector()));
                                 _stateStack.Pop();
                                 ++_index;
@@ -2001,6 +2003,8 @@ namespace JsonCons.JsonPathLib
                     break;
                 }
                 case JsonPathTokenKind.Value:
+                case JsonPathTokenKind.RootNode:
+                case JsonPathTokenKind.CurrentNode:
                     _outputStack.Push(token);
                     break;
                 case JsonPathTokenKind.Function:

@@ -64,11 +64,11 @@ namespace JsonCons.JsonPathLib
         {
             _tokens = tokens;
 
-            TestContext.WriteLine("Expression constructor");
+            /*TestContext.WriteLine("Expression constructor");
             foreach (var token in _tokens)
             {
                 TestContext.WriteLine($"    {token}");
-            }
+            }*/
         }
 
         public  bool TryEvaluate(DynamicResources resources,
@@ -97,6 +97,16 @@ namespace JsonCons.JsonPathLib
                     case JsonPathTokenKind.Value:
                     {
                         stack.Push(token.GetValue());
+                        break;
+                    }
+                    case JsonPathTokenKind.RootNode:
+                    {
+                        stack.Push(root);
+                        break;
+                    }
+                    case JsonPathTokenKind.CurrentNode:
+                    {
+                        stack.Push(current);
                         break;
                     }
                     case JsonPathTokenKind.UnaryOperator:
@@ -129,8 +139,11 @@ namespace JsonCons.JsonPathLib
                     }
                     case JsonPathTokenKind.Selector:
                     {
+                        Debug.Assert(stack.Count >= 1);
+                        IJsonValue val = stack.Peek();
+                        stack.Pop();
                         IJsonValue value;
-                        if (token.GetSelector().TryEvaluate(resources, root, new PathNode("@"), current, options, out value))
+                        if (token.GetSelector().TryEvaluate(resources, root, new PathNode("@"), val, options, out value))
                         {
                             stack.Push(value);
                         }
@@ -166,6 +179,9 @@ namespace JsonCons.JsonPathLib
                     }
                     case JsonPathTokenKind.Expression:
                     {
+                        //Debug.Assert(stack.Count >= 1);
+                        //IJsonValue val = stack.Peek();
+                        //stack.Pop();
                         IJsonValue value;
                         if (!token.GetExpression().TryEvaluate(resources, root, current, options, out value))
                         {
