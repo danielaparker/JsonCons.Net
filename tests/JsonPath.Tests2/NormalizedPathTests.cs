@@ -1,12 +1,16 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.IO;
+using System.Diagnostics;
+using System.Text.Json;
 using JsonCons.JsonPathLib;
+using NUnit.Framework;
 
-namespace JsonPath.Tests
+namespace JsonCons.JsonPathLib.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class PathNodeTests
     {
-        [TestMethod]
+        [Test]
         public void TestNormalizedPathEquals()
         {
             PathNode node1 = new PathNode("$");
@@ -26,7 +30,7 @@ namespace JsonPath.Tests
             Assert.IsTrue(path1.Equals(path2));
         }
 
-        [TestMethod]
+        [Test]
         public void TestNormalizedPathToString()
         {
             PathNode node1 = new PathNode("$");
@@ -38,7 +42,7 @@ namespace JsonPath.Tests
             Assert.IsTrue(path1.ToString().Equals(@"$['foo']['bar'][0]"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestNormalizedPathWithSolidusToString()
         {
             PathNode node1 = new PathNode("$");
@@ -50,7 +54,7 @@ namespace JsonPath.Tests
             Assert.IsTrue(path.ToString().Equals(@"$['foo\'s']['bar'][0]"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestNormalizedPathToJsonPointer()
         {
             PathNode node1 = new PathNode("$");

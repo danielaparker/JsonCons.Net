@@ -3,16 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath.Tests", "tests\JsonPath.Tests\JsonPath.Tests.csproj", "{A32E0179-C5A8-4EDB-90FA-B62A9A42176C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2} = {9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath", "src\JsonPath\JsonPath.csproj", "{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{D9A9E80C-57F9-4E11-A7EA-635366A3A90A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath.Examples", "examples\JsonPath.Examples\JsonPath.Examples.csproj", "{16CE673F-9190-4A70-B88D-343E02EE3D48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath", "src\JsonPath\JsonPath.csproj", "{6579BE90-397E-44CF-B079-B042D731EB28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath.Tests", "tests\JsonPath.Tests\JsonPath.Tests.csproj", "{40E5440D-AA1A-44C9-8CA6-9AA33DC98D81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath.Examples", "examples\JsonPath.Examples\JsonPath.Examples.csproj", "{1D033C9F-4EC1-40F9-82C0-F3E75A1C2201}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,24 +17,24 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A32E0179-C5A8-4EDB-90FA-B62A9A42176C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A32E0179-C5A8-4EDB-90FA-B62A9A42176C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A32E0179-C5A8-4EDB-90FA-B62A9A42176C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A32E0179-C5A8-4EDB-90FA-B62A9A42176C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F940C5B-E5CC-4B1E-A3B5-1F11E98B8AC2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16CE673F-9190-4A70-B88D-343E02EE3D48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16CE673F-9190-4A70-B88D-343E02EE3D48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16CE673F-9190-4A70-B88D-343E02EE3D48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16CE673F-9190-4A70-B88D-343E02EE3D48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6579BE90-397E-44CF-B079-B042D731EB28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6579BE90-397E-44CF-B079-B042D731EB28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6579BE90-397E-44CF-B079-B042D731EB28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6579BE90-397E-44CF-B079-B042D731EB28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40E5440D-AA1A-44C9-8CA6-9AA33DC98D81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40E5440D-AA1A-44C9-8CA6-9AA33DC98D81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40E5440D-AA1A-44C9-8CA6-9AA33DC98D81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40E5440D-AA1A-44C9-8CA6-9AA33DC98D81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D033C9F-4EC1-40F9-82C0-F3E75A1C2201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D033C9F-4EC1-40F9-82C0-F3E75A1C2201}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D033C9F-4EC1-40F9-82C0-F3E75A1C2201}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D033C9F-4EC1-40F9-82C0-F3E75A1C2201}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{16CE673F-9190-4A70-B88D-343E02EE3D48} = {D9A9E80C-57F9-4E11-A7EA-635366A3A90A}
+		{1D033C9F-4EC1-40F9-82C0-F3E75A1C2201} = {D9A9E80C-57F9-4E11-A7EA-635366A3A90A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A38EA2A9-6AD2-457B-9B11-2A2A0EED417B}

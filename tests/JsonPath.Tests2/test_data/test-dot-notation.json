@@ -1,0 +1,14 @@
+[
+   {
+        "given" : {
+			"屬性": "value"
+		},
+        "cases" : [
+            {
+                "comment" : "Dot notation with non ASCII key",
+                "expression" : "$.屬性",
+                "result" : ["value"]
+            }
+        ]
+    }
+]

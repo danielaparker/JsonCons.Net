@@ -122,10 +122,73 @@ namespace JsonCons.Examples
                     Console.WriteLine(value);
                 }
                 Console.WriteLine();
+            }
+            finally
+            {
+                if (!Object.ReferenceEquals(null, doc)) 
+                    doc.Dispose();
+            }
 
-                Console.WriteLine("(10) All members of JSON value");
-                IReadOnlyList<JsonElement> values10 = JsonPath.Select(doc.RootElement, "$..*");
-                foreach (var value in values10)
+        }
+
+        public static void UsingFunctionsInFilters()
+        {
+            string jsonString = @"
+{
+    ""books"":
+    [
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""A Wild Sheep Chase"",
+            ""author"" : ""Haruki Murakami"",
+            ""price"" : 22.72
+        },
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""The Night Watch"",
+            ""author"" : ""Sergei Lukyanenko"",
+            ""price"" : 23.58
+        },
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""The Comedians"",
+            ""author"" : ""Graham Greene"",
+            ""price"" : 21.99
+        },
+        { 
+          ""category"": ""fiction"",
+          ""author"": ""J. R. R. Tolkien"",
+          ""title"": ""The Lord of the Rings""
+        }
+    ]
+}
+            ";
+
+            JsonDocument doc = null;
+
+            try
+            {
+                doc = JsonDocument.Parse(jsonString);
+
+                Console.WriteLine("(1) All books whose author's last name is 'Tolkien'");
+                IReadOnlyList<JsonElement> values1 = JsonPath.Select(doc.RootElement, @"$.books[?(tokenize(@.author,'\\s+')[-1] == 'Tolkien')]");
+                foreach (var value in values1)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("(2) All titles whose price is greater than the average price");
+                IReadOnlyList<JsonElement> values2 = JsonPath.Select(doc.RootElement, @"$.books[?(@.price > avg($.books[*].price))].title");
+                foreach (var value in values2)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("(3) All books that don't have a price");
+                IReadOnlyList<JsonElement> values3 = JsonPath.Select(doc.RootElement, @"$.books[?(!contains(keys(@),'price'))]");
+                foreach (var value in values3)
                 {
                     Console.WriteLine(value);
                 }
@@ -139,7 +202,7 @@ namespace JsonCons.Examples
 
         }
 
-        public static void SelectWithAndWithoutDuplicates()
+        public static void SelectWithAndWithoutDuplicateNodes()
         {
             string jsonString = @"
 {
@@ -281,7 +344,8 @@ namespace JsonCons.Examples
         public static void Main(string[] args)
         {
             StoreExample();
-            SelectWithAndWithoutDuplicates();
+            UsingFunctionsInFilters();
+            SelectWithAndWithoutDuplicateNodes();
             UsingTheParentOperator();
         }
     }
