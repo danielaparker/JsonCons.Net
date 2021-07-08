@@ -57,7 +57,7 @@ namespace JsonCons.JsonPathLib.Tests
                         JsonElement expected;
                         if (testCase.TryGetProperty("error", out expected))
                         {
-                            //Assert.Throws<JsonException>(() => JsonPathExpression.Compile(exprElement.ToString()));
+                            Assert.ThrowsException<JsonException>(() => JsonPathExpression.Compile(exprElement.ToString()));
                         }
                         else if (testCase.TryGetProperty("result", out expected))
                         {
