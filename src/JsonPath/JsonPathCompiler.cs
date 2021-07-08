@@ -101,7 +101,7 @@ namespace JsonCons.JsonPathLib
         ExpectAnd
     };
 
-    ref struct JsonPathParser 
+    ref struct JsonPathCompiler 
     {
         ReadOnlySpan<char> _span;
         int _index;
@@ -111,7 +111,7 @@ namespace JsonCons.JsonPathLib
         Stack<Token>_outputStack;
         Stack<Token>_operatorStack;
 
-        internal JsonPathParser(string input)
+        internal JsonPathCompiler(string input)
         {
             _span = input.AsSpan();
             _index = 0;
@@ -122,7 +122,7 @@ namespace JsonCons.JsonPathLib
             _operatorStack = new Stack<Token>();
         }
 
-        internal JsonPathExpression Parse()
+        internal JsonPathExpression Compile()
         {
             StaticResources resources = null;
             try

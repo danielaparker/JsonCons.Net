@@ -11,7 +11,7 @@ namespace JsonCons.JsonPathLib
 
     public sealed class PathNode
     {
-        internal PathNode Parent {get;}
+        public PathNode Parent {get;}
 
         public PathNodeKind NodeKind {get;}
 

@@ -24,8 +24,8 @@ namespace JsonCons.JsonPathLib
 
         public static JsonPathExpression Compile(string expr)
         {
-            var parser = new JsonPathParser(expr);
-            return parser.Parse();
+            var compiler = new JsonPathCompiler(expr);
+            return compiler.Compile();
         }
 
         internal JsonPathExpression(StaticResources resources, 
