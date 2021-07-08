@@ -195,7 +195,6 @@ namespace JsonCons.JsonPathLib
             return nodes;
         }
 
-        /// <inheritdoc />
         public void Dispose()
         {
             _resources.Dispose();

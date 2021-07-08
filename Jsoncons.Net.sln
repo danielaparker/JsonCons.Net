@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{D9A9E80C-57F9-4E11-A7EA-635366A3A90A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath", "src\JsonPath\JsonPath.csproj", "{6579BE90-397E-44CF-B079-B042D731EB28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPath", "src\JsonPath\JsonPath.csproj", "{6579BE90-397E-44CF-B079-B042D731EB28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath.Tests", "tests\JsonPath.Tests\JsonPath.Tests.csproj", "{40E5440D-AA1A-44C9-8CA6-9AA33DC98D81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPath.Tests", "tests\JsonPath.Tests\JsonPath.Tests.csproj", "{40E5440D-AA1A-44C9-8CA6-9AA33DC98D81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPath.Examples", "examples\JsonPath.Examples\JsonPath.Examples.csproj", "{1D033C9F-4EC1-40F9-82C0-F3E75A1C2201}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPath.Examples", "examples\JsonPath.Examples\JsonPath.Examples.csproj", "{1D033C9F-4EC1-40F9-82C0-F3E75A1C2201}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
