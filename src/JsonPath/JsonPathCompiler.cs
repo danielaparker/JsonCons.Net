@@ -43,10 +43,11 @@ namespace JsonCons.JsonPathLib
         PathStepOrRecursiveDescent,
         PathOrValueOrFunction,
         JsonText,
+        JsonTextString,
+        JsonStringValue,
         Function,
         FunctionName,
         JsonElement,
-        JsonStringValue,
         AppendDoubleQuote,
         IdentifierOrFunctionExpr,
         NameOrLeftBracket,
@@ -1407,8 +1408,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             case '\"':
-                                _stateStack.Push(JsonPathState.AppendDoubleQuote);
-                                _stateStack.Push(JsonPathState.DoubleQuotedString);
+                                _stateStack.Push(JsonPathState.JsonTextString);
                                 buffer.Append(_span[_index]);
                                 ++_index;
                                 ++_column;
@@ -1427,6 +1427,34 @@ namespace JsonCons.JsonPathLib
                         }
                         break;
                     }
+                    case JsonPathState.JsonTextString: 
+                        switch (_span[_index])
+                        {
+                            case '\\':
+                                buffer.Append(_span[_index]);
+                                ++_index;
+                                ++_column;
+                                if (_index == _span.Length)
+                                {
+                                    throw new JsonException("Unexpected end of input");
+                                }
+                                buffer.Append(_span[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                            case '\"':
+                                buffer.Append(_span[_index]);
+                                _stateStack.Pop(); 
+                                ++_index;
+                                ++_column;
+                                break;
+                            default:
+                                buffer.Append(_span[_index]);
+                                ++_index;
+                                ++_column;
+                                break;
+                        };
+                        break;
                     case JsonPathState.JsonElement:
                     {
                         PushToken(new Token(new JsonElementJsonValue(resources.CreateJsonElement(buffer.ToString()))));
