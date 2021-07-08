@@ -178,9 +178,6 @@ namespace JsonCons.JsonPathLib
                     }
                     case JsonPathTokenKind.Expression:
                     {
-                        //Debug.Assert(stack.Count >= 1);
-                        //IJsonValue val = stack.Peek();
-                        //stack.Pop();
                         IJsonValue value;
                         if (!token.GetExpression().TryEvaluate(resources, root, current, options, out value))
                         {

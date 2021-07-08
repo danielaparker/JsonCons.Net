@@ -101,7 +101,7 @@ namespace JsonCons.JsonPathLib
                         }
                     }
                     result = JsonConstants.False;
-                    return false;
+                    return true;
                 case JsonValueKind.String:
                 {
                     if (arg1.ValueKind != JsonValueKind.String)
@@ -119,7 +119,7 @@ namespace JsonCons.JsonPathLib
                     else
                     {
                         result = JsonConstants.False;
-                        return false;
+                        return true;
                     }
                 }
                 default:

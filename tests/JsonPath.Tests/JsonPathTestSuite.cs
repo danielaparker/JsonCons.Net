@@ -10,21 +10,9 @@ namespace JsonCons.JsonPathLib.Tests
     [TestClass]
     public class JsonPathTests
     {
-        private TestContext testContextInstance;
-
-        /// <summary>
-        /// Gets or sets the test context which provides
-        /// information about and functionality for the current test run.
-        /// </summary>
-        public TestContext TestContext
-        {
-            get { return testContextInstance; }
-            set { testContextInstance = value; }
-        }
         public void RunJsonPathTests(string path)
         {
-
-            TestContext.WriteLine($"Test {path}");
+            Debug.WriteLine($"Test {path}");
             string text = System.IO.File.ReadAllText(path);
             var jsonOptions = new JsonDocumentOptions();
             jsonOptions.CommentHandling = JsonCommentHandling.Skip; 
@@ -86,23 +74,23 @@ namespace JsonCons.JsonPathLib.Tests
                             }
                             if (!success)
                             {
-                                TestContext.WriteLine("File: {0}", path);
-                                TestContext.WriteLine(comment);
-                                TestContext.WriteLine("Document: " + given.ToString());
-                                TestContext.WriteLine("Path: " + exprElement.ToString());
+                                Debug.WriteLine("File: {0}", path);
+                                Debug.WriteLine(comment);
+                                Debug.WriteLine("Document: " + given.ToString());
+                                Debug.WriteLine("Path: " + exprElement.ToString());
                                 if ((options & ResultOptions.NoDups) != 0)
                                 {
-                                    TestContext.WriteLine("nodups");
+                                    Debug.WriteLine("nodups");
                                 }
                                 if ((options & ResultOptions.Sort) != 0)
                                 {
-                                    TestContext.WriteLine("sort");
+                                    Debug.WriteLine("sort");
                                 }
-                                TestContext.WriteLine("Expected: " + expected.ToString());
-                                TestContext.WriteLine("Results: ");
+                                Debug.WriteLine("Expected: " + expected.ToString());
+                                Debug.WriteLine("Results: ");
                                 foreach (var item in items)
                                 {
-                                    TestContext.WriteLine(item.ToString());
+                                    Debug.WriteLine(item.ToString());
                                 }
                             }
                             Assert.AreEqual(expected.GetArrayLength(),items.Count);
@@ -115,9 +103,9 @@ namespace JsonCons.JsonPathLib.Tests
                     }
                     catch (Exception e)
                     {
-                        TestContext.WriteLine("File: {0}", path);
-                        TestContext.WriteLine(comment);
-                        TestContext.WriteLine("Error: {0}", e.Message);
+                        Debug.WriteLine("File: {0}", path);
+                        Debug.WriteLine(comment);
+                        Debug.WriteLine("Error: {0}", e.Message);
                         throw e;
                     }
                 }
@@ -132,7 +120,7 @@ namespace JsonCons.JsonPathLib.Tests
             {
                 RunJsonPathTests(@".\TestFiles\dot-notation.json");
                 RunJsonPathTests(@".\TestFiles\filters.json");
-                //RunJsonPathTests(@".\TestFiles\functions.json");              
+                RunJsonPathTests(@".\TestFiles\functions.json");              
                 RunJsonPathTests(@".\TestFiles\identifiers.json");
                 RunJsonPathTests(@".\TestFiles\indices.json");
                 RunJsonPathTests(@".\TestFiles\regex.json");
@@ -146,7 +134,7 @@ namespace JsonCons.JsonPathLib.Tests
             }
             catch (Exception e)
             {
-                TestContext.WriteLine("Error: {0}", e.Message);
+                Debug.WriteLine("Error: {0}", e.Message);
                 throw e;
             }
         }

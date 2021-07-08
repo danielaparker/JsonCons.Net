@@ -49,7 +49,7 @@ namespace JsonCons.JsonPathLib
                }
 
                case JsonValueKind.String:
-                   return lhs.GetString() == rhs.GetString(); 
+                   return lhs.GetString().Equals(rhs.GetString()); 
 
                case JsonValueKind.Array:
                    return lhs.EnumerateArray().SequenceEqual(rhs.EnumerateArray(), this);
