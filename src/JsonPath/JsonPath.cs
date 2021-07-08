@@ -10,19 +10,19 @@ namespace JsonCons.JsonPathLib
 {
     sealed class DynamicResources 
     {
-        Dictionary<Int32,IJsonValue> _cache = new Dictionary<Int32,IJsonValue>();
+        Dictionary<Int32,IOperand> _cache = new Dictionary<Int32,IOperand>();
 
         internal bool IsCached(Int32 id)
         {
             return _cache.ContainsKey(id);
         }
 
-        internal void AddToCache(Int32 id, IJsonValue value) 
+        internal void AddToCache(Int32 id, IOperand value) 
         {
             _cache.Add(id, value);
         }
 
-        internal bool TryRetrieveFromCache(Int32 id, out IJsonValue result) 
+        internal bool TryRetrieveFromCache(Int32 id, out IOperand result) 
         {
             return _cache.TryGetValue(id, out result);
         }

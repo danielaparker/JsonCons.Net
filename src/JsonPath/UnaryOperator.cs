@@ -13,7 +13,7 @@ namespace JsonCons.JsonPathLib
     {
         int PrecedenceLevel {get;}
         bool IsRightAssociative {get;}
-        bool TryEvaluate(IJsonValue elem, out IJsonValue result);
+        bool TryEvaluate(IOperand elem, out IOperand result);
     };
 
     abstract class UnaryOperator : IUnaryOperator
@@ -29,7 +29,7 @@ namespace JsonCons.JsonPathLib
 
         public bool IsRightAssociative {get;} 
 
-        public abstract bool TryEvaluate(IJsonValue elem, out IJsonValue result);
+        public abstract bool TryEvaluate(IOperand elem, out IOperand result);
     };
 
     sealed class NotOperator : UnaryOperator
@@ -40,7 +40,7 @@ namespace JsonCons.JsonPathLib
             : base(1, true)
         {}
 
-        public override bool TryEvaluate(IJsonValue val, out IJsonValue result)
+        public override bool TryEvaluate(IOperand val, out IOperand result)
         {
             result = Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
             return true;
@@ -60,7 +60,7 @@ namespace JsonCons.JsonPathLib
             : base(1, true)
         {}
 
-        public override bool TryEvaluate(IJsonValue val, out IJsonValue result)
+        public override bool TryEvaluate(IOperand val, out IOperand result)
         {
             if (!(val.ValueKind == JsonValueKind.Number))
             {
@@ -73,12 +73,12 @@ namespace JsonCons.JsonPathLib
 
             if (val.TryGetDecimal(out decVal))
             {
-                result = new DecimalJsonValue(-decVal);
+                result = new DecimalOperand(-decVal);
                 return true;
             }
             else if (val.TryGetDouble(out dblVal))
             {
-                result = new DoubleJsonValue(-dblVal);
+                result = new DoubleOperand(-dblVal);
                 return true;
             }
             else
@@ -104,7 +104,7 @@ namespace JsonCons.JsonPathLib
             _regex = regex;
         }
 
-        public override bool TryEvaluate(IJsonValue val, out IJsonValue result)
+        public override bool TryEvaluate(IOperand val, out IOperand result)
         {
             if (!(val.ValueKind == JsonValueKind.String))
             {

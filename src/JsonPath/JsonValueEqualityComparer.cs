@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-   public sealed class JsonValueEqualityComparer : IEqualityComparer<IJsonValue>
+   public sealed class JsonValueEqualityComparer : IEqualityComparer<IOperand>
    {
        public static JsonValueEqualityComparer Instance { get; } = new JsonValueEqualityComparer();
 
@@ -15,7 +15,7 @@ namespace JsonCons.JsonPathLib
 
        JsonValueEqualityComparer() {}
 
-       public bool Equals(IJsonValue lhs, IJsonValue rhs)
+       public bool Equals(IOperand lhs, IOperand rhs)
        {
            if (lhs.ValueKind != rhs.ValueKind)
                return false;
@@ -56,7 +56,7 @@ namespace JsonCons.JsonPathLib
 
                case JsonValueKind.Object:
                {
-                   // OrderBy performs a stable sort (Note that IJsonValue supports duplicate property names)
+                   // OrderBy performs a stable sort (Note that IOperand supports duplicate property names)
                    var enumerator1 = lhs.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
                    var enumerator2 = rhs.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
 
@@ -84,12 +84,12 @@ namespace JsonCons.JsonPathLib
            }
        }
 
-       public int GetHashCode(IJsonValue obj)
+       public int GetHashCode(IOperand obj)
        {
            return ComputeHashCode(obj, 0);
        }
 
-       int ComputeHashCode(IJsonValue element, int depth)
+       int ComputeHashCode(IOperand element, int depth)
        {
            int hashCode = element.ValueKind.GetHashCode();
 

@@ -53,9 +53,9 @@ namespace JsonCons.JsonPathLib
                 var nodes = new List<JsonPathNode>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
                 _selector.Select(resources, 
-                                 new JsonElementJsonValue(root), 
+                                 new JsonElementOperand(root), 
                                  pathStem, 
-                                 new JsonElementJsonValue(root), 
+                                 new JsonElementOperand(root), 
                                  accumulator, 
                                  options);
 
@@ -97,9 +97,9 @@ namespace JsonCons.JsonPathLib
             {
                 INodeAccumulator accumulator = new JsonElementAccumulator(values);            
                 _selector.Select(resources, 
-                                 new JsonElementJsonValue(root), 
+                                 new JsonElementOperand(root), 
                                  pathStem, 
-                                 new JsonElementJsonValue(root), 
+                                 new JsonElementOperand(root), 
                                  accumulator, 
                                  options);
             }
@@ -117,9 +117,9 @@ namespace JsonCons.JsonPathLib
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
             _selector.Select(resources, 
-                             new JsonElementJsonValue(root), 
+                             new JsonElementOperand(root), 
                              pathStem, 
-                             new JsonElementJsonValue(root), 
+                             new JsonElementOperand(root), 
                              accumulator, 
                              options | ResultOptions.Path);
 
@@ -161,9 +161,9 @@ namespace JsonCons.JsonPathLib
             var nodes = new List<JsonPathNode>();
             var accumulator = new NodeAccumulator(nodes);
             _selector.Select(resources, 
-                             new JsonElementJsonValue(root), 
+                             new JsonElementOperand(root), 
                              pathStem, 
-                             new JsonElementJsonValue(root), 
+                             new JsonElementOperand(root), 
                              accumulator, 
                              options | ResultOptions.Path);
 

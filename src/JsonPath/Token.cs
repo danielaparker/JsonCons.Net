@@ -72,7 +72,7 @@ namespace JsonCons.JsonPathLib
             _expr = expr;
         }
 
-        internal Token(IJsonValue expr)
+        internal Token(IOperand expr)
         {
             _type = JsonPathTokenKind.Value;
             _expr = expr;
@@ -135,10 +135,10 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        internal IJsonValue GetValue()
+        internal IOperand GetValue()
         {
             Debug.Assert(_type == JsonPathTokenKind.Value);
-            return (IJsonValue)_expr;
+            return (IOperand)_expr;
         }
 
         internal ISelector GetSelector()
