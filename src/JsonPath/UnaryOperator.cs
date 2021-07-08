@@ -32,7 +32,7 @@ namespace JsonCons.JsonPathLib
         public abstract bool TryEvaluate(IJsonValue elem, out IJsonValue result);
     };
 
-    class NotOperator : UnaryOperator
+    sealed class NotOperator : UnaryOperator
     {
         internal static NotOperator Instance { get; } = new NotOperator();
 
@@ -52,7 +52,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class UnaryMinusOperator : UnaryOperator
+    sealed class UnaryMinusOperator : UnaryOperator
     {
         internal static UnaryMinusOperator Instance { get; } = new UnaryMinusOperator();
 
@@ -94,7 +94,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class RegexOperator : UnaryOperator
+    sealed class RegexOperator : UnaryOperator
     {
         Regex _regex;
 

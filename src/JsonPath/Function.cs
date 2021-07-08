@@ -27,7 +27,7 @@ namespace JsonCons.JsonPathLib
         public abstract bool TryEvaluate(IList<IJsonValue> parameters, out IJsonValue element);
     };  
 
-    class AbsFunction : BaseFunction
+    sealed class AbsFunction : BaseFunction
     {
         internal AbsFunction()
             : base(1)
@@ -69,7 +69,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class ContainsFunction : BaseFunction
+    sealed class ContainsFunction : BaseFunction
     {
         internal ContainsFunction()
             : base(2)
@@ -136,7 +136,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class EndsWithFunction : BaseFunction
+    sealed class EndsWithFunction : BaseFunction
     {
         internal EndsWithFunction()
             : base(2)
@@ -180,7 +180,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class StartsWithFunction : BaseFunction
+    sealed class StartsWithFunction : BaseFunction
     {
         internal StartsWithFunction()
             : base(2)
@@ -223,7 +223,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class SumFunction : BaseFunction
+    sealed class SumFunction : BaseFunction
     {
         internal static SumFunction Instance { get; } = new SumFunction();
 
@@ -296,7 +296,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class ProdFunction : BaseFunction
+    sealed class ProdFunction : BaseFunction
     {
         internal ProdFunction()
             : base(1)
@@ -348,7 +348,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class AvgFunction : BaseFunction
+    sealed class AvgFunction : BaseFunction
     {
         internal AvgFunction()
             : base(1)
@@ -402,7 +402,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class TokenizeFunction : BaseFunction
+    sealed class TokenizeFunction : BaseFunction
     {
         internal TokenizeFunction()
             : base(2)
@@ -443,7 +443,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class CeilFunction : BaseFunction
+    sealed class CeilFunction : BaseFunction
     {
         internal CeilFunction()
             : base(1)
@@ -491,7 +491,7 @@ namespace JsonCons.JsonPathLib
         }
     };
     
-    class FloorFunction : BaseFunction
+    sealed class FloorFunction : BaseFunction
     {
         internal FloorFunction()
             : base(1)
@@ -539,7 +539,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class ToNumberFunction : BaseFunction
+    sealed class ToNumberFunction : BaseFunction
     {
         internal ToNumberFunction()
             : base(1)
@@ -593,7 +593,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class MinFunction : BaseFunction
+    sealed class MinFunction : BaseFunction
     {
         internal MinFunction()
             : base(1)
@@ -658,7 +658,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class MaxFunction : BaseFunction
+    sealed class MaxFunction : BaseFunction
     {
         internal MaxFunction()
             : base(1)
@@ -723,7 +723,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class LengthFunction : BaseFunction
+    sealed class LengthFunction : BaseFunction
     {
         internal LengthFunction()
             : base(1)
@@ -775,7 +775,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class KeysFunction : BaseFunction
+    sealed class KeysFunction : BaseFunction
     {
         internal KeysFunction()
             : base(1)
@@ -813,11 +813,11 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class BuiltInFunctions 
+    sealed class BuiltInFunctions 
     {
         internal static BuiltInFunctions Instance {get;} = new BuiltInFunctions();
 
-        Dictionary<string,IFunction> _functions = new Dictionary<string, IFunction>(); 
+        readonly Dictionary<string,IFunction> _functions = new Dictionary<string, IFunction>(); 
 
         internal BuiltInFunctions()
         {

@@ -215,7 +215,6 @@ namespace JsonCons.JsonPathLib
                                 break;
                             default:
                             {
-                                //TestContext.WriteLine("PathRhs DEFAULT");
                                 _stateStack.Pop();
                                 break;
                             }
@@ -1831,8 +1830,6 @@ namespace JsonCons.JsonPathLib
             }
             Token token = _outputStack.Pop();
 
-            //TestContext.WriteLine($"Main token: {token}");
-
             return new JsonPathExpression(resources, token.GetSelector(), pathsRequired);
         }
 
@@ -1851,19 +1848,6 @@ namespace JsonCons.JsonPathLib
 
         private void PushToken(Token token)
         {
-            //TestContext.WriteLine($"Token {token}");
-            //TestContext.WriteLine("OutputStack:");
-            //foreach (var item in _outputStack)
-            //{
-            //    TestContext.WriteLine($"    {item}");
-            //}
-            //TestContext.WriteLine("OperatorStack:");
-            //foreach (var item in _operatorStack)
-            //{
-            //   TestContext.WriteLine($"    {item}");
-            //}
-            //TestContext.WriteLine("---");
-
             switch (token.TokenKind)
             {
                 case JsonPathTokenKind.BeginFilter:

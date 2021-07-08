@@ -157,9 +157,9 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class RootSelector : BaseSelector
+    sealed class RootSelector : BaseSelector
     {
-        Int32 _id;
+        readonly Int32 _id;
 
         internal RootSelector(Int32 id)
         {
@@ -209,7 +209,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class CurrentNodeSelector : BaseSelector
+    sealed class CurrentNodeSelector : BaseSelector
     {
         public override void Select(DynamicResources resources, 
                                     IJsonValue root, 
@@ -240,9 +240,9 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class ParentNodeSelector : BaseSelector
+    sealed class ParentNodeSelector : BaseSelector
     {
-        int _ancestorDepth;
+        readonly int _ancestorDepth;
 
         internal ParentNodeSelector(int ancestorDepth)
         {
@@ -316,9 +316,9 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class IdentifierSelector : BaseSelector
+    sealed class IdentifierSelector : BaseSelector
     {
-        string _identifier;
+        readonly string _identifier;
 
         internal IdentifierSelector(string identifier)
         {
@@ -389,9 +389,9 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class IndexSelector : BaseSelector
+    sealed class IndexSelector : BaseSelector
     {
-        Int32 _index;
+        readonly Int32 _index;
 
         internal IndexSelector(Int32 index)
         {
@@ -469,9 +469,9 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class SliceSelector : BaseSelector
+    sealed class SliceSelector : BaseSelector
     {
-        Slice _slice;
+        readonly Slice _slice;
 
         internal SliceSelector(Slice slice)
         {
@@ -556,7 +556,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class RecursiveDescentSelector : BaseSelector
+    sealed class RecursiveDescentSelector : BaseSelector
     {
         public override void Select(DynamicResources resources, 
                                     IJsonValue root, 
@@ -612,7 +612,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class WildcardSelector : BaseSelector
+    sealed class WildcardSelector : BaseSelector
     {
         public override void Select(DynamicResources resources, 
                                     IJsonValue root, 
@@ -666,7 +666,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class UnionSelector : ISelector
+    sealed class UnionSelector : ISelector
     {
         IList<ISelector> _selectors;
         ISelector _tail;
@@ -735,14 +735,12 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class FilterSelector : BaseSelector
+    sealed class FilterSelector : BaseSelector
     {
-        IExpression _expr;
+        readonly IExpression _expr;
 
         internal FilterSelector(IExpression expr)
         {
-            //TestContext.WriteLine("FilterSelector constructor");
-
             _expr = expr;
         }
 
@@ -753,8 +751,6 @@ namespace JsonCons.JsonPathLib
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
-            //TestContext.WriteLine("FilterSelector");
-
             if (current.ValueKind == JsonValueKind.Array)
             {
                 Int32 index = 0;
@@ -764,7 +760,6 @@ namespace JsonCons.JsonPathLib
                     if (_expr.TryEvaluate(resources, root, item, options, out val) 
                         && Expression.IsTrue(val)) 
                     {
-                        //TestContext.WriteLine("Select check");
                         this.TailSelect(resources, root, 
                                         PathGenerator.Generate(pathStem, index, options), 
                                         item, accumulator, options);

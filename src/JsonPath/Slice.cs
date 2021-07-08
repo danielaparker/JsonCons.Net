@@ -7,10 +7,10 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-    struct Slice
+    readonly struct Slice
     {
-        Int32? _start;
-        Int32? _stop;
+        readonly Int32? _start;
+        readonly Int32? _stop;
 
         public Int32 Step {get;}
 

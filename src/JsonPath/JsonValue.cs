@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-    public struct NameValuePair
+    public readonly struct NameValuePair
     {
         public string Name { get; }
         public IJsonValue Value { get; }
@@ -43,7 +43,7 @@ namespace JsonCons.JsonPathLib
         JsonElement GetJsonElement();
     };
 
-    public struct JsonElementJsonValue : IJsonValue
+    public readonly struct JsonElementJsonValue : IJsonValue
     {
         public class ArrayEnumerator : IJsonArrayEnumerator
         {
@@ -123,7 +123,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        private JsonElement _element;
+        private readonly JsonElement _element;
 
         internal JsonElementJsonValue(JsonElement element)
         {
@@ -180,9 +180,9 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    struct DoubleJsonValue : IJsonValue
+    readonly struct DoubleJsonValue : IJsonValue
     {
-        private double _value;
+        private readonly double _value;
 
         internal DoubleJsonValue(double value)
         {
@@ -246,9 +246,9 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    struct DecimalJsonValue : IJsonValue
+    readonly struct DecimalJsonValue : IJsonValue
     {
-        private Decimal _value;
+        private readonly Decimal _value;
 
         internal DecimalJsonValue(Decimal value)
         {
@@ -304,9 +304,9 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    struct StringJsonValue : IJsonValue
+    readonly struct StringJsonValue : IJsonValue
     {
-        private string _value;
+        private readonly string _value;
 
         internal StringJsonValue(string value)
         {
@@ -360,7 +360,7 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    struct TrueJsonValue : IJsonValue
+    readonly struct TrueJsonValue : IJsonValue
     {
         public JsonValueKind ValueKind {get{return JsonValueKind.True;}}
 
@@ -406,7 +406,7 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    struct FalseJsonValue : IJsonValue
+    readonly struct FalseJsonValue : IJsonValue
     {
         public JsonValueKind ValueKind {get{return JsonValueKind.False;}}
 
@@ -452,7 +452,7 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    struct NullJsonValue : IJsonValue
+    readonly struct NullJsonValue : IJsonValue
     {
         public JsonValueKind ValueKind {get{return JsonValueKind.Null;}}
 
@@ -498,7 +498,7 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    struct ArrayJsonValue : IJsonValue
+    readonly struct ArrayJsonValue : IJsonValue
     {
         public class ArrayEnumerator : IJsonArrayEnumerator
         {   
@@ -541,7 +541,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        private IList<IJsonValue> _value;
+        private readonly IList<IJsonValue> _value;
 
         internal ArrayJsonValue(IList<IJsonValue> value)
         {

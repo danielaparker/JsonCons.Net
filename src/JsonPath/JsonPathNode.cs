@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-    public struct JsonPathNode : IEquatable<JsonPathNode>, IComparable<JsonPathNode>
+    public readonly struct JsonPathNode : IEquatable<JsonPathNode>, IComparable<JsonPathNode>
     {
         public NormalizedPath Path {get;}
         public JsonElement Value {get;}
@@ -39,7 +39,7 @@ namespace JsonCons.JsonPathLib
         void AddNode(PathNode pathStem, IJsonValue value);
     };
 
-    class JsonElementAccumulator : INodeAccumulator
+    sealed class JsonElementAccumulator : INodeAccumulator
     {
         IList<JsonElement> _values;
 
@@ -54,7 +54,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class ValueAccumulator : INodeAccumulator
+    sealed class ValueAccumulator : INodeAccumulator
     {
         IList<IJsonValue> _values;
 
@@ -69,7 +69,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class PathAccumulator : INodeAccumulator
+    sealed class PathAccumulator : INodeAccumulator
     {
         IList<NormalizedPath> _values;
 
@@ -84,7 +84,7 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    class NodeAccumulator : INodeAccumulator
+    sealed class NodeAccumulator : INodeAccumulator
     {
         IList<JsonPathNode> _nodes;
 

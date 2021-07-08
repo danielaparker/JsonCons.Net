@@ -31,7 +31,7 @@ namespace JsonCons.JsonPathLib
         public abstract bool TryEvaluate(IJsonValue lhs, IJsonValue rhs, out IJsonValue result);
     };
 
-    class OrOperator : BinaryOperator
+    sealed class OrOperator : BinaryOperator
     {
         internal static OrOperator Instance { get; } = new OrOperator();
 
@@ -63,7 +63,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class AndOperator : BinaryOperator
+    sealed class AndOperator : BinaryOperator
     {
         internal static AndOperator Instance { get; } = new AndOperator();
 
@@ -91,7 +91,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class EqOperator : BinaryOperator
+    sealed class EqOperator : BinaryOperator
     {
         internal static EqOperator Instance { get; } = new EqOperator();
 
@@ -120,7 +120,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class NeOperator : BinaryOperator
+    sealed class NeOperator : BinaryOperator
     {
         internal static NeOperator Instance { get; } = new NeOperator();
 
@@ -155,7 +155,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class LtOperator : BinaryOperator
+    sealed class LtOperator : BinaryOperator
     {
         internal static LtOperator Instance { get; } = new LtOperator();
 
@@ -202,7 +202,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class LteOperator : BinaryOperator
+    sealed class LteOperator : BinaryOperator
     {
         internal static LteOperator Instance { get; } = new LteOperator();
 
@@ -250,7 +250,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class GtOperator : BinaryOperator
+    sealed class GtOperator : BinaryOperator
     {
         internal static GtOperator Instance { get; } = new GtOperator();
 
@@ -297,7 +297,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class GteOperator : BinaryOperator
+    sealed class GteOperator : BinaryOperator
     {
         internal static GteOperator Instance { get; } = new GteOperator();
 
@@ -344,7 +344,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class PlusOperator : BinaryOperator
+    sealed class PlusOperator : BinaryOperator
     {
         internal static PlusOperator Instance { get; } = new PlusOperator();
 
@@ -391,7 +391,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class MinusOperator : BinaryOperator
+    sealed class MinusOperator : BinaryOperator
     {
         internal static MinusOperator Instance { get; } = new MinusOperator();
 
@@ -438,7 +438,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class MultOperator : BinaryOperator
+    sealed class MultOperator : BinaryOperator
     {
         internal static MultOperator Instance { get; } = new MultOperator();
 
@@ -485,7 +485,7 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    class DivOperator : BinaryOperator
+    sealed class DivOperator : BinaryOperator
     {
         internal static DivOperator Instance { get; } = new DivOperator();
 
@@ -543,7 +543,7 @@ namespace JsonCons.JsonPathLib
     };
 
 
-    class ModulusOperator : BinaryOperator
+    sealed class ModulusOperator : BinaryOperator
     {
         internal static ModulusOperator Instance { get; } = new ModulusOperator();
 

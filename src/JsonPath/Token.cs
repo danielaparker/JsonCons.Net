@@ -31,10 +31,10 @@ namespace JsonCons.JsonPathLib
         BinaryOperator
     };
 
-    struct Token : IEquatable<Token>
+    readonly struct Token : IEquatable<Token>
     {
-        JsonPathTokenKind _type;
-        object _expr;
+        readonly JsonPathTokenKind _type;
+        readonly object _expr;
 
         internal Token(JsonPathTokenKind type)
         {

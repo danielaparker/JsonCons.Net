@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-   public class JsonValueEqualityComparer : IEqualityComparer<IJsonValue>
+   public sealed class JsonValueEqualityComparer : IEqualityComparer<IJsonValue>
    {
        public static JsonValueEqualityComparer Instance { get; } = new JsonValueEqualityComparer();
 

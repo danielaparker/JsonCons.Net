@@ -17,11 +17,10 @@ namespace JsonCons.JsonPathLib
                           out IJsonValue value);
     }
 
-    class Expression : IExpression
+    sealed class Expression : IExpression
     {
         internal static bool IsFalse(IJsonValue val)
         {
-            //TestContext.WriteLine($"IsFalse {val}");
             var comparer = JsonValueEqualityComparer.Instance;
             switch (val.ValueKind)
             {
@@ -62,12 +61,6 @@ namespace JsonCons.JsonPathLib
         internal Expression(IReadOnlyList<Token> tokens)
         {
             _tokens = tokens;
-
-            /*TestContext.WriteLine("Expression constructor");
-            foreach (var token in _tokens)
-            {
-                TestContext.WriteLine($"    {token}");
-            }*/
         }
 
         public  bool TryEvaluate(DynamicResources resources,
@@ -78,16 +71,6 @@ namespace JsonCons.JsonPathLib
         {
             Stack<IJsonValue> stack = new Stack<IJsonValue>();
             IList<IJsonValue> argStack = new List<IJsonValue>();
-
-            /*
-            TestContext.WriteLine("");
-            TestContext.WriteLine("Expression tokens:");
-            foreach (var item in _tokens)
-            {
-                TestContext.WriteLine($"    {item}");
-            }
-            TestContext.WriteLine("");
-            */
 
             foreach (var token in _tokens)
             {

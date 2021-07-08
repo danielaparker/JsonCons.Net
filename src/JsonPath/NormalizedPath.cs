@@ -9,7 +9,7 @@ namespace JsonCons.JsonPathLib
 {
     public enum PathNodeKind {Root,Name,Index};
 
-    public class PathNode
+    public sealed class PathNode
     {
         public PathNode Parent {get;}
 
@@ -17,6 +17,7 @@ namespace JsonCons.JsonPathLib
 
         private readonly string _name;
         private readonly Int32 _index;
+
         public PathNode(string name)
         {
             Parent = null;
@@ -88,9 +89,9 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    public class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>, IEnumerable<PathNode>
+    public sealed class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>, IEnumerable<PathNode>
     {
-        IReadOnlyList<PathNode> _nodes;
+        readonly IReadOnlyList<PathNode> _nodes;
 
         public NormalizedPath(PathNode node)
         {
