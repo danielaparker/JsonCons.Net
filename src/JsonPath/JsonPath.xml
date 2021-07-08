@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JsonPath</name>
+    </assembly>
+    <members>
+        <member name="T:JsonCons.JsonPathLib.JsonPathExpression">
+            <summary>
+              Represents the compiled form of a JsonPath expression.
+            </summary>
+            <remarks>
+              A JsonPathExpression object may own references to some <see cref="T:System.Text.Json.JsonDocument"/> objects. 
+              It should be disposed to ensure that these objects are properly disposed.
+            </remarks>
+        </member>
+    </members>
+</doc>
