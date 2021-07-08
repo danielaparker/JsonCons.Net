@@ -45,12 +45,8 @@ namespace JsonCons.Examples
 }
             ";
 
-            JsonDocument doc = null;
-
-            try
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
             {
-                doc = JsonDocument.Parse(jsonString);
-
                 Console.WriteLine(@"(1) The authors of all books in the store");
                 IList<JsonElement> values1 = JsonPath.Select(doc.RootElement, "$.store.book[*].author");
                 foreach (var value in values1)
@@ -131,12 +127,6 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
             }
-            finally
-            {
-                if (!Object.ReferenceEquals(null, doc)) 
-                    doc.Dispose();
-            }
-
         }
 
         public static void UsingFunctionsInFilters()
@@ -172,12 +162,8 @@ namespace JsonCons.Examples
 }
             ";
 
-            JsonDocument doc = null;
-
-            try
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
             {
-                doc = JsonDocument.Parse(jsonString);
-
                 Console.WriteLine("(1) All books whose author's last name is 'Tolkien'");
                 IList<JsonElement> values1 = JsonPath.Select(doc.RootElement, @"$.books[?(tokenize(@.author,'\\s+')[-1] == 'Tolkien')]");
                 foreach (var value in values1)
@@ -202,12 +188,6 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
             }
-            finally
-            {
-                if (!Object.ReferenceEquals(null, doc)) 
-                    doc.Dispose();
-            }
-
         }
 
         public static void SelectWithAndWithoutDuplicateNodes()
@@ -331,7 +311,7 @@ namespace JsonCons.Examples
                 doc = JsonDocument.Parse(jsonString);
                 path = JsonPathExpression.Compile("$[*].reviews[?(@.rating == 5)]^^");
 
-                Console.WriteLine("Select grandparent node");
+                Console.WriteLine("Select grandparent nodes");
                 IList<JsonElement> values = JsonPath.Select(doc.RootElement, path);
                 foreach (var value in values)
                 {
