@@ -51,7 +51,7 @@ namespace JsonCons.Examples
             {
                 doc = JsonDocument.Parse(jsonString);
 
-                Console.WriteLine("(1) The authors of all books in the store");
+                Console.WriteLine(@"(1) The authors of all books in the store");
                 IList<JsonElement> values1 = JsonPath.Select(doc.RootElement, "$.store.book[*].author");
                 foreach (var value in values1)
                 {
@@ -59,7 +59,7 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
 
-                Console.WriteLine("(2) All authors");
+                Console.WriteLine(@"(2) All authors");
                 IList<JsonElement> values2 = JsonPath.Select(doc.RootElement, "$..author");
                 foreach (var value in values2)
                 {
@@ -67,7 +67,7 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
 
-                Console.WriteLine("(3) All things in store, which are some books and a red bicycle");
+                Console.WriteLine(@"(3) All things in store, which are some books and a red bicycle");
                 IList<JsonElement> values3 = JsonPath.Select(doc.RootElement, "$.store.*");
                 foreach (var value in values3)
                 {
@@ -75,7 +75,7 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
 
-                Console.WriteLine("(4) The price of everything in the store.");
+                Console.WriteLine(@"(4) The price of everything in the store.");
                 IList<JsonElement> values4 = JsonPath.Select(doc.RootElement, "$.store..price");
                 foreach (var value in values4)
                 {
@@ -83,7 +83,7 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
 
-                Console.WriteLine("(5) The third book");
+                Console.WriteLine(@"(5) The third book");
                 IList<JsonElement> values5 = JsonPath.Select(doc.RootElement, "$..book[2]");
                 foreach (var value in values5)
                 {
@@ -91,7 +91,7 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
 
-                Console.WriteLine("(6) The last book");
+                Console.WriteLine(@"(6) The last book");
                 IList<JsonElement> values6 = JsonPath.Select(doc.RootElement, "$..book[-1]");
                 foreach (var value in values6)
                 {
@@ -99,7 +99,7 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
 
-                Console.WriteLine("(7) The first two books");
+                Console.WriteLine(@"(7) The first two books");
                 IList<JsonElement> values7 = JsonPath.Select(doc.RootElement, "$..book[:2]");
                 foreach (var value in values7)
                 {
@@ -107,7 +107,7 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
 
-                Console.WriteLine("(8) Filter all books with isbn number");
+                Console.WriteLine(@"(8) Filter all books with isbn number");
                 IList<JsonElement> values8 = JsonPath.Select(doc.RootElement, "$..book[?(@.isbn)]");
                 foreach (var value in values8)
                 {
@@ -115,9 +115,17 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
 
-                Console.WriteLine("(9) Filter all books cheaper than 10");
+                Console.WriteLine(@"(9) Filter all books cheaper than 10");
                 IList<JsonElement> values9 = JsonPath.Select(doc.RootElement, "$..book[?(@.price<10)]");
                 foreach (var value in values9)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine(@"(10) All books with authors that match ""evelyn"" (ignore case)");
+                IList<JsonElement> values10 = JsonPath.Select(doc.RootElement, "$..book[?(@.author =~ /evelyn.*?/i)]");
+                foreach (var value in values10)
                 {
                     Console.WriteLine(value);
                 }
