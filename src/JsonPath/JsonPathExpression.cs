@@ -8,6 +8,14 @@ using System.Text.Json;
         
 namespace JsonCons.JsonPathLib
 {
+    /// <summary>
+    ///   Represents the compiled form of a JsonPath expression.
+    /// </summary>
+    /// <remarks>
+    ///   A JsonPathExpression object may own references to some <see cref="JsonDocument"/> objects. 
+    ///   It should be disposed to ensure that these objects are properly disposed.
+    /// </remarks>
+
     public sealed class JsonPathExpression : IDisposable
     {
         private bool _disposed = false;
@@ -15,7 +23,7 @@ namespace JsonCons.JsonPathLib
         readonly ISelector _selector;
         readonly ResultOptions _requiredOptions;
 
-        public static JsonPathExpression Parse(string expr)
+        public static JsonPathExpression Compile(string expr)
         {
             var parser = new JsonPathParser(expr);
             return parser.Parse();

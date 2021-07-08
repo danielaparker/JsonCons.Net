@@ -241,7 +241,7 @@ namespace JsonCons.Examples
             try
             {
                 doc = JsonDocument.Parse(jsonString);
-                path = JsonPathExpression.Parse("$.books[3,1,1].title");
+                path = JsonPathExpression.Compile("$.books[3,1,1].title");
 
                 Console.WriteLine("Allow duplicate nodes");
                 IReadOnlyList<JsonPathNode> nodes = JsonPath.SelectNodes(doc.RootElement, path);
@@ -321,7 +321,7 @@ namespace JsonCons.Examples
             try
             {
                 doc = JsonDocument.Parse(jsonString);
-                path = JsonPathExpression.Parse("$[*].reviews[?(@.rating == 5)]^^");
+                path = JsonPathExpression.Compile("$[*].reviews[?(@.rating == 5)]^^");
 
                 Console.WriteLine("Select grandparent node");
                 IReadOnlyList<JsonElement> values = JsonPath.Select(doc.RootElement, path);

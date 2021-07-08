@@ -30,20 +30,11 @@ namespace JsonCons.JsonPathLib
 
     public enum ResultOptions {Path=1, NoDups=Path|2, Sort=Path|4};
 
-
-    /// <summary>
-    ///   Represents a JsonPath expression.
-    /// </summary>
-    /// <remarks>
-    ///   A JsonPath object may own references to some <see cref="JsonDocument"/> objects. 
-    ///   It should be disposed to ensure that these objects are properly disposed.
-    /// </remarks>
-
     public static class JsonPath
     {
         public static IReadOnlyList<JsonElement> Select(JsonElement root, string path, ResultOptions options = 0)
         {
-            using (var expr = JsonPathExpression.Parse(path))
+            using (var expr = JsonPathExpression.Compile(path))
             {
                 return expr.Select(root, options);
             }
@@ -56,7 +47,7 @@ namespace JsonCons.JsonPathLib
 
         public static IReadOnlyList<NormalizedPath> SelectPaths(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
         {
-            using (var expr = JsonPathExpression.Parse(path))
+            using (var expr = JsonPathExpression.Compile(path))
             {
                 return expr.SelectPaths(root, options);
             }
@@ -69,7 +60,7 @@ namespace JsonCons.JsonPathLib
 
         public static IReadOnlyList<JsonPathNode> SelectNodes(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
         {
-            using (var expr = JsonPathExpression.Parse(path))
+            using (var expr = JsonPathExpression.Compile(path))
             {
                 return expr.SelectNodes(root, options);
             }
