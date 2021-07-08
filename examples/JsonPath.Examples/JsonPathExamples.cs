@@ -190,6 +190,43 @@ namespace JsonCons.Examples
             }
         }
 
+        public static void UnionOfSeparateJsonPathExpressions()
+        {
+            string jsonString = @"
+{
+  ""firstName"": ""John"",
+  ""lastName"" : ""doe"",
+  ""age""      : 26,
+  ""address""  : {
+    ""streetAddress"": ""naist street"",
+    ""city""         : ""Nara"",
+    ""postalCode""   : ""630-0192""
+  },
+  ""phoneNumbers"": [
+    {
+      ""type""  : ""iPhone"",
+      ""number"": ""0123-4567-8888""
+    },
+    {
+      ""type""  : ""home"",
+      ""number"": ""0123-4567-8910""
+    }
+  ]
+}    
+            ";
+
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                Console.WriteLine("Union of separate JSONPath expressions");
+                IList<JsonElement> values1 = JsonPath.Select(doc.RootElement, @"$..[@.firstName,@.address.city]");
+                foreach (var value in values1)
+                {
+                    Console.WriteLine(value);
+                }
+                Console.WriteLine();
+            }
+        }
+
         public static void SelectWithAndWithoutDuplicateNodes()
         {
             string jsonString = @"
@@ -333,6 +370,7 @@ namespace JsonCons.Examples
         {
             StoreExample();
             UsingFunctionsInFilters();
+            UnionOfSeparateJsonPathExpressions();
             SelectWithAndWithoutDuplicateNodes();
             UsingTheParentOperator();
         }
