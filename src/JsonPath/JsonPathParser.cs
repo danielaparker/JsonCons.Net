@@ -9,9 +9,8 @@ using System.Text.RegularExpressions;
         
 namespace JsonCons.JsonPathLib
 {
-    class StaticResources : IDisposable
+    sealed class StaticResources : IDisposable
     {
-        private bool _disposed = false;
         IList<IDisposable> _disposables = new List<IDisposable>();
 
         internal JsonElement CreateJsonElement(string json)
@@ -23,28 +22,10 @@ namespace JsonCons.JsonPathLib
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
+            foreach (var item in _disposables)
             {
-                if (disposing)
-                {
-                    foreach (var item in _disposables)
-                    {
-                        item.Dispose();
-                    }
-                }
-                _disposed = true;
+                item.Dispose();
             }
-        }
-
-        ~StaticResources()
-        {
-            Dispose(false);
         }
     };
 

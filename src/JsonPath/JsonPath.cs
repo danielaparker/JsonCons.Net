@@ -32,7 +32,7 @@ namespace JsonCons.JsonPathLib
 
     public static class JsonPath
     {
-        public static IReadOnlyList<JsonElement> Select(JsonElement root, string path, ResultOptions options = 0)
+        public static IList<JsonElement> Select(JsonElement root, string path, ResultOptions options = 0)
         {
             using (var expr = JsonPathExpression.Compile(path))
             {
@@ -40,12 +40,12 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public static IReadOnlyList<JsonElement> Select(JsonElement root, JsonPathExpression expr, ResultOptions options = 0)
+        public static IList<JsonElement> Select(JsonElement root, JsonPathExpression expr, ResultOptions options = 0)
         {
             return expr.Select(root, options);
         }
 
-        public static IReadOnlyList<NormalizedPath> SelectPaths(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
+        public static IList<NormalizedPath> SelectPaths(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
         {
             using (var expr = JsonPathExpression.Compile(path))
             {
@@ -53,12 +53,12 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public static IReadOnlyList<NormalizedPath> SelectPaths(JsonElement root, JsonPathExpression expr, ResultOptions options = ResultOptions.Path)
+        public static IList<NormalizedPath> SelectPaths(JsonElement root, JsonPathExpression expr, ResultOptions options = ResultOptions.Path)
         {
             return expr.SelectPaths(root, options);
         }
 
-        public static IReadOnlyList<JsonPathNode> SelectNodes(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
+        public static IList<JsonPathNode> SelectNodes(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
         {
             using (var expr = JsonPathExpression.Compile(path))
             {
@@ -66,7 +66,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public static IReadOnlyList<JsonPathNode> SelectNodes(JsonElement root, JsonPathExpression expr, ResultOptions options = ResultOptions.Path)
+        public static IList<JsonPathNode> SelectNodes(JsonElement root, JsonPathExpression expr, ResultOptions options = ResultOptions.Path)
         {
             return expr.SelectNodes(root, options);
         }
