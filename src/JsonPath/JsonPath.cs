@@ -8,7 +8,7 @@ using System.Text.Json;
         
 namespace JsonCons.JsonPathLib
 {
-    class DynamicResources 
+    sealed class DynamicResources 
     {
         Dictionary<Int32,IJsonValue> _cache = new Dictionary<Int32,IJsonValue>();
 

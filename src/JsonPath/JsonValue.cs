@@ -595,22 +595,4 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    static class JsonConstants
-    {
-        static readonly IJsonValue _trueValue;
-        static readonly IJsonValue _falseValue;
-        static readonly IJsonValue _nullValue;
-
-        static JsonConstants()
-        {
-            _trueValue = new TrueJsonValue();
-            _falseValue = new FalseJsonValue();
-            _nullValue = new NullJsonValue();
-        }
-
-        internal static IJsonValue True {get {return _trueValue;}}
-        internal static IJsonValue False { get { return _falseValue; } }
-        internal static IJsonValue Null { get { return _nullValue; } }
-    }
-
 } // namespace JsonCons.JsonPathLib

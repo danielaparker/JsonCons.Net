@@ -8,6 +8,20 @@ using System.Text.Json;
         
 namespace JsonCons.JsonPathLib
 {
+    static class JsonConstants
+    {
+        static JsonConstants()
+        {
+            True = new TrueJsonValue();
+            False = new FalseJsonValue();
+            Null = new NullJsonValue();
+        }
+
+        internal static IJsonValue True {get;}
+        internal static IJsonValue False {get;}
+        internal static IJsonValue Null {get;}
+    }
+
     interface IExpression
     {
          bool TryEvaluate(DynamicResources resources,
