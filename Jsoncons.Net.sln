@@ -11,7 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPath.Tests", "tests\Jso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPath.Examples", "examples\JsonPath.Examples\JsonPath.Examples.csproj", "{1D033C9F-4EC1-40F9-82C0-F3E75A1C2201}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocFX", "DocFX\DocFX.csproj", "{7E14E931-589E-4AD6-9892-7634312B9F84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocFX", "DocFX\DocFX.csproj", "{7E14E931-589E-4AD6-9892-7634312B9F84}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6579BE90-397E-44CF-B079-B042D731EB28} = {6579BE90-397E-44CF-B079-B042D731EB28}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
