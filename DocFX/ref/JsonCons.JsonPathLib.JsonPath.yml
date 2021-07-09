@@ -122,7 +122,7 @@ items:
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
-  summary: "\nSelects values within the root value that match the JSONPath expression. \n"
+  summary: "\nSelects values within the root value that match this JSONPath expression. \n"
   example: []
   syntax:
     content: public IList<JsonElement> Select(JsonElement root, ResultOptions options = (ResultOptions)0)
@@ -135,7 +135,7 @@ items:
       description: Options for handling duplicate paths and order of results.
     return:
       type: System.Collections.Generic.IList{System.Text.Json.JsonElement}
-      description: A list of values within the root value that match the provided JSONPath expression
+      description: A list of values within the root value that match this JSONPath expression
     content.vb: Public Function Select(root As JsonElement, options As ResultOptions = CType(0, ResultOptions)) As IList(Of JsonElement)
   overload: JsonCons.JsonPathLib.JsonPath.Select*
   modifiers.csharp:
@@ -164,7 +164,7 @@ items:
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
-  summary: "\nSelects paths identifying the values within the root value that match the JSONPath expression. \n"
+  summary: "\nSelects paths identifying the values within the root value that match this JSONPath expression. \n"
   example: []
   syntax:
     content: public IList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options = ResultOptions.Path)
@@ -177,7 +177,7 @@ items:
       description: Options for handling duplicate paths and order of results.
     return:
       type: System.Collections.Generic.IList{JsonCons.JsonPathLib.NormalizedPath}
-      description: A list of <xref href="JsonCons.JsonPathLib.NormalizedPath" data-throw-if-not-resolved="false"></xref> identifying the values within the root value that match the provided JSONPath expression
+      description: A list of <xref href="JsonCons.JsonPathLib.NormalizedPath" data-throw-if-not-resolved="false"></xref> identifying the values within the root value that match this JSONPath expression
     content.vb: Public Function SelectPaths(root As JsonElement, options As ResultOptions = ResultOptions.Path) As IList(Of NormalizedPath)
   overload: JsonCons.JsonPathLib.JsonPath.SelectPaths*
   modifiers.csharp:
@@ -206,7 +206,7 @@ items:
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
-  summary: "\nSelects nodes that represent location-value pairs within the root value that match the JSONPath expression. \n"
+  summary: "\nSelects nodes that represent location-value pairs within the root value that match this JSONPath expression. \n"
   example: []
   syntax:
     content: public IList<JsonPathNode> SelectNodes(JsonElement root, ResultOptions options = ResultOptions.Path)
@@ -219,7 +219,7 @@ items:
       description: Options for handling duplicate paths and order of results.
     return:
       type: System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathNode}
-      description: "A list of <xref href=\"JsonCons.JsonPathLib.JsonPathNode\" data-throw-if-not-resolved=\"false\"></xref> representing locations-value pairs \nwithin the root value that match the provided JSONPath expression"
+      description: "A list of <xref href=\"JsonCons.JsonPathLib.JsonPathNode\" data-throw-if-not-resolved=\"false\"></xref> representing locations-value pairs \nwithin the root value that match this JSONPath expression"
     content.vb: Public Function SelectNodes(root As JsonElement, options As ResultOptions = ResultOptions.Path) As IList(Of JsonPathNode)
   overload: JsonCons.JsonPathLib.JsonPath.SelectNodes*
   modifiers.csharp:
@@ -282,7 +282,7 @@ items:
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
-  summary: "\nSelects values within the root value that match the JSONPath expression. \nThis method parses and applies the expression in one operation.\n"
+  summary: "\nSelects values within the root value that match the provided JSONPath expression. \nThis method parses and applies the expression in one operation.\n"
   example: []
   syntax:
     content: public static IList<JsonElement> Select(JsonElement root, string pathStr, ResultOptions options = (ResultOptions)0)
