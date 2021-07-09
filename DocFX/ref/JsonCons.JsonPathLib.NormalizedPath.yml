@@ -26,7 +26,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: NormalizedPath
     path: ../src/JsonPath/NormalizedPath.cs
@@ -38,6 +38,7 @@ items:
     content: 'public sealed class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>, IEnumerable<PathNode>, IEnumerable'
     content.vb: >-
       Public NotInheritable Class NormalizedPath
+
           Implements IEquatable(Of NormalizedPath), IComparable(Of NormalizedPath), IEnumerable(Of PathNode), IEnumerable
   inheritance:
   - System.Object
@@ -73,7 +74,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: .ctor
     path: ../src/JsonPath/NormalizedPath.cs
@@ -106,7 +107,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Root
     path: ../src/JsonPath/NormalizedPath.cs
@@ -141,7 +142,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Stem
     path: ../src/JsonPath/NormalizedPath.cs
@@ -176,7 +177,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetEnumerator
     path: ../src/JsonPath/NormalizedPath.cs
@@ -211,7 +212,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: System.Collections.IEnumerable.GetEnumerator
     path: ../src/JsonPath/NormalizedPath.cs
@@ -243,7 +244,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: ToString
     path: ../src/JsonPath/NormalizedPath.cs
@@ -278,7 +279,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: ToJsonPointer
     path: ../src/JsonPath/NormalizedPath.cs
@@ -310,7 +311,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Equals
     path: ../src/JsonPath/NormalizedPath.cs
@@ -347,7 +348,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Equals
     path: ../src/JsonPath/NormalizedPath.cs
@@ -385,7 +386,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: CompareTo
     path: ../src/JsonPath/NormalizedPath.cs
@@ -422,7 +423,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetHashCode
     path: ../src/JsonPath/NormalizedPath.cs

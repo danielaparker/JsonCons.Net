@@ -18,7 +18,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonElementEqualityComparer.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: JsonElementEqualityComparer
     path: ../src/JsonPath/JsonElementEqualityComparer.cs
@@ -30,6 +30,7 @@ items:
     content: 'public sealed class JsonElementEqualityComparer : IEqualityComparer<JsonElement>'
     content.vb: >-
       Public NotInheritable Class JsonElementEqualityComparer
+
           Implements IEqualityComparer(Of JsonElement)
   inheritance:
   - System.Object
@@ -65,7 +66,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonElementEqualityComparer.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Instance
     path: ../src/JsonPath/JsonElementEqualityComparer.cs
@@ -102,7 +103,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonElementEqualityComparer.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Equals
     path: ../src/JsonPath/JsonElementEqualityComparer.cs
@@ -141,7 +142,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonElementEqualityComparer.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetHashCode
     path: ../src/JsonPath/JsonElementEqualityComparer.cs

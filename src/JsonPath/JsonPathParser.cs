@@ -34,7 +34,7 @@ namespace JsonCons.JsonPathLib
         Start,
         RootOrCurrentNode,
         ExpectFunctionExpr,
-        JsonPathExpression,
+        JsonPath,
         PathRhs,
         ParentOperator,
         AncestorDepth,
@@ -102,7 +102,7 @@ namespace JsonCons.JsonPathLib
         ExpectAnd
     };
 
-    ref struct JsonPathCompiler 
+    ref struct JsonPathParser 
     {
         ReadOnlySpan<char> _span;
         int _index;
@@ -112,7 +112,7 @@ namespace JsonCons.JsonPathLib
         Stack<Token>_outputStack;
         Stack<Token>_operatorStack;
 
-        internal JsonPathCompiler(string input)
+        internal JsonPathParser(string input)
         {
             _span = input.AsSpan();
             _index = 0;
@@ -123,13 +123,13 @@ namespace JsonCons.JsonPathLib
             _operatorStack = new Stack<Token>();
         }
 
-        internal JsonPathExpression Compile()
+        internal JsonPath Parse()
         {
             StaticResources resources = null;
             try
             {
                 resources = new StaticResources();
-                var expr = DoCompile(resources);
+                var expr = _Parse(resources);
                 return expr;
             }
             catch (Exception ex)
@@ -142,7 +142,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        private JsonPathExpression DoCompile(StaticResources resources)
+        private JsonPath _Parse(StaticResources resources)
         {
             _stateStack = new Stack<JsonPathState>();
             _index = 0;
@@ -266,7 +266,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             default:
                                 _stateStack.Pop();
-                                _stateStack.Push(JsonPathState.JsonPathExpression);
+                                _stateStack.Push(JsonPathState.JsonPath);
                                 break;
                         }
                         break;
@@ -285,11 +285,11 @@ namespace JsonCons.JsonPathLib
                             default:
                                 buffer.Clear();
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.JsonPathExpression);
+                                _stateStack.Push(JsonPathState.JsonPath);
                                 break;
                         }
                         break;
-                    case JsonPathState.JsonPathExpression: 
+                    case JsonPathState.JsonPath: 
                         switch (_span[_index])
                         {
                             case ' ':case '\t':case '\r':case '\n':
@@ -745,7 +745,7 @@ namespace JsonCons.JsonPathLib
                                 SkipWhiteSpace();
                                 break;
                             case '.':
-                                _stateStack.Push(JsonPathState.JsonPathExpression);
+                                _stateStack.Push(JsonPathState.JsonPath);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1806,9 +1806,9 @@ namespace JsonCons.JsonPathLib
                 {
                     case JsonPathState.NameOrLeftBracket:
                         _stateStack.Pop(); 
-                        _stateStack.Push(JsonPathState.JsonPathExpression);
+                        _stateStack.Push(JsonPathState.JsonPath);
                         break;
-                    case JsonPathState.JsonPathExpression: 
+                    case JsonPathState.JsonPath: 
                         _stateStack.Pop();
                         _stateStack.Push(JsonPathState.IdentifierOrFunctionExpr);
                         _stateStack.Push(JsonPathState.UnquotedString);
@@ -1858,7 +1858,7 @@ namespace JsonCons.JsonPathLib
             }
             Token token = _outputStack.Pop();
 
-            return new JsonPathExpression(resources, token.GetSelector(), pathsRequired);
+            return new JsonPath(resources, token.GetSelector(), pathsRequired);
         }
 
         void UnwindRParen()

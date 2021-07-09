@@ -4,12 +4,12 @@
         <name>JsonPath</name>
     </assembly>
     <members>
-        <member name="T:JsonCons.JsonPathLib.JsonPathExpression">
+        <member name="T:JsonCons.JsonPathLib.JsonPath">
             <summary>
-              Represents the compiled form of a JsonPath expression.
+              Represents a JsonPath expression.
             </summary>
             <remarks>
-              A JsonPathExpression object may own references to some <see cref="T:System.Text.Json.JsonDocument"/> objects. 
+              A JsonPath object may own references to some <see cref="T:System.Text.Json.JsonDocument"/> objects. 
               It should be disposed to ensure that these objects are properly disposed.
             </remarks>
         </member>

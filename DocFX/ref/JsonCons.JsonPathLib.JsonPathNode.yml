@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPathNode.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: JsonPathNode
     path: ../src/JsonPath/JsonPathNode.cs
@@ -32,6 +32,7 @@ items:
     content: 'public readonly struct JsonPathNode : IEquatable<JsonPathNode>, IComparable<JsonPathNode>'
     content.vb: >-
       Public Structure JsonPathNode
+
           Implements IEquatable(Of JsonPathNode), IComparable(Of JsonPathNode)
   implements:
   - System.IEquatable{JsonCons.JsonPathLib.JsonPathNode}
@@ -63,7 +64,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPathNode.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Path
     path: ../src/JsonPath/JsonPathNode.cs
@@ -99,7 +100,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPathNode.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Value
     path: ../src/JsonPath/JsonPathNode.cs
@@ -135,7 +136,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPathNode.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Equals
     path: ../src/JsonPath/JsonPathNode.cs
@@ -173,7 +174,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPathNode.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: CompareTo
     path: ../src/JsonPath/JsonPathNode.cs
@@ -211,7 +212,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPathNode.cs
-      branch: main
+      branch: develop
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetHashCode
     path: ../src/JsonPath/JsonPathNode.cs

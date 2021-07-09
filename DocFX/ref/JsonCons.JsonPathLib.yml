@@ -6,7 +6,6 @@ items:
   children:
   - JsonCons.JsonPathLib.JsonElementEqualityComparer
   - JsonCons.JsonPathLib.JsonPath
-  - JsonCons.JsonPathLib.JsonPathExpression
   - JsonCons.JsonPathLib.JsonPathNode
   - JsonCons.JsonPathLib.NormalizedPath
   - JsonCons.JsonPathLib.PathNode
@@ -36,15 +35,10 @@ references:
   fullName: JsonCons.JsonPathLib.ResultOptions
 - uid: JsonCons.JsonPathLib.JsonPath
   commentId: T:JsonCons.JsonPathLib.JsonPath
+  parent: JsonCons.JsonPathLib
   name: JsonPath
   nameWithType: JsonPath
   fullName: JsonCons.JsonPathLib.JsonPath
-- uid: JsonCons.JsonPathLib.JsonPathExpression
-  commentId: T:JsonCons.JsonPathLib.JsonPathExpression
-  parent: JsonCons.JsonPathLib
-  name: JsonPathExpression
-  nameWithType: JsonPathExpression
-  fullName: JsonCons.JsonPathLib.JsonPathExpression
 - uid: JsonCons.JsonPathLib.JsonPathNode
   commentId: T:JsonCons.JsonPathLib.JsonPathNode
   parent: JsonCons.JsonPathLib
