@@ -89,11 +89,11 @@ namespace JsonCons.JsonPathLib
         }
 
         /// <summary>
-        /// Selects elements in root that match the JSONPath expression. 
+        /// Selects values within the root value that match the JSONPath expression. 
         /// </summary>
         /// <param name="root">The root.</param>
         /// <param name="options"><see cref="ResultOptions"/>.</param>
-        /// <returns>A list of paths to elements in root that match the provided JSONPath expression</returns>
+        /// <returns>A list of values within the root value that match the provided JSONPath expression</returns>
         public IList<JsonElement> Select(JsonElement root, ResultOptions options = 0)
         {
             options |= _requiredOptions;
@@ -162,11 +162,11 @@ namespace JsonCons.JsonPathLib
         }
 
         /// <summary>
-        /// Selects paths identifying the elements within a root value that match the JSONPath expression. 
+        /// Selects paths identifying the values within the root value that match the JSONPath expression. 
         /// </summary>
         /// <param name="root">The root.</param>
         /// <param name="options"><see cref="ResultOptions"/>.</param>
-        /// <returns>A list of <see cref="NormalizedPath"/> identifying elements within the root value that match the provided JSONPath expression</returns>
+        /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value that match the provided JSONPath expression</returns>
         
         public IList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options = ResultOptions.Path)
         {
@@ -213,7 +213,7 @@ namespace JsonCons.JsonPathLib
         }
 
         /// <summary>
-        /// Selects elements in root that match the JSONPath expression. 
+        /// Selects nodes that represent location-value pairs within the root value that match the JSONPath expression. 
         /// </summary>
         /// <param name="root">The root.</param>
         /// <param name="options"><see cref="ResultOptions"/>.</param>
