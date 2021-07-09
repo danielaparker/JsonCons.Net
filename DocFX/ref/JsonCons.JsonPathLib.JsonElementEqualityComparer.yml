@@ -22,10 +22,12 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: JsonElementEqualityComparer
     path: ../src/JsonPath/JsonElementEqualityComparer.cs
-    startLine: 9
+    startLine: 13
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nCompares two <xref href=\"System.Text.Json.JsonElement\" data-throw-if-not-resolved=\"false\"></xref> instances for equality by using value-based comparison.\n"
+  example: []
   syntax:
     content: 'public sealed class JsonElementEqualityComparer : IEqualityComparer<JsonElement>'
     content.vb: >-
@@ -69,7 +71,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Instance
     path: ../src/JsonPath/JsonElementEqualityComparer.cs
-    startLine: 11
+    startLine: 15
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -106,7 +108,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Equals
     path: ../src/JsonPath/JsonElementEqualityComparer.cs
-    startLine: 17
+    startLine: 21
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -145,7 +147,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetHashCode
     path: ../src/JsonPath/JsonElementEqualityComparer.cs
-    startLine: 86
+    startLine: 90
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -165,6 +167,13 @@ items:
   modifiers.vb:
   - Public
 references:
+- uid: System.Text.Json.JsonElement
+  commentId: T:System.Text.Json.JsonElement
+  parent: System.Text.Json
+  isExternal: true
+  name: JsonElement
+  nameWithType: JsonElement
+  fullName: System.Text.Json.JsonElement
 - uid: JsonCons.JsonPathLib
   commentId: N:JsonCons.JsonPathLib
   name: JsonCons.JsonPathLib
@@ -500,6 +509,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: System.Text.Json
+  commentId: N:System.Text.Json
+  isExternal: true
+  name: System.Text.Json
+  nameWithType: System.Text.Json
+  fullName: System.Text.Json
 - uid: System
   commentId: N:System
   isExternal: true
@@ -626,13 +641,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Text.Json.JsonElement
-  commentId: T:System.Text.Json.JsonElement
-  parent: System.Text.Json
-  isExternal: true
-  name: JsonElement
-  nameWithType: JsonElement
-  fullName: System.Text.Json.JsonElement
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System
@@ -690,12 +698,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Text.Json
-  commentId: N:System.Text.Json
-  isExternal: true
-  name: System.Text.Json
-  nameWithType: System.Text.Json
-  fullName: System.Text.Json
 - uid: JsonCons.JsonPathLib.JsonElementEqualityComparer.GetHashCode*
   commentId: Overload:JsonCons.JsonPathLib.JsonElementEqualityComparer.GetHashCode
   name: GetHashCode

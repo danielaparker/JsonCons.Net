@@ -4,6 +4,11 @@
         <name>JsonPath</name>
     </assembly>
     <members>
+        <member name="T:JsonCons.JsonPathLib.JsonElementEqualityComparer">
+            <summary>
+            Compares two <see cref="T:System.Text.Json.JsonElement"/> instances for equality by using value-based comparison.
+            </summary>
+        </member>
         <member name="T:JsonCons.JsonPathLib.ResultOptions">
              <summary>
              Defines the various ways a JsonPath query can deal with duplicate
