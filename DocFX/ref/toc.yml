@@ -6,8 +6,8 @@
     name: JsonElementEqualityComparer
   - uid: JsonCons.JsonPathLib.JsonPath
     name: JsonPath
-  - uid: JsonCons.JsonPathLib.JsonPathComponent
-    name: JsonPathComponent
+  - uid: JsonCons.JsonPathLib.JsonPathNode
+    name: JsonPathNode
   - uid: JsonCons.JsonPathLib.NormalizedPath
     name: NormalizedPath
   - uid: JsonCons.JsonPathLib.PathComponent

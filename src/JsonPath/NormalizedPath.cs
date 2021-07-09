@@ -7,18 +7,32 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
+
+    /// <summary>
+    /// Specifies the type of a path component.
+    ///
+    /// </summary>
+
     public enum PathComponentKind {Root,Name,Index};
 
+    /// <summary>
+    /// Represents a component of a <see cref="NormalizedPath"/>.
+    ///
+    /// </summary>
     public sealed class PathComponent
     {
-        public PathComponent Parent {get;}
+        PathComponent Parent {get;}
 
+        /// <summary>
+        /// Gets the type of the component.
+        ///
+        /// </summary>
         public PathComponentKind ComponentKind {get;}
 
         private readonly string _name;
         private readonly Int32 _index;
 
-        public PathComponent(string name)
+        PathComponent(string name)
         {
             Parent = null;
             ComponentKind = PathComponentKind.Root;
@@ -26,7 +40,7 @@ namespace JsonCons.JsonPathLib
             _index = 0;
         }
 
-        public PathComponent(PathComponent parent, string name)
+        PathComponent(PathComponent parent, string name)
         {
             Parent = parent;
             ComponentKind = PathComponentKind.Name;
@@ -34,7 +48,7 @@ namespace JsonCons.JsonPathLib
             _index = 0;
         }
 
-        public PathComponent(PathComponent parent, Int32 index)
+        PathComponent(PathComponent parent, Int32 index)
         {
             Parent = parent;
             ComponentKind = PathComponentKind.Index;
@@ -42,11 +56,19 @@ namespace JsonCons.JsonPathLib
             _index = index;
         }
 
+        /// <summary>
+        /// Gets the value of the component as a name.
+        ///
+        /// </summary>
         public string GetName()
         {
             return _name;
         }
 
+        /// <summary>
+        /// Gets the value of the component as an index.
+        ///
+        /// </summary>
         public Int32 GetIndex()
         {
             return _index;
@@ -90,7 +112,7 @@ namespace JsonCons.JsonPathLib
     };
 
     /// <summary>
-    /// Represents the location of a specific JSON value within the root element.
+    /// Represents the location of a specific JSON value within a root JSON value.
     ///
     /// </summary>
 

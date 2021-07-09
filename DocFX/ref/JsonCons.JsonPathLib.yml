@@ -6,7 +6,7 @@ items:
   children:
   - JsonCons.JsonPathLib.JsonElementEqualityComparer
   - JsonCons.JsonPathLib.JsonPath
-  - JsonCons.JsonPathLib.JsonPathComponent
+  - JsonCons.JsonPathLib.JsonPathNode
   - JsonCons.JsonPathLib.NormalizedPath
   - JsonCons.JsonPathLib.PathComponent
   - JsonCons.JsonPathLib.PathComponentKind
@@ -39,12 +39,12 @@ references:
   name: JsonPath
   nameWithType: JsonPath
   fullName: JsonCons.JsonPathLib.JsonPath
-- uid: JsonCons.JsonPathLib.JsonPathComponent
-  commentId: T:JsonCons.JsonPathLib.JsonPathComponent
+- uid: JsonCons.JsonPathLib.JsonPathNode
+  commentId: T:JsonCons.JsonPathLib.JsonPathNode
   parent: JsonCons.JsonPathLib
-  name: JsonPathComponent
-  nameWithType: JsonPathComponent
-  fullName: JsonCons.JsonPathLib.JsonPathComponent
+  name: JsonPathNode
+  nameWithType: JsonPathNode
+  fullName: JsonCons.JsonPathLib.JsonPathNode
 - uid: JsonCons.JsonPathLib.PathComponentKind
   commentId: T:JsonCons.JsonPathLib.PathComponentKind
   parent: JsonCons.JsonPathLib

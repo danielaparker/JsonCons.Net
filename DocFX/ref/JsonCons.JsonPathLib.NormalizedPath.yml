@@ -31,11 +31,11 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: NormalizedPath
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 96
+    startLine: 118
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
-  summary: "\nRepresents the location of a specific JSON value within the root element.\n\n"
+  summary: "\nRepresents the location of a specific JSON value within a root JSON value.\n\n"
   example: []
   syntax:
     content: 'public sealed class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>, IEnumerable<PathComponent>, IEnumerable'
@@ -80,7 +80,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: .ctor
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 100
+    startLine: 122
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -113,7 +113,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Root
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 116
+    startLine: 138
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -148,7 +148,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Stem
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 118
+    startLine: 140
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -183,7 +183,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetEnumerator
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 125
+    startLine: 147
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -220,7 +220,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: System.Collections.IEnumerable.GetEnumerator
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 131
+    startLine: 153
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -252,7 +252,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: ToString
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 143
+    startLine: 165
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -289,7 +289,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: ToJsonPointer
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 186
+    startLine: 208
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -323,7 +323,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Equals
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 231
+    startLine: 253
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -360,7 +360,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Equals
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 241
+    startLine: 263
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -398,7 +398,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: CompareTo
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 251
+    startLine: 273
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -435,7 +435,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetHashCode
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 267
+    startLine: 289
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -470,7 +470,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: TryGet
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 278
+    startLine: 300
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
