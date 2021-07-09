@@ -6,10 +6,10 @@ items:
   children:
   - JsonCons.JsonPathLib.JsonElementEqualityComparer
   - JsonCons.JsonPathLib.JsonPath
-  - JsonCons.JsonPathLib.JsonPathNode
+  - JsonCons.JsonPathLib.JsonPathComponent
   - JsonCons.JsonPathLib.NormalizedPath
-  - JsonCons.JsonPathLib.PathNode
-  - JsonCons.JsonPathLib.PathNodeKind
+  - JsonCons.JsonPathLib.PathComponent
+  - JsonCons.JsonPathLib.PathComponentKind
   - JsonCons.JsonPathLib.ResultOptions
   langs:
   - csharp
@@ -39,24 +39,24 @@ references:
   name: JsonPath
   nameWithType: JsonPath
   fullName: JsonCons.JsonPathLib.JsonPath
-- uid: JsonCons.JsonPathLib.JsonPathNode
-  commentId: T:JsonCons.JsonPathLib.JsonPathNode
+- uid: JsonCons.JsonPathLib.JsonPathComponent
+  commentId: T:JsonCons.JsonPathLib.JsonPathComponent
   parent: JsonCons.JsonPathLib
-  name: JsonPathNode
-  nameWithType: JsonPathNode
-  fullName: JsonCons.JsonPathLib.JsonPathNode
-- uid: JsonCons.JsonPathLib.PathNodeKind
-  commentId: T:JsonCons.JsonPathLib.PathNodeKind
+  name: JsonPathComponent
+  nameWithType: JsonPathComponent
+  fullName: JsonCons.JsonPathLib.JsonPathComponent
+- uid: JsonCons.JsonPathLib.PathComponentKind
+  commentId: T:JsonCons.JsonPathLib.PathComponentKind
   parent: JsonCons.JsonPathLib
-  name: PathNodeKind
-  nameWithType: PathNodeKind
-  fullName: JsonCons.JsonPathLib.PathNodeKind
-- uid: JsonCons.JsonPathLib.PathNode
-  commentId: T:JsonCons.JsonPathLib.PathNode
+  name: PathComponentKind
+  nameWithType: PathComponentKind
+  fullName: JsonCons.JsonPathLib.PathComponentKind
+- uid: JsonCons.JsonPathLib.PathComponent
+  commentId: T:JsonCons.JsonPathLib.PathComponent
   parent: JsonCons.JsonPathLib
-  name: PathNode
-  nameWithType: PathNode
-  fullName: JsonCons.JsonPathLib.PathNode
+  name: PathComponent
+  nameWithType: PathComponent
+  fullName: JsonCons.JsonPathLib.PathComponent
 - uid: JsonCons.JsonPathLib.NormalizedPath
   commentId: T:JsonCons.JsonPathLib.NormalizedPath
   parent: JsonCons.JsonPathLib

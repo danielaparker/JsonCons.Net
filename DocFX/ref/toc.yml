@@ -6,13 +6,13 @@
     name: JsonElementEqualityComparer
   - uid: JsonCons.JsonPathLib.JsonPath
     name: JsonPath
-  - uid: JsonCons.JsonPathLib.JsonPathNode
-    name: JsonPathNode
+  - uid: JsonCons.JsonPathLib.JsonPathComponent
+    name: JsonPathComponent
   - uid: JsonCons.JsonPathLib.NormalizedPath
     name: NormalizedPath
-  - uid: JsonCons.JsonPathLib.PathNode
-    name: PathNode
-  - uid: JsonCons.JsonPathLib.PathNodeKind
-    name: PathNodeKind
+  - uid: JsonCons.JsonPathLib.PathComponent
+    name: PathComponent
+  - uid: JsonCons.JsonPathLib.PathComponentKind
+    name: PathComponentKind
   - uid: JsonCons.JsonPathLib.ResultOptions
     name: ResultOptions

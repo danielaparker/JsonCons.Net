@@ -7,23 +7,23 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-    public readonly struct JsonPathNode : IEquatable<JsonPathNode>, IComparable<JsonPathNode>
+    public readonly struct JsonPathComponent : IEquatable<JsonPathComponent>, IComparable<JsonPathComponent>
     {
         public NormalizedPath Path {get;}
         public JsonElement Value {get;}
 
-        internal JsonPathNode(NormalizedPath path, JsonElement value)
+        internal JsonPathComponent(NormalizedPath path, JsonElement value)
         {
             Path = path;
             Value = value;
         }
 
-        public bool Equals(JsonPathNode other)
+        public bool Equals(JsonPathComponent other)
         {
             return Path.Equals(other.Path);
         }
 
-        public int CompareTo(JsonPathNode other)
+        public int CompareTo(JsonPathComponent other)
         {
             return Path.CompareTo(other.Path);
         }
@@ -36,7 +36,7 @@ namespace JsonCons.JsonPathLib
 
     interface INodeAccumulator
     {
-        void AddNode(PathNode pathStem, IValue value);
+        void AddNode(PathComponent pathStem, IValue value);
     };
 
     sealed class JsonElementAccumulator : INodeAccumulator
@@ -48,7 +48,7 @@ namespace JsonCons.JsonPathLib
             _values = values;
         }
 
-        public void AddNode(PathNode pathStem, IValue value)
+        public void AddNode(PathComponent pathStem, IValue value)
         {
             _values.Add(value.GetJsonElement());
         }
@@ -63,7 +63,7 @@ namespace JsonCons.JsonPathLib
             _values = values;
         }
 
-        public void AddNode(PathNode pathStem, IValue value)
+        public void AddNode(PathComponent pathStem, IValue value)
         {
             _values.Add(value);
         }
@@ -78,7 +78,7 @@ namespace JsonCons.JsonPathLib
             _values = values;
         }
 
-        public void AddNode(PathNode pathStem, IValue value)
+        public void AddNode(PathComponent pathStem, IValue value)
         {
             _values.Add(new NormalizedPath(pathStem));
         }
@@ -86,16 +86,16 @@ namespace JsonCons.JsonPathLib
 
     sealed class NodeAccumulator : INodeAccumulator
     {
-        IList<JsonPathNode> _nodes;
+        IList<JsonPathComponent> _nodes;
 
-        internal NodeAccumulator(IList<JsonPathNode> nodes)
+        internal NodeAccumulator(IList<JsonPathComponent> nodes)
         {
             _nodes = nodes;
         }
 
-        public void AddNode(PathNode pathStem, IValue value)
+        public void AddNode(PathComponent pathStem, IValue value)
         {
-            _nodes.Add(new JsonPathNode(new NormalizedPath(pathStem), value.GetJsonElement()));
+            _nodes.Add(new JsonPathComponent(new NormalizedPath(pathStem), value.GetJsonElement()));
         }
     }
 

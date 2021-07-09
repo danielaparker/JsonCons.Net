@@ -28,13 +28,35 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-    public enum ResultOptions {Path=1, NoDups=Path|2, Sort=Path|4};
+    /// <summary>
+    /// Defines the various ways a JsonPath query can deal with duplicate
+	 /// paths and order of results.
+    ///
+    /// This enumeration has a FlagsAttribute attribute that allows a bitwise combination of its member values.
+    /// </summary>
+    
+	 [Flags]
+    public enum ResultOptions {
+        /// <summary>
+        /// This bit indicates that paths are required and is automatically set when required, e.g.
+        /// if NoDups is set.
+        /// </summary>
+        Path=1, 
+        /// <summary>
+        /// Remove items from results that correspond to the same path.
+        /// </summary>
+        NoDups=Path|2, 
+        /// <summary>
+        /// Sort results by path.
+        /// </summary>
+        Sort=Path|4
+    };
 
     /// <summary>
     ///   Represents a JsonPath expression.
     /// </summary>
     /// <remarks>
-    ///   A JsonPath object may own references to some <see cref="JsonDocument"/> objects. 
+    ///   A JsonPath may own references to some <see cref="JsonDocument"/> objects. 
     ///   It should be disposed to ensure that these objects are properly disposed.
     /// </remarks>
 
@@ -43,6 +65,10 @@ namespace JsonCons.JsonPathLib
         readonly StaticResources _resources;
         readonly ISelector _selector;
         readonly ResultOptions _requiredOptions;
+
+        /// <summary>
+        /// Parses a JSONPath string into a JsonPath.
+        /// </summary>
 
         public static JsonPath Parse(string expr)
         {
@@ -62,17 +88,23 @@ namespace JsonCons.JsonPathLib
             }
         }
 
+        /// <summary>
+        /// Selects elements in root that match the JSONPath expression. 
+        /// </summary>
+        /// <param name="root">The root.</param>
+        /// <param name="options"><see cref="ResultOptions"/>.</param>
+        /// <returns>A list of paths to elements in root that match the provided JSONPath expression</returns>
         public IList<JsonElement> Select(JsonElement root, ResultOptions options = 0)
         {
             options |= _requiredOptions;
 
             var resources = new DynamicResources();
-            PathNode pathStem = new PathNode("$");
+            PathComponent pathStem = new PathComponent("$");
             var values = new List<JsonElement>();
 
             if ((options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
             {
-                var nodes = new List<JsonPathNode>();
+                var nodes = new List<JsonPathComponent>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
@@ -89,7 +121,7 @@ namespace JsonCons.JsonPathLib
                     }
                     if ((options & ResultOptions.NoDups) == ResultOptions.NoDups)
                     {
-                        var index = new HashSet<JsonPathNode>(nodes);
+                        var index = new HashSet<JsonPathComponent>(nodes);
                         foreach (var node in nodes)
                         {
                             if (index.Contains(node))
@@ -130,11 +162,11 @@ namespace JsonCons.JsonPathLib
         }
 
         /// <summary>
-        /// Selects paths to elements in root that match the JSONPath expression. 
+        /// Selects paths identifying the elements in root that match the JSONPath expression. 
         /// </summary>
         /// <param name="root">The root.</param>
-        /// <param name="options">The result options.</param>
-        /// <returns>A list of paths to elements in root that match the provided JSONPath expression</returns>
+        /// <param name="options"><see cref="ResultOptions"/>.</param>
+        /// <returns>A list of <see cref="NormalizedPath"/> identifying elements in root that match the provided JSONPath expression</returns>
         
         public IList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options = ResultOptions.Path)
         {
@@ -142,7 +174,7 @@ namespace JsonCons.JsonPathLib
 
             var resources = new DynamicResources();
 
-            PathNode pathStem = new PathNode("$");
+            PathComponent pathStem = new PathComponent("$");
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
             _selector.Select(resources, 
@@ -180,14 +212,21 @@ namespace JsonCons.JsonPathLib
             return paths;
         }
 
-        public IList<JsonPathNode> SelectNodes(JsonElement root, ResultOptions options = ResultOptions.Path)
+        /// <summary>
+        /// Selects elements in root that match the JSONPath expression. 
+        /// </summary>
+        /// <param name="root">The root.</param>
+        /// <param name="options"><see cref="ResultOptions"/>.</param>
+        /// <returns>A list of nodes to elements in root that match the provided JSONPath expression</returns>
+
+        public IList<JsonPathComponent> SelectNodes(JsonElement root, ResultOptions options = ResultOptions.Path)
         {
             options |= _requiredOptions;
 
             var resources = new DynamicResources();
 
-            PathNode pathStem = new PathNode("$");
-            var nodes = new List<JsonPathNode>();
+            PathComponent pathStem = new PathComponent("$");
+            var nodes = new List<JsonPathComponent>();
             var accumulator = new NodeAccumulator(nodes);
             _selector.Select(resources, 
                              new JsonElementValue(root), 
@@ -206,8 +245,8 @@ namespace JsonCons.JsonPathLib
                     }
                     if ((options & ResultOptions.NoDups) == ResultOptions.NoDups)
                     {
-                        var temp = new List<JsonPathNode>();
-                        var index = new HashSet<JsonPathNode>(nodes);
+                        var temp = new List<JsonPathComponent>();
+                        var index = new HashSet<JsonPathComponent>(nodes);
                         foreach (var path in nodes)
                         {
                             if (index.Contains(path))
@@ -224,6 +263,9 @@ namespace JsonCons.JsonPathLib
             return nodes;
         }
 
+        /// <summary>
+        /// Releases the resources used by this JsonPath instance. 
+        /// </summary>
         public void Dispose()
         {
             _resources.Dispose();
@@ -245,7 +287,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public static IList<JsonPathNode> SelectNodes(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
+        public static IList<JsonPathComponent> SelectNodes(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
         {
             using (var expr = JsonPath.Parse(path))
             {

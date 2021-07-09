@@ -27,12 +27,12 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: JsonPath
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 40
+    startLine: 62
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
   summary: "\nRepresents a JsonPath expression.\n"
-  remarks: "\nA JsonPath object may own references to some <xref href=\"System.Text.Json.JsonDocument\" data-throw-if-not-resolved=\"false\"></xref> objects. \nIt should be disposed to ensure that these objects are properly disposed.\n"
+  remarks: "\nA JsonPath may own references to some <xref href=\"System.Text.Json.JsonDocument\" data-throw-if-not-resolved=\"false\"></xref> objects. \nIt should be disposed to ensure that these objects are properly disposed.\n"
   example: []
   syntax:
     content: 'public sealed class JsonPath : IDisposable'
@@ -77,10 +77,12 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Parse
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 46
+    startLine: 72
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nParses a JSONPath string into a JsonPath.\n"
+  example: []
   syntax:
     content: public static JsonPath Parse(string expr)
     parameters:
@@ -114,19 +116,24 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Select
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 64
+    startLine: 96
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nSelects elements in root that match the JSONPath expression. \n"
+  example: []
   syntax:
     content: public IList<JsonElement> Select(JsonElement root, ResultOptions options = (ResultOptions)0)
     parameters:
     - id: root
       type: System.Text.Json.JsonElement
+      description: The root.
     - id: options
       type: JsonCons.JsonPathLib.ResultOptions
+      description: <xref href="JsonCons.JsonPathLib.ResultOptions" data-throw-if-not-resolved="false"></xref>.
     return:
       type: System.Collections.Generic.IList{System.Text.Json.JsonElement}
+      description: A list of paths to elements in root that match the provided JSONPath expression
     content.vb: Public Function Select(root As JsonElement, options As ResultOptions = CType(0, ResultOptions)) As IList(Of JsonElement)
   overload: JsonCons.JsonPathLib.JsonPath.Select*
   modifiers.csharp:
@@ -151,11 +158,11 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectPaths
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 138
+    startLine: 170
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
-  summary: "\nSelects paths to elements in root that match the JSONPath expression. \n"
+  summary: "\nSelects paths identifying the elements in root that match the JSONPath expression. \n"
   example: []
   syntax:
     content: public IList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options = ResultOptions.Path)
@@ -165,10 +172,10 @@ items:
       description: The root.
     - id: options
       type: JsonCons.JsonPathLib.ResultOptions
-      description: The result options.
+      description: <xref href="JsonCons.JsonPathLib.ResultOptions" data-throw-if-not-resolved="false"></xref>.
     return:
       type: System.Collections.Generic.IList{JsonCons.JsonPathLib.NormalizedPath}
-      description: A list of paths to elements in root that match the provided JSONPath expression
+      description: A list of <xref href="JsonCons.JsonPathLib.NormalizedPath" data-throw-if-not-resolved="false"></xref> identifying elements in root that match the provided JSONPath expression
     content.vb: Public Function SelectPaths(root As JsonElement, options As ResultOptions = ResultOptions.Path) As IList(Of NormalizedPath)
   overload: JsonCons.JsonPathLib.JsonPath.SelectPaths*
   modifiers.csharp:
@@ -193,20 +200,25 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectNodes
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 182
+    startLine: 221
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nSelects elements in root that match the JSONPath expression. \n"
+  example: []
   syntax:
-    content: public IList<JsonPathNode> SelectNodes(JsonElement root, ResultOptions options = ResultOptions.Path)
+    content: public IList<JsonPathComponent> SelectNodes(JsonElement root, ResultOptions options = ResultOptions.Path)
     parameters:
     - id: root
       type: System.Text.Json.JsonElement
+      description: The root.
     - id: options
       type: JsonCons.JsonPathLib.ResultOptions
+      description: <xref href="JsonCons.JsonPathLib.ResultOptions" data-throw-if-not-resolved="false"></xref>.
     return:
-      type: System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathNode}
-    content.vb: Public Function SelectNodes(root As JsonElement, options As ResultOptions = ResultOptions.Path) As IList(Of JsonPathNode)
+      type: System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathComponent}
+      description: A list of nodes to elements in root that match the provided JSONPath expression
+    content.vb: Public Function SelectNodes(root As JsonElement, options As ResultOptions = ResultOptions.Path) As IList(Of JsonPathComponent)
   overload: JsonCons.JsonPathLib.JsonPath.SelectNodes*
   modifiers.csharp:
   - public
@@ -230,10 +242,12 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Dispose
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 226
+    startLine: 268
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nReleases the resources used by this JsonPath instance. \n"
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose
@@ -262,7 +276,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Select
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 231
+    startLine: 273
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -303,7 +317,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectPaths
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 239
+    startLine: 281
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -344,12 +358,12 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectNodes
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 247
+    startLine: 289
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
   syntax:
-    content: public static IList<JsonPathNode> SelectNodes(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
+    content: public static IList<JsonPathComponent> SelectNodes(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
     parameters:
     - id: root
       type: System.Text.Json.JsonElement
@@ -358,8 +372,8 @@ items:
     - id: options
       type: JsonCons.JsonPathLib.ResultOptions
     return:
-      type: System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathNode}
-    content.vb: Public Shared Function SelectNodes(root As JsonElement, path As String, options As ResultOptions = ResultOptions.Path) As IList(Of JsonPathNode)
+      type: System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathComponent}
+    content.vb: Public Shared Function SelectNodes(root As JsonElement, path As String, options As ResultOptions = ResultOptions.Path) As IList(Of JsonPathComponent)
   overload: JsonCons.JsonPathLib.JsonPath.SelectNodes*
   modifiers.csharp:
   - public
@@ -693,6 +707,12 @@ references:
   name: JsonPath
   nameWithType: JsonPath
   fullName: JsonCons.JsonPathLib.JsonPath
+- uid: JsonCons.JsonPathLib.ResultOptions
+  commentId: T:JsonCons.JsonPathLib.ResultOptions
+  parent: JsonCons.JsonPathLib
+  name: ResultOptions
+  nameWithType: ResultOptions
+  fullName: JsonCons.JsonPathLib.ResultOptions
 - uid: JsonCons.JsonPathLib.JsonPath.Select*
   commentId: Overload:JsonCons.JsonPathLib.JsonPath.Select
   name: Select
@@ -705,12 +725,6 @@ references:
   name: JsonElement
   nameWithType: JsonElement
   fullName: System.Text.Json.JsonElement
-- uid: JsonCons.JsonPathLib.ResultOptions
-  commentId: T:JsonCons.JsonPathLib.ResultOptions
-  parent: JsonCons.JsonPathLib
-  name: ResultOptions
-  nameWithType: ResultOptions
-  fullName: JsonCons.JsonPathLib.ResultOptions
 - uid: System.Collections.Generic.IList{System.Text.Json.JsonElement}
   commentId: T:System.Collections.Generic.IList{System.Text.Json.JsonElement}
   parent: System.Collections.Generic
@@ -806,6 +820,12 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
+- uid: JsonCons.JsonPathLib.NormalizedPath
+  commentId: T:JsonCons.JsonPathLib.NormalizedPath
+  parent: JsonCons.JsonPathLib
+  name: NormalizedPath
+  nameWithType: NormalizedPath
+  fullName: JsonCons.JsonPathLib.NormalizedPath
 - uid: JsonCons.JsonPathLib.JsonPath.SelectPaths*
   commentId: Overload:JsonCons.JsonPathLib.JsonPath.SelectPaths
   name: SelectPaths
@@ -858,16 +878,16 @@ references:
   name: SelectNodes
   nameWithType: JsonPath.SelectNodes
   fullName: JsonCons.JsonPathLib.JsonPath.SelectNodes
-- uid: System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathNode}
-  commentId: T:System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathNode}
+- uid: System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathComponent}
+  commentId: T:System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathComponent}
   parent: System.Collections.Generic
   definition: System.Collections.Generic.IList`1
-  name: IList<JsonPathNode>
-  nameWithType: IList<JsonPathNode>
-  fullName: System.Collections.Generic.IList<JsonCons.JsonPathLib.JsonPathNode>
-  nameWithType.vb: IList(Of JsonPathNode)
-  fullName.vb: System.Collections.Generic.IList(Of JsonCons.JsonPathLib.JsonPathNode)
-  name.vb: IList(Of JsonPathNode)
+  name: IList<JsonPathComponent>
+  nameWithType: IList<JsonPathComponent>
+  fullName: System.Collections.Generic.IList<JsonCons.JsonPathLib.JsonPathComponent>
+  nameWithType.vb: IList(Of JsonPathComponent)
+  fullName.vb: System.Collections.Generic.IList(Of JsonCons.JsonPathLib.JsonPathComponent)
+  name.vb: IList(Of JsonPathComponent)
   spec.csharp:
   - uid: System.Collections.Generic.IList`1
     name: IList
@@ -877,10 +897,10 @@ references:
   - name: <
     nameWithType: <
     fullName: <
-  - uid: JsonCons.JsonPathLib.JsonPathNode
-    name: JsonPathNode
-    nameWithType: JsonPathNode
-    fullName: JsonCons.JsonPathLib.JsonPathNode
+  - uid: JsonCons.JsonPathLib.JsonPathComponent
+    name: JsonPathComponent
+    nameWithType: JsonPathComponent
+    fullName: JsonCons.JsonPathLib.JsonPathComponent
   - name: '>'
     nameWithType: '>'
     fullName: '>'
@@ -893,10 +913,10 @@ references:
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - uid: JsonCons.JsonPathLib.JsonPathNode
-    name: JsonPathNode
-    nameWithType: JsonPathNode
-    fullName: JsonCons.JsonPathLib.JsonPathNode
+  - uid: JsonCons.JsonPathLib.JsonPathComponent
+    name: JsonPathComponent
+    nameWithType: JsonPathComponent
+    fullName: JsonCons.JsonPathLib.JsonPathComponent
   - name: )
     nameWithType: )
     fullName: )

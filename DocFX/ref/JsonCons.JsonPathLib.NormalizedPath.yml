@@ -5,7 +5,7 @@ items:
   id: NormalizedPath
   parent: JsonCons.JsonPathLib
   children:
-  - JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathNode)
+  - JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathComponent)
   - JsonCons.JsonPathLib.NormalizedPath.CompareTo(JsonCons.JsonPathLib.NormalizedPath)
   - JsonCons.JsonPathLib.NormalizedPath.Equals(JsonCons.JsonPathLib.NormalizedPath)
   - JsonCons.JsonPathLib.NormalizedPath.Equals(System.Object)
@@ -31,21 +31,23 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: NormalizedPath
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 91
+    startLine: 96
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nRepresents the location of a specific JSON value within the root element.\n\n"
+  example: []
   syntax:
-    content: 'public sealed class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>, IEnumerable<PathNode>, IEnumerable'
+    content: 'public sealed class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>, IEnumerable<PathComponent>, IEnumerable'
     content.vb: >-
       Public NotInheritable Class NormalizedPath
-          Implements IEquatable(Of NormalizedPath), IComparable(Of NormalizedPath), IEnumerable(Of PathNode), IEnumerable
+          Implements IEquatable(Of NormalizedPath), IComparable(Of NormalizedPath), IEnumerable(Of PathComponent), IEnumerable
   inheritance:
   - System.Object
   implements:
   - System.IEquatable{JsonCons.JsonPathLib.NormalizedPath}
   - System.IComparable{JsonCons.JsonPathLib.NormalizedPath}
-  - System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathNode}
+  - System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathComponent}
   - System.Collections.IEnumerable
   inheritedMembers:
   - System.Object.Equals(System.Object,System.Object)
@@ -60,16 +62,16 @@ items:
   - Public
   - NotInheritable
   - Class
-- uid: JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathNode)
-  commentId: M:JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathNode)
-  id: '#ctor(JsonCons.JsonPathLib.PathNode)'
+- uid: JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathComponent)
+  commentId: M:JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathComponent)
+  id: '#ctor(JsonCons.JsonPathLib.PathComponent)'
   parent: JsonCons.JsonPathLib.NormalizedPath
   langs:
   - csharp
   - vb
-  name: NormalizedPath(PathNode)
-  nameWithType: NormalizedPath.NormalizedPath(PathNode)
-  fullName: JsonCons.JsonPathLib.NormalizedPath.NormalizedPath(JsonCons.JsonPathLib.PathNode)
+  name: NormalizedPath(PathComponent)
+  nameWithType: NormalizedPath.NormalizedPath(PathComponent)
+  fullName: JsonCons.JsonPathLib.NormalizedPath.NormalizedPath(JsonCons.JsonPathLib.PathComponent)
   type: Constructor
   source:
     remote:
@@ -78,16 +80,16 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: .ctor
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 95
+    startLine: 100
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
   syntax:
-    content: public NormalizedPath(PathNode node)
+    content: public NormalizedPath(PathComponent node)
     parameters:
     - id: node
-      type: JsonCons.JsonPathLib.PathNode
-    content.vb: Public Sub New(node As PathNode)
+      type: JsonCons.JsonPathLib.PathComponent
+    content.vb: Public Sub New(node As PathComponent)
   overload: JsonCons.JsonPathLib.NormalizedPath.#ctor*
   modifiers.csharp:
   - public
@@ -111,16 +113,16 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Root
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 111
+    startLine: 116
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
   syntax:
-    content: public PathNode Root { get; }
+    content: public PathComponent Root { get; }
     parameters: []
     return:
-      type: JsonCons.JsonPathLib.PathNode
-    content.vb: Public ReadOnly Property Root As PathNode
+      type: JsonCons.JsonPathLib.PathComponent
+    content.vb: Public ReadOnly Property Root As PathComponent
   overload: JsonCons.JsonPathLib.NormalizedPath.Root*
   modifiers.csharp:
   - public
@@ -146,16 +148,16 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Stem
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 113
+    startLine: 118
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
   syntax:
-    content: public PathNode Stem { get; }
+    content: public PathComponent Stem { get; }
     parameters: []
     return:
-      type: JsonCons.JsonPathLib.PathNode
-    content.vb: Public ReadOnly Property Stem As PathNode
+      type: JsonCons.JsonPathLib.PathComponent
+    content.vb: Public ReadOnly Property Stem As PathComponent
   overload: JsonCons.JsonPathLib.NormalizedPath.Stem*
   modifiers.csharp:
   - public
@@ -181,18 +183,20 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetEnumerator
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 115
+    startLine: 125
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nReturns an enumerator that iterates through the components of the normalized path. \n\n"
+  example: []
   syntax:
-    content: public IEnumerator<PathNode> GetEnumerator()
+    content: public IEnumerator<PathComponent> GetEnumerator()
     return:
-      type: System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.PathNode}
-    content.vb: Public Function GetEnumerator As IEnumerator(Of PathNode)
+      type: System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.PathComponent}
+    content.vb: Public Function GetEnumerator As IEnumerator(Of PathComponent)
   overload: JsonCons.JsonPathLib.NormalizedPath.GetEnumerator*
   implements:
-  - System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathNode}.GetEnumerator
+  - System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathComponent}.GetEnumerator
   modifiers.csharp:
   - public
   modifiers.vb:
@@ -216,7 +220,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: System.Collections.IEnumerable.GetEnumerator
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 120
+    startLine: 131
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -248,10 +252,12 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: ToString
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 125
+    startLine: 143
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nGets a string representation for the normalized path. \nThe string will have the form $[&apos;aName&apos;][&apos;anotherName&apos;][anIndex]\nwith any single quote characters appearing in names escaped with a backslash. \n\n"
+  example: []
   syntax:
     content: public override string ToString()
     return:
@@ -283,10 +289,12 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: ToJsonPointer
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 161
+    startLine: 186
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nGets a <a href=\"https://datatracker.ietf.org/doc/html/rfc6901\">JSON Pointer</a> representation for the normalized path. \nThe string will have the form /aName/anotherName/anIndex with any &apos;~&apos; and &apos;/&apos; characters appearing in names escaped as per the \nspecification.\n\n"
+  example: []
   syntax:
     content: public string ToJsonPointer()
     return:
@@ -315,7 +323,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Equals
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 206
+    startLine: 231
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -352,7 +360,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Equals
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 216
+    startLine: 241
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -390,7 +398,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: CompareTo
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 226
+    startLine: 251
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -427,7 +435,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetHashCode
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 242
+    startLine: 267
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -462,7 +470,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: TryGet
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 253
+    startLine: 278
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -581,16 +589,16 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathNode}
-  commentId: T:System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathNode}
+- uid: System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathComponent}
+  commentId: T:System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathComponent}
   parent: System.Collections.Generic
   definition: System.Collections.Generic.IEnumerable`1
-  name: IEnumerable<PathNode>
-  nameWithType: IEnumerable<PathNode>
-  fullName: System.Collections.Generic.IEnumerable<JsonCons.JsonPathLib.PathNode>
-  nameWithType.vb: IEnumerable(Of PathNode)
-  fullName.vb: System.Collections.Generic.IEnumerable(Of JsonCons.JsonPathLib.PathNode)
-  name.vb: IEnumerable(Of PathNode)
+  name: IEnumerable<PathComponent>
+  nameWithType: IEnumerable<PathComponent>
+  fullName: System.Collections.Generic.IEnumerable<JsonCons.JsonPathLib.PathComponent>
+  nameWithType.vb: IEnumerable(Of PathComponent)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of JsonCons.JsonPathLib.PathComponent)
+  name.vb: IEnumerable(Of PathComponent)
   spec.csharp:
   - uid: System.Collections.Generic.IEnumerable`1
     name: IEnumerable
@@ -600,10 +608,10 @@ references:
   - name: <
     nameWithType: <
     fullName: <
-  - uid: JsonCons.JsonPathLib.PathNode
-    name: PathNode
-    nameWithType: PathNode
-    fullName: JsonCons.JsonPathLib.PathNode
+  - uid: JsonCons.JsonPathLib.PathComponent
+    name: PathComponent
+    nameWithType: PathComponent
+    fullName: JsonCons.JsonPathLib.PathComponent
   - name: '>'
     nameWithType: '>'
     fullName: '>'
@@ -616,10 +624,10 @@ references:
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - uid: JsonCons.JsonPathLib.PathNode
-    name: PathNode
-    nameWithType: PathNode
-    fullName: JsonCons.JsonPathLib.PathNode
+  - uid: JsonCons.JsonPathLib.PathComponent
+    name: PathComponent
+    nameWithType: PathComponent
+    fullName: JsonCons.JsonPathLib.PathComponent
   - name: )
     nameWithType: )
     fullName: )
@@ -946,12 +954,12 @@ references:
   name: NormalizedPath
   nameWithType: NormalizedPath.NormalizedPath
   fullName: JsonCons.JsonPathLib.NormalizedPath.NormalizedPath
-- uid: JsonCons.JsonPathLib.PathNode
-  commentId: T:JsonCons.JsonPathLib.PathNode
+- uid: JsonCons.JsonPathLib.PathComponent
+  commentId: T:JsonCons.JsonPathLib.PathComponent
   parent: JsonCons.JsonPathLib
-  name: PathNode
-  nameWithType: PathNode
-  fullName: JsonCons.JsonPathLib.PathNode
+  name: PathComponent
+  nameWithType: PathComponent
+  fullName: JsonCons.JsonPathLib.PathComponent
 - uid: JsonCons.JsonPathLib.NormalizedPath.Root*
   commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.Root
   name: Root
@@ -967,20 +975,20 @@ references:
   name: GetEnumerator
   nameWithType: NormalizedPath.GetEnumerator
   fullName: JsonCons.JsonPathLib.NormalizedPath.GetEnumerator
-- uid: System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathNode}.GetEnumerator
-  commentId: M:System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathNode}.GetEnumerator
-  parent: System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathNode}
+- uid: System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathComponent}.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathComponent}.GetEnumerator
+  parent: System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.PathComponent}
   definition: System.Collections.Generic.IEnumerable`1.GetEnumerator
   name: GetEnumerator()
-  nameWithType: IEnumerable<PathNode>.GetEnumerator()
-  fullName: System.Collections.Generic.IEnumerable<JsonCons.JsonPathLib.PathNode>.GetEnumerator()
-  nameWithType.vb: IEnumerable(Of PathNode).GetEnumerator()
-  fullName.vb: System.Collections.Generic.IEnumerable(Of JsonCons.JsonPathLib.PathNode).GetEnumerator()
+  nameWithType: IEnumerable<PathComponent>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<JsonCons.JsonPathLib.PathComponent>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of PathComponent).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of JsonCons.JsonPathLib.PathComponent).GetEnumerator()
   spec.csharp:
   - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
     name: GetEnumerator
-    nameWithType: IEnumerable<PathNode>.GetEnumerator
-    fullName: System.Collections.Generic.IEnumerable<JsonCons.JsonPathLib.PathNode>.GetEnumerator
+    nameWithType: IEnumerable<PathComponent>.GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable<JsonCons.JsonPathLib.PathComponent>.GetEnumerator
     isExternal: true
   - name: (
     nameWithType: (
@@ -991,8 +999,8 @@ references:
   spec.vb:
   - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
     name: GetEnumerator
-    nameWithType: IEnumerable(Of PathNode).GetEnumerator
-    fullName: System.Collections.Generic.IEnumerable(Of JsonCons.JsonPathLib.PathNode).GetEnumerator
+    nameWithType: IEnumerable(Of PathComponent).GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable(Of JsonCons.JsonPathLib.PathComponent).GetEnumerator
     isExternal: true
   - name: (
     nameWithType: (
@@ -1000,16 +1008,16 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.PathNode}
-  commentId: T:System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.PathNode}
+- uid: System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.PathComponent}
+  commentId: T:System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.PathComponent}
   parent: System.Collections.Generic
   definition: System.Collections.Generic.IEnumerator`1
-  name: IEnumerator<PathNode>
-  nameWithType: IEnumerator<PathNode>
-  fullName: System.Collections.Generic.IEnumerator<JsonCons.JsonPathLib.PathNode>
-  nameWithType.vb: IEnumerator(Of PathNode)
-  fullName.vb: System.Collections.Generic.IEnumerator(Of JsonCons.JsonPathLib.PathNode)
-  name.vb: IEnumerator(Of PathNode)
+  name: IEnumerator<PathComponent>
+  nameWithType: IEnumerator<PathComponent>
+  fullName: System.Collections.Generic.IEnumerator<JsonCons.JsonPathLib.PathComponent>
+  nameWithType.vb: IEnumerator(Of PathComponent)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of JsonCons.JsonPathLib.PathComponent)
+  name.vb: IEnumerator(Of PathComponent)
   spec.csharp:
   - uid: System.Collections.Generic.IEnumerator`1
     name: IEnumerator
@@ -1019,10 +1027,10 @@ references:
   - name: <
     nameWithType: <
     fullName: <
-  - uid: JsonCons.JsonPathLib.PathNode
-    name: PathNode
-    nameWithType: PathNode
-    fullName: JsonCons.JsonPathLib.PathNode
+  - uid: JsonCons.JsonPathLib.PathComponent
+    name: PathComponent
+    nameWithType: PathComponent
+    fullName: JsonCons.JsonPathLib.PathComponent
   - name: '>'
     nameWithType: '>'
     fullName: '>'
@@ -1035,10 +1043,10 @@ references:
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - uid: JsonCons.JsonPathLib.PathNode
-    name: PathNode
-    nameWithType: PathNode
-    fullName: JsonCons.JsonPathLib.PathNode
+  - uid: JsonCons.JsonPathLib.PathComponent
+    name: PathComponent
+    nameWithType: PathComponent
+    fullName: JsonCons.JsonPathLib.PathComponent
   - name: )
     nameWithType: )
     fullName: )

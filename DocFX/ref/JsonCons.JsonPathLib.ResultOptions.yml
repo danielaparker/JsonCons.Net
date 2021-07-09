@@ -22,13 +22,25 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: ResultOptions
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 30
+    startLine: 37
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nDefines the various ways a JsonPath query can deal with duplicate\npaths and order of results.\n\nThis enumeration has a FlagsAttribute attribute that allows a bitwise combination of its member values.\n"
+  example: []
   syntax:
-    content: public enum ResultOptions
-    content.vb: Public Enum ResultOptions
+    content: >-
+      [Flags]
+
+      public enum ResultOptions
+    content.vb: >-
+      <Flags>
+
+      Public Enum ResultOptions
+  attributes:
+  - type: System.FlagsAttribute
+    ctor: System.FlagsAttribute.#ctor
+    arguments: []
   modifiers.csharp:
   - public
   - enum
@@ -53,10 +65,12 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Path
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 30
+    startLine: 43
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nThis bit indicates that paths are required and is automatically set when required, e.g.\nif NoDups is set.\n"
+  example: []
   syntax:
     content: Path = 1
     return:
@@ -85,10 +99,12 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: NoDups
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 30
+    startLine: 47
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nRemove items from results that correspond to the same path.\n"
+  example: []
   syntax:
     content: NoDups = 3
     return:
@@ -117,10 +133,12 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Sort
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 30
+    startLine: 51
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nSort results by path.\n"
+  example: []
   syntax:
     content: Sort = 5
     return:

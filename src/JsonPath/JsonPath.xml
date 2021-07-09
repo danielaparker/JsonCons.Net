@@ -4,22 +4,100 @@
         <name>JsonPath</name>
     </assembly>
     <members>
+        <member name="T:JsonCons.JsonPathLib.ResultOptions">
+             <summary>
+             Defines the various ways a JsonPath query can deal with duplicate
+             paths and order of results.
+            
+             This enumeration has a FlagsAttribute attribute that allows a bitwise combination of its member values.
+             </summary>
+        </member>
+        <member name="F:JsonCons.JsonPathLib.ResultOptions.Path">
+            <summary>
+            This bit indicates that paths are required and is automatically set when required, e.g.
+            if NoDups is set.
+            </summary>
+        </member>
+        <member name="F:JsonCons.JsonPathLib.ResultOptions.NoDups">
+            <summary>
+            Remove items from results that correspond to the same path.
+            </summary>
+        </member>
+        <member name="F:JsonCons.JsonPathLib.ResultOptions.Sort">
+            <summary>
+            Sort results by path.
+            </summary>
+        </member>
         <member name="T:JsonCons.JsonPathLib.JsonPath">
             <summary>
               Represents a JsonPath expression.
             </summary>
             <remarks>
-              A JsonPath object may own references to some <see cref="T:System.Text.Json.JsonDocument"/> objects. 
+              A JsonPath may own references to some <see cref="T:System.Text.Json.JsonDocument"/> objects. 
               It should be disposed to ensure that these objects are properly disposed.
             </remarks>
         </member>
-        <member name="M:JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">
+        <member name="M:JsonCons.JsonPathLib.JsonPath.Parse(System.String)">
             <summary>
-            Selects paths to elements in root that match the JSONPath expression. 
+            Parses a JSONPath string into a JsonPath.
+            </summary>
+        </member>
+        <member name="M:JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">
+            <summary>
+            Selects elements in root that match the JSONPath expression. 
             </summary>
             <param name="root">The root.</param>
-            <param name="options">The result options.</param>
+            <param name="options"><see cref="T:JsonCons.JsonPathLib.ResultOptions"/>.</param>
             <returns>A list of paths to elements in root that match the provided JSONPath expression</returns>
+        </member>
+        <member name="M:JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">
+            <summary>
+            Selects paths identifying the elements in root that match the JSONPath expression. 
+            </summary>
+            <param name="root">The root.</param>
+            <param name="options"><see cref="T:JsonCons.JsonPathLib.ResultOptions"/>.</param>
+            <returns>A list of <see cref="T:JsonCons.JsonPathLib.NormalizedPath"/> identifying elements in root that match the provided JSONPath expression</returns>
+        </member>
+        <member name="M:JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">
+            <summary>
+            Selects elements in root that match the JSONPath expression. 
+            </summary>
+            <param name="root">The root.</param>
+            <param name="options"><see cref="T:JsonCons.JsonPathLib.ResultOptions"/>.</param>
+            <returns>A list of nodes to elements in root that match the provided JSONPath expression</returns>
+        </member>
+        <member name="M:JsonCons.JsonPathLib.JsonPath.Dispose">
+            <summary>
+            Releases the resources used by this JsonPath instance. 
+            </summary>
+        </member>
+        <member name="T:JsonCons.JsonPathLib.NormalizedPath">
+             <summary>
+             Represents the location of a specific JSON value within the root element.
+            
+             </summary>
+        </member>
+        <member name="M:JsonCons.JsonPathLib.NormalizedPath.GetEnumerator">
+             <summary>
+             Returns an enumerator that iterates through the components of the normalized path. 
+            
+             </summary>
+        </member>
+        <member name="M:JsonCons.JsonPathLib.NormalizedPath.ToString">
+             <summary>
+             Gets a string representation for the normalized path. 
+             The string will have the form $['aName']['anotherName'][anIndex]
+             with any single quote characters appearing in names escaped with a backslash. 
+            
+             </summary>
+        </member>
+        <member name="M:JsonCons.JsonPathLib.NormalizedPath.ToJsonPointer">
+             <summary>
+             Gets a <see href="https://datatracker.ietf.org/doc/html/rfc6901">JSON Pointer</see> representation for the normalized path. 
+             The string will have the form /aName/anotherName/anIndex with any '~' and '/' characters appearing in names escaped as per the 
+             specification.
+            
+             </summary>
         </member>
     </members>
 </doc>

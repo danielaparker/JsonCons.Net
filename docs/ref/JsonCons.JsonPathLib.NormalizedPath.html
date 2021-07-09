@@ -73,7 +73,8 @@
   
   <h1 id="JsonCons_JsonPathLib_NormalizedPath" data-uid="JsonCons.JsonPathLib.NormalizedPath" class="text-break">Class NormalizedPath
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Represents the location of a specific JSON value within the root element.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -84,7 +85,7 @@
     <h5>Implements</h5>
     <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="JsonCons.JsonPathLib.NormalizedPath.html">NormalizedPath</a>&gt;</div>
     <div><span class="xref">System.IComparable</span>&lt;<a class="xref" href="JsonCons.JsonPathLib.NormalizedPath.html">NormalizedPath</a>&gt;</div>
-    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="JsonCons.JsonPathLib.PathNode.html">PathNode</a>&gt;</div>
+    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="JsonCons.JsonPathLib.PathComponent.html">PathComponent</a>&gt;</div>
     <div><span class="xref">System.Collections.IEnumerable</span></div>
   </div>
   <div class="inheritedMembers">
@@ -106,24 +107,24 @@
   <h6><strong>Assembly</strong>: JsonPath.dll</h6>
   <h5 id="JsonCons_JsonPathLib_NormalizedPath_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class NormalizedPath : IEquatable&lt;NormalizedPath&gt;, IComparable&lt;NormalizedPath&gt;, IEnumerable&lt;PathNode&gt;, IEnumerable</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class NormalizedPath : IEquatable&lt;NormalizedPath&gt;, IComparable&lt;NormalizedPath&gt;, IEnumerable&lt;PathComponent&gt;, IEnumerable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath__ctor_JsonCons_JsonPathLib_PathNode_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.%23ctor(JsonCons.JsonPathLib.PathNode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath__ctor_JsonCons_JsonPathLib_PathComponent_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.%23ctor(JsonCons.JsonPathLib.PathComponent)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L96">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L101">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath__ctor_" data-uid="JsonCons.JsonPathLib.NormalizedPath.#ctor*"></a>
-  <h4 id="JsonCons_JsonPathLib_NormalizedPath__ctor_JsonCons_JsonPathLib_PathNode_" data-uid="JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathNode)">NormalizedPath(PathNode)</h4>
+  <h4 id="JsonCons_JsonPathLib_NormalizedPath__ctor_JsonCons_JsonPathLib_PathComponent_" data-uid="JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathComponent)">NormalizedPath(PathComponent)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public NormalizedPath(PathNode node)</code></pre>
+    <pre><code class="lang-csharp hljs">public NormalizedPath(PathComponent node)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -136,7 +137,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="JsonCons.JsonPathLib.PathNode.html">PathNode</a></td>
+        <td><a class="xref" href="JsonCons.JsonPathLib.PathComponent.html">PathComponent</a></td>
         <td><span class="parametername">node</span></td>
         <td></td>
       </tr>
@@ -149,7 +150,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath_Root.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.Root%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L112">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L117">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath_Root_" data-uid="JsonCons.JsonPathLib.NormalizedPath.Root*"></a>
   <h4 id="JsonCons_JsonPathLib_NormalizedPath_Root" data-uid="JsonCons.JsonPathLib.NormalizedPath.Root">Root</h4>
@@ -157,7 +158,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PathNode Root { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public PathComponent Root { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -169,7 +170,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="JsonCons.JsonPathLib.PathNode.html">PathNode</a></td>
+        <td><a class="xref" href="JsonCons.JsonPathLib.PathComponent.html">PathComponent</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -179,7 +180,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath_Stem.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.Stem%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L114">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L119">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath_Stem_" data-uid="JsonCons.JsonPathLib.NormalizedPath.Stem*"></a>
   <h4 id="JsonCons_JsonPathLib_NormalizedPath_Stem" data-uid="JsonCons.JsonPathLib.NormalizedPath.Stem">Stem</h4>
@@ -187,7 +188,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PathNode Stem { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public PathComponent Stem { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -199,7 +200,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="JsonCons.JsonPathLib.PathNode.html">PathNode</a></td>
+        <td><a class="xref" href="JsonCons.JsonPathLib.PathComponent.html">PathComponent</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -211,7 +212,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath_CompareTo_JsonCons_JsonPathLib_NormalizedPath_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.CompareTo(JsonCons.JsonPathLib.NormalizedPath)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L227">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L252">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath_CompareTo_" data-uid="JsonCons.JsonPathLib.NormalizedPath.CompareTo*"></a>
   <h4 id="JsonCons_JsonPathLib_NormalizedPath_CompareTo_JsonCons_JsonPathLib_NormalizedPath_" data-uid="JsonCons.JsonPathLib.NormalizedPath.CompareTo(JsonCons.JsonPathLib.NormalizedPath)">CompareTo(NormalizedPath)</h4>
@@ -258,7 +259,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath_Equals_JsonCons_JsonPathLib_NormalizedPath_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.Equals(JsonCons.JsonPathLib.NormalizedPath)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L207">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L232">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath_Equals_" data-uid="JsonCons.JsonPathLib.NormalizedPath.Equals*"></a>
   <h4 id="JsonCons_JsonPathLib_NormalizedPath_Equals_JsonCons_JsonPathLib_NormalizedPath_" data-uid="JsonCons.JsonPathLib.NormalizedPath.Equals(JsonCons.JsonPathLib.NormalizedPath)">Equals(NormalizedPath)</h4>
@@ -305,7 +306,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath_Equals_System_Object_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L217">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L242">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath_Equals_" data-uid="JsonCons.JsonPathLib.NormalizedPath.Equals*"></a>
   <h4 id="JsonCons_JsonPathLib_NormalizedPath_Equals_System_Object_" data-uid="JsonCons.JsonPathLib.NormalizedPath.Equals(System.Object)">Equals(Object)</h4>
@@ -354,15 +355,16 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath_GetEnumerator.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L116">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L126">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath_GetEnumerator_" data-uid="JsonCons.JsonPathLib.NormalizedPath.GetEnumerator*"></a>
   <h4 id="JsonCons_JsonPathLib_NormalizedPath_GetEnumerator" data-uid="JsonCons.JsonPathLib.NormalizedPath.GetEnumerator">GetEnumerator()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns an enumerator that iterates through the components of the normalized path.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator&lt;PathNode&gt; GetEnumerator()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;PathComponent&gt; GetEnumerator()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -374,7 +376,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<a class="xref" href="JsonCons.JsonPathLib.PathNode.html">PathNode</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<a class="xref" href="JsonCons.JsonPathLib.PathComponent.html">PathComponent</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -384,7 +386,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath_GetHashCode.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L243">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L268">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath_GetHashCode_" data-uid="JsonCons.JsonPathLib.NormalizedPath.GetHashCode*"></a>
   <h4 id="JsonCons_JsonPathLib_NormalizedPath_GetHashCode" data-uid="JsonCons.JsonPathLib.NormalizedPath.GetHashCode">GetHashCode()</h4>
@@ -416,11 +418,14 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath_ToJsonPointer.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.ToJsonPointer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L162">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L187">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath_ToJsonPointer_" data-uid="JsonCons.JsonPathLib.NormalizedPath.ToJsonPointer*"></a>
   <h4 id="JsonCons_JsonPathLib_NormalizedPath_ToJsonPointer" data-uid="JsonCons.JsonPathLib.NormalizedPath.ToJsonPointer">ToJsonPointer()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a <a href="https://datatracker.ietf.org/doc/html/rfc6901">JSON Pointer</a> representation for the normalized path.
+The string will have the form /aName/anotherName/anIndex with any '~' and '/' characters appearing in names escaped as per the
+specification.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -446,11 +451,14 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath_ToString.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L126">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L144">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath_ToString_" data-uid="JsonCons.JsonPathLib.NormalizedPath.ToString*"></a>
   <h4 id="JsonCons_JsonPathLib_NormalizedPath_ToString" data-uid="JsonCons.JsonPathLib.NormalizedPath.ToString">ToString()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a string representation for the normalized path.
+The string will have the form $['aName']['anotherName'][anIndex]
+with any single quote characters appearing in names escaped with a backslash.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -478,7 +486,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath_TryGet_System_Text_Json_JsonElement_System_Text_Json_JsonElement__.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement%2CSystem.Text.Json.JsonElement%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L254">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L279">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath_TryGet_" data-uid="JsonCons.JsonPathLib.NormalizedPath.TryGet*"></a>
   <h4 id="JsonCons_JsonPathLib_NormalizedPath_TryGet_System_Text_Json_JsonElement_System_Text_Json_JsonElement__" data-uid="JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)">TryGet(JsonElement, out JsonElement)</h4>
@@ -532,7 +540,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L121">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L132">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_NormalizedPath_System_Collections_IEnumerable_GetEnumerator_" data-uid="JsonCons.JsonPathLib.NormalizedPath.System#Collections#IEnumerable#GetEnumerator*"></a>
   <h4 id="JsonCons_JsonPathLib_NormalizedPath_System_Collections_IEnumerable_GetEnumerator" data-uid="JsonCons.JsonPathLib.NormalizedPath.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
@@ -581,7 +589,7 @@
                     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_NormalizedPath.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.NormalizedPath%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L92" class="contribution-link">View Source</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L97" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
