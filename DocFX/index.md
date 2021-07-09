@@ -2,5 +2,5 @@
 
 ## Documentation
 
-- [Reference](toc.html)
+- [Reference](https://danielaparker.github.io/JsonCons.Net/toc.html)
 
