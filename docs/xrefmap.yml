@@ -1,6 +1,18 @@
 ### YamlMime:XRefMap
 sorted: true
 references:
+- uid: DocFX
+  name: DocFX
+  href: ref/DocFX.html
+  commentId: N:DocFX
+  fullName: DocFX
+  nameWithType: DocFX
+- uid: DocFX.Class1
+  name: Class1
+  href: ref/DocFX.Class1.html
+  commentId: T:DocFX.Class1
+  fullName: DocFX.Class1
+  nameWithType: Class1
 - uid: JsonCons.JsonPathLib
   name: JsonCons.JsonPathLib
   href: ref/JsonCons.JsonPathLib.html
