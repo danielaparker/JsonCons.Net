@@ -67,18 +67,21 @@ namespace JsonCons.JsonPathLib
         readonly ResultOptions _requiredOptions;
 
         /// <summary>
-        /// Parses a JSONPath string into a JsonPath.
+        /// Parses a JSONPath string into a JsonPath, for "parse once, use many times".
+        /// A JsonPath instance is thread safe and has no mutable state.
         /// </summary>
+        /// <param name="pathStr">A JSONPath string.</param>
+        /// <returns>A JsonPath.</returns>
 
-        public static JsonPath Parse(string expr)
+        public static JsonPath Parse(string pathStr)
         {
-            var compiler = new JsonPathParser(expr);
+            var compiler = new JsonPathParser(pathStr);
             return compiler.Parse();
         }
 
         internal JsonPath(StaticResources resources, 
-                                    ISelector selector, 
-                                    bool pathsRequired)
+                          ISelector selector, 
+                          bool pathsRequired)
         {
             _resources = resources;
             _selector = selector;
@@ -91,8 +94,8 @@ namespace JsonCons.JsonPathLib
         /// <summary>
         /// Selects values within the root value that match the JSONPath expression. 
         /// </summary>
-        /// <param name="root">The root.</param>
-        /// <param name="options"><see cref="ResultOptions"/>.</param>
+        /// <param name="root">The root value.</param>
+        /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of values within the root value that match the provided JSONPath expression</returns>
         public IList<JsonElement> Select(JsonElement root, ResultOptions options = 0)
         {
@@ -164,8 +167,8 @@ namespace JsonCons.JsonPathLib
         /// <summary>
         /// Selects paths identifying the values within the root value that match the JSONPath expression. 
         /// </summary>
-        /// <param name="root">The root.</param>
-        /// <param name="options"><see cref="ResultOptions"/>.</param>
+        /// <param name="root">The root value.</param>
+        /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value that match the provided JSONPath expression</returns>
         
         public IList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options = ResultOptions.Path)
@@ -215,8 +218,8 @@ namespace JsonCons.JsonPathLib
         /// <summary>
         /// Selects nodes that represent location-value pairs within the root value that match the JSONPath expression. 
         /// </summary>
-        /// <param name="root">The root.</param>
-        /// <param name="options"><see cref="ResultOptions"/>.</param>
+        /// <param name="root">The root value.</param>
+        /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of <see cref="JsonPathNode"/> representing locations-value pairs 
         /// within the root value that match the provided JSONPath expression</returns>
 
@@ -272,25 +275,52 @@ namespace JsonCons.JsonPathLib
             _resources.Dispose();
         }
 
-        public static IList<JsonElement> Select(JsonElement root, string path, ResultOptions options = 0)
+        /// <summary>
+        /// Selects values within the root value that match the JSONPath expression. 
+        /// This method parses and applies the expression in one operation.
+        /// </summary>
+        /// <param name="root">The root value.</param>
+        /// <param name="pathStr">A JSONPath string.</param>
+        /// <param name="options">Options for handling duplicate paths and order of results.</param>
+        /// <returns>A list of values within the root value that match the provided JSONPath expression</returns>
+        public static IList<JsonElement> Select(JsonElement root, string pathStr, ResultOptions options = 0)
         {
-            using (var expr = JsonPath.Parse(path))
+            using (var expr = JsonPath.Parse(pathStr))
             {
                 return expr.Select(root, options);
             }
         }
 
-        public static IList<NormalizedPath> SelectPaths(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
+        /// <summary>
+        /// Selects paths identifying the values within the root value that match the JSONPath expression. 
+        /// This method parses and applies the expression in one operation.
+        /// </summary>
+        /// <param name="root">The root value.</param>
+        /// <param name="pathStr">A JSONPath string.</param>
+        /// <param name="options">Options for handling duplicate paths and order of results.</param>
+        /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value that match the provided JSONPath expression</returns>
+
+        public static IList<NormalizedPath> SelectPaths(JsonElement root, string pathStr, ResultOptions options = ResultOptions.Path)
         {
-            using (var expr = JsonPath.Parse(path))
+            using (var expr = JsonPath.Parse(pathStr))
             {
                 return expr.SelectPaths(root, options);
             }
         }
 
-        public static IList<JsonPathNode> SelectNodes(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
+        /// <summary>
+        /// Selects nodes that represent location-value pairs within the root value that match the JSONPath expression. 
+        /// This method parses and applies the expression in one operation.
+        /// </summary>
+        /// <param name="root">The root value.</param>
+        /// <param name="pathStr">A JSONPath string.</param>
+        /// <param name="options">Options for handling duplicate paths and order of results.</param>
+        /// <returns>A list of <see cref="JsonPathNode"/> representing locations-value pairs 
+        /// within the root value that match the provided JSONPath expression</returns>
+
+        public static IList<JsonPathNode> SelectNodes(JsonElement root, string pathStr, ResultOptions options = ResultOptions.Path)
         {
-            using (var expr = JsonPath.Parse(path))
+            using (var expr = JsonPath.Parse(pathStr))
             {
                 return expr.SelectNodes(root, options);
             }

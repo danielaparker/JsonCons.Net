@@ -126,7 +126,7 @@ It should be disposed to ensure that these objects are properly disposed.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_Dispose.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L270">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L273">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_Dispose_" data-uid="JsonCons.JsonPathLib.JsonPath.Dispose*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_Dispose" data-uid="JsonCons.JsonPathLib.JsonPath.Dispose">Dispose()</h4>
@@ -142,16 +142,17 @@ It should be disposed to ensure that these objects are properly disposed.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_Parse_System_String_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.Parse(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L73">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L76">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_Parse_" data-uid="JsonCons.JsonPathLib.JsonPath.Parse*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_Parse_System_String_" data-uid="JsonCons.JsonPathLib.JsonPath.Parse(System.String)">Parse(String)</h4>
-  <div class="markdown level1 summary"><p>Parses a JSONPath string into a JsonPath.</p>
+  <div class="markdown level1 summary"><p>Parses a JSONPath string into a JsonPath, for &quot;parse once, use many times&quot;.
+A JsonPath instance is thread safe and has no mutable state.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static JsonPath Parse(string expr)</code></pre>
+    <pre><code class="lang-csharp hljs">public static JsonPath Parse(string pathStr)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -165,8 +166,9 @@ It should be disposed to ensure that these objects are properly disposed.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">expr</span></td>
-        <td></td>
+        <td><span class="parametername">pathStr</span></td>
+        <td><p>A JSONPath string.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -181,7 +183,8 @@ It should be disposed to ensure that these objects are properly disposed.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="JsonCons.JsonPathLib.JsonPath.html">JsonPath</a></td>
-        <td></td>
+        <td><p>A JsonPath.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -190,7 +193,7 @@ It should be disposed to ensure that these objects are properly disposed.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_Select_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L97">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L100">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_Select_" data-uid="JsonCons.JsonPathLib.JsonPath.Select*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_Select_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">Select(JsonElement, ResultOptions)</h4>
@@ -214,13 +217,13 @@ It should be disposed to ensure that these objects are properly disposed.</p>
       <tr>
         <td><span class="xref">System.Text.Json.JsonElement</span></td>
         <td><span class="parametername">root</span></td>
-        <td><p>The root.</p>
+        <td><p>The root value.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="JsonCons.JsonPathLib.ResultOptions.html">ResultOptions</a></td>
         <td><span class="parametername">options</span></td>
-        <td><p><a class="xref" href="JsonCons.JsonPathLib.ResultOptions.html">ResultOptions</a>.</p>
+        <td><p>Options for handling duplicate paths and order of results.</p>
 </td>
       </tr>
     </tbody>
@@ -246,15 +249,17 @@ It should be disposed to ensure that these objects are properly disposed.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L275">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L286">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_Select_" data-uid="JsonCons.JsonPathLib.JsonPath.Select*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)">Select(JsonElement, String, ResultOptions)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Selects values within the root value that match the JSONPath expression.
+This method parses and applies the expression in one operation.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IList&lt;JsonElement&gt; Select(JsonElement root, string path, ResultOptions options = (ResultOptions)0)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IList&lt;JsonElement&gt; Select(JsonElement root, string pathStr, ResultOptions options = (ResultOptions)0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -269,17 +274,20 @@ It should be disposed to ensure that these objects are properly disposed.</p>
       <tr>
         <td><span class="xref">System.Text.Json.JsonElement</span></td>
         <td><span class="parametername">root</span></td>
-        <td></td>
+        <td><p>The root value.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">path</span></td>
-        <td></td>
+        <td><span class="parametername">pathStr</span></td>
+        <td><p>A JSONPath string.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="JsonCons.JsonPathLib.ResultOptions.html">ResultOptions</a></td>
         <td><span class="parametername">options</span></td>
-        <td></td>
+        <td><p>Options for handling duplicate paths and order of results.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -294,7 +302,8 @@ It should be disposed to ensure that these objects are properly disposed.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.Text.Json.JsonElement</span>&gt;</td>
-        <td></td>
+        <td><p>A list of values within the root value that match the provided JSONPath expression</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -303,7 +312,7 @@ It should be disposed to ensure that these objects are properly disposed.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L223">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L226">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_SelectNodes_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectNodes*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">SelectNodes(JsonElement, ResultOptions)</h4>
@@ -327,13 +336,13 @@ It should be disposed to ensure that these objects are properly disposed.</p>
       <tr>
         <td><span class="xref">System.Text.Json.JsonElement</span></td>
         <td><span class="parametername">root</span></td>
-        <td><p>The root.</p>
+        <td><p>The root value.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="JsonCons.JsonPathLib.ResultOptions.html">ResultOptions</a></td>
         <td><span class="parametername">options</span></td>
-        <td><p><a class="xref" href="JsonCons.JsonPathLib.ResultOptions.html">ResultOptions</a>.</p>
+        <td><p>Options for handling duplicate paths and order of results.</p>
 </td>
       </tr>
     </tbody>
@@ -360,15 +369,17 @@ within the root value that match the provided JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L291">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L321">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_SelectNodes_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectNodes*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)">SelectNodes(JsonElement, String, ResultOptions)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Selects nodes that represent location-value pairs within the root value that match the JSONPath expression.
+This method parses and applies the expression in one operation.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IList&lt;JsonPathNode&gt; SelectNodes(JsonElement root, string path, ResultOptions options = ResultOptions.Path)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IList&lt;JsonPathNode&gt; SelectNodes(JsonElement root, string pathStr, ResultOptions options = ResultOptions.Path)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -383,17 +394,20 @@ within the root value that match the provided JSONPath expression</p>
       <tr>
         <td><span class="xref">System.Text.Json.JsonElement</span></td>
         <td><span class="parametername">root</span></td>
-        <td></td>
+        <td><p>The root value.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">path</span></td>
-        <td></td>
+        <td><span class="parametername">pathStr</span></td>
+        <td><p>A JSONPath string.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="JsonCons.JsonPathLib.ResultOptions.html">ResultOptions</a></td>
         <td><span class="parametername">options</span></td>
-        <td></td>
+        <td><p>Options for handling duplicate paths and order of results.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -408,7 +422,9 @@ within the root value that match the provided JSONPath expression</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPathLib.JsonPathNode.html">JsonPathNode</a>&gt;</td>
-        <td></td>
+        <td><p>A list of <a class="xref" href="JsonCons.JsonPathLib.JsonPathNode.html">JsonPathNode</a> representing locations-value pairs
+within the root value that match the provided JSONPath expression</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -417,7 +433,7 @@ within the root value that match the provided JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L171">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L174">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_SelectPaths_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectPaths*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">SelectPaths(JsonElement, ResultOptions)</h4>
@@ -441,13 +457,13 @@ within the root value that match the provided JSONPath expression</p>
       <tr>
         <td><span class="xref">System.Text.Json.JsonElement</span></td>
         <td><span class="parametername">root</span></td>
-        <td><p>The root.</p>
+        <td><p>The root value.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="JsonCons.JsonPathLib.ResultOptions.html">ResultOptions</a></td>
         <td><span class="parametername">options</span></td>
-        <td><p><a class="xref" href="JsonCons.JsonPathLib.ResultOptions.html">ResultOptions</a>.</p>
+        <td><p>Options for handling duplicate paths and order of results.</p>
 </td>
       </tr>
     </tbody>
@@ -473,15 +489,17 @@ within the root value that match the provided JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L283">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L303">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_SelectPaths_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectPaths*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)">SelectPaths(JsonElement, String, ResultOptions)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Selects paths identifying the values within the root value that match the JSONPath expression.
+This method parses and applies the expression in one operation.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IList&lt;NormalizedPath&gt; SelectPaths(JsonElement root, string path, ResultOptions options = ResultOptions.Path)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IList&lt;NormalizedPath&gt; SelectPaths(JsonElement root, string pathStr, ResultOptions options = ResultOptions.Path)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -496,17 +514,20 @@ within the root value that match the provided JSONPath expression</p>
       <tr>
         <td><span class="xref">System.Text.Json.JsonElement</span></td>
         <td><span class="parametername">root</span></td>
-        <td></td>
+        <td><p>The root value.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">path</span></td>
-        <td></td>
+        <td><span class="parametername">pathStr</span></td>
+        <td><p>A JSONPath string.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="JsonCons.JsonPathLib.ResultOptions.html">ResultOptions</a></td>
         <td><span class="parametername">options</span></td>
-        <td></td>
+        <td><p>Options for handling duplicate paths and order of results.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -521,7 +542,8 @@ within the root value that match the provided JSONPath expression</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPathLib.NormalizedPath.html">NormalizedPath</a>&gt;</td>
-        <td></td>
+        <td><p>A list of <a class="xref" href="JsonCons.JsonPathLib.NormalizedPath.html">NormalizedPath</a> identifying the values within the root value that match the provided JSONPath expression</p>
+</td>
       </tr>
     </tbody>
   </table>
