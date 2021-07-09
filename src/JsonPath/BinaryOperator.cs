@@ -102,7 +102,7 @@ namespace JsonCons.JsonPathLib
 
         public override bool TryEvaluate(IOperand lhs, IOperand rhs, out IOperand result) 
         {
-            var comparer = JsonValueEqualityComparer.Instance;
+            var comparer = OperandEqualityComparer.Instance;
             if (comparer.Equals(lhs, rhs))
             {
                 result = JsonConstants.True;

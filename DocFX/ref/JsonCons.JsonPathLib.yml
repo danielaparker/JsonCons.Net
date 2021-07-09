@@ -4,18 +4,10 @@ items:
   commentId: N:JsonCons.JsonPathLib
   id: JsonCons.JsonPathLib
   children:
-  - JsonCons.JsonPathLib.IJsonArrayEnumerator
-  - JsonCons.JsonPathLib.IJsonObjectEnumerator
-  - JsonCons.JsonPathLib.IOperand
   - JsonCons.JsonPathLib.JsonElementEqualityComparer
-  - JsonCons.JsonPathLib.JsonElementOperand
-  - JsonCons.JsonPathLib.JsonElementOperand.ArrayEnumerator
-  - JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
   - JsonCons.JsonPathLib.JsonPath
   - JsonCons.JsonPathLib.JsonPathExpression
   - JsonCons.JsonPathLib.JsonPathNode
-  - JsonCons.JsonPathLib.JsonValueEqualityComparer
-  - JsonCons.JsonPathLib.NameValuePair
   - JsonCons.JsonPathLib.NormalizedPath
   - JsonCons.JsonPathLib.PathNode
   - JsonCons.JsonPathLib.PathNodeKind
@@ -59,12 +51,6 @@ references:
   name: JsonPathNode
   nameWithType: JsonPathNode
   fullName: JsonCons.JsonPathLib.JsonPathNode
-- uid: JsonCons.JsonPathLib.JsonValueEqualityComparer
-  commentId: T:JsonCons.JsonPathLib.JsonValueEqualityComparer
-  parent: JsonCons.JsonPathLib
-  name: JsonValueEqualityComparer
-  nameWithType: JsonValueEqualityComparer
-  fullName: JsonCons.JsonPathLib.JsonValueEqualityComparer
 - uid: JsonCons.JsonPathLib.PathNodeKind
   commentId: T:JsonCons.JsonPathLib.PathNodeKind
   parent: JsonCons.JsonPathLib
@@ -83,45 +69,6 @@ references:
   name: NormalizedPath
   nameWithType: NormalizedPath
   fullName: JsonCons.JsonPathLib.NormalizedPath
-- uid: JsonCons.JsonPathLib.NameValuePair
-  commentId: T:JsonCons.JsonPathLib.NameValuePair
-  parent: JsonCons.JsonPathLib
-  name: NameValuePair
-  nameWithType: NameValuePair
-  fullName: JsonCons.JsonPathLib.NameValuePair
-- uid: JsonCons.JsonPathLib.IJsonArrayEnumerator
-  commentId: T:JsonCons.JsonPathLib.IJsonArrayEnumerator
-  parent: JsonCons.JsonPathLib
-  name: IJsonArrayEnumerator
-  nameWithType: IJsonArrayEnumerator
-  fullName: JsonCons.JsonPathLib.IJsonArrayEnumerator
-- uid: JsonCons.JsonPathLib.IJsonObjectEnumerator
-  commentId: T:JsonCons.JsonPathLib.IJsonObjectEnumerator
-  parent: JsonCons.JsonPathLib
-  name: IJsonObjectEnumerator
-  nameWithType: IJsonObjectEnumerator
-  fullName: JsonCons.JsonPathLib.IJsonObjectEnumerator
-- uid: JsonCons.JsonPathLib.IOperand
-  commentId: T:JsonCons.JsonPathLib.IOperand
-  parent: JsonCons.JsonPathLib
-  name: IOperand
-  nameWithType: IOperand
-  fullName: JsonCons.JsonPathLib.IOperand
-- uid: JsonCons.JsonPathLib.JsonElementOperand
-  commentId: T:JsonCons.JsonPathLib.JsonElementOperand
-  name: JsonElementOperand
-  nameWithType: JsonElementOperand
-  fullName: JsonCons.JsonPathLib.JsonElementOperand
-- uid: JsonCons.JsonPathLib.JsonElementOperand.ArrayEnumerator
-  commentId: T:JsonCons.JsonPathLib.JsonElementOperand.ArrayEnumerator
-  name: JsonElementOperand.ArrayEnumerator
-  nameWithType: JsonElementOperand.ArrayEnumerator
-  fullName: JsonCons.JsonPathLib.JsonElementOperand.ArrayEnumerator
-- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
-  commentId: T:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
-  name: JsonElementOperand.ObjectEnumerator
-  nameWithType: JsonElementOperand.ObjectEnumerator
-  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
 - uid: JsonCons.JsonPathLib
   commentId: N:JsonCons.JsonPathLib
   name: JsonCons.JsonPathLib

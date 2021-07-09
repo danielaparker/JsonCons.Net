@@ -7,13 +7,13 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-   public sealed class JsonValueEqualityComparer : IEqualityComparer<IOperand>
+   sealed class OperandEqualityComparer : IEqualityComparer<IOperand>
    {
-       public static JsonValueEqualityComparer Instance { get; } = new JsonValueEqualityComparer();
+       internal static OperandEqualityComparer Instance { get; } = new OperandEqualityComparer();
 
        private int _maxHashDepth { get; } = 100;
 
-       JsonValueEqualityComparer() {}
+       OperandEqualityComparer() {}
 
        public bool Equals(IOperand lhs, IOperand rhs)
        {

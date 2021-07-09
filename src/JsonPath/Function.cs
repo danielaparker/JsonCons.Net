@@ -87,7 +87,7 @@ namespace JsonCons.JsonPathLib
             var arg0 = args[0];
             var arg1 = args[1];
 
-            var comparer = JsonValueEqualityComparer.Instance;
+            var comparer = OperandEqualityComparer.Instance;
 
             switch (arg0.ValueKind)
             {

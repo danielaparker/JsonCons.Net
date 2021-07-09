@@ -1,5 +1,5 @@
 - name: Articles
   href: articles/
-- name: Api Documentation
+- name: Reference
   href: ref/
-  homepage: ref/index.md
+  homepage: ref/toc.yml

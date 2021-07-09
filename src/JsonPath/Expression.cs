@@ -35,7 +35,7 @@ namespace JsonCons.JsonPathLib
     {
         internal static bool IsFalse(IOperand val)
         {
-            var comparer = JsonValueEqualityComparer.Instance;
+            var comparer = OperandEqualityComparer.Instance;
             switch (val.ValueKind)
             {
                 case JsonValueKind.False:

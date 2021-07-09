@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-    public readonly struct NameValuePair
+    readonly struct NameValuePair
     {
         public string Name { get; }
         public IOperand Value { get; }
@@ -19,15 +19,15 @@ namespace JsonCons.JsonPathLib
         }
     }
 
-    public interface IJsonArrayEnumerator : IEnumerator<IOperand>, IEnumerable<IOperand>
+    interface IJsonArrayEnumerator : IEnumerator<IOperand>, IEnumerable<IOperand>
     {
     }
 
-    public interface IJsonObjectEnumerator : IEnumerator<NameValuePair>, IEnumerable<NameValuePair>
+    interface IJsonObjectEnumerator : IEnumerator<NameValuePair>, IEnumerable<NameValuePair>
     {
     }
 
-    public interface IOperand 
+    interface IOperand 
     {
         JsonValueKind ValueKind {get;}
         IOperand this[int index] {get;}
@@ -43,9 +43,9 @@ namespace JsonCons.JsonPathLib
         JsonElement GetJsonElement();
     };
 
-    public readonly struct JsonElementOperand : IOperand
+    readonly struct JsonElementOperand : IOperand
     {
-        public class ArrayEnumerator : IJsonArrayEnumerator
+        internal class ArrayEnumerator : IJsonArrayEnumerator
         {
             JsonElement.ArrayEnumerator _enumerator;
 
@@ -84,7 +84,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public class ObjectEnumerator : IJsonObjectEnumerator
+        internal class ObjectEnumerator : IJsonObjectEnumerator
         {
             JsonElement.ObjectEnumerator _enumerator;
 
@@ -500,7 +500,7 @@ namespace JsonCons.JsonPathLib
 
     readonly struct ArrayJsonValue : IOperand
     {
-        public class ArrayEnumerator : IJsonArrayEnumerator
+        internal class ArrayEnumerator : IJsonArrayEnumerator
         {   
             IList<IOperand> _value;
             System.Collections.IEnumerator _enumerator;
