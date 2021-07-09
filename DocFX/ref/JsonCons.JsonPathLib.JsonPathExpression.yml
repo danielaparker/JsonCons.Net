@@ -1,0 +1,807 @@
+### YamlMime:ManagedReference
+items:
+- uid: JsonCons.JsonPathLib.JsonPathExpression
+  commentId: T:JsonCons.JsonPathLib.JsonPathExpression
+  id: JsonPathExpression
+  parent: JsonCons.JsonPathLib
+  children:
+  - JsonCons.JsonPathLib.JsonPathExpression.Compile(System.String)
+  - JsonCons.JsonPathLib.JsonPathExpression.Dispose
+  - JsonCons.JsonPathLib.JsonPathExpression.Select(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  - JsonCons.JsonPathLib.JsonPathExpression.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  - JsonCons.JsonPathLib.JsonPathExpression.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  langs:
+  - csharp
+  - vb
+  name: JsonPathExpression
+  nameWithType: JsonPathExpression
+  fullName: JsonCons.JsonPathLib.JsonPathExpression
+  type: Class
+  source:
+    remote:
+      path: src/JsonPath/JsonPathExpression.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: JsonPathExpression
+    path: ../src/JsonPath/JsonPathExpression.cs
+    startLine: 18
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  summary: "\nRepresents the compiled form of a JsonPath expression.\n"
+  remarks: "\nA JsonPathExpression object may own references to some <xref href=\"System.Text.Json.JsonDocument\" data-throw-if-not-resolved=\"false\"></xref> objects. \nIt should be disposed to ensure that these objects are properly disposed.\n"
+  example: []
+  syntax:
+    content: 'public sealed class JsonPathExpression : IDisposable'
+    content.vb: >-
+      Public NotInheritable Class JsonPathExpression
+          Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - sealed
+  - class
+  modifiers.vb:
+  - Public
+  - NotInheritable
+  - Class
+- uid: JsonCons.JsonPathLib.JsonPathExpression.Compile(System.String)
+  commentId: M:JsonCons.JsonPathLib.JsonPathExpression.Compile(System.String)
+  id: Compile(System.String)
+  parent: JsonCons.JsonPathLib.JsonPathExpression
+  langs:
+  - csharp
+  - vb
+  name: Compile(String)
+  nameWithType: JsonPathExpression.Compile(String)
+  fullName: JsonCons.JsonPathLib.JsonPathExpression.Compile(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/JsonPathExpression.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: Compile
+    path: ../src/JsonPath/JsonPathExpression.cs
+    startLine: 24
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public static JsonPathExpression Compile(string expr)
+    parameters:
+    - id: expr
+      type: System.String
+    return:
+      type: JsonCons.JsonPathLib.JsonPathExpression
+    content.vb: Public Shared Function Compile(expr As String) As JsonPathExpression
+  overload: JsonCons.JsonPathLib.JsonPathExpression.Compile*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: JsonCons.JsonPathLib.JsonPathExpression.Select(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  commentId: M:JsonCons.JsonPathLib.JsonPathExpression.Select(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  id: Select(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  parent: JsonCons.JsonPathLib.JsonPathExpression
+  langs:
+  - csharp
+  - vb
+  name: Select(JsonElement, ResultOptions)
+  nameWithType: JsonPathExpression.Select(JsonElement, ResultOptions)
+  fullName: JsonCons.JsonPathLib.JsonPathExpression.Select(System.Text.Json.JsonElement, JsonCons.JsonPathLib.ResultOptions)
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/JsonPathExpression.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: Select
+    path: ../src/JsonPath/JsonPathExpression.cs
+    startLine: 42
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public IList<JsonElement> Select(JsonElement root, ResultOptions options)
+    parameters:
+    - id: root
+      type: System.Text.Json.JsonElement
+    - id: options
+      type: JsonCons.JsonPathLib.ResultOptions
+    return:
+      type: System.Collections.Generic.IList{System.Text.Json.JsonElement}
+    content.vb: Public Function Select(root As JsonElement, options As ResultOptions) As IList(Of JsonElement)
+  overload: JsonCons.JsonPathLib.JsonPathExpression.Select*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonPathExpression.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  commentId: M:JsonCons.JsonPathLib.JsonPathExpression.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  id: SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  parent: JsonCons.JsonPathLib.JsonPathExpression
+  langs:
+  - csharp
+  - vb
+  name: SelectPaths(JsonElement, ResultOptions)
+  nameWithType: JsonPathExpression.SelectPaths(JsonElement, ResultOptions)
+  fullName: JsonCons.JsonPathLib.JsonPathExpression.SelectPaths(System.Text.Json.JsonElement, JsonCons.JsonPathLib.ResultOptions)
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/JsonPathExpression.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: SelectPaths
+    path: ../src/JsonPath/JsonPathExpression.cs
+    startLine: 109
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public IList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options)
+    parameters:
+    - id: root
+      type: System.Text.Json.JsonElement
+    - id: options
+      type: JsonCons.JsonPathLib.ResultOptions
+    return:
+      type: System.Collections.Generic.IList{JsonCons.JsonPathLib.NormalizedPath}
+    content.vb: Public Function SelectPaths(root As JsonElement, options As ResultOptions) As IList(Of NormalizedPath)
+  overload: JsonCons.JsonPathLib.JsonPathExpression.SelectPaths*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonPathExpression.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  commentId: M:JsonCons.JsonPathLib.JsonPathExpression.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  id: SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
+  parent: JsonCons.JsonPathLib.JsonPathExpression
+  langs:
+  - csharp
+  - vb
+  name: SelectNodes(JsonElement, ResultOptions)
+  nameWithType: JsonPathExpression.SelectNodes(JsonElement, ResultOptions)
+  fullName: JsonCons.JsonPathLib.JsonPathExpression.SelectNodes(System.Text.Json.JsonElement, JsonCons.JsonPathLib.ResultOptions)
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/JsonPathExpression.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: SelectNodes
+    path: ../src/JsonPath/JsonPathExpression.cs
+    startLine: 153
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public IList<JsonPathNode> SelectNodes(JsonElement root, ResultOptions options)
+    parameters:
+    - id: root
+      type: System.Text.Json.JsonElement
+    - id: options
+      type: JsonCons.JsonPathLib.ResultOptions
+    return:
+      type: System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathNode}
+    content.vb: Public Function SelectNodes(root As JsonElement, options As ResultOptions) As IList(Of JsonPathNode)
+  overload: JsonCons.JsonPathLib.JsonPathExpression.SelectNodes*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonPathExpression.Dispose
+  commentId: M:JsonCons.JsonPathLib.JsonPathExpression.Dispose
+  id: Dispose
+  parent: JsonCons.JsonPathLib.JsonPathExpression
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: JsonPathExpression.Dispose()
+  fullName: JsonCons.JsonPathLib.JsonPathExpression.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/JsonPathExpression.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: Dispose
+    path: ../src/JsonPath/JsonPathExpression.cs
+    startLine: 197
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose
+  overload: JsonCons.JsonPathLib.JsonPathExpression.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: System.Text.Json.JsonDocument
+  commentId: T:System.Text.Json.JsonDocument
+  isExternal: true
+- uid: JsonCons.JsonPathLib
+  commentId: N:JsonCons.JsonPathLib
+  name: JsonCons.JsonPathLib
+  nameWithType: JsonCons.JsonPathLib
+  fullName: JsonCons.JsonPathLib
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: JsonCons.JsonPathLib.JsonPathExpression.Compile*
+  commentId: Overload:JsonCons.JsonPathLib.JsonPathExpression.Compile
+  name: Compile
+  nameWithType: JsonPathExpression.Compile
+  fullName: JsonCons.JsonPathLib.JsonPathExpression.Compile
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: JsonCons.JsonPathLib.JsonPathExpression
+  commentId: T:JsonCons.JsonPathLib.JsonPathExpression
+  parent: JsonCons.JsonPathLib
+  name: JsonPathExpression
+  nameWithType: JsonPathExpression
+  fullName: JsonCons.JsonPathLib.JsonPathExpression
+- uid: JsonCons.JsonPathLib.JsonPathExpression.Select*
+  commentId: Overload:JsonCons.JsonPathLib.JsonPathExpression.Select
+  name: Select
+  nameWithType: JsonPathExpression.Select
+  fullName: JsonCons.JsonPathLib.JsonPathExpression.Select
+- uid: System.Text.Json.JsonElement
+  commentId: T:System.Text.Json.JsonElement
+  parent: System.Text.Json
+  isExternal: true
+  name: JsonElement
+  nameWithType: JsonElement
+  fullName: System.Text.Json.JsonElement
+- uid: JsonCons.JsonPathLib.ResultOptions
+  commentId: T:JsonCons.JsonPathLib.ResultOptions
+  parent: JsonCons.JsonPathLib
+  name: ResultOptions
+  nameWithType: ResultOptions
+  fullName: JsonCons.JsonPathLib.ResultOptions
+- uid: System.Collections.Generic.IList{System.Text.Json.JsonElement}
+  commentId: T:System.Collections.Generic.IList{System.Text.Json.JsonElement}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IList`1
+  name: IList<JsonElement>
+  nameWithType: IList<JsonElement>
+  fullName: System.Collections.Generic.IList<System.Text.Json.JsonElement>
+  nameWithType.vb: IList(Of JsonElement)
+  fullName.vb: System.Collections.Generic.IList(Of System.Text.Json.JsonElement)
+  name.vb: IList(Of JsonElement)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Text.Json.JsonElement
+    name: JsonElement
+    nameWithType: JsonElement
+    fullName: System.Text.Json.JsonElement
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Text.Json.JsonElement
+    name: JsonElement
+    nameWithType: JsonElement
+    fullName: System.Text.Json.JsonElement
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Text.Json
+  commentId: N:System.Text.Json
+  isExternal: true
+  name: System.Text.Json
+  nameWithType: System.Text.Json
+  fullName: System.Text.Json
+- uid: System.Collections.Generic.IList`1
+  commentId: T:System.Collections.Generic.IList`1
+  isExternal: true
+  name: IList<T>
+  nameWithType: IList<T>
+  fullName: System.Collections.Generic.IList<T>
+  nameWithType.vb: IList(Of T)
+  fullName.vb: System.Collections.Generic.IList(Of T)
+  name.vb: IList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: JsonCons.JsonPathLib.JsonPathExpression.SelectPaths*
+  commentId: Overload:JsonCons.JsonPathLib.JsonPathExpression.SelectPaths
+  name: SelectPaths
+  nameWithType: JsonPathExpression.SelectPaths
+  fullName: JsonCons.JsonPathLib.JsonPathExpression.SelectPaths
+- uid: System.Collections.Generic.IList{JsonCons.JsonPathLib.NormalizedPath}
+  commentId: T:System.Collections.Generic.IList{JsonCons.JsonPathLib.NormalizedPath}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IList`1
+  name: IList<NormalizedPath>
+  nameWithType: IList<NormalizedPath>
+  fullName: System.Collections.Generic.IList<JsonCons.JsonPathLib.NormalizedPath>
+  nameWithType.vb: IList(Of NormalizedPath)
+  fullName.vb: System.Collections.Generic.IList(Of JsonCons.JsonPathLib.NormalizedPath)
+  name.vb: IList(Of NormalizedPath)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: JsonCons.JsonPathLib.NormalizedPath
+    name: NormalizedPath
+    nameWithType: NormalizedPath
+    fullName: JsonCons.JsonPathLib.NormalizedPath
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: JsonCons.JsonPathLib.NormalizedPath
+    name: NormalizedPath
+    nameWithType: NormalizedPath
+    fullName: JsonCons.JsonPathLib.NormalizedPath
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.JsonPathExpression.SelectNodes*
+  commentId: Overload:JsonCons.JsonPathLib.JsonPathExpression.SelectNodes
+  name: SelectNodes
+  nameWithType: JsonPathExpression.SelectNodes
+  fullName: JsonCons.JsonPathLib.JsonPathExpression.SelectNodes
+- uid: System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathNode}
+  commentId: T:System.Collections.Generic.IList{JsonCons.JsonPathLib.JsonPathNode}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IList`1
+  name: IList<JsonPathNode>
+  nameWithType: IList<JsonPathNode>
+  fullName: System.Collections.Generic.IList<JsonCons.JsonPathLib.JsonPathNode>
+  nameWithType.vb: IList(Of JsonPathNode)
+  fullName.vb: System.Collections.Generic.IList(Of JsonCons.JsonPathLib.JsonPathNode)
+  name.vb: IList(Of JsonPathNode)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: JsonCons.JsonPathLib.JsonPathNode
+    name: JsonPathNode
+    nameWithType: JsonPathNode
+    fullName: JsonCons.JsonPathLib.JsonPathNode
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: JsonCons.JsonPathLib.JsonPathNode
+    name: JsonPathNode
+    nameWithType: JsonPathNode
+    fullName: JsonCons.JsonPathLib.JsonPathNode
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.JsonPathExpression.Dispose*
+  commentId: Overload:JsonCons.JsonPathLib.JsonPathExpression.Dispose
+  name: Dispose
+  nameWithType: JsonPathExpression.Dispose
+  fullName: JsonCons.JsonPathLib.JsonPathExpression.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    nameWithType: IDisposable.Dispose
+    fullName: System.IDisposable.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    nameWithType: IDisposable.Dispose
+    fullName: System.IDisposable.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )

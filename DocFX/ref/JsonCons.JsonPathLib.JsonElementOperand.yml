@@ -1,0 +1,1222 @@
+### YamlMime:ManagedReference
+items:
+- uid: JsonCons.JsonPathLib.JsonElementOperand
+  commentId: T:JsonCons.JsonPathLib.JsonElementOperand
+  id: JsonElementOperand
+  parent: JsonCons.JsonPathLib
+  children:
+  - JsonCons.JsonPathLib.JsonElementOperand.EnumerateArray
+  - JsonCons.JsonPathLib.JsonElementOperand.EnumerateObject
+  - JsonCons.JsonPathLib.JsonElementOperand.GetArrayLength
+  - JsonCons.JsonPathLib.JsonElementOperand.GetJsonElement
+  - JsonCons.JsonPathLib.JsonElementOperand.GetString
+  - JsonCons.JsonPathLib.JsonElementOperand.IsJsonElement
+  - JsonCons.JsonPathLib.JsonElementOperand.Item(System.Int32)
+  - JsonCons.JsonPathLib.JsonElementOperand.TryGetDecimal(System.Decimal@)
+  - JsonCons.JsonPathLib.JsonElementOperand.TryGetDouble(System.Double@)
+  - JsonCons.JsonPathLib.JsonElementOperand.TryGetProperty(System.String,JsonCons.JsonPathLib.IOperand@)
+  - JsonCons.JsonPathLib.JsonElementOperand.ValueKind
+  langs:
+  - csharp
+  - vb
+  name: JsonElementOperand
+  nameWithType: JsonElementOperand
+  fullName: JsonCons.JsonPathLib.JsonElementOperand
+  type: Struct
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: JsonElementOperand
+    path: ../src/JsonPath/Operand.cs
+    startLine: 45
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: 'public readonly struct JsonElementOperand : IOperand'
+    content.vb: >-
+      Public Structure JsonElementOperand
+          Implements IOperand
+  implements:
+  - JsonCons.JsonPathLib.IOperand
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  modifiers.csharp:
+  - public
+  - readonly
+  - struct
+  modifiers.vb:
+  - Public
+  - Structure
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ValueKind
+  commentId: P:JsonCons.JsonPathLib.JsonElementOperand.ValueKind
+  id: ValueKind
+  parent: JsonCons.JsonPathLib.JsonElementOperand
+  langs:
+  - csharp
+  - vb
+  name: ValueKind
+  nameWithType: JsonElementOperand.ValueKind
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ValueKind
+  type: Property
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: ValueKind
+    path: ../src/JsonPath/Operand.cs
+    startLine: 132
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public readonly JsonValueKind ValueKind { get; }
+    parameters: []
+    return:
+      type: System.Text.Json.JsonValueKind
+    content.vb: Public ReadOnly Property ValueKind As JsonValueKind
+  overload: JsonCons.JsonPathLib.JsonElementOperand.ValueKind*
+  implements:
+  - JsonCons.JsonPathLib.IOperand.ValueKind
+  modifiers.csharp:
+  - public
+  - readonly
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: JsonCons.JsonPathLib.JsonElementOperand.Item(System.Int32)
+  commentId: P:JsonCons.JsonPathLib.JsonElementOperand.Item(System.Int32)
+  id: Item(System.Int32)
+  parent: JsonCons.JsonPathLib.JsonElementOperand
+  langs:
+  - csharp
+  - vb
+  name: Item[Int32]
+  nameWithType: JsonElementOperand.Item[Int32]
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.Item[System.Int32]
+  type: Property
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: this[]
+    path: ../src/JsonPath/Operand.cs
+    startLine: 134
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public readonly IOperand this[int index] { get; }
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: JsonCons.JsonPathLib.IOperand
+    content.vb: Public ReadOnly Property Item(index As Integer) As IOperand
+  overload: JsonCons.JsonPathLib.JsonElementOperand.Item*
+  implements:
+  - JsonCons.JsonPathLib.IOperand.Item(System.Int32)
+  nameWithType.vb: JsonElementOperand.Item(Int32)
+  modifiers.csharp:
+  - public
+  - readonly
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+  fullName.vb: JsonCons.JsonPathLib.JsonElementOperand.Item(System.Int32)
+  name.vb: Item(Int32)
+- uid: JsonCons.JsonPathLib.JsonElementOperand.GetArrayLength
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.GetArrayLength
+  id: GetArrayLength
+  parent: JsonCons.JsonPathLib.JsonElementOperand
+  langs:
+  - csharp
+  - vb
+  name: GetArrayLength()
+  nameWithType: JsonElementOperand.GetArrayLength()
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.GetArrayLength()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: GetArrayLength
+    path: ../src/JsonPath/Operand.cs
+    startLine: 136
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public readonly int GetArrayLength()
+    return:
+      type: System.Int32
+    content.vb: Public Function GetArrayLength As Integer
+  overload: JsonCons.JsonPathLib.JsonElementOperand.GetArrayLength*
+  implements:
+  - JsonCons.JsonPathLib.IOperand.GetArrayLength
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonElementOperand.GetString
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.GetString
+  id: GetString
+  parent: JsonCons.JsonPathLib.JsonElementOperand
+  langs:
+  - csharp
+  - vb
+  name: GetString()
+  nameWithType: JsonElementOperand.GetString()
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.GetString()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: GetString
+    path: ../src/JsonPath/Operand.cs
+    startLine: 138
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public readonly string GetString()
+    return:
+      type: System.String
+    content.vb: Public Function GetString As String
+  overload: JsonCons.JsonPathLib.JsonElementOperand.GetString*
+  implements:
+  - JsonCons.JsonPathLib.IOperand.GetString
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonElementOperand.TryGetDecimal(System.Decimal@)
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.TryGetDecimal(System.Decimal@)
+  id: TryGetDecimal(System.Decimal@)
+  parent: JsonCons.JsonPathLib.JsonElementOperand
+  langs:
+  - csharp
+  - vb
+  name: TryGetDecimal(out Decimal)
+  nameWithType: JsonElementOperand.TryGetDecimal(out Decimal)
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.TryGetDecimal(out System.Decimal)
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: TryGetDecimal
+    path: ../src/JsonPath/Operand.cs
+    startLine: 143
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public readonly bool TryGetDecimal(out decimal value)
+    parameters:
+    - id: value
+      type: System.Decimal
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetDecimal(ByRef value As Decimal) As Boolean
+  overload: JsonCons.JsonPathLib.JsonElementOperand.TryGetDecimal*
+  implements:
+  - JsonCons.JsonPathLib.IOperand.TryGetDecimal(System.Decimal@)
+  nameWithType.vb: JsonElementOperand.TryGetDecimal(ByRef Decimal)
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+  fullName.vb: JsonCons.JsonPathLib.JsonElementOperand.TryGetDecimal(ByRef System.Decimal)
+  name.vb: TryGetDecimal(ByRef Decimal)
+- uid: JsonCons.JsonPathLib.JsonElementOperand.TryGetDouble(System.Double@)
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.TryGetDouble(System.Double@)
+  id: TryGetDouble(System.Double@)
+  parent: JsonCons.JsonPathLib.JsonElementOperand
+  langs:
+  - csharp
+  - vb
+  name: TryGetDouble(out Double)
+  nameWithType: JsonElementOperand.TryGetDouble(out Double)
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.TryGetDouble(out System.Double)
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: TryGetDouble
+    path: ../src/JsonPath/Operand.cs
+    startLine: 148
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public readonly bool TryGetDouble(out double value)
+    parameters:
+    - id: value
+      type: System.Double
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetDouble(ByRef value As Double) As Boolean
+  overload: JsonCons.JsonPathLib.JsonElementOperand.TryGetDouble*
+  implements:
+  - JsonCons.JsonPathLib.IOperand.TryGetDouble(System.Double@)
+  nameWithType.vb: JsonElementOperand.TryGetDouble(ByRef Double)
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+  fullName.vb: JsonCons.JsonPathLib.JsonElementOperand.TryGetDouble(ByRef System.Double)
+  name.vb: TryGetDouble(ByRef Double)
+- uid: JsonCons.JsonPathLib.JsonElementOperand.TryGetProperty(System.String,JsonCons.JsonPathLib.IOperand@)
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.TryGetProperty(System.String,JsonCons.JsonPathLib.IOperand@)
+  id: TryGetProperty(System.String,JsonCons.JsonPathLib.IOperand@)
+  parent: JsonCons.JsonPathLib.JsonElementOperand
+  langs:
+  - csharp
+  - vb
+  name: TryGetProperty(String, out IOperand)
+  nameWithType: JsonElementOperand.TryGetProperty(String, out IOperand)
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.TryGetProperty(System.String, out JsonCons.JsonPathLib.IOperand)
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: TryGetProperty
+    path: ../src/JsonPath/Operand.cs
+    startLine: 153
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public readonly bool TryGetProperty(string propertyName, out IOperand property)
+    parameters:
+    - id: propertyName
+      type: System.String
+    - id: property
+      type: JsonCons.JsonPathLib.IOperand
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetProperty(propertyName As String, ByRef property As IOperand) As Boolean
+  overload: JsonCons.JsonPathLib.JsonElementOperand.TryGetProperty*
+  implements:
+  - JsonCons.JsonPathLib.IOperand.TryGetProperty(System.String,JsonCons.JsonPathLib.IOperand@)
+  nameWithType.vb: JsonElementOperand.TryGetProperty(String, ByRef IOperand)
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+  fullName.vb: JsonCons.JsonPathLib.JsonElementOperand.TryGetProperty(System.String, ByRef JsonCons.JsonPathLib.IOperand)
+  name.vb: TryGetProperty(String, ByRef IOperand)
+- uid: JsonCons.JsonPathLib.JsonElementOperand.EnumerateArray
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.EnumerateArray
+  id: EnumerateArray
+  parent: JsonCons.JsonPathLib.JsonElementOperand
+  langs:
+  - csharp
+  - vb
+  name: EnumerateArray()
+  nameWithType: JsonElementOperand.EnumerateArray()
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.EnumerateArray()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: EnumerateArray
+    path: ../src/JsonPath/Operand.cs
+    startLine: 161
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public readonly IJsonArrayEnumerator EnumerateArray()
+    return:
+      type: JsonCons.JsonPathLib.IJsonArrayEnumerator
+    content.vb: Public Function EnumerateArray As IJsonArrayEnumerator
+  overload: JsonCons.JsonPathLib.JsonElementOperand.EnumerateArray*
+  implements:
+  - JsonCons.JsonPathLib.IOperand.EnumerateArray
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonElementOperand.EnumerateObject
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.EnumerateObject
+  id: EnumerateObject
+  parent: JsonCons.JsonPathLib.JsonElementOperand
+  langs:
+  - csharp
+  - vb
+  name: EnumerateObject()
+  nameWithType: JsonElementOperand.EnumerateObject()
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.EnumerateObject()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: EnumerateObject
+    path: ../src/JsonPath/Operand.cs
+    startLine: 166
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public readonly IJsonObjectEnumerator EnumerateObject()
+    return:
+      type: JsonCons.JsonPathLib.IJsonObjectEnumerator
+    content.vb: Public Function EnumerateObject As IJsonObjectEnumerator
+  overload: JsonCons.JsonPathLib.JsonElementOperand.EnumerateObject*
+  implements:
+  - JsonCons.JsonPathLib.IOperand.EnumerateObject
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonElementOperand.IsJsonElement
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.IsJsonElement
+  id: IsJsonElement
+  parent: JsonCons.JsonPathLib.JsonElementOperand
+  langs:
+  - csharp
+  - vb
+  name: IsJsonElement()
+  nameWithType: JsonElementOperand.IsJsonElement()
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.IsJsonElement()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: IsJsonElement
+    path: ../src/JsonPath/Operand.cs
+    startLine: 171
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public readonly bool IsJsonElement()
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsJsonElement As Boolean
+  overload: JsonCons.JsonPathLib.JsonElementOperand.IsJsonElement*
+  implements:
+  - JsonCons.JsonPathLib.IOperand.IsJsonElement
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonElementOperand.GetJsonElement
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.GetJsonElement
+  id: GetJsonElement
+  parent: JsonCons.JsonPathLib.JsonElementOperand
+  langs:
+  - csharp
+  - vb
+  name: GetJsonElement()
+  nameWithType: JsonElementOperand.GetJsonElement()
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.GetJsonElement()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: GetJsonElement
+    path: ../src/JsonPath/Operand.cs
+    startLine: 176
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public readonly JsonElement GetJsonElement()
+    return:
+      type: System.Text.Json.JsonElement
+    content.vb: Public Function GetJsonElement As JsonElement
+  overload: JsonCons.JsonPathLib.JsonElementOperand.GetJsonElement*
+  implements:
+  - JsonCons.JsonPathLib.IOperand.GetJsonElement
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+references:
+- uid: JsonCons.JsonPathLib
+  commentId: N:JsonCons.JsonPathLib
+  name: JsonCons.JsonPathLib
+  nameWithType: JsonCons.JsonPathLib
+  fullName: JsonCons.JsonPathLib
+- uid: JsonCons.JsonPathLib.IOperand
+  commentId: T:JsonCons.JsonPathLib.IOperand
+  parent: JsonCons.JsonPathLib
+  name: IOperand
+  nameWithType: IOperand
+  fullName: JsonCons.JsonPathLib.IOperand
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: ValueType.Equals(Object)
+  fullName: System.ValueType.Equals(System.Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    nameWithType: ValueType.Equals
+    fullName: System.ValueType.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    nameWithType: ValueType.Equals
+    fullName: System.ValueType.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    nameWithType: ValueType.GetHashCode
+    fullName: System.ValueType.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    nameWithType: ValueType.GetHashCode
+    fullName: System.ValueType.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    nameWithType: ValueType.ToString
+    fullName: System.ValueType.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    nameWithType: ValueType.ToString
+    fullName: System.ValueType.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ValueKind*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.ValueKind
+  name: ValueKind
+  nameWithType: JsonElementOperand.ValueKind
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ValueKind
+- uid: JsonCons.JsonPathLib.IOperand.ValueKind
+  commentId: P:JsonCons.JsonPathLib.IOperand.ValueKind
+  parent: JsonCons.JsonPathLib.IOperand
+  name: ValueKind
+  nameWithType: IOperand.ValueKind
+  fullName: JsonCons.JsonPathLib.IOperand.ValueKind
+- uid: System.Text.Json.JsonValueKind
+  commentId: T:System.Text.Json.JsonValueKind
+  parent: System.Text.Json
+  isExternal: true
+  name: JsonValueKind
+  nameWithType: JsonValueKind
+  fullName: System.Text.Json.JsonValueKind
+- uid: System.Text.Json
+  commentId: N:System.Text.Json
+  isExternal: true
+  name: System.Text.Json
+  nameWithType: System.Text.Json
+  fullName: System.Text.Json
+- uid: JsonCons.JsonPathLib.JsonElementOperand.Item*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.Item
+  name: Item
+  nameWithType: JsonElementOperand.Item
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.Item
+- uid: JsonCons.JsonPathLib.IOperand.Item(System.Int32)
+  commentId: P:JsonCons.JsonPathLib.IOperand.Item(System.Int32)
+  parent: JsonCons.JsonPathLib.IOperand
+  isExternal: true
+  name: Item[Int32]
+  nameWithType: IOperand.Item[Int32]
+  fullName: JsonCons.JsonPathLib.IOperand.Item[System.Int32]
+  nameWithType.vb: IOperand.Item(Int32)
+  fullName.vb: JsonCons.JsonPathLib.IOperand.Item(System.Int32)
+  name.vb: Item(Int32)
+  spec.csharp:
+  - uid: JsonCons.JsonPathLib.IOperand.Item(System.Int32)
+    name: Item
+    nameWithType: IOperand.Item
+    fullName: JsonCons.JsonPathLib.IOperand.Item
+  - name: '['
+    nameWithType: '['
+    fullName: '['
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ']'
+    nameWithType: ']'
+    fullName: ']'
+  spec.vb:
+  - uid: JsonCons.JsonPathLib.IOperand.Item(System.Int32)
+    name: Item
+    nameWithType: IOperand.Item
+    fullName: JsonCons.JsonPathLib.IOperand.Item
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: JsonCons.JsonPathLib.JsonElementOperand.GetArrayLength*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.GetArrayLength
+  name: GetArrayLength
+  nameWithType: JsonElementOperand.GetArrayLength
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.GetArrayLength
+- uid: JsonCons.JsonPathLib.IOperand.GetArrayLength
+  commentId: M:JsonCons.JsonPathLib.IOperand.GetArrayLength
+  parent: JsonCons.JsonPathLib.IOperand
+  name: GetArrayLength()
+  nameWithType: IOperand.GetArrayLength()
+  fullName: JsonCons.JsonPathLib.IOperand.GetArrayLength()
+  spec.csharp:
+  - uid: JsonCons.JsonPathLib.IOperand.GetArrayLength
+    name: GetArrayLength
+    nameWithType: IOperand.GetArrayLength
+    fullName: JsonCons.JsonPathLib.IOperand.GetArrayLength
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: JsonCons.JsonPathLib.IOperand.GetArrayLength
+    name: GetArrayLength
+    nameWithType: IOperand.GetArrayLength
+    fullName: JsonCons.JsonPathLib.IOperand.GetArrayLength
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.JsonElementOperand.GetString*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.GetString
+  name: GetString
+  nameWithType: JsonElementOperand.GetString
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.GetString
+- uid: JsonCons.JsonPathLib.IOperand.GetString
+  commentId: M:JsonCons.JsonPathLib.IOperand.GetString
+  parent: JsonCons.JsonPathLib.IOperand
+  name: GetString()
+  nameWithType: IOperand.GetString()
+  fullName: JsonCons.JsonPathLib.IOperand.GetString()
+  spec.csharp:
+  - uid: JsonCons.JsonPathLib.IOperand.GetString
+    name: GetString
+    nameWithType: IOperand.GetString
+    fullName: JsonCons.JsonPathLib.IOperand.GetString
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: JsonCons.JsonPathLib.IOperand.GetString
+    name: GetString
+    nameWithType: IOperand.GetString
+    fullName: JsonCons.JsonPathLib.IOperand.GetString
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: JsonCons.JsonPathLib.JsonElementOperand.TryGetDecimal*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.TryGetDecimal
+  name: TryGetDecimal
+  nameWithType: JsonElementOperand.TryGetDecimal
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.TryGetDecimal
+- uid: JsonCons.JsonPathLib.IOperand.TryGetDecimal(System.Decimal@)
+  commentId: M:JsonCons.JsonPathLib.IOperand.TryGetDecimal(System.Decimal@)
+  parent: JsonCons.JsonPathLib.IOperand
+  isExternal: true
+  name: TryGetDecimal(Decimal)
+  nameWithType: IOperand.TryGetDecimal(Decimal)
+  fullName: JsonCons.JsonPathLib.IOperand.TryGetDecimal(System.Decimal)
+  spec.csharp:
+  - uid: JsonCons.JsonPathLib.IOperand.TryGetDecimal(System.Decimal@)
+    name: TryGetDecimal
+    nameWithType: IOperand.TryGetDecimal
+    fullName: JsonCons.JsonPathLib.IOperand.TryGetDecimal
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Decimal
+    name: Decimal
+    nameWithType: Decimal
+    fullName: System.Decimal
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: JsonCons.JsonPathLib.IOperand.TryGetDecimal(System.Decimal@)
+    name: TryGetDecimal
+    nameWithType: IOperand.TryGetDecimal
+    fullName: JsonCons.JsonPathLib.IOperand.TryGetDecimal
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Decimal
+    name: Decimal
+    nameWithType: Decimal
+    fullName: System.Decimal
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Decimal
+  commentId: T:System.Decimal
+  parent: System
+  isExternal: true
+  name: Decimal
+  nameWithType: Decimal
+  fullName: System.Decimal
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: JsonCons.JsonPathLib.JsonElementOperand.TryGetDouble*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.TryGetDouble
+  name: TryGetDouble
+  nameWithType: JsonElementOperand.TryGetDouble
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.TryGetDouble
+- uid: JsonCons.JsonPathLib.IOperand.TryGetDouble(System.Double@)
+  commentId: M:JsonCons.JsonPathLib.IOperand.TryGetDouble(System.Double@)
+  parent: JsonCons.JsonPathLib.IOperand
+  isExternal: true
+  name: TryGetDouble(Double)
+  nameWithType: IOperand.TryGetDouble(Double)
+  fullName: JsonCons.JsonPathLib.IOperand.TryGetDouble(System.Double)
+  spec.csharp:
+  - uid: JsonCons.JsonPathLib.IOperand.TryGetDouble(System.Double@)
+    name: TryGetDouble
+    nameWithType: IOperand.TryGetDouble
+    fullName: JsonCons.JsonPathLib.IOperand.TryGetDouble
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: JsonCons.JsonPathLib.IOperand.TryGetDouble(System.Double@)
+    name: TryGetDouble
+    nameWithType: IOperand.TryGetDouble
+    fullName: JsonCons.JsonPathLib.IOperand.TryGetDouble
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double
+- uid: JsonCons.JsonPathLib.JsonElementOperand.TryGetProperty*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.TryGetProperty
+  name: TryGetProperty
+  nameWithType: JsonElementOperand.TryGetProperty
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.TryGetProperty
+- uid: JsonCons.JsonPathLib.IOperand.TryGetProperty(System.String,JsonCons.JsonPathLib.IOperand@)
+  commentId: M:JsonCons.JsonPathLib.IOperand.TryGetProperty(System.String,JsonCons.JsonPathLib.IOperand@)
+  parent: JsonCons.JsonPathLib.IOperand
+  isExternal: true
+  name: TryGetProperty(String, IOperand)
+  nameWithType: IOperand.TryGetProperty(String, IOperand)
+  fullName: JsonCons.JsonPathLib.IOperand.TryGetProperty(System.String, JsonCons.JsonPathLib.IOperand)
+  spec.csharp:
+  - uid: JsonCons.JsonPathLib.IOperand.TryGetProperty(System.String,JsonCons.JsonPathLib.IOperand@)
+    name: TryGetProperty
+    nameWithType: IOperand.TryGetProperty
+    fullName: JsonCons.JsonPathLib.IOperand.TryGetProperty
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: JsonCons.JsonPathLib.IOperand
+    name: IOperand
+    nameWithType: IOperand
+    fullName: JsonCons.JsonPathLib.IOperand
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: JsonCons.JsonPathLib.IOperand.TryGetProperty(System.String,JsonCons.JsonPathLib.IOperand@)
+    name: TryGetProperty
+    nameWithType: IOperand.TryGetProperty
+    fullName: JsonCons.JsonPathLib.IOperand.TryGetProperty
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: JsonCons.JsonPathLib.IOperand
+    name: IOperand
+    nameWithType: IOperand
+    fullName: JsonCons.JsonPathLib.IOperand
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.JsonElementOperand.EnumerateArray*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.EnumerateArray
+  name: EnumerateArray
+  nameWithType: JsonElementOperand.EnumerateArray
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.EnumerateArray
+- uid: JsonCons.JsonPathLib.IOperand.EnumerateArray
+  commentId: M:JsonCons.JsonPathLib.IOperand.EnumerateArray
+  parent: JsonCons.JsonPathLib.IOperand
+  name: EnumerateArray()
+  nameWithType: IOperand.EnumerateArray()
+  fullName: JsonCons.JsonPathLib.IOperand.EnumerateArray()
+  spec.csharp:
+  - uid: JsonCons.JsonPathLib.IOperand.EnumerateArray
+    name: EnumerateArray
+    nameWithType: IOperand.EnumerateArray
+    fullName: JsonCons.JsonPathLib.IOperand.EnumerateArray
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: JsonCons.JsonPathLib.IOperand.EnumerateArray
+    name: EnumerateArray
+    nameWithType: IOperand.EnumerateArray
+    fullName: JsonCons.JsonPathLib.IOperand.EnumerateArray
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.IJsonArrayEnumerator
+  commentId: T:JsonCons.JsonPathLib.IJsonArrayEnumerator
+  parent: JsonCons.JsonPathLib
+  name: IJsonArrayEnumerator
+  nameWithType: IJsonArrayEnumerator
+  fullName: JsonCons.JsonPathLib.IJsonArrayEnumerator
+- uid: JsonCons.JsonPathLib.JsonElementOperand.EnumerateObject*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.EnumerateObject
+  name: EnumerateObject
+  nameWithType: JsonElementOperand.EnumerateObject
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.EnumerateObject
+- uid: JsonCons.JsonPathLib.IOperand.EnumerateObject
+  commentId: M:JsonCons.JsonPathLib.IOperand.EnumerateObject
+  parent: JsonCons.JsonPathLib.IOperand
+  name: EnumerateObject()
+  nameWithType: IOperand.EnumerateObject()
+  fullName: JsonCons.JsonPathLib.IOperand.EnumerateObject()
+  spec.csharp:
+  - uid: JsonCons.JsonPathLib.IOperand.EnumerateObject
+    name: EnumerateObject
+    nameWithType: IOperand.EnumerateObject
+    fullName: JsonCons.JsonPathLib.IOperand.EnumerateObject
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: JsonCons.JsonPathLib.IOperand.EnumerateObject
+    name: EnumerateObject
+    nameWithType: IOperand.EnumerateObject
+    fullName: JsonCons.JsonPathLib.IOperand.EnumerateObject
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.IJsonObjectEnumerator
+  commentId: T:JsonCons.JsonPathLib.IJsonObjectEnumerator
+  parent: JsonCons.JsonPathLib
+  name: IJsonObjectEnumerator
+  nameWithType: IJsonObjectEnumerator
+  fullName: JsonCons.JsonPathLib.IJsonObjectEnumerator
+- uid: JsonCons.JsonPathLib.JsonElementOperand.IsJsonElement*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.IsJsonElement
+  name: IsJsonElement
+  nameWithType: JsonElementOperand.IsJsonElement
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.IsJsonElement
+- uid: JsonCons.JsonPathLib.IOperand.IsJsonElement
+  commentId: M:JsonCons.JsonPathLib.IOperand.IsJsonElement
+  parent: JsonCons.JsonPathLib.IOperand
+  name: IsJsonElement()
+  nameWithType: IOperand.IsJsonElement()
+  fullName: JsonCons.JsonPathLib.IOperand.IsJsonElement()
+  spec.csharp:
+  - uid: JsonCons.JsonPathLib.IOperand.IsJsonElement
+    name: IsJsonElement
+    nameWithType: IOperand.IsJsonElement
+    fullName: JsonCons.JsonPathLib.IOperand.IsJsonElement
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: JsonCons.JsonPathLib.IOperand.IsJsonElement
+    name: IsJsonElement
+    nameWithType: IOperand.IsJsonElement
+    fullName: JsonCons.JsonPathLib.IOperand.IsJsonElement
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.JsonElementOperand.GetJsonElement*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.GetJsonElement
+  name: GetJsonElement
+  nameWithType: JsonElementOperand.GetJsonElement
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.GetJsonElement
+- uid: JsonCons.JsonPathLib.IOperand.GetJsonElement
+  commentId: M:JsonCons.JsonPathLib.IOperand.GetJsonElement
+  parent: JsonCons.JsonPathLib.IOperand
+  name: GetJsonElement()
+  nameWithType: IOperand.GetJsonElement()
+  fullName: JsonCons.JsonPathLib.IOperand.GetJsonElement()
+  spec.csharp:
+  - uid: JsonCons.JsonPathLib.IOperand.GetJsonElement
+    name: GetJsonElement
+    nameWithType: IOperand.GetJsonElement
+    fullName: JsonCons.JsonPathLib.IOperand.GetJsonElement
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: JsonCons.JsonPathLib.IOperand.GetJsonElement
+    name: GetJsonElement
+    nameWithType: IOperand.GetJsonElement
+    fullName: JsonCons.JsonPathLib.IOperand.GetJsonElement
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Text.Json.JsonElement
+  commentId: T:System.Text.Json.JsonElement
+  parent: System.Text.Json
+  isExternal: true
+  name: JsonElement
+  nameWithType: JsonElement
+  fullName: System.Text.Json.JsonElement

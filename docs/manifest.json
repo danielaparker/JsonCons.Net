@@ -1,0 +1,323 @@
+{
+  "homepages": [],
+  "source_base_path": "C:/Users/danie/source/repos/JsonCons.Net/DocFX",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "Quk1DxxVKDWaCZH+hmTubTr2VkxvWNgrf6n5xUTeVmc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "BlPxk5mtl2kgfcZUgkEguqiSAR/EUyUTT4EdebwkQvs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "4wGticVlULClAxoEVlMlur07F7tvG2eelUsEh3PEXZs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.IJsonArrayEnumerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.IJsonArrayEnumerator.html",
+          "hash": "cBWNzoIxgn7kEM8nJyd8JayLFGkGYwrC76LLO41ioW0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.IJsonObjectEnumerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.IJsonObjectEnumerator.html",
+          "hash": "h6cdWOr04waYBPivawUnm7DyY3+8/s7A6C8WLzrVlBg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.IOperand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.IOperand.html",
+          "hash": "hUeVXrqdzBhWjy8MD5NZ03ROQrRX8kTIJac+iJsxnjI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.JsonElementEqualityComparer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.JsonElementEqualityComparer.html",
+          "hash": "lflCuP9V5wivjihcXPY5RLZGGTJ4YjN0HFsT3m2KCmc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.JsonElementOperand.ArrayEnumerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.JsonElementOperand.ArrayEnumerator.html",
+          "hash": "/5uPfpQq5sfpg3ER/kqjgary/i5JTA7ovh3QJ/vMp8M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.html",
+          "hash": "ODzcNkG5BMqWN3s9rHeYGSg6K/bFCWr3t0DrYNmypbE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.JsonElementOperand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.JsonElementOperand.html",
+          "hash": "tgY+i7tM1ZQ2zLjtRXgLwPPAmWL93Cob1Yb8Kz1xyBQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.JsonPath.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.JsonPath.html",
+          "hash": "0YoZ7z1kekYsG8/DRt91EUdv9YMoM1KANahbHO3X7Vw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.JsonPathExpression.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.JsonPathExpression.html",
+          "hash": "Xrbqzz6iuH0TBeTru8/sMjAaKHtGzq2scjt5eCxBtCI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.JsonPathNode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.JsonPathNode.html",
+          "hash": "j1UnnVcw58cnQV4ie6Xyx0d3AwvR9KAUVRmEetjs+ls="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.JsonValueEqualityComparer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.JsonValueEqualityComparer.html",
+          "hash": "G1qbdyuXtKHbWJ7WxkTGyFni5BUwsNmQbsox/SxWQoY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.NameValuePair.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.NameValuePair.html",
+          "hash": "l2b0RLj3DXOsDLHw76Gy42cnkdIy3NJkA2gLbiY4f9k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.NormalizedPath.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.NormalizedPath.html",
+          "hash": "1S0vEAiNB5X3QdMMTZJ4UUu59x08AxGJsC1HMx9aVCo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.PathNode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.PathNode.html",
+          "hash": "GYpL/0wFAIETiaU8Q6UPbmHKR2Sw+qqb/WH0sTf5igs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.PathNodeKind.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.PathNodeKind.html",
+          "hash": "PRqDKcH2Jy4tD3x8nt5uT/VI9opj878mIfW1EPscZks="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.ResultOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.ResultOptions.html",
+          "hash": "KvJlPbL5IEPh/mWLmfwvt+0s4hGo+jzvDwlXwvycaSI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPathLib.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPathLib.html",
+          "hash": "JyokUXXe+ADy/HXuDCe9wXPbDafOEYEki8jTaaci9dg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "ref/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/toc.html",
+          "hash": "4kMttTyGHG96juyW2WjYKK/2rXHofEPLhu7XvbbVUH4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "xPhqJhBsXLL214C4gQ+jHE2teA05usVtBfstzRSQmHs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Disable incremental build by force rebuild option.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "ForceRebuild"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 2,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 17,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: it's disabled.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

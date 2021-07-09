@@ -1,0 +1,1117 @@
+### YamlMime:ManagedReference
+items:
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
+  commentId: T:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
+  id: JsonElementOperand.ObjectEnumerator
+  parent: JsonCons.JsonPathLib
+  children:
+  - JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.#ctor(System.Text.Json.JsonElement.ObjectEnumerator)
+  - JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Current
+  - JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.GetEnumerator
+  - JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.MoveNext
+  - JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Reset
+  - JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerable#GetEnumerator
+  - JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerator#Current
+  - JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#IDisposable#Dispose
+  langs:
+  - csharp
+  - vb
+  name: JsonElementOperand.ObjectEnumerator
+  nameWithType: JsonElementOperand.ObjectEnumerator
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
+  type: Class
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: ObjectEnumerator
+    path: ../src/JsonPath/Operand.cs
+    startLine: 86
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: 'public class ObjectEnumerator : IJsonObjectEnumerator, IEnumerator<NameValuePair>, IEnumerator, IDisposable, IEnumerable<NameValuePair>, IEnumerable'
+    content.vb: >-
+      Public Class ObjectEnumerator
+          Implements IJsonObjectEnumerator, IEnumerator(Of NameValuePair), IEnumerator, IDisposable, IEnumerable(Of NameValuePair), IEnumerable
+  inheritance:
+  - System.Object
+  implements:
+  - JsonCons.JsonPathLib.IJsonObjectEnumerator
+  - System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.NameValuePair}
+  - System.Collections.IEnumerator
+  - System.IDisposable
+  - System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.NameValuePair}
+  - System.Collections.IEnumerable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.#ctor(System.Text.Json.JsonElement.ObjectEnumerator)
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.#ctor(System.Text.Json.JsonElement.ObjectEnumerator)
+  id: '#ctor(System.Text.Json.JsonElement.ObjectEnumerator)'
+  parent: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
+  langs:
+  - csharp
+  - vb
+  name: ObjectEnumerator(JsonElement.ObjectEnumerator)
+  nameWithType: JsonElementOperand.ObjectEnumerator.ObjectEnumerator(JsonElement.ObjectEnumerator)
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.ObjectEnumerator(System.Text.Json.JsonElement.ObjectEnumerator)
+  type: Constructor
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: .ctor
+    path: ../src/JsonPath/Operand.cs
+    startLine: 90
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public ObjectEnumerator(JsonElement.ObjectEnumerator enumerator)
+    parameters:
+    - id: enumerator
+      type: System.Text.Json.JsonElement.ObjectEnumerator
+    content.vb: Public Sub New(enumerator As JsonElement.ObjectEnumerator)
+  overload: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.MoveNext
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.MoveNext
+  id: MoveNext
+  parent: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
+  langs:
+  - csharp
+  - vb
+  name: MoveNext()
+  nameWithType: JsonElementOperand.ObjectEnumerator.MoveNext()
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.MoveNext()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: MoveNext
+    path: ../src/JsonPath/Operand.cs
+    startLine: 95
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public bool MoveNext()
+    return:
+      type: System.Boolean
+    content.vb: Public Function MoveNext As Boolean
+  overload: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.MoveNext*
+  implements:
+  - System.Collections.IEnumerator.MoveNext
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Reset
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Reset
+  id: Reset
+  parent: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
+  langs:
+  - csharp
+  - vb
+  name: Reset()
+  nameWithType: JsonElementOperand.ObjectEnumerator.Reset()
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Reset()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: Reset
+    path: ../src/JsonPath/Operand.cs
+    startLine: 100
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public void Reset()
+    content.vb: Public Sub Reset
+  overload: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Reset*
+  implements:
+  - System.Collections.IEnumerator.Reset
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#IDisposable#Dispose
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#IDisposable#Dispose
+  id: System#IDisposable#Dispose
+  isEii: true
+  parent: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
+  langs:
+  - csharp
+  - vb
+  name: IDisposable.Dispose()
+  nameWithType: JsonElementOperand.ObjectEnumerator.IDisposable.Dispose()
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System.IDisposable.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: System.IDisposable.Dispose
+    path: ../src/JsonPath/Operand.cs
+    startLine: 102
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: void IDisposable.Dispose()
+    content.vb: Sub System.IDisposable.Dispose Implements IDisposable.Dispose
+  overload: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#IDisposable#Dispose*
+  implements:
+  - System.IDisposable.Dispose
+  nameWithType.vb: JsonElementOperand.ObjectEnumerator.System.IDisposable.Dispose()
+  name.vb: System.IDisposable.Dispose()
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Current
+  commentId: P:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Current
+  id: Current
+  parent: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
+  langs:
+  - csharp
+  - vb
+  name: Current
+  nameWithType: JsonElementOperand.ObjectEnumerator.Current
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Current
+  type: Property
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: Current
+    path: ../src/JsonPath/Operand.cs
+    startLine: 104
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public NameValuePair Current { get; }
+    parameters: []
+    return:
+      type: JsonCons.JsonPathLib.NameValuePair
+    content.vb: Public ReadOnly Property Current As NameValuePair
+  overload: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Current*
+  implements:
+  - System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.NameValuePair}.Current
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerator#Current
+  commentId: P:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerator#Current
+  id: System#Collections#IEnumerator#Current
+  isEii: true
+  parent: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
+  langs:
+  - csharp
+  - vb
+  name: IEnumerator.Current
+  nameWithType: JsonElementOperand.ObjectEnumerator.IEnumerator.Current
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System.Collections.IEnumerator.Current
+  type: Property
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: System.Collections.IEnumerator.Current
+    path: ../src/JsonPath/Operand.cs
+    startLine: 109
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: object IEnumerator.Current { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: ReadOnly WriteOnly Property System.Collections.IEnumerator.Current As Object Implements IEnumerator.Current
+  overload: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerator#Current*
+  implements:
+  - System.Collections.IEnumerator.Current
+  nameWithType.vb: JsonElementOperand.ObjectEnumerator.System.Collections.IEnumerator.Current
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+  name.vb: System.Collections.IEnumerator.Current
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.GetEnumerator
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.GetEnumerator
+  id: GetEnumerator
+  parent: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
+  langs:
+  - csharp
+  - vb
+  name: GetEnumerator()
+  nameWithType: JsonElementOperand.ObjectEnumerator.GetEnumerator()
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: GetEnumerator
+    path: ../src/JsonPath/Operand.cs
+    startLine: 114
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public IEnumerator<NameValuePair> GetEnumerator()
+    return:
+      type: System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.NameValuePair}
+    content.vb: Public Function GetEnumerator As IEnumerator(Of NameValuePair)
+  overload: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.GetEnumerator*
+  implements:
+  - System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.NameValuePair}.GetEnumerator
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerable#GetEnumerator
+  commentId: M:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerable#GetEnumerator
+  id: System#Collections#IEnumerable#GetEnumerator
+  isEii: true
+  parent: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator
+  langs:
+  - csharp
+  - vb
+  name: IEnumerable.GetEnumerator()
+  nameWithType: JsonElementOperand.ObjectEnumerator.IEnumerable.GetEnumerator()
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System.Collections.IEnumerable.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/Operand.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: System.Collections.IEnumerable.GetEnumerator
+    path: ../src/JsonPath/Operand.cs
+    startLine: 119
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: IEnumerator IEnumerable.GetEnumerator()
+    return:
+      type: System.Collections.IEnumerator
+    content.vb: Function System.Collections.IEnumerable.GetEnumerator As IEnumerator Implements IEnumerable.GetEnumerator
+  overload: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerable#GetEnumerator*
+  implements:
+  - System.Collections.IEnumerable.GetEnumerator
+  nameWithType.vb: JsonElementOperand.ObjectEnumerator.System.Collections.IEnumerable.GetEnumerator()
+  name.vb: System.Collections.IEnumerable.GetEnumerator()
+references:
+- uid: JsonCons.JsonPathLib
+  commentId: N:JsonCons.JsonPathLib
+  name: JsonCons.JsonPathLib
+  nameWithType: JsonCons.JsonPathLib
+  fullName: JsonCons.JsonPathLib
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: JsonCons.JsonPathLib.IJsonObjectEnumerator
+  commentId: T:JsonCons.JsonPathLib.IJsonObjectEnumerator
+  parent: JsonCons.JsonPathLib
+  name: IJsonObjectEnumerator
+  nameWithType: IJsonObjectEnumerator
+  fullName: JsonCons.JsonPathLib.IJsonObjectEnumerator
+- uid: System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.NameValuePair}
+  commentId: T:System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.NameValuePair}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerator`1
+  name: IEnumerator<NameValuePair>
+  nameWithType: IEnumerator<NameValuePair>
+  fullName: System.Collections.Generic.IEnumerator<JsonCons.JsonPathLib.NameValuePair>
+  nameWithType.vb: IEnumerator(Of NameValuePair)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of JsonCons.JsonPathLib.NameValuePair)
+  name.vb: IEnumerator(Of NameValuePair)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: JsonCons.JsonPathLib.NameValuePair
+    name: NameValuePair
+    nameWithType: NameValuePair
+    fullName: JsonCons.JsonPathLib.NameValuePair
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: JsonCons.JsonPathLib.NameValuePair
+    name: NameValuePair
+    nameWithType: NameValuePair
+    fullName: JsonCons.JsonPathLib.NameValuePair
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.IEnumerator
+  commentId: T:System.Collections.IEnumerator
+  parent: System.Collections
+  isExternal: true
+  name: IEnumerator
+  nameWithType: IEnumerator
+  fullName: System.Collections.IEnumerator
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.NameValuePair}
+  commentId: T:System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.NameValuePair}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<NameValuePair>
+  nameWithType: IEnumerable<NameValuePair>
+  fullName: System.Collections.Generic.IEnumerable<JsonCons.JsonPathLib.NameValuePair>
+  nameWithType.vb: IEnumerable(Of NameValuePair)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of JsonCons.JsonPathLib.NameValuePair)
+  name.vb: IEnumerable(Of NameValuePair)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: JsonCons.JsonPathLib.NameValuePair
+    name: NameValuePair
+    nameWithType: NameValuePair
+    fullName: JsonCons.JsonPathLib.NameValuePair
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: JsonCons.JsonPathLib.NameValuePair
+    name: NameValuePair
+    nameWithType: NameValuePair
+    fullName: JsonCons.JsonPathLib.NameValuePair
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.IEnumerable
+  commentId: T:System.Collections.IEnumerable
+  parent: System.Collections
+  isExternal: true
+  name: IEnumerable
+  nameWithType: IEnumerable
+  fullName: System.Collections.IEnumerable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.Generic.IEnumerator`1
+  commentId: T:System.Collections.Generic.IEnumerator`1
+  isExternal: true
+  name: IEnumerator<T>
+  nameWithType: IEnumerator<T>
+  fullName: System.Collections.Generic.IEnumerator<T>
+  nameWithType.vb: IEnumerator(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T)
+  name.vb: IEnumerator(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.#ctor*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.#ctor
+  name: ObjectEnumerator
+  nameWithType: JsonElementOperand.ObjectEnumerator.ObjectEnumerator
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.ObjectEnumerator
+- uid: System.Text.Json.JsonElement.ObjectEnumerator
+  commentId: T:System.Text.Json.JsonElement.ObjectEnumerator
+  parent: System.Text.Json
+  isExternal: true
+  name: JsonElement.ObjectEnumerator
+  nameWithType: JsonElement.ObjectEnumerator
+  fullName: System.Text.Json.JsonElement.ObjectEnumerator
+- uid: System.Text.Json
+  commentId: N:System.Text.Json
+  isExternal: true
+  name: System.Text.Json
+  nameWithType: System.Text.Json
+  fullName: System.Text.Json
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.MoveNext*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.MoveNext
+  name: MoveNext
+  nameWithType: JsonElementOperand.ObjectEnumerator.MoveNext
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.MoveNext
+- uid: System.Collections.IEnumerator.MoveNext
+  commentId: M:System.Collections.IEnumerator.MoveNext
+  parent: System.Collections.IEnumerator
+  isExternal: true
+  name: MoveNext()
+  nameWithType: IEnumerator.MoveNext()
+  fullName: System.Collections.IEnumerator.MoveNext()
+  spec.csharp:
+  - uid: System.Collections.IEnumerator.MoveNext
+    name: MoveNext
+    nameWithType: IEnumerator.MoveNext
+    fullName: System.Collections.IEnumerator.MoveNext
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IEnumerator.MoveNext
+    name: MoveNext
+    nameWithType: IEnumerator.MoveNext
+    fullName: System.Collections.IEnumerator.MoveNext
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Reset*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Reset
+  name: Reset
+  nameWithType: JsonElementOperand.ObjectEnumerator.Reset
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Reset
+- uid: System.Collections.IEnumerator.Reset
+  commentId: M:System.Collections.IEnumerator.Reset
+  parent: System.Collections.IEnumerator
+  isExternal: true
+  name: Reset()
+  nameWithType: IEnumerator.Reset()
+  fullName: System.Collections.IEnumerator.Reset()
+  spec.csharp:
+  - uid: System.Collections.IEnumerator.Reset
+    name: Reset
+    nameWithType: IEnumerator.Reset
+    fullName: System.Collections.IEnumerator.Reset
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IEnumerator.Reset
+    name: Reset
+    nameWithType: IEnumerator.Reset
+    fullName: System.Collections.IEnumerator.Reset
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#IDisposable#Dispose*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#IDisposable#Dispose
+  name: IDisposable.Dispose
+  nameWithType: JsonElementOperand.ObjectEnumerator.IDisposable.Dispose
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System.IDisposable.Dispose
+  nameWithType.vb: JsonElementOperand.ObjectEnumerator.System.IDisposable.Dispose
+  name.vb: System.IDisposable.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    nameWithType: IDisposable.Dispose
+    fullName: System.IDisposable.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    nameWithType: IDisposable.Dispose
+    fullName: System.IDisposable.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Current*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Current
+  name: Current
+  nameWithType: JsonElementOperand.ObjectEnumerator.Current
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.Current
+- uid: System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.NameValuePair}.Current
+  commentId: P:System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.NameValuePair}.Current
+  parent: System.Collections.Generic.IEnumerator{JsonCons.JsonPathLib.NameValuePair}
+  definition: System.Collections.Generic.IEnumerator`1.Current
+  name: Current
+  nameWithType: IEnumerator<NameValuePair>.Current
+  fullName: System.Collections.Generic.IEnumerator<JsonCons.JsonPathLib.NameValuePair>.Current
+  nameWithType.vb: IEnumerator(Of NameValuePair).Current
+  fullName.vb: System.Collections.Generic.IEnumerator(Of JsonCons.JsonPathLib.NameValuePair).Current
+- uid: JsonCons.JsonPathLib.NameValuePair
+  commentId: T:JsonCons.JsonPathLib.NameValuePair
+  parent: JsonCons.JsonPathLib
+  name: NameValuePair
+  nameWithType: NameValuePair
+  fullName: JsonCons.JsonPathLib.NameValuePair
+- uid: System.Collections.Generic.IEnumerator`1.Current
+  commentId: P:System.Collections.Generic.IEnumerator`1.Current
+  isExternal: true
+  name: Current
+  nameWithType: IEnumerator<T>.Current
+  fullName: System.Collections.Generic.IEnumerator<T>.Current
+  nameWithType.vb: IEnumerator(Of T).Current
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T).Current
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerator#Current*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerator#Current
+  name: IEnumerator.Current
+  nameWithType: JsonElementOperand.ObjectEnumerator.IEnumerator.Current
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System.Collections.IEnumerator.Current
+  nameWithType.vb: JsonElementOperand.ObjectEnumerator.System.Collections.IEnumerator.Current
+  name.vb: System.Collections.IEnumerator.Current
+- uid: System.Collections.IEnumerator.Current
+  commentId: P:System.Collections.IEnumerator.Current
+  parent: System.Collections.IEnumerator
+  isExternal: true
+  name: Current
+  nameWithType: IEnumerator.Current
+  fullName: System.Collections.IEnumerator.Current
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.GetEnumerator*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.GetEnumerator
+  name: GetEnumerator
+  nameWithType: JsonElementOperand.ObjectEnumerator.GetEnumerator
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.GetEnumerator
+- uid: System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.NameValuePair}.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.NameValuePair}.GetEnumerator
+  parent: System.Collections.Generic.IEnumerable{JsonCons.JsonPathLib.NameValuePair}
+  definition: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<NameValuePair>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<JsonCons.JsonPathLib.NameValuePair>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of NameValuePair).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of JsonCons.JsonPathLib.NameValuePair).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable<NameValuePair>.GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable<JsonCons.JsonPathLib.NameValuePair>.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable(Of NameValuePair).GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable(Of JsonCons.JsonPathLib.NameValuePair).GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable`1.GetEnumerator
+  isExternal: true
+  name: GetEnumerator()
+  nameWithType: IEnumerable<T>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of T).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable<T>.GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable(Of T).GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable(Of T).GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerable#GetEnumerator*
+  commentId: Overload:JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System#Collections#IEnumerable#GetEnumerator
+  name: IEnumerable.GetEnumerator
+  nameWithType: JsonElementOperand.ObjectEnumerator.IEnumerable.GetEnumerator
+  fullName: JsonCons.JsonPathLib.JsonElementOperand.ObjectEnumerator.System.Collections.IEnumerable.GetEnumerator
+  nameWithType.vb: JsonElementOperand.ObjectEnumerator.System.Collections.IEnumerable.GetEnumerator
+  name.vb: System.Collections.IEnumerable.GetEnumerator
+- uid: System.Collections.IEnumerable.GetEnumerator
+  commentId: M:System.Collections.IEnumerable.GetEnumerator
+  parent: System.Collections.IEnumerable
+  isExternal: true
+  name: GetEnumerator()
+  nameWithType: IEnumerable.GetEnumerator()
+  fullName: System.Collections.IEnumerable.GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.IEnumerable.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable.GetEnumerator
+    fullName: System.Collections.IEnumerable.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IEnumerable.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable.GetEnumerator
+    fullName: System.Collections.IEnumerable.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )

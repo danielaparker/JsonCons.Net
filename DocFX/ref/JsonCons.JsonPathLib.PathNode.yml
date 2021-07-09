@@ -1,0 +1,720 @@
+### YamlMime:ManagedReference
+items:
+- uid: JsonCons.JsonPathLib.PathNode
+  commentId: T:JsonCons.JsonPathLib.PathNode
+  id: PathNode
+  parent: JsonCons.JsonPathLib
+  children:
+  - JsonCons.JsonPathLib.PathNode.#ctor(JsonCons.JsonPathLib.PathNode,System.Int32)
+  - JsonCons.JsonPathLib.PathNode.#ctor(JsonCons.JsonPathLib.PathNode,System.String)
+  - JsonCons.JsonPathLib.PathNode.#ctor(System.String)
+  - JsonCons.JsonPathLib.PathNode.CompareTo(JsonCons.JsonPathLib.PathNode)
+  - JsonCons.JsonPathLib.PathNode.GetHashCode
+  - JsonCons.JsonPathLib.PathNode.GetIndex
+  - JsonCons.JsonPathLib.PathNode.GetName
+  - JsonCons.JsonPathLib.PathNode.NodeKind
+  - JsonCons.JsonPathLib.PathNode.Parent
+  langs:
+  - csharp
+  - vb
+  name: PathNode
+  nameWithType: PathNode
+  fullName: JsonCons.JsonPathLib.PathNode
+  type: Class
+  source:
+    remote:
+      path: src/JsonPath/NormalizedPath.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: PathNode
+    path: ../src/JsonPath/NormalizedPath.cs
+    startLine: 11
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public sealed class PathNode
+    content.vb: Public NotInheritable Class PathNode
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - sealed
+  - class
+  modifiers.vb:
+  - Public
+  - NotInheritable
+  - Class
+- uid: JsonCons.JsonPathLib.PathNode.Parent
+  commentId: P:JsonCons.JsonPathLib.PathNode.Parent
+  id: Parent
+  parent: JsonCons.JsonPathLib.PathNode
+  langs:
+  - csharp
+  - vb
+  name: Parent
+  nameWithType: PathNode.Parent
+  fullName: JsonCons.JsonPathLib.PathNode.Parent
+  type: Property
+  source:
+    remote:
+      path: src/JsonPath/NormalizedPath.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: Parent
+    path: ../src/JsonPath/NormalizedPath.cs
+    startLine: 13
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public PathNode Parent { get; }
+    parameters: []
+    return:
+      type: JsonCons.JsonPathLib.PathNode
+    content.vb: Public ReadOnly Property Parent As PathNode
+  overload: JsonCons.JsonPathLib.PathNode.Parent*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: JsonCons.JsonPathLib.PathNode.NodeKind
+  commentId: P:JsonCons.JsonPathLib.PathNode.NodeKind
+  id: NodeKind
+  parent: JsonCons.JsonPathLib.PathNode
+  langs:
+  - csharp
+  - vb
+  name: NodeKind
+  nameWithType: PathNode.NodeKind
+  fullName: JsonCons.JsonPathLib.PathNode.NodeKind
+  type: Property
+  source:
+    remote:
+      path: src/JsonPath/NormalizedPath.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: NodeKind
+    path: ../src/JsonPath/NormalizedPath.cs
+    startLine: 15
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public PathNodeKind NodeKind { get; }
+    parameters: []
+    return:
+      type: JsonCons.JsonPathLib.PathNodeKind
+    content.vb: Public ReadOnly Property NodeKind As PathNodeKind
+  overload: JsonCons.JsonPathLib.PathNode.NodeKind*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: JsonCons.JsonPathLib.PathNode.#ctor(System.String)
+  commentId: M:JsonCons.JsonPathLib.PathNode.#ctor(System.String)
+  id: '#ctor(System.String)'
+  parent: JsonCons.JsonPathLib.PathNode
+  langs:
+  - csharp
+  - vb
+  name: PathNode(String)
+  nameWithType: PathNode.PathNode(String)
+  fullName: JsonCons.JsonPathLib.PathNode.PathNode(System.String)
+  type: Constructor
+  source:
+    remote:
+      path: src/JsonPath/NormalizedPath.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: .ctor
+    path: ../src/JsonPath/NormalizedPath.cs
+    startLine: 20
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public PathNode(string name)
+    parameters:
+    - id: name
+      type: System.String
+    content.vb: Public Sub New(name As String)
+  overload: JsonCons.JsonPathLib.PathNode.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.PathNode.#ctor(JsonCons.JsonPathLib.PathNode,System.String)
+  commentId: M:JsonCons.JsonPathLib.PathNode.#ctor(JsonCons.JsonPathLib.PathNode,System.String)
+  id: '#ctor(JsonCons.JsonPathLib.PathNode,System.String)'
+  parent: JsonCons.JsonPathLib.PathNode
+  langs:
+  - csharp
+  - vb
+  name: PathNode(PathNode, String)
+  nameWithType: PathNode.PathNode(PathNode, String)
+  fullName: JsonCons.JsonPathLib.PathNode.PathNode(JsonCons.JsonPathLib.PathNode, System.String)
+  type: Constructor
+  source:
+    remote:
+      path: src/JsonPath/NormalizedPath.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: .ctor
+    path: ../src/JsonPath/NormalizedPath.cs
+    startLine: 28
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public PathNode(PathNode parent, string name)
+    parameters:
+    - id: parent
+      type: JsonCons.JsonPathLib.PathNode
+    - id: name
+      type: System.String
+    content.vb: Public Sub New(parent As PathNode, name As String)
+  overload: JsonCons.JsonPathLib.PathNode.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.PathNode.#ctor(JsonCons.JsonPathLib.PathNode,System.Int32)
+  commentId: M:JsonCons.JsonPathLib.PathNode.#ctor(JsonCons.JsonPathLib.PathNode,System.Int32)
+  id: '#ctor(JsonCons.JsonPathLib.PathNode,System.Int32)'
+  parent: JsonCons.JsonPathLib.PathNode
+  langs:
+  - csharp
+  - vb
+  name: PathNode(PathNode, Int32)
+  nameWithType: PathNode.PathNode(PathNode, Int32)
+  fullName: JsonCons.JsonPathLib.PathNode.PathNode(JsonCons.JsonPathLib.PathNode, System.Int32)
+  type: Constructor
+  source:
+    remote:
+      path: src/JsonPath/NormalizedPath.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: .ctor
+    path: ../src/JsonPath/NormalizedPath.cs
+    startLine: 36
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public PathNode(PathNode parent, int index)
+    parameters:
+    - id: parent
+      type: JsonCons.JsonPathLib.PathNode
+    - id: index
+      type: System.Int32
+    content.vb: Public Sub New(parent As PathNode, index As Integer)
+  overload: JsonCons.JsonPathLib.PathNode.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.PathNode.GetName
+  commentId: M:JsonCons.JsonPathLib.PathNode.GetName
+  id: GetName
+  parent: JsonCons.JsonPathLib.PathNode
+  langs:
+  - csharp
+  - vb
+  name: GetName()
+  nameWithType: PathNode.GetName()
+  fullName: JsonCons.JsonPathLib.PathNode.GetName()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/NormalizedPath.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: GetName
+    path: ../src/JsonPath/NormalizedPath.cs
+    startLine: 44
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public string GetName()
+    return:
+      type: System.String
+    content.vb: Public Function GetName As String
+  overload: JsonCons.JsonPathLib.PathNode.GetName*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.PathNode.GetIndex
+  commentId: M:JsonCons.JsonPathLib.PathNode.GetIndex
+  id: GetIndex
+  parent: JsonCons.JsonPathLib.PathNode
+  langs:
+  - csharp
+  - vb
+  name: GetIndex()
+  nameWithType: PathNode.GetIndex()
+  fullName: JsonCons.JsonPathLib.PathNode.GetIndex()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/NormalizedPath.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: GetIndex
+    path: ../src/JsonPath/NormalizedPath.cs
+    startLine: 49
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public int GetIndex()
+    return:
+      type: System.Int32
+    content.vb: Public Function GetIndex As Integer
+  overload: JsonCons.JsonPathLib.PathNode.GetIndex*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.PathNode.CompareTo(JsonCons.JsonPathLib.PathNode)
+  commentId: M:JsonCons.JsonPathLib.PathNode.CompareTo(JsonCons.JsonPathLib.PathNode)
+  id: CompareTo(JsonCons.JsonPathLib.PathNode)
+  parent: JsonCons.JsonPathLib.PathNode
+  langs:
+  - csharp
+  - vb
+  name: CompareTo(PathNode)
+  nameWithType: PathNode.CompareTo(PathNode)
+  fullName: JsonCons.JsonPathLib.PathNode.CompareTo(JsonCons.JsonPathLib.PathNode)
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/NormalizedPath.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: CompareTo
+    path: ../src/JsonPath/NormalizedPath.cs
+    startLine: 54
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public int CompareTo(PathNode other)
+    parameters:
+    - id: other
+      type: JsonCons.JsonPathLib.PathNode
+    return:
+      type: System.Int32
+    content.vb: Public Function CompareTo(other As PathNode) As Integer
+  overload: JsonCons.JsonPathLib.PathNode.CompareTo*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: JsonCons.JsonPathLib.PathNode.GetHashCode
+  commentId: M:JsonCons.JsonPathLib.PathNode.GetHashCode
+  id: GetHashCode
+  parent: JsonCons.JsonPathLib.PathNode
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: PathNode.GetHashCode()
+  fullName: JsonCons.JsonPathLib.PathNode.GetHashCode()
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/NormalizedPath.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: GetHashCode
+    path: ../src/JsonPath/NormalizedPath.cs
+    startLine: 83
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+    content.vb: Public Overrides Function GetHashCode As Integer
+  overridden: System.Object.GetHashCode
+  overload: JsonCons.JsonPathLib.PathNode.GetHashCode*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+references:
+- uid: JsonCons.JsonPathLib
+  commentId: N:JsonCons.JsonPathLib
+  name: JsonCons.JsonPathLib
+  nameWithType: JsonCons.JsonPathLib
+  fullName: JsonCons.JsonPathLib
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: JsonCons.JsonPathLib.PathNode.Parent*
+  commentId: Overload:JsonCons.JsonPathLib.PathNode.Parent
+  name: Parent
+  nameWithType: PathNode.Parent
+  fullName: JsonCons.JsonPathLib.PathNode.Parent
+- uid: JsonCons.JsonPathLib.PathNode
+  commentId: T:JsonCons.JsonPathLib.PathNode
+  parent: JsonCons.JsonPathLib
+  name: PathNode
+  nameWithType: PathNode
+  fullName: JsonCons.JsonPathLib.PathNode
+- uid: JsonCons.JsonPathLib.PathNode.NodeKind*
+  commentId: Overload:JsonCons.JsonPathLib.PathNode.NodeKind
+  name: NodeKind
+  nameWithType: PathNode.NodeKind
+  fullName: JsonCons.JsonPathLib.PathNode.NodeKind
+- uid: JsonCons.JsonPathLib.PathNodeKind
+  commentId: T:JsonCons.JsonPathLib.PathNodeKind
+  parent: JsonCons.JsonPathLib
+  name: PathNodeKind
+  nameWithType: PathNodeKind
+  fullName: JsonCons.JsonPathLib.PathNodeKind
+- uid: JsonCons.JsonPathLib.PathNode.#ctor*
+  commentId: Overload:JsonCons.JsonPathLib.PathNode.#ctor
+  name: PathNode
+  nameWithType: PathNode.PathNode
+  fullName: JsonCons.JsonPathLib.PathNode.PathNode
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: JsonCons.JsonPathLib.PathNode.GetName*
+  commentId: Overload:JsonCons.JsonPathLib.PathNode.GetName
+  name: GetName
+  nameWithType: PathNode.GetName
+  fullName: JsonCons.JsonPathLib.PathNode.GetName
+- uid: JsonCons.JsonPathLib.PathNode.GetIndex*
+  commentId: Overload:JsonCons.JsonPathLib.PathNode.GetIndex
+  name: GetIndex
+  nameWithType: PathNode.GetIndex
+  fullName: JsonCons.JsonPathLib.PathNode.GetIndex
+- uid: JsonCons.JsonPathLib.PathNode.CompareTo*
+  commentId: Overload:JsonCons.JsonPathLib.PathNode.CompareTo
+  name: CompareTo
+  nameWithType: PathNode.CompareTo
+  fullName: JsonCons.JsonPathLib.PathNode.CompareTo
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: JsonCons.JsonPathLib.PathNode.GetHashCode*
+  commentId: Overload:JsonCons.JsonPathLib.PathNode.GetHashCode
+  name: GetHashCode
+  nameWithType: PathNode.GetHashCode
+  fullName: JsonCons.JsonPathLib.PathNode.GetHashCode
