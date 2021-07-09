@@ -135,9 +135,30 @@
             
              </summary>
         </member>
+        <member name="F:JsonCons.JsonPathLib.PathComponentKind.Root">
+            <summary>
+            Indicates the root path component
+            </summary>
+        </member>
+        <member name="F:JsonCons.JsonPathLib.PathComponentKind.Name">
+            <summary>
+            Indicates a path component that matches on property names.
+            </summary>
+        </member>
+        <member name="F:JsonCons.JsonPathLib.PathComponentKind.Index">
+            <summary>
+            Indicates a path component that matches on array indices.
+            </summary>
+        </member>
         <member name="T:JsonCons.JsonPathLib.PathComponent">
              <summary>
              Represents a component of a <see cref="T:JsonCons.JsonPathLib.NormalizedPath"/>.
+            
+             </summary>
+        </member>
+        <member name="P:JsonCons.JsonPathLib.PathComponent.Parent">
+             <summary>
+             Gets the parent of this component.
             
              </summary>
         </member>

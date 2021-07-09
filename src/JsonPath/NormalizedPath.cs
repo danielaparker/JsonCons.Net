@@ -13,7 +13,21 @@ namespace JsonCons.JsonPathLib
     ///
     /// </summary>
 
-    public enum PathComponentKind {Root,Name,Index};
+    public enum PathComponentKind 
+    {
+        /// <summary>
+        /// Indicates the root path component
+        /// </summary>
+        Root,
+        /// <summary>
+        /// Indicates a path component that matches on property names.
+        /// </summary>
+        Name,
+        /// <summary>
+        /// Indicates a path component that matches on array indices.
+        /// </summary>
+        Index
+    };
 
     /// <summary>
     /// Represents a component of a <see cref="NormalizedPath"/>.
@@ -21,6 +35,11 @@ namespace JsonCons.JsonPathLib
     /// </summary>
     public sealed class PathComponent
     {
+
+        /// <summary>
+        /// Gets the parent of this component.
+        ///
+        /// </summary>
         public PathComponent Parent {get;}
 
         /// <summary>
