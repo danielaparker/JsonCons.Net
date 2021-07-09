@@ -28,12 +28,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "4wGticVlULClAxoEVlMlur07F7tvG2eelUsEh3PEXZs="
+          "hash": "so+ZwTukQvRCPvM5DYOMoQk41AtfVuYL0lb4GWGVHP0="
         }
       },
       "is_incremental": false,
@@ -93,7 +96,7 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPathLib.PathComponent.html",
-          "hash": "s17582zeG1WoFDJMIJnx5Y0zGNjucD3+zS5afOpDhfw="
+          "hash": "Ei9NAU7z7GpdRQKmbxFdjn1ydl5+PpnUzWmzenVFCsc="
         }
       },
       "is_incremental": false,

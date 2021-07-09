@@ -21,7 +21,7 @@ namespace JsonCons.JsonPathLib
     /// </summary>
     public sealed class PathComponent
     {
-        PathComponent Parent {get;}
+        public PathComponent Parent {get;}
 
         /// <summary>
         /// Gets the type of the component.
@@ -32,7 +32,7 @@ namespace JsonCons.JsonPathLib
         private readonly string _name;
         private readonly Int32 _index;
 
-        PathComponent(string name)
+        public PathComponent(string name)
         {
             Parent = null;
             ComponentKind = PathComponentKind.Root;
@@ -40,7 +40,7 @@ namespace JsonCons.JsonPathLib
             _index = 0;
         }
 
-        PathComponent(PathComponent parent, string name)
+        public PathComponent(PathComponent parent, string name)
         {
             Parent = parent;
             ComponentKind = PathComponentKind.Name;
@@ -48,7 +48,7 @@ namespace JsonCons.JsonPathLib
             _index = 0;
         }
 
-        PathComponent(PathComponent parent, Int32 index)
+        public PathComponent(PathComponent parent, Int32 index)
         {
             Parent = parent;
             ComponentKind = PathComponentKind.Index;

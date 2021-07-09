@@ -1,2 +1,6 @@
-# Jsoncons.Net
-Jsoncons.Net
+# JsonCons.Net
+
+## Documentation
+
+- [Reference](docs/toc.html)
+
