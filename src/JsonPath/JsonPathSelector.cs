@@ -7,33 +7,6 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-    static class SelectHelper
-    {
-        internal static bool TrySelect(IOperand root, NormalizedPath path, out IOperand element)
-        {
-            element = root;
-            foreach (var pathNode in path)
-            {
-                if (pathNode.NodeKind == PathNodeKind.Index)
-                {
-                    if (element.ValueKind != JsonValueKind.Array || pathNode.GetIndex() >= element.GetArrayLength())
-                    {
-                        return false; 
-                    }
-                    element = element[pathNode.GetIndex()];
-                }
-                else if (pathNode.NodeKind == PathNodeKind.Name)
-                {
-                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(pathNode.GetName(), out element))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-    }
-
     static class PathGenerator 
     {
         static internal PathNode Generate(PathNode pathStem, 
@@ -68,18 +41,18 @@ namespace JsonCons.JsonPathLib
     interface ISelector 
     {
         void Select(DynamicResources resources,
-                    IOperand root,
+                    IValue root,
                     PathNode pathStem,
-                    IOperand current, 
+                    IValue current, 
                     INodeAccumulator accumulator,
                     ResultOptions options);
 
         bool TryEvaluate(DynamicResources resources, 
-                         IOperand root,
+                         IValue root,
                          PathNode pathStem, 
-                         IOperand current, 
+                         IValue current, 
                          ResultOptions options,
-                         out IOperand value);
+                         out IValue value);
 
         void AppendSelector(ISelector tail);
 
@@ -91,18 +64,18 @@ namespace JsonCons.JsonPathLib
         ISelector Tail {get;set;} = null;
 
         public abstract void Select(DynamicResources resources,
-                                    IOperand root, 
+                                    IValue root, 
                                     PathNode pathStem,
-                                    IOperand current,
+                                    IValue current,
                                     INodeAccumulator accumulator,
                                     ResultOptions options);
 
         public abstract bool TryEvaluate(DynamicResources resources, 
-                                         IOperand root, 
+                                         IValue root, 
                                          PathNode pathStem, 
-                                         IOperand current,
+                                         IValue current,
                                          ResultOptions options,
-                                         out IOperand value);
+                                         out IValue value);
 
         public void AppendSelector(ISelector tail)
         {
@@ -117,9 +90,9 @@ namespace JsonCons.JsonPathLib
         }
 
         protected void TailSelect(DynamicResources resources, 
-                                  IOperand root, 
+                                  IValue root, 
                                   PathNode pathStem,
-                                  IOperand current,
+                                  IValue current,
                                   INodeAccumulator accumulator,
                                   ResultOptions options)
         {
@@ -134,11 +107,11 @@ namespace JsonCons.JsonPathLib
         }
 
         protected bool TryEvaluateTail(DynamicResources resources, 
-                                       IOperand root, 
+                                       IValue root, 
                                        PathNode pathStem, 
-                                       IOperand current,
+                                       IValue current,
                                        ResultOptions options,
-                                       out IOperand value)
+                                       out IValue value)
         {
             if (Tail == null)
             {
@@ -167,20 +140,20 @@ namespace JsonCons.JsonPathLib
         }
 
         public override void Select(DynamicResources resources, 
-                                    IOperand root, 
+                                    IValue root, 
                                     PathNode pathStem,
-                                    IOperand current,
+                                    IValue current,
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
             this.TailSelect(resources, root, pathStem, root, accumulator, options);        
         }
         public override bool TryEvaluate(DynamicResources resources, 
-                                         IOperand root, 
+                                         IValue root, 
                                          PathNode pathStem, 
-                                         IOperand current,
+                                         IValue current,
                                          ResultOptions options,
-                                         out IOperand result)
+                                         out IValue result)
         {
             if (resources.TryRetrieveFromCache(_id, out result))
             {
@@ -212,19 +185,19 @@ namespace JsonCons.JsonPathLib
     sealed class CurrentNodeSelector : BaseSelector
     {
         public override void Select(DynamicResources resources, 
-                                    IOperand root, 
+                                    IValue root, 
                                     PathNode pathStem,
-                                    IOperand current,
+                                    IValue current,
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
             this.TailSelect(resources, root, pathStem, current, accumulator, options);        
         }
-        public override bool TryEvaluate(DynamicResources resources, IOperand root, 
+        public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathNode pathStem, 
-                                         IOperand current,
+                                         IValue current,
                                          ResultOptions options,
-                                         out IOperand value)
+                                         out IValue value)
         {
             return this.TryEvaluateTail(resources, root, pathStem, current, options, out value);        
         }
@@ -250,9 +223,9 @@ namespace JsonCons.JsonPathLib
         }
 
         public override void Select(DynamicResources resources, 
-                                    IOperand root, 
+                                    IValue root, 
                                     PathNode pathStem,
-                                    IOperand current,
+                                    IValue current,
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
@@ -267,18 +240,18 @@ namespace JsonCons.JsonPathLib
             if (ancestor != null)
             {
                 NormalizedPath path = new NormalizedPath(ancestor);
-                IOperand value;
-                if (SelectHelper.TrySelect(root, path, out value))
+                IValue value;
+                if (TryGetValue(root, path, out value))
                 {
                     this.TailSelect(resources, root, path.Stem, value, accumulator, options);        
                 }
             }
         }
-        public override bool TryEvaluate(DynamicResources resources, IOperand root, 
+        public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathNode pathStem, 
-                                         IOperand current,
+                                         IValue current,
                                          ResultOptions options,
-                                         out IOperand result)
+                                         out IValue result)
         {
             PathNode ancestor = pathStem;
             int index = 0;
@@ -291,8 +264,8 @@ namespace JsonCons.JsonPathLib
             if (ancestor != null)
             {
                 NormalizedPath path = new NormalizedPath(ancestor);
-                IOperand value;
-                if (SelectHelper.TrySelect(root, path, out value))
+                IValue value;
+                if (TryGetValue(root, path, out value))
                 {
 
                     return this.TryEvaluateTail(resources, root, path.Stem, value, options, out result);        
@@ -308,6 +281,30 @@ namespace JsonCons.JsonPathLib
                 result = JsonConstants.Null;
                 return true;
             }
+        }
+
+        bool TryGetValue(IValue root, NormalizedPath path, out IValue element)
+        {
+            element = root;
+            foreach (var pathNode in path)
+            {
+                if (pathNode.NodeKind == PathNodeKind.Index)
+                {
+                    if (element.ValueKind != JsonValueKind.Array || pathNode.GetIndex() >= element.GetArrayLength())
+                    {
+                        return false; 
+                    }
+                    element = element[pathNode.GetIndex()];
+                }
+                else if (pathNode.NodeKind == PathNodeKind.Name)
+                {
+                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(pathNode.GetName(), out element))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         public override string ToString()
@@ -326,15 +323,15 @@ namespace JsonCons.JsonPathLib
         }
 
         public override void Select(DynamicResources resources, 
-                                    IOperand root, 
+                                    IValue root, 
                                     PathNode pathStem,
-                                    IOperand current,
+                                    IValue current,
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
             if (current.ValueKind == JsonValueKind.Object)
             { 
-                IOperand value;
+                IValue value;
                 if (current.TryGetProperty(_identifier, out value))
                 {
                     this.TailSelect(resources, root, 
@@ -344,15 +341,15 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public override bool TryEvaluate(DynamicResources resources, IOperand root, 
+        public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathNode pathStem, 
-                                         IOperand current,
+                                         IValue current,
                                          ResultOptions options,
-                                         out IOperand value)
+                                         out IValue value)
         {
             if (current.ValueKind == JsonValueKind.Object)
             {
-                IOperand element;
+                IValue element;
                 if (current.TryGetProperty(_identifier, out element))
                 {
                     return this.TryEvaluateTail(resources, root, 
@@ -367,13 +364,13 @@ namespace JsonCons.JsonPathLib
             }
             else if (current.ValueKind == JsonValueKind.Array && _identifier == "length")
             {
-                value = new DecimalOperand(new Decimal(current.GetArrayLength()));
+                value = new DecimalValue(new Decimal(current.GetArrayLength()));
                 return true;
             }
             else if (current.ValueKind == JsonValueKind.String && _identifier == "length")
             {
                 byte[] bytes = Encoding.UTF32.GetBytes(current.GetString().ToCharArray());
-                value = new DecimalOperand(new Decimal(current.GetString().Length));
+                value = new DecimalValue(new Decimal(current.GetString().Length));
                 return true;
             }
             else
@@ -399,9 +396,9 @@ namespace JsonCons.JsonPathLib
         }
 
         public override void Select(DynamicResources resources, 
-                                    IOperand root, 
+                                    IValue root, 
                                     PathNode pathStem,
-                                    IOperand current,
+                                    IValue current,
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
@@ -426,11 +423,11 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public override bool TryEvaluate(DynamicResources resources, IOperand root, 
+        public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathNode pathStem,
-                                         IOperand current,
+                                         IValue current,
                                          ResultOptions options,
-                                         out IOperand value)
+                                         out IValue value)
         {
             if (current.ValueKind == JsonValueKind.Array)
             { 
@@ -479,9 +476,9 @@ namespace JsonCons.JsonPathLib
         }
 
         public override void Select(DynamicResources resources, 
-                                    IOperand root,
+                                    IValue root,
                                     PathNode pathStem,
-                                    IOperand current,
+                                    IValue current,
                                     INodeAccumulator accumulator,
                                     ResultOptions options) 
         {
@@ -532,13 +529,13 @@ namespace JsonCons.JsonPathLib
         }
 
         public override bool TryEvaluate(DynamicResources resources, 
-                                         IOperand root,
+                                         IValue root,
                                          PathNode pathStem,
-                                         IOperand current,
+                                         IValue current,
                                          ResultOptions options,
-                                         out IOperand results) 
+                                         out IValue results) 
         {
-            var elements = new List<IOperand>();
+            var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
             Select(resources, 
                    root, 
@@ -559,9 +556,9 @@ namespace JsonCons.JsonPathLib
     sealed class RecursiveDescentSelector : BaseSelector
     {
         public override void Select(DynamicResources resources, 
-                                    IOperand root, 
+                                    IValue root, 
                                     PathNode pathStem,
-                                    IOperand current,
+                                    IValue current,
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
@@ -588,13 +585,13 @@ namespace JsonCons.JsonPathLib
                 }
             }
         }
-        public override bool TryEvaluate(DynamicResources resources, IOperand root, 
+        public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathNode pathStem,
-                                         IOperand current,
+                                         IValue current,
                                          ResultOptions options,
-                                         out IOperand results)
+                                         out IValue results)
         {
-            var elements = new List<IOperand>();
+            var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
             Select(resources, 
                    root, 
@@ -615,9 +612,9 @@ namespace JsonCons.JsonPathLib
     sealed class WildcardSelector : BaseSelector
     {
         public override void Select(DynamicResources resources, 
-                                    IOperand root, 
+                                    IValue root, 
                                     PathNode pathStem,
-                                    IOperand current,
+                                    IValue current,
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
@@ -642,13 +639,13 @@ namespace JsonCons.JsonPathLib
                 }
             }
         }
-        public override bool TryEvaluate(DynamicResources resources, IOperand root, 
+        public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathNode pathStem,
-                                         IOperand current,
+                                         IValue current,
                                          ResultOptions options,
-                                         out IOperand results)
+                                         out IValue results)
         {
-            var elements = new List<IOperand>();
+            var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
             Select(resources, 
                    root, 
@@ -694,9 +691,9 @@ namespace JsonCons.JsonPathLib
         }
 
         public void Select(DynamicResources resources, 
-                           IOperand root, 
+                           IValue root, 
                            PathNode pathStem,
-                           IOperand current,
+                           IValue current,
                            INodeAccumulator accumulator,
                            ResultOptions options)
         {
@@ -706,13 +703,13 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public bool TryEvaluate(DynamicResources resources, IOperand root, 
+        public bool TryEvaluate(DynamicResources resources, IValue root, 
                                 PathNode pathStem,
-                                IOperand current,
+                                IValue current,
                                 ResultOptions options,
-                                out IOperand results)
+                                out IValue results)
         {
-            var elements = new List<IOperand>();
+            var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
             Select(resources, 
                    root, 
@@ -745,9 +742,9 @@ namespace JsonCons.JsonPathLib
         }
 
         public override void Select(DynamicResources resources, 
-                                    IOperand root, 
+                                    IValue root, 
                                     PathNode pathStem,
-                                    IOperand current,
+                                    IValue current,
                                     INodeAccumulator accumulator,
                                     ResultOptions options)
         {
@@ -756,7 +753,7 @@ namespace JsonCons.JsonPathLib
                 Int32 index = 0;
                 foreach (var item in current.EnumerateArray())
                 {
-                    IOperand val;
+                    IValue val;
                     if (_expr.TryEvaluate(resources, root, item, options, out val) 
                         && Expression.IsTrue(val)) 
                     {
@@ -771,7 +768,7 @@ namespace JsonCons.JsonPathLib
             {
                 foreach (var property in current.EnumerateObject())
                 {
-                    IOperand val;
+                    IValue val;
                     if (_expr.TryEvaluate(resources, root, property.Value, options, out val) 
                         && Expression.IsTrue(val))
                     {
@@ -783,13 +780,13 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public override bool TryEvaluate(DynamicResources resources, IOperand root, 
+        public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathNode pathStem,
-                                         IOperand current,
+                                         IValue current,
                                          ResultOptions options,
-                                         out IOperand results)
+                                         out IValue results)
         {
-            var elements = new List<IOperand>();
+            var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
             Select(resources, 
                    root, 

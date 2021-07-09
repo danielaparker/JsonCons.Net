@@ -12,7 +12,7 @@ namespace JsonCons.JsonPathLib
     interface IFunction 
     {
         int? Arity {get;}
-        bool TryEvaluate(IList<IOperand> parameters, out IOperand element);
+        bool TryEvaluate(IList<IValue> parameters, out IValue element);
     };
 
     abstract class BaseFunction : IFunction
@@ -24,7 +24,7 @@ namespace JsonCons.JsonPathLib
 
         public int? Arity {get;}
 
-        public abstract bool TryEvaluate(IList<IOperand> parameters, out IOperand element);
+        public abstract bool TryEvaluate(IList<IValue> parameters, out IValue element);
     };  
 
     sealed class AbsFunction : BaseFunction
@@ -34,7 +34,7 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, out IOperand result) 
+        public override bool TryEvaluate(IList<IValue> args, out IValue result) 
         {
             if (this.Arity.HasValue)
             {
@@ -48,12 +48,12 @@ namespace JsonCons.JsonPathLib
 
             if (arg.TryGetDecimal(out decVal))
             {
-                result = new DecimalOperand(decVal >= 0 ? decVal : -decVal);
+                result = new DecimalValue(decVal >= 0 ? decVal : -decVal);
                 return true;
             }
             else if (arg.TryGetDouble(out dblVal))
             {
-                result = new DecimalOperand(dblVal >= 0 ? decVal : new Decimal(-dblVal));
+                result = new DecimalValue(dblVal >= 0 ? decVal : new Decimal(-dblVal));
                 return true;
             }
             else
@@ -76,8 +76,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -87,7 +87,7 @@ namespace JsonCons.JsonPathLib
             var arg0 = args[0];
             var arg1 = args[1];
 
-            var comparer = OperandEqualityComparer.Instance;
+            var comparer = ValueEqualityComparer.Instance;
 
             switch (arg0.ValueKind)
             {
@@ -143,8 +143,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -187,8 +187,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -232,8 +232,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -269,7 +269,7 @@ namespace JsonCons.JsonPathLib
             }
             if (success)
             {
-                result = new DecimalOperand(decSum); 
+                result = new DecimalValue(decSum); 
                 return true;
             }
             else
@@ -285,7 +285,7 @@ namespace JsonCons.JsonPathLib
                     }
                     dblSum += dbl;
                 }
-                result = new DoubleOperand(dblSum); 
+                result = new DoubleValue(dblSum); 
                 return true;
             }
         }
@@ -303,8 +303,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -337,7 +337,7 @@ namespace JsonCons.JsonPathLib
                 }
                 prod *= dbl;
             }
-            result = new DoubleOperand(prod);
+            result = new DoubleValue(prod);
 
             return true;
         }
@@ -355,8 +355,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -369,7 +369,7 @@ namespace JsonCons.JsonPathLib
                 return false;
             }
 
-            IOperand sum;
+            IValue sum;
             if (!SumFunction.Instance.TryEvaluate(args, out sum))
             {
                 result = JsonConstants.Null;
@@ -381,12 +381,12 @@ namespace JsonCons.JsonPathLib
 
             if (sum.TryGetDecimal(out decVal))
             {
-                result = new DecimalOperand(decVal/arg0.GetArrayLength());
+                result = new DecimalValue(decVal/arg0.GetArrayLength());
                 return true;
             }
             else if (sum.TryGetDouble(out dblVal))
             {
-                result = new DoubleOperand(dblVal/arg0.GetArrayLength());
+                result = new DoubleValue(dblVal/arg0.GetArrayLength());
                 return true;
             }
             else
@@ -409,8 +409,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -427,10 +427,10 @@ namespace JsonCons.JsonPathLib
 
             string[] pieces = Regex.Split(sourceStr, patternStr);
 
-            var values = new List<IOperand>();
+            var values = new List<IValue>();
             foreach (var s in pieces)
             {
-                values.Add(new StringOperand(s));
+                values.Add(new StringValue(s));
             }
 
             result = new ArrayJsonValue(values);
@@ -450,8 +450,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -470,12 +470,12 @@ namespace JsonCons.JsonPathLib
 
             if (val.TryGetDecimal(out decVal))
             {
-                result = new DecimalOperand(decimal.Ceiling(decVal));
+                result = new DecimalValue(decimal.Ceiling(decVal));
                 return true;
             }
             else if (val.TryGetDouble(out dblVal))
             {
-                result = new DoubleOperand(Math.Ceiling(dblVal));
+                result = new DoubleValue(Math.Ceiling(dblVal));
                 return true;
             }
             else
@@ -498,8 +498,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -518,12 +518,12 @@ namespace JsonCons.JsonPathLib
 
             if (val.TryGetDecimal(out decVal))
             {
-                result = new DecimalOperand(decimal.Floor(decVal));
+                result = new DecimalValue(decimal.Floor(decVal));
                 return true;
             }
             else if (val.TryGetDouble(out dblVal))
             {
-                result = new DoubleOperand(Math.Floor(dblVal));
+                result = new DoubleValue(Math.Floor(dblVal));
                 return true;
             }
             else
@@ -546,8 +546,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -567,12 +567,12 @@ namespace JsonCons.JsonPathLib
                     double dbl;
                     if (Decimal.TryParse(s, out dec))
                     {
-                        result = new DecimalOperand(dec);
+                        result = new DecimalValue(dec);
                         return true;
                     }
                     else if (Double.TryParse(s, out dbl))
                     {
-                        result = new DoubleOperand(dbl);
+                        result = new DoubleValue(dbl);
                         return true;
                     }
                     else
@@ -600,8 +600,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -636,7 +636,7 @@ namespace JsonCons.JsonPathLib
                     result = JsonConstants.Null;
                     return false;
                 }
-                IOperand value;
+                IValue value;
                 if (!less.TryEvaluate(arg0[i],arg0[index], out value))
                 {
                     result = JsonConstants.Null;
@@ -665,8 +665,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -701,7 +701,7 @@ namespace JsonCons.JsonPathLib
                     result = JsonConstants.Null;
                     return false;
                 }
-                IOperand value;
+                IValue value;
                 if (!greater.TryEvaluate(arg0[i],arg0[index], out value))
                 {
                     result = JsonConstants.Null;
@@ -730,8 +730,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -749,16 +749,16 @@ namespace JsonCons.JsonPathLib
                     {
                         ++count;
                     }
-                    result = new DecimalOperand(new Decimal(count));
+                    result = new DecimalValue(new Decimal(count));
                     return true;
                 }
                 case JsonValueKind.Array:
-                    result = new DecimalOperand(new Decimal(arg0.GetArrayLength()));
+                    result = new DecimalValue(new Decimal(arg0.GetArrayLength()));
                     return true;
                 case JsonValueKind.String:
                 {
                     byte[] bytes = Encoding.UTF32.GetBytes(arg0.GetString().ToCharArray());
-                    result = new DecimalOperand(new Decimal(bytes.Length/4));
+                    result = new DecimalValue(new Decimal(bytes.Length/4));
                     return true;
                 }
                 default:
@@ -782,8 +782,8 @@ namespace JsonCons.JsonPathLib
         {
         }
 
-        public override bool TryEvaluate(IList<IOperand> args, 
-                                         out IOperand result)
+        public override bool TryEvaluate(IList<IValue> args, 
+                                         out IValue result)
         {
             if (this.Arity.HasValue)
             {
@@ -797,11 +797,11 @@ namespace JsonCons.JsonPathLib
                 return false;
             }
 
-            var values = new List<IOperand>();
+            var values = new List<IValue>();
 
             foreach (var property in arg0.EnumerateObject())
             {
-                values.Add(new StringOperand(property.Name));
+                values.Add(new StringValue(property.Name));
             }
             result = new ArrayJsonValue(values);
             return true;

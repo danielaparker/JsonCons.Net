@@ -7,15 +7,15 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPathLib
 {
-   sealed class OperandEqualityComparer : IEqualityComparer<IOperand>
+   sealed class ValueEqualityComparer : IEqualityComparer<IValue>
    {
-       internal static OperandEqualityComparer Instance { get; } = new OperandEqualityComparer();
+       internal static ValueEqualityComparer Instance { get; } = new ValueEqualityComparer();
 
        private int _maxHashDepth { get; } = 100;
 
-       OperandEqualityComparer() {}
+       ValueEqualityComparer() {}
 
-       public bool Equals(IOperand lhs, IOperand rhs)
+       public bool Equals(IValue lhs, IValue rhs)
        {
            if (lhs.ValueKind != rhs.ValueKind)
                return false;
@@ -56,7 +56,7 @@ namespace JsonCons.JsonPathLib
 
                case JsonValueKind.Object:
                {
-                   // OrderBy performs a stable sort (Note that IOperand supports duplicate property names)
+                   // OrderBy performs a stable sort (Note that IValue supports duplicate property names)
                    var enumerator1 = lhs.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
                    var enumerator2 = rhs.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
 
@@ -84,12 +84,12 @@ namespace JsonCons.JsonPathLib
            }
        }
 
-       public int GetHashCode(IOperand obj)
+       public int GetHashCode(IValue obj)
        {
            return ComputeHashCode(obj, 0);
        }
 
-       int ComputeHashCode(IOperand element, int depth)
+       int ComputeHashCode(IValue element, int depth)
        {
            int hashCode = element.ValueKind.GetHashCode();
 

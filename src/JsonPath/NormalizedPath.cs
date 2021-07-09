@@ -250,6 +250,30 @@ namespace JsonCons.JsonPathLib
 
             return hash;
         }
+
+        public bool TryGet(JsonElement root, out JsonElement element)
+        {
+            element = root;
+            foreach (var pathNode in _nodes)
+            {
+                if (pathNode.NodeKind == PathNodeKind.Index)
+                {
+                    if (element.ValueKind != JsonValueKind.Array || pathNode.GetIndex() >= element.GetArrayLength())
+                    {
+                        return false; 
+                    }
+                    element = element[pathNode.GetIndex()];
+                }
+                else if (pathNode.NodeKind == PathNodeKind.Name)
+                {
+                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(pathNode.GetName(), out element))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     };
 
 } // namespace JsonCons.JsonPathLib

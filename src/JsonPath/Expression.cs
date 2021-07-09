@@ -12,30 +12,30 @@ namespace JsonCons.JsonPathLib
     {
         static JsonConstants()
         {
-            True = new TrueOperand();
-            False = new FalseOperand();
-            Null = new NullOperand();
+            True = new TrueValue();
+            False = new FalseValue();
+            Null = new NullValue();
         }
 
-        internal static IOperand True {get;}
-        internal static IOperand False {get;}
-        internal static IOperand Null {get;}
+        internal static IValue True {get;}
+        internal static IValue False {get;}
+        internal static IValue Null {get;}
     }
 
     interface IExpression
     {
          bool TryEvaluate(DynamicResources resources,
-                          IOperand root,
-                          IOperand current, 
+                          IValue root,
+                          IValue current, 
                           ResultOptions options,
-                          out IOperand value);
+                          out IValue value);
     }
 
     sealed class Expression : IExpression
     {
-        internal static bool IsFalse(IOperand val)
+        internal static bool IsFalse(IValue val)
         {
-            var comparer = OperandEqualityComparer.Instance;
+            var comparer = ValueEqualityComparer.Instance;
             switch (val.ValueKind)
             {
                 case JsonValueKind.False:
@@ -65,7 +65,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        internal static bool IsTrue(IOperand val)
+        internal static bool IsTrue(IValue val)
         {
             return !IsFalse(val);
         }
@@ -78,13 +78,13 @@ namespace JsonCons.JsonPathLib
         }
 
         public  bool TryEvaluate(DynamicResources resources,
-                                 IOperand root,
-                                 IOperand current, 
+                                 IValue root,
+                                 IValue current, 
                                  ResultOptions options,
-                                 out IOperand result)
+                                 out IValue result)
         {
-            Stack<IOperand> stack = new Stack<IOperand>();
-            IList<IOperand> argStack = new List<IOperand>();
+            Stack<IValue> stack = new Stack<IValue>();
+            IList<IValue> argStack = new List<IValue>();
 
             foreach (var token in _tokens)
             {
@@ -109,7 +109,7 @@ namespace JsonCons.JsonPathLib
                     {
                         Debug.Assert(stack.Count >= 1);
                         var item = stack.Pop();
-                        IOperand value;
+                        IValue value;
                         if (!token.GetUnaryOperator().TryEvaluate(item, out value))
                         {
                             result = JsonConstants.Null;
@@ -124,7 +124,7 @@ namespace JsonCons.JsonPathLib
                         var rhs = stack.Pop();
                         var lhs = stack.Pop();
 
-                        IOperand value;
+                        IValue value;
                         if (!token.GetBinaryOperator().TryEvaluate(lhs, rhs, out value))
                         {
                             result = JsonConstants.Null;
@@ -136,9 +136,9 @@ namespace JsonCons.JsonPathLib
                     case JsonPathTokenKind.Selector:
                     {
                         Debug.Assert(stack.Count >= 1);
-                        IOperand val = stack.Peek();
+                        IValue val = stack.Peek();
                         stack.Pop();
-                        IOperand value;
+                        IValue value;
                         if (token.GetSelector().TryEvaluate(resources, root, new PathNode("@"), val, options, out value))
                         {
                             stack.Push(value);
@@ -163,7 +163,7 @@ namespace JsonCons.JsonPathLib
                             return false;
                         }
 
-                        IOperand value;
+                        IValue value;
                         if (!token.GetFunction().TryEvaluate(argStack, out value))
                         {
                             result = JsonConstants.Null;
@@ -175,7 +175,7 @@ namespace JsonCons.JsonPathLib
                     }
                     case JsonPathTokenKind.Expression:
                     {
-                        IOperand value;
+                        IValue value;
                         if (!token.GetExpression().TryEvaluate(resources, root, current, options, out value))
                         {
                             result = JsonConstants.Null;

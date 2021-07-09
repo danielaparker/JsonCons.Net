@@ -10,42 +10,42 @@ namespace JsonCons.JsonPathLib
     readonly struct NameValuePair
     {
         public string Name { get; }
-        public IOperand Value { get; }
+        public IValue Value { get; }
 
-        public NameValuePair(string name, IOperand value)
+        public NameValuePair(string name, IValue value)
         {
             Name = name;
             Value = value;
         }
     }
 
-    interface IJsonArrayEnumerator : IEnumerator<IOperand>, IEnumerable<IOperand>
+    interface IArrayValueEnumerator : IEnumerator<IValue>, IEnumerable<IValue>
     {
     }
 
-    interface IJsonObjectEnumerator : IEnumerator<NameValuePair>, IEnumerable<NameValuePair>
+    interface IObjectValueEnumerator : IEnumerator<NameValuePair>, IEnumerable<NameValuePair>
     {
     }
 
-    interface IOperand 
+    interface IValue 
     {
         JsonValueKind ValueKind {get;}
-        IOperand this[int index] {get;}
+        IValue this[int index] {get;}
         int GetArrayLength();
         string GetString();
         bool TryGetDecimal(out decimal value);
         bool TryGetDouble(out double value);
-        bool TryGetProperty(string propertyName, out IOperand property);
-        IJsonArrayEnumerator EnumerateArray();
-        IJsonObjectEnumerator EnumerateObject();
+        bool TryGetProperty(string propertyName, out IValue property);
+        IArrayValueEnumerator EnumerateArray();
+        IObjectValueEnumerator EnumerateObject();
 
         bool IsJsonElement();
         JsonElement GetJsonElement();
     };
 
-    readonly struct JsonElementOperand : IOperand
+    readonly struct JsonElementValue : IValue
     {
-        internal class ArrayEnumerator : IJsonArrayEnumerator
+        internal class ArrayEnumerator : IArrayValueEnumerator
         {
             JsonElement.ArrayEnumerator _enumerator;
 
@@ -63,9 +63,9 @@ namespace JsonCons.JsonPathLib
 
             void IDisposable.Dispose() { _enumerator.Dispose();}
 
-            public IOperand Current
+            public IValue Current
             {
-                get { return new JsonElementOperand(_enumerator.Current); }
+                get { return new JsonElementValue(_enumerator.Current); }
             }
 
             object System.Collections.IEnumerator.Current
@@ -73,7 +73,7 @@ namespace JsonCons.JsonPathLib
                 get { return Current; }
             }
 
-            public IEnumerator<IOperand> GetEnumerator()
+            public IEnumerator<IValue> GetEnumerator()
             {
                 return new ArrayEnumerator(_enumerator.GetEnumerator());
             }
@@ -84,7 +84,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        internal class ObjectEnumerator : IJsonObjectEnumerator
+        internal class ObjectEnumerator : IObjectValueEnumerator
         {
             JsonElement.ObjectEnumerator _enumerator;
 
@@ -104,7 +104,7 @@ namespace JsonCons.JsonPathLib
 
             public NameValuePair Current
             {
-                get { return new NameValuePair(_enumerator.Current.Name, new JsonElementOperand(_enumerator.Current.Value)); }
+                get { return new NameValuePair(_enumerator.Current.Name, new JsonElementValue(_enumerator.Current.Value)); }
             }
 
             object System.Collections.IEnumerator.Current
@@ -125,14 +125,14 @@ namespace JsonCons.JsonPathLib
 
         private readonly JsonElement _element;
 
-        internal JsonElementOperand(JsonElement element)
+        internal JsonElementValue(JsonElement element)
         {
             _element = element;
         }
 
         public JsonValueKind ValueKind {get{return _element.ValueKind;}}
 
-        public IOperand this[int index] {get{return new JsonElementOperand(_element[index]);}}
+        public IValue this[int index] {get{return new JsonElementValue(_element[index]);}}
 
         public int GetArrayLength() {return _element.GetArrayLength();}
 
@@ -151,20 +151,20 @@ namespace JsonCons.JsonPathLib
             return _element.TryGetDouble(out value);
         }
 
-        public bool TryGetProperty(string propertyName, out IOperand property)
+        public bool TryGetProperty(string propertyName, out IValue property)
         {
             JsonElement prop;
             bool r = _element.TryGetProperty(propertyName, out prop);
-            property = new JsonElementOperand(prop);
+            property = new JsonElementValue(prop);
             return r;
         }
 
-        public IJsonArrayEnumerator EnumerateArray()
+        public IArrayValueEnumerator EnumerateArray()
         {
             return new ArrayEnumerator(_element.EnumerateArray());
         }
 
-        public IJsonObjectEnumerator EnumerateObject()
+        public IObjectValueEnumerator EnumerateObject()
         {
             return new ObjectEnumerator(_element.EnumerateObject());
         }
@@ -180,18 +180,18 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    readonly struct DoubleOperand : IOperand
+    readonly struct DoubleValue : IValue
     {
         private readonly double _value;
 
-        internal DoubleOperand(double value)
+        internal DoubleValue(double value)
         {
             _value = value;
         }
 
         public JsonValueKind ValueKind {get{return JsonValueKind.Number;}}
 
-        public IOperand this[int index] { get { throw new InvalidOperationException(); } }
+        public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
         public int GetArrayLength() { throw new InvalidOperationException(); }
 
@@ -220,17 +220,17 @@ namespace JsonCons.JsonPathLib
             return true;
         }
 
-        public bool TryGetProperty(string propertyName, out IOperand property)
+        public bool TryGetProperty(string propertyName, out IValue property)
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonArrayEnumerator EnumerateArray()
+        public IArrayValueEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonObjectEnumerator EnumerateObject()
+        public IObjectValueEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
@@ -246,18 +246,18 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    readonly struct DecimalOperand : IOperand
+    readonly struct DecimalValue : IValue
     {
         private readonly Decimal _value;
 
-        internal DecimalOperand(Decimal value)
+        internal DecimalValue(Decimal value)
         {
             _value = value;
         }
 
         public JsonValueKind ValueKind {get{return JsonValueKind.Number;}}
 
-        public IOperand this[int index] { get { throw new InvalidOperationException(); } }
+        public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
         public int GetArrayLength() { throw new InvalidOperationException(); }
 
@@ -278,17 +278,17 @@ namespace JsonCons.JsonPathLib
             return true;
         }
 
-        public bool TryGetProperty(string propertyName, out IOperand property)
+        public bool TryGetProperty(string propertyName, out IValue property)
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonArrayEnumerator EnumerateArray()
+        public IArrayValueEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonObjectEnumerator EnumerateObject()
+        public IObjectValueEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
@@ -304,18 +304,18 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    readonly struct StringOperand : IOperand
+    readonly struct StringValue : IValue
     {
         private readonly string _value;
 
-        internal StringOperand(string value)
+        internal StringValue(string value)
         {
             _value = value;
         }
 
         public JsonValueKind ValueKind {get{return JsonValueKind.String;}}
 
-        public IOperand this[int index] { get { throw new InvalidOperationException(); } }
+        public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
         public int GetArrayLength() { throw new InvalidOperationException(); }
 
@@ -334,17 +334,17 @@ namespace JsonCons.JsonPathLib
             throw new InvalidOperationException();
         }
 
-        public bool TryGetProperty(string propertyName, out IOperand property)
+        public bool TryGetProperty(string propertyName, out IValue property)
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonArrayEnumerator EnumerateArray()
+        public IArrayValueEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonObjectEnumerator EnumerateObject()
+        public IObjectValueEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
@@ -360,11 +360,11 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    readonly struct TrueOperand : IOperand
+    readonly struct TrueValue : IValue
     {
         public JsonValueKind ValueKind {get{return JsonValueKind.True;}}
 
-        public IOperand this[int index] { get { throw new InvalidOperationException(); } }
+        public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
         public int GetArrayLength() { throw new InvalidOperationException(); }
 
@@ -380,17 +380,17 @@ namespace JsonCons.JsonPathLib
             throw new InvalidOperationException();
         }
 
-        public bool TryGetProperty(string propertyName, out IOperand property)
+        public bool TryGetProperty(string propertyName, out IValue property)
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonArrayEnumerator EnumerateArray()
+        public IArrayValueEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonObjectEnumerator EnumerateObject()
+        public IObjectValueEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
@@ -406,11 +406,11 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    readonly struct FalseOperand : IOperand
+    readonly struct FalseValue : IValue
     {
         public JsonValueKind ValueKind {get{return JsonValueKind.False;}}
 
-        public IOperand this[int index] { get { throw new InvalidOperationException(); } }
+        public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
         public int GetArrayLength() { throw new InvalidOperationException(); }
 
@@ -426,17 +426,17 @@ namespace JsonCons.JsonPathLib
             throw new InvalidOperationException();
         }
 
-        public bool TryGetProperty(string propertyName, out IOperand property)
+        public bool TryGetProperty(string propertyName, out IValue property)
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonArrayEnumerator EnumerateArray()
+        public IArrayValueEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonObjectEnumerator EnumerateObject()
+        public IObjectValueEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
@@ -452,11 +452,11 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    readonly struct NullOperand : IOperand
+    readonly struct NullValue : IValue
     {
         public JsonValueKind ValueKind {get{return JsonValueKind.Null;}}
 
-        public IOperand this[int index] { get { throw new InvalidOperationException(); } }
+        public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
         public int GetArrayLength() { throw new InvalidOperationException(); }
 
@@ -472,17 +472,17 @@ namespace JsonCons.JsonPathLib
             throw new InvalidOperationException();
         }
 
-        public bool TryGetProperty(string propertyName, out IOperand property)
+        public bool TryGetProperty(string propertyName, out IValue property)
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonArrayEnumerator EnumerateArray()
+        public IArrayValueEnumerator EnumerateArray()
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonObjectEnumerator EnumerateObject()
+        public IObjectValueEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }
@@ -498,14 +498,14 @@ namespace JsonCons.JsonPathLib
         }      
     };
 
-    readonly struct ArrayJsonValue : IOperand
+    readonly struct ArrayJsonValue : IValue
     {
-        internal class ArrayEnumerator : IJsonArrayEnumerator
+        internal class ArrayEnumerator : IArrayValueEnumerator
         {   
-            IList<IOperand> _value;
+            IList<IValue> _value;
             System.Collections.IEnumerator _enumerator;
 
-            public ArrayEnumerator(IList<IOperand> value)
+            public ArrayEnumerator(IList<IValue> value)
             {
                 _value = value;
                 _enumerator = value.GetEnumerator();
@@ -520,9 +520,9 @@ namespace JsonCons.JsonPathLib
 
             void IDisposable.Dispose() {}
 
-            public IOperand Current
+            public IValue Current
             {
-                get { return _enumerator.Current as IOperand; }
+                get { return _enumerator.Current as IValue; }
             }
 
             object System.Collections.IEnumerator.Current
@@ -530,7 +530,7 @@ namespace JsonCons.JsonPathLib
                 get { return Current; }
             }
 
-            public IEnumerator<IOperand> GetEnumerator()
+            public IEnumerator<IValue> GetEnumerator()
             {
                 return _value.GetEnumerator();
             }
@@ -541,16 +541,16 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        private readonly IList<IOperand> _value;
+        private readonly IList<IValue> _value;
 
-        internal ArrayJsonValue(IList<IOperand> value)
+        internal ArrayJsonValue(IList<IValue> value)
         {
             _value = value;
         }
 
         public JsonValueKind ValueKind {get{return JsonValueKind.Array;}}
 
-        public IOperand this[int index] { get { return _value[index]; } }
+        public IValue this[int index] { get { return _value[index]; } }
 
         public int GetArrayLength() { return _value.Count; }
 
@@ -569,17 +569,17 @@ namespace JsonCons.JsonPathLib
             throw new InvalidOperationException();
         }
 
-        public bool TryGetProperty(string propertyName, out IOperand property)
+        public bool TryGetProperty(string propertyName, out IValue property)
         {
             throw new InvalidOperationException();
         }
 
-        public IJsonArrayEnumerator EnumerateArray()
+        public IArrayValueEnumerator EnumerateArray()
         {
             return new ArrayEnumerator(_value);
         }
 
-        public IJsonObjectEnumerator EnumerateObject()
+        public IObjectValueEnumerator EnumerateObject()
         {
             throw new InvalidOperationException();
         }

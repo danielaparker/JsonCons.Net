@@ -13,7 +13,6 @@ items:
   - JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
   - JsonCons.JsonPathLib.JsonPath.SelectPaths(System.String,System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
   - JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
-  - JsonCons.JsonPathLib.JsonPath.TrySelect(System.Text.Json.JsonElement,JsonCons.JsonPathLib.NormalizedPath,System.Text.Json.JsonElement@)
   langs:
   - csharp
   - vb
@@ -24,7 +23,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: JsonPath
     path: ../src/JsonPath/JsonPath.cs
@@ -39,7 +38,6 @@ items:
     content: 'public sealed class JsonPath : IDisposable'
     content.vb: >-
       Public NotInheritable Class JsonPath
-
           Implements IDisposable
   inheritance:
   - System.Object
@@ -75,7 +73,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Parse
     path: ../src/JsonPath/JsonPath.cs
@@ -112,7 +110,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Select
     path: ../src/JsonPath/JsonPath.cs
@@ -149,7 +147,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectPaths
     path: ../src/JsonPath/JsonPath.cs
@@ -186,7 +184,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectNodes
     path: ../src/JsonPath/JsonPath.cs
@@ -223,7 +221,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Dispose
     path: ../src/JsonPath/JsonPath.cs
@@ -255,7 +253,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Select
     path: ../src/JsonPath/JsonPath.cs
@@ -296,7 +294,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectPaths
     path: ../src/JsonPath/JsonPath.cs
@@ -337,7 +335,7 @@ items:
   source:
     remote:
       path: src/JsonPath/JsonPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectNodes
     path: ../src/JsonPath/JsonPath.cs
@@ -364,50 +362,6 @@ items:
   modifiers.vb:
   - Public
   - Shared
-- uid: JsonCons.JsonPathLib.JsonPath.TrySelect(System.Text.Json.JsonElement,JsonCons.JsonPathLib.NormalizedPath,System.Text.Json.JsonElement@)
-  commentId: M:JsonCons.JsonPathLib.JsonPath.TrySelect(System.Text.Json.JsonElement,JsonCons.JsonPathLib.NormalizedPath,System.Text.Json.JsonElement@)
-  id: TrySelect(System.Text.Json.JsonElement,JsonCons.JsonPathLib.NormalizedPath,System.Text.Json.JsonElement@)
-  parent: JsonCons.JsonPathLib.JsonPath
-  langs:
-  - csharp
-  - vb
-  name: TrySelect(JsonElement, NormalizedPath, out JsonElement)
-  nameWithType: JsonPath.TrySelect(JsonElement, NormalizedPath, out JsonElement)
-  fullName: JsonCons.JsonPathLib.JsonPath.TrySelect(System.Text.Json.JsonElement, JsonCons.JsonPathLib.NormalizedPath, out System.Text.Json.JsonElement)
-  type: Method
-  source:
-    remote:
-      path: src/JsonPath/JsonPath.cs
-      branch: develop
-      repo: https://github.com/danielaparker/JsonCons.Net.git
-    id: TrySelect
-    path: ../src/JsonPath/JsonPath.cs
-    startLine: 248
-  assemblies:
-  - JsonPath
-  namespace: JsonCons.JsonPathLib
-  syntax:
-    content: public static bool TrySelect(JsonElement root, NormalizedPath path, out JsonElement element)
-    parameters:
-    - id: root
-      type: System.Text.Json.JsonElement
-    - id: path
-      type: JsonCons.JsonPathLib.NormalizedPath
-    - id: element
-      type: System.Text.Json.JsonElement
-    return:
-      type: System.Boolean
-    content.vb: Public Shared Function TrySelect(root As JsonElement, path As NormalizedPath, ByRef element As JsonElement) As Boolean
-  overload: JsonCons.JsonPathLib.JsonPath.TrySelect*
-  nameWithType.vb: JsonPath.TrySelect(JsonElement, NormalizedPath, ByRef JsonElement)
-  modifiers.csharp:
-  - public
-  - static
-  modifiers.vb:
-  - Public
-  - Shared
-  fullName.vb: JsonCons.JsonPathLib.JsonPath.TrySelect(System.Text.Json.JsonElement, JsonCons.JsonPathLib.NormalizedPath, ByRef System.Text.Json.JsonElement)
-  name.vb: TrySelect(JsonElement, NormalizedPath, ByRef JsonElement)
 references:
 - uid: System.Text.Json.JsonDocument
   commentId: T:System.Text.Json.JsonDocument
@@ -977,21 +931,3 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: JsonCons.JsonPathLib.JsonPath.TrySelect*
-  commentId: Overload:JsonCons.JsonPathLib.JsonPath.TrySelect
-  name: TrySelect
-  nameWithType: JsonPath.TrySelect
-  fullName: JsonCons.JsonPathLib.JsonPath.TrySelect
-- uid: JsonCons.JsonPathLib.NormalizedPath
-  commentId: T:JsonCons.JsonPathLib.NormalizedPath
-  parent: JsonCons.JsonPathLib
-  name: NormalizedPath
-  nameWithType: NormalizedPath
-  fullName: JsonCons.JsonPathLib.NormalizedPath
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  name: Boolean
-  nameWithType: Boolean
-  fullName: System.Boolean

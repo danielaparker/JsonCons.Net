@@ -10,19 +10,19 @@ namespace JsonCons.JsonPathLib
 {
     sealed class DynamicResources 
     {
-        Dictionary<Int32,IOperand> _cache = new Dictionary<Int32,IOperand>();
+        Dictionary<Int32,IValue> _cache = new Dictionary<Int32,IValue>();
 
         internal bool IsCached(Int32 id)
         {
             return _cache.ContainsKey(id);
         }
 
-        internal void AddToCache(Int32 id, IOperand value) 
+        internal void AddToCache(Int32 id, IValue value) 
         {
             _cache.Add(id, value);
         }
 
-        internal bool TryRetrieveFromCache(Int32 id, out IOperand result) 
+        internal bool TryRetrieveFromCache(Int32 id, out IValue result) 
         {
             return _cache.TryGetValue(id, out result);
         }
@@ -75,9 +75,9 @@ namespace JsonCons.JsonPathLib
                 var nodes = new List<JsonPathNode>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
                 _selector.Select(resources, 
-                                 new JsonElementOperand(root), 
+                                 new JsonElementValue(root), 
                                  pathStem, 
-                                 new JsonElementOperand(root), 
+                                 new JsonElementValue(root), 
                                  accumulator, 
                                  options);
 
@@ -119,9 +119,9 @@ namespace JsonCons.JsonPathLib
             {
                 INodeAccumulator accumulator = new JsonElementAccumulator(values);            
                 _selector.Select(resources, 
-                                 new JsonElementOperand(root), 
+                                 new JsonElementValue(root), 
                                  pathStem, 
-                                 new JsonElementOperand(root), 
+                                 new JsonElementValue(root), 
                                  accumulator, 
                                  options);
             }
@@ -139,9 +139,9 @@ namespace JsonCons.JsonPathLib
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
             _selector.Select(resources, 
-                             new JsonElementOperand(root), 
+                             new JsonElementValue(root), 
                              pathStem, 
-                             new JsonElementOperand(root), 
+                             new JsonElementValue(root), 
                              accumulator, 
                              options | ResultOptions.Path);
 
@@ -183,9 +183,9 @@ namespace JsonCons.JsonPathLib
             var nodes = new List<JsonPathNode>();
             var accumulator = new NodeAccumulator(nodes);
             _selector.Select(resources, 
-                             new JsonElementOperand(root), 
+                             new JsonElementValue(root), 
                              pathStem, 
-                             new JsonElementOperand(root), 
+                             new JsonElementValue(root), 
                              accumulator, 
                              options | ResultOptions.Path);
 
@@ -244,30 +244,6 @@ namespace JsonCons.JsonPathLib
             {
                 return expr.SelectNodes(root, options);
             }
-        }
-
-        public static bool TrySelect(JsonElement root, NormalizedPath path, out JsonElement element)
-        {
-            element = root;
-            foreach (var pathNode in path)
-            {
-                if (pathNode.NodeKind == PathNodeKind.Index)
-                {
-                    if (element.ValueKind != JsonValueKind.Array || pathNode.GetIndex() >= element.GetArrayLength())
-                    {
-                        return false; 
-                    }
-                    element = element[pathNode.GetIndex()];
-                }
-                else if (pathNode.NodeKind == PathNodeKind.Name)
-                {
-                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(pathNode.GetName(), out element))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
         }
     }
 

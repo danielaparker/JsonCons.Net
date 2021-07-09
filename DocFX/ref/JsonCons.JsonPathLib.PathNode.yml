@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: PathNode
     path: ../src/JsonPath/NormalizedPath.cs
@@ -66,7 +66,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Parent
     path: ../src/JsonPath/NormalizedPath.cs
@@ -101,7 +101,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: NodeKind
     path: ../src/JsonPath/NormalizedPath.cs
@@ -136,7 +136,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: .ctor
     path: ../src/JsonPath/NormalizedPath.cs
@@ -169,7 +169,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: .ctor
     path: ../src/JsonPath/NormalizedPath.cs
@@ -204,7 +204,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: .ctor
     path: ../src/JsonPath/NormalizedPath.cs
@@ -239,7 +239,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetName
     path: ../src/JsonPath/NormalizedPath.cs
@@ -271,7 +271,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetIndex
     path: ../src/JsonPath/NormalizedPath.cs
@@ -303,7 +303,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: CompareTo
     path: ../src/JsonPath/NormalizedPath.cs
@@ -338,7 +338,7 @@ items:
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
-      branch: develop
+      branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetHashCode
     path: ../src/JsonPath/NormalizedPath.cs

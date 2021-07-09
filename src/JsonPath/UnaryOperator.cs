@@ -13,7 +13,7 @@ namespace JsonCons.JsonPathLib
     {
         int PrecedenceLevel {get;}
         bool IsRightAssociative {get;}
-        bool TryEvaluate(IOperand elem, out IOperand result);
+        bool TryEvaluate(IValue elem, out IValue result);
     };
 
     abstract class UnaryOperator : IUnaryOperator
@@ -29,7 +29,7 @@ namespace JsonCons.JsonPathLib
 
         public bool IsRightAssociative {get;} 
 
-        public abstract bool TryEvaluate(IOperand elem, out IOperand result);
+        public abstract bool TryEvaluate(IValue elem, out IValue result);
     };
 
     sealed class NotOperator : UnaryOperator
@@ -40,7 +40,7 @@ namespace JsonCons.JsonPathLib
             : base(1, true)
         {}
 
-        public override bool TryEvaluate(IOperand val, out IOperand result)
+        public override bool TryEvaluate(IValue val, out IValue result)
         {
             result = Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
             return true;
@@ -60,7 +60,7 @@ namespace JsonCons.JsonPathLib
             : base(1, true)
         {}
 
-        public override bool TryEvaluate(IOperand val, out IOperand result)
+        public override bool TryEvaluate(IValue val, out IValue result)
         {
             if (!(val.ValueKind == JsonValueKind.Number))
             {
@@ -73,12 +73,12 @@ namespace JsonCons.JsonPathLib
 
             if (val.TryGetDecimal(out decVal))
             {
-                result = new DecimalOperand(-decVal);
+                result = new DecimalValue(-decVal);
                 return true;
             }
             else if (val.TryGetDouble(out dblVal))
             {
-                result = new DoubleOperand(-dblVal);
+                result = new DoubleValue(-dblVal);
                 return true;
             }
             else
@@ -104,7 +104,7 @@ namespace JsonCons.JsonPathLib
             _regex = regex;
         }
 
-        public override bool TryEvaluate(IOperand val, out IOperand result)
+        public override bool TryEvaluate(IValue val, out IValue result)
         {
             if (!(val.ValueKind == JsonValueKind.String))
             {
