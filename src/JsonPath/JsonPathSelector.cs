@@ -243,7 +243,7 @@ namespace JsonCons.JsonPathLib
                 IValue value;
                 if (TryGetValue(root, path, out value))
                 {
-                    this.TailSelect(resources, root, path.Stem, value, accumulator, options);        
+                    this.TailSelect(resources, root, path.Last, value, accumulator, options);        
                 }
             }
         }
@@ -268,7 +268,7 @@ namespace JsonCons.JsonPathLib
                 if (TryGetValue(root, path, out value))
                 {
 
-                    return this.TryEvaluateTail(resources, root, path.Stem, value, options, out result);        
+                    return this.TryEvaluateTail(resources, root, path.Last, value, options, out result);        
                 }
                 else
                 {

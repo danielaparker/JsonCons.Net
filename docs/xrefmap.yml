@@ -289,32 +289,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPathLib.NormalizedPath.GetHashCode
   nameWithType: NormalizedPath.GetHashCode
-- uid: JsonCons.JsonPathLib.NormalizedPath.Root
-  name: Root
-  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Root
-  commentId: P:JsonCons.JsonPathLib.NormalizedPath.Root
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Root
-  nameWithType: NormalizedPath.Root
-- uid: JsonCons.JsonPathLib.NormalizedPath.Root*
-  name: Root
-  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Root_
-  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.Root
+- uid: JsonCons.JsonPathLib.NormalizedPath.Last
+  name: Last
+  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Last
+  commentId: P:JsonCons.JsonPathLib.NormalizedPath.Last
+  fullName: JsonCons.JsonPathLib.NormalizedPath.Last
+  nameWithType: NormalizedPath.Last
+- uid: JsonCons.JsonPathLib.NormalizedPath.Last*
+  name: Last
+  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Last_
+  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.Last
   isSpec: "True"
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Root
-  nameWithType: NormalizedPath.Root
-- uid: JsonCons.JsonPathLib.NormalizedPath.Stem
-  name: Stem
-  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Stem
-  commentId: P:JsonCons.JsonPathLib.NormalizedPath.Stem
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Stem
-  nameWithType: NormalizedPath.Stem
-- uid: JsonCons.JsonPathLib.NormalizedPath.Stem*
-  name: Stem
-  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Stem_
-  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.Stem
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Stem
-  nameWithType: NormalizedPath.Stem
+  fullName: JsonCons.JsonPathLib.NormalizedPath.Last
+  nameWithType: NormalizedPath.Last
 - uid: JsonCons.JsonPathLib.NormalizedPath.System#Collections#IEnumerable#GetEnumerator
   name: IEnumerable.GetEnumerator()
   href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_System_Collections_IEnumerable_GetEnumerator

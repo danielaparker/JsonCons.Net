@@ -120,25 +120,32 @@ namespace JsonCons.JsonPathLib
     {
         readonly IReadOnlyList<PathComponent> _components;
 
-        public NormalizedPath(PathComponent node)
+        /// <summary>
+        /// Constructs a normalized path from the last path component.
+        ///
+        /// </summary>
+        public NormalizedPath(PathComponent last)
         {
             var nodes = new List<PathComponent>();
-            PathComponent p = node;
+            PathComponent component = last;
             do
             {
-                nodes.Add(p);
-                p = p.Parent;
+                nodes.Add(component);
+                component = component.Parent;
             }
-            while (p != null);
+            while (component != null);
             
             nodes.Reverse();
 
             _components = nodes;
         }
 
-        public PathComponent Root { get {return _components[0]; } }
+        /// <summary>
+        /// Gets the last component of the normalized path. 
+        ///
+        /// </summary>
 
-        public PathComponent Stem { get { return _components[_components.Count - 1]; } }
+        public PathComponent Last { get { return _components[_components.Count - 1]; } }
 
         /// <summary>
         /// Returns an enumerator that iterates through the components of the normalized path. 

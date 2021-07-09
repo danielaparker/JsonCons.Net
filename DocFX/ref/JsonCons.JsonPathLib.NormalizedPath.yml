@@ -11,8 +11,7 @@ items:
   - JsonCons.JsonPathLib.NormalizedPath.Equals(System.Object)
   - JsonCons.JsonPathLib.NormalizedPath.GetEnumerator
   - JsonCons.JsonPathLib.NormalizedPath.GetHashCode
-  - JsonCons.JsonPathLib.NormalizedPath.Root
-  - JsonCons.JsonPathLib.NormalizedPath.Stem
+  - JsonCons.JsonPathLib.NormalizedPath.Last
   - JsonCons.JsonPathLib.NormalizedPath.System#Collections#IEnumerable#GetEnumerator
   - JsonCons.JsonPathLib.NormalizedPath.ToJsonPointer
   - JsonCons.JsonPathLib.NormalizedPath.ToString
@@ -80,85 +79,54 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: .ctor
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 122
+    startLine: 126
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nConstructs a normalized path from the last path component.\n\n"
+  example: []
   syntax:
-    content: public NormalizedPath(PathComponent node)
+    content: public NormalizedPath(PathComponent last)
     parameters:
-    - id: node
+    - id: last
       type: JsonCons.JsonPathLib.PathComponent
-    content.vb: Public Sub New(node As PathComponent)
+    content.vb: Public Sub New(last As PathComponent)
   overload: JsonCons.JsonPathLib.NormalizedPath.#ctor*
   modifiers.csharp:
   - public
   modifiers.vb:
   - Public
-- uid: JsonCons.JsonPathLib.NormalizedPath.Root
-  commentId: P:JsonCons.JsonPathLib.NormalizedPath.Root
-  id: Root
+- uid: JsonCons.JsonPathLib.NormalizedPath.Last
+  commentId: P:JsonCons.JsonPathLib.NormalizedPath.Last
+  id: Last
   parent: JsonCons.JsonPathLib.NormalizedPath
   langs:
   - csharp
   - vb
-  name: Root
-  nameWithType: NormalizedPath.Root
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Root
+  name: Last
+  nameWithType: NormalizedPath.Last
+  fullName: JsonCons.JsonPathLib.NormalizedPath.Last
   type: Property
   source:
     remote:
       path: src/JsonPath/NormalizedPath.cs
       branch: main
       repo: https://github.com/danielaparker/JsonCons.Net.git
-    id: Root
+    id: Last
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 138
+    startLine: 147
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
+  summary: "\nGets the last component of the normalized path. \n\n"
+  example: []
   syntax:
-    content: public PathComponent Root { get; }
+    content: public PathComponent Last { get; }
     parameters: []
     return:
       type: JsonCons.JsonPathLib.PathComponent
-    content.vb: Public ReadOnly Property Root As PathComponent
-  overload: JsonCons.JsonPathLib.NormalizedPath.Root*
-  modifiers.csharp:
-  - public
-  - get
-  modifiers.vb:
-  - Public
-  - ReadOnly
-- uid: JsonCons.JsonPathLib.NormalizedPath.Stem
-  commentId: P:JsonCons.JsonPathLib.NormalizedPath.Stem
-  id: Stem
-  parent: JsonCons.JsonPathLib.NormalizedPath
-  langs:
-  - csharp
-  - vb
-  name: Stem
-  nameWithType: NormalizedPath.Stem
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Stem
-  type: Property
-  source:
-    remote:
-      path: src/JsonPath/NormalizedPath.cs
-      branch: main
-      repo: https://github.com/danielaparker/JsonCons.Net.git
-    id: Stem
-    path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 140
-  assemblies:
-  - JsonPath
-  namespace: JsonCons.JsonPathLib
-  syntax:
-    content: public PathComponent Stem { get; }
-    parameters: []
-    return:
-      type: JsonCons.JsonPathLib.PathComponent
-    content.vb: Public ReadOnly Property Stem As PathComponent
-  overload: JsonCons.JsonPathLib.NormalizedPath.Stem*
+    content.vb: Public ReadOnly Property Last As PathComponent
+  overload: JsonCons.JsonPathLib.NormalizedPath.Last*
   modifiers.csharp:
   - public
   - get
@@ -183,7 +151,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetEnumerator
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 147
+    startLine: 154
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -220,7 +188,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: System.Collections.IEnumerable.GetEnumerator
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 153
+    startLine: 160
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -252,7 +220,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: ToString
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 165
+    startLine: 172
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -289,7 +257,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: ToJsonPointer
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 208
+    startLine: 215
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -323,7 +291,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Equals
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 253
+    startLine: 260
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -360,7 +328,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Equals
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 263
+    startLine: 270
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -398,7 +366,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: CompareTo
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 273
+    startLine: 280
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -435,7 +403,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: GetHashCode
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 289
+    startLine: 296
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -470,7 +438,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: TryGet
     path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 300
+    startLine: 307
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -960,16 +928,11 @@ references:
   name: PathComponent
   nameWithType: PathComponent
   fullName: JsonCons.JsonPathLib.PathComponent
-- uid: JsonCons.JsonPathLib.NormalizedPath.Root*
-  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.Root
-  name: Root
-  nameWithType: NormalizedPath.Root
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Root
-- uid: JsonCons.JsonPathLib.NormalizedPath.Stem*
-  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.Stem
-  name: Stem
-  nameWithType: NormalizedPath.Stem
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Stem
+- uid: JsonCons.JsonPathLib.NormalizedPath.Last*
+  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.Last
+  name: Last
+  nameWithType: NormalizedPath.Last
+  fullName: JsonCons.JsonPathLib.NormalizedPath.Last
 - uid: JsonCons.JsonPathLib.NormalizedPath.GetEnumerator*
   commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.GetEnumerator
   name: GetEnumerator

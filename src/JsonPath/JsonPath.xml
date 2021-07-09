@@ -126,6 +126,18 @@
             
              </summary>
         </member>
+        <member name="M:JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathComponent)">
+             <summary>
+             Constructs a normalized path from the last path component.
+            
+             </summary>
+        </member>
+        <member name="P:JsonCons.JsonPathLib.NormalizedPath.Last">
+             <summary>
+             Gets the last component of the normalized path. 
+            
+             </summary>
+        </member>
         <member name="M:JsonCons.JsonPathLib.NormalizedPath.GetEnumerator">
              <summary>
              Returns an enumerator that iterates through the components of the normalized path. 
