@@ -129,6 +129,13 @@ namespace JsonCons.JsonPathLib
             return values;
         }
 
+        /// <summary>
+        /// Selects paths to elements in root that match the JSONPath expression. 
+        /// </summary>
+        /// <param name="root">The root.</param>
+        /// <param name="options">The result options.</param>
+        /// <returns>A list of paths to elements in root that match the provided JSONPath expression</returns>
+        
         public IList<NormalizedPath> SelectPaths(JsonElement root, ResultOptions options = ResultOptions.Path)
         {
             options |= _requiredOptions;
@@ -222,7 +229,7 @@ namespace JsonCons.JsonPathLib
             _resources.Dispose();
         }
 
-        public static IList<JsonElement> Select(string path, JsonElement root, ResultOptions options = 0)
+        public static IList<JsonElement> Select(JsonElement root, string path, ResultOptions options = 0)
         {
             using (var expr = JsonPath.Parse(path))
             {
@@ -230,7 +237,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public static IList<NormalizedPath> SelectPaths(string path, JsonElement root, ResultOptions options = ResultOptions.Path)
+        public static IList<NormalizedPath> SelectPaths(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
         {
             using (var expr = JsonPath.Parse(path))
             {
@@ -238,7 +245,7 @@ namespace JsonCons.JsonPathLib
             }
         }
 
-        public static IList<JsonPathNode> SelectNodes(string path, JsonElement root, ResultOptions options = ResultOptions.Path)
+        public static IList<JsonPathNode> SelectNodes(JsonElement root, string path, ResultOptions options = ResultOptions.Path)
         {
             using (var expr = JsonPath.Parse(path))
             {

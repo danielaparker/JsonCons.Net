@@ -48,7 +48,7 @@ namespace JsonCons.Examples
             using (JsonDocument doc = JsonDocument.Parse(jsonString))
             {
                 Console.WriteLine(@"(1) The authors of all books in the store");
-                IList<JsonElement> values1 = JsonPath.Select("$.store.book[*].author", doc.RootElement);
+                IList<JsonElement> values1 = JsonPath.Select(doc.RootElement, "$.store.book[*].author");
                 foreach (var value in values1)
                 {
                     Console.WriteLine(value);
@@ -56,7 +56,7 @@ namespace JsonCons.Examples
                 Console.WriteLine();
 
                 Console.WriteLine(@"(2) All authors");
-                IList<JsonElement> values2 = JsonPath.Select("$..author", doc.RootElement);
+                IList<JsonElement> values2 = JsonPath.Select(doc.RootElement, "$..author");
                 foreach (var value in values2)
                 {
                     Console.WriteLine(value);
@@ -64,7 +64,7 @@ namespace JsonCons.Examples
                 Console.WriteLine();
 
                 Console.WriteLine(@"(3) All things in store, which are some books and a red bicycle");
-                IList<JsonElement> values3 = JsonPath.Select("$.store.*", doc.RootElement);
+                IList<JsonElement> values3 = JsonPath.Select(doc.RootElement, "$.store.*");
                 foreach (var value in values3)
                 {
                     Console.WriteLine(value);
@@ -72,7 +72,7 @@ namespace JsonCons.Examples
                 Console.WriteLine();
 
                 Console.WriteLine(@"(4) The price of everything in the store.");
-                IList<JsonElement> values4 = JsonPath.Select("$.store..price", doc.RootElement);
+                IList<JsonElement> values4 = JsonPath.Select(doc.RootElement, "$.store..price");
                 foreach (var value in values4)
                 {
                     Console.WriteLine(value);
@@ -80,7 +80,7 @@ namespace JsonCons.Examples
                 Console.WriteLine();
 
                 Console.WriteLine(@"(5) The third book");
-                IList<JsonElement> values5 = JsonPath.Select("$..book[2]", doc.RootElement);
+                IList<JsonElement> values5 = JsonPath.Select(doc.RootElement, "$..book[2]");
                 foreach (var value in values5)
                 {
                     Console.WriteLine(value);
@@ -88,7 +88,7 @@ namespace JsonCons.Examples
                 Console.WriteLine();
 
                 Console.WriteLine(@"(6) The last book");
-                IList<JsonElement> values6 = JsonPath.Select("$..book[-1]", doc.RootElement);
+                IList<JsonElement> values6 = JsonPath.Select(doc.RootElement, "$..book[-1]");
                 foreach (var value in values6)
                 {
                     Console.WriteLine(value);
@@ -96,7 +96,7 @@ namespace JsonCons.Examples
                 Console.WriteLine();
 
                 Console.WriteLine(@"(7) The first two books");
-                IList<JsonElement> values7 = JsonPath.Select("$..book[:2]", doc.RootElement);
+                IList<JsonElement> values7 = JsonPath.Select(doc.RootElement, "$..book[:2]");
                 foreach (var value in values7)
                 {
                     Console.WriteLine(value);
@@ -104,7 +104,7 @@ namespace JsonCons.Examples
                 Console.WriteLine();
 
                 Console.WriteLine(@"(8) Filter all books with isbn number");
-                IList<JsonElement> values8 = JsonPath.Select("$..book[?(@.isbn)]", doc.RootElement);
+                IList<JsonElement> values8 = JsonPath.Select(doc.RootElement, "$..book[?(@.isbn)]");
                 foreach (var value in values8)
                 {
                     Console.WriteLine(value);
@@ -112,7 +112,7 @@ namespace JsonCons.Examples
                 Console.WriteLine();
 
                 Console.WriteLine(@"(9) Filter all books cheaper than 10");
-                IList<JsonElement> values9 = JsonPath.Select("$..book[?(@.price<10)]", doc.RootElement);
+                IList<JsonElement> values9 = JsonPath.Select(doc.RootElement, "$..book[?(@.price<10)]");
                 foreach (var value in values9)
                 {
                     Console.WriteLine(value);
@@ -120,7 +120,7 @@ namespace JsonCons.Examples
                 Console.WriteLine();
 
                 Console.WriteLine(@"(10) All books with authors that match ""evelyn"" (ignore case)");
-                IList<JsonElement> values10 = JsonPath.Select("$..book[?(@.author =~ /evelyn.*?/i)]", doc.RootElement);
+                IList<JsonElement> values10 = JsonPath.Select(doc.RootElement, "$..book[?(@.author =~ /evelyn.*?/i)]");
                 foreach (var value in values10)
                 {
                     Console.WriteLine(value);
@@ -165,7 +165,7 @@ namespace JsonCons.Examples
             using (JsonDocument doc = JsonDocument.Parse(jsonString))
             {
                 Console.WriteLine("(1) All books whose author's last name is 'Tolkien'");
-                IList<JsonElement> values1 = JsonPath.Select(@"$.books[?(tokenize(@.author,'\\s+')[-1] == 'Tolkien')]", doc.RootElement);
+                IList<JsonElement> values1 = JsonPath.Select(doc.RootElement, @"$.books[?(tokenize(@.author,'\\s+')[-1] == 'Tolkien')]");
                 foreach (var value in values1)
                 {
                     Console.WriteLine(value);
@@ -173,7 +173,7 @@ namespace JsonCons.Examples
                 Console.WriteLine();
 
                 Console.WriteLine("(2) All titles whose price is greater than the average price");
-                IList<JsonElement> values2 = JsonPath.Select(@"$.books[?(@.price > avg($.books[*].price))].title", doc.RootElement);
+                IList<JsonElement> values2 = JsonPath.Select(doc.RootElement, @"$.books[?(@.price > avg($.books[*].price))].title");
                 foreach (var value in values2)
                 {
                     Console.WriteLine(value);
@@ -181,7 +181,7 @@ namespace JsonCons.Examples
                 Console.WriteLine();
 
                 Console.WriteLine("(3) All books that don't have a price");
-                IList<JsonElement> values3 = JsonPath.Select(@"$.books[?(!contains(keys(@),'price'))]", doc.RootElement);
+                IList<JsonElement> values3 = JsonPath.Select(doc.RootElement, @"$.books[?(!contains(keys(@),'price'))]");
                 foreach (var value in values3)
                 {
                     Console.WriteLine(value);
@@ -218,7 +218,7 @@ namespace JsonCons.Examples
             using (JsonDocument doc = JsonDocument.Parse(jsonString))
             {
                 Console.WriteLine("Union of separate JSONPath expressions");
-                IList<JsonElement> values1 = JsonPath.Select(@"$..[@.firstName,@.address.city]", doc.RootElement);
+                IList<JsonElement> values1 = JsonPath.Select(doc.RootElement, @"$..[@.firstName,@.address.city]");
                 foreach (var value in values1)
                 {
                     Console.WriteLine(value);

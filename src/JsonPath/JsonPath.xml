@@ -13,5 +13,13 @@
               It should be disposed to ensure that these objects are properly disposed.
             </remarks>
         </member>
+        <member name="M:JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">
+            <summary>
+            Selects paths to elements in root that match the JSONPath expression. 
+            </summary>
+            <param name="root">The root.</param>
+            <param name="options">The result options.</param>
+            <returns>A list of paths to elements in root that match the provided JSONPath expression</returns>
+        </member>
     </members>
 </doc>
