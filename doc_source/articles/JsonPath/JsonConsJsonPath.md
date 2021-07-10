@@ -237,17 +237,13 @@ Consider the JSON document
     }
 ]
 ```
+
 JsonCons supports the parent operator, `^`, borrowed from [JSONPath Plus](https://www.npmjs.com/package/jsonpath-plus),
 that allows you to select book objects based on criteria applied to descendent values.
 
-Query                           |Output paths
---------------------------------|------------
-$[*]reviews[?(@.rating == 5)]   | "$[1]['reviews'][0]"
-&nbsp;                          | "$[2]['reviews'][1]"
-$[*]reviews[?(@.rating == 5)]^  | "$[1]['reviews']"
-&nbsp;                          | "$[2]['reviews']"
-$[*]reviews[?(@.rating == 5)]^^ | "$[1]"
-&nbsp;                          | "$[2]"
+Query                             |Output paths
+----------------------------------|------------
+a | b
 --------------------------------------------
 
 The JSONPath expression
