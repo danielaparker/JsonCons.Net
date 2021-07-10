@@ -7,6 +7,7 @@ items:
   - JsonCons.JsonPathLib.JsonElementEqualityComparer
   - JsonCons.JsonPathLib.JsonPath
   - JsonCons.JsonPathLib.JsonPathNode
+  - JsonCons.JsonPathLib.JsonPathParseException
   - JsonCons.JsonPathLib.NormalizedPath
   - JsonCons.JsonPathLib.PathComponent
   - JsonCons.JsonPathLib.PathComponentKind
@@ -45,6 +46,11 @@ references:
   name: JsonPathNode
   nameWithType: JsonPathNode
   fullName: JsonCons.JsonPathLib.JsonPathNode
+- uid: JsonCons.JsonPathLib.JsonPathParseException
+  commentId: T:JsonCons.JsonPathLib.JsonPathParseException
+  name: JsonPathParseException
+  nameWithType: JsonPathParseException
+  fullName: JsonCons.JsonPathLib.JsonPathParseException
 - uid: JsonCons.JsonPathLib.PathComponentKind
   commentId: T:JsonCons.JsonPathLib.PathComponentKind
   parent: JsonCons.JsonPathLib

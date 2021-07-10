@@ -199,6 +199,51 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPathLib.JsonPathNode.Value
   nameWithType: JsonPathNode.Value
+- uid: JsonCons.JsonPathLib.JsonPathParseException
+  name: JsonPathParseException
+  href: ref/JsonCons.JsonPathLib.JsonPathParseException.html
+  commentId: T:JsonCons.JsonPathLib.JsonPathParseException
+  fullName: JsonCons.JsonPathLib.JsonPathParseException
+  nameWithType: JsonPathParseException
+- uid: JsonCons.JsonPathLib.JsonPathParseException.ColumnNumber
+  name: ColumnNumber
+  href: ref/JsonCons.JsonPathLib.JsonPathParseException.html#JsonCons_JsonPathLib_JsonPathParseException_ColumnNumber
+  commentId: P:JsonCons.JsonPathLib.JsonPathParseException.ColumnNumber
+  fullName: JsonCons.JsonPathLib.JsonPathParseException.ColumnNumber
+  nameWithType: JsonPathParseException.ColumnNumber
+- uid: JsonCons.JsonPathLib.JsonPathParseException.ColumnNumber*
+  name: ColumnNumber
+  href: ref/JsonCons.JsonPathLib.JsonPathParseException.html#JsonCons_JsonPathLib_JsonPathParseException_ColumnNumber_
+  commentId: Overload:JsonCons.JsonPathLib.JsonPathParseException.ColumnNumber
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.JsonPathParseException.ColumnNumber
+  nameWithType: JsonPathParseException.ColumnNumber
+- uid: JsonCons.JsonPathLib.JsonPathParseException.LineNumber
+  name: LineNumber
+  href: ref/JsonCons.JsonPathLib.JsonPathParseException.html#JsonCons_JsonPathLib_JsonPathParseException_LineNumber
+  commentId: P:JsonCons.JsonPathLib.JsonPathParseException.LineNumber
+  fullName: JsonCons.JsonPathLib.JsonPathParseException.LineNumber
+  nameWithType: JsonPathParseException.LineNumber
+- uid: JsonCons.JsonPathLib.JsonPathParseException.LineNumber*
+  name: LineNumber
+  href: ref/JsonCons.JsonPathLib.JsonPathParseException.html#JsonCons_JsonPathLib_JsonPathParseException_LineNumber_
+  commentId: Overload:JsonCons.JsonPathLib.JsonPathParseException.LineNumber
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.JsonPathParseException.LineNumber
+  nameWithType: JsonPathParseException.LineNumber
+- uid: JsonCons.JsonPathLib.JsonPathParseException.ToString
+  name: ToString()
+  href: ref/JsonCons.JsonPathLib.JsonPathParseException.html#JsonCons_JsonPathLib_JsonPathParseException_ToString
+  commentId: M:JsonCons.JsonPathLib.JsonPathParseException.ToString
+  fullName: JsonCons.JsonPathLib.JsonPathParseException.ToString()
+  nameWithType: JsonPathParseException.ToString()
+- uid: JsonCons.JsonPathLib.JsonPathParseException.ToString*
+  name: ToString
+  href: ref/JsonCons.JsonPathLib.JsonPathParseException.html#JsonCons_JsonPathLib_JsonPathParseException_ToString_
+  commentId: Overload:JsonCons.JsonPathLib.JsonPathParseException.ToString
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.JsonPathParseException.ToString
+  nameWithType: JsonPathParseException.ToString
 - uid: JsonCons.JsonPathLib.NormalizedPath
   name: NormalizedPath
   href: ref/JsonCons.JsonPathLib.NormalizedPath.html

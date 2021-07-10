@@ -45,6 +45,9 @@
             </summary>
             <param name="pathStr">A JSONPath string.</param>
             <returns>A JsonPath.</returns>
+            <exception cref="T:JsonCons.JsonPathLib.JsonPathParseException">
+              The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+            </exception>
         </member>
         <member name="M:JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">
             <summary>
@@ -80,6 +83,9 @@
             <param name="pathStr">A JSONPath string.</param>
             <param name="options">Options for handling duplicate paths and order of results.</param>
             <returns>A list of values within the root value that match the provided JSONPath expression</returns>
+            <exception cref="T:JsonCons.JsonPathLib.JsonPathParseException">
+              The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+            </exception>
         </member>
         <member name="M:JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)">
             <summary>
@@ -90,6 +96,9 @@
             <param name="pathStr">A JSONPath string.</param>
             <param name="options">Options for handling duplicate paths and order of results.</param>
             <returns>A list of <see cref="T:JsonCons.JsonPathLib.NormalizedPath"/> identifying the values within the root value that match the provided JSONPath expression</returns>
+            <exception cref="T:JsonCons.JsonPathLib.JsonPathParseException">
+              The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+            </exception>
         </member>
         <member name="M:JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)">
             <summary>
@@ -101,6 +110,9 @@
             <param name="options">Options for handling duplicate paths and order of results.</param>
             <returns>A list of <see cref="T:JsonCons.JsonPathLib.JsonPathNode"/> representing locations-value pairs 
             within the root value that match the provided JSONPath expression</returns>
+            <exception cref="T:JsonCons.JsonPathLib.JsonPathParseException">
+              The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+            </exception>
         </member>
         <member name="T:JsonCons.JsonPathLib.JsonPathNode">
              <summary>
@@ -119,6 +131,21 @@
              Gets the value
             
              </summary>
+        </member>
+        <member name="T:JsonCons.JsonPathLib.JsonPathParseException">
+            <summary>
+            Defines a custom exception object that is thrown when JSONPath parsing fails.
+            </summary>    
+        </member>
+        <member name="P:JsonCons.JsonPathLib.JsonPathParseException.LineNumber">
+            <summary>
+            The line in the JSONPath string where a parse error was detected.
+            </summary>
+        </member>
+        <member name="P:JsonCons.JsonPathLib.JsonPathParseException.ColumnNumber">
+            <summary>
+            The column in the JSONPath string where a parse error was detected.
+            </summary>
         </member>
         <member name="T:JsonCons.JsonPathLib.PathComponentKind">
              <summary>

@@ -118,7 +118,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_Parse_System_String_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.Parse(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L71">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L74">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_Parse_" data-uid="JsonCons.JsonPathLib.JsonPath.Parse*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_Parse_System_String_" data-uid="JsonCons.JsonPathLib.JsonPath.Parse(System.String)">Parse(String)</h4>
@@ -164,12 +164,28 @@ A JsonPath instance is thread safe and has no mutable state.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPathLib.JsonPathParseException.html">JsonPathParseException</a></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">pathStr</code> parameter is not a valid JSONPath expression.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_Select_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L93">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L97">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_Select_" data-uid="JsonCons.JsonPathLib.JsonPath.Select*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_Select_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">Select(JsonElement, ResultOptions)</h4>
@@ -225,7 +241,7 @@ A JsonPath instance is thread safe and has no mutable state.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L271">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L278">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_Select_" data-uid="JsonCons.JsonPathLib.JsonPath.Select*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)">Select(JsonElement, String, ResultOptions)</h4>
@@ -283,12 +299,28 @@ This method parses and applies the expression in one operation.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPathLib.JsonPathParseException.html">JsonPathParseException</a></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">pathStr</code> parameter is not a valid JSONPath expression.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L219">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L223">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_SelectNodes_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectNodes*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">SelectNodes(JsonElement, ResultOptions)</h4>
@@ -345,7 +377,7 @@ within the root value that match this JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L302">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L315">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_SelectNodes_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectNodes*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)">SelectNodes(JsonElement, String, ResultOptions)</h4>
@@ -404,12 +436,28 @@ within the root value that match the provided JSONPath expression</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPathLib.JsonPathParseException.html">JsonPathParseException</a></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">pathStr</code> parameter is not a valid JSONPath expression.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L167">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L171">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_SelectPaths_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectPaths*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">SelectPaths(JsonElement, ResultOptions)</h4>
@@ -465,7 +513,7 @@ within the root value that match the provided JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_JsonPath_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPathLib.ResultOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L286">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonPath.cs/#L296">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_JsonPath_SelectPaths_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectPaths*"></a>
   <h4 id="JsonCons_JsonPathLib_JsonPath_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPathLib_ResultOptions_" data-uid="JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)">SelectPaths(JsonElement, String, ResultOptions)</h4>
@@ -519,6 +567,22 @@ This method parses and applies the expression in one operation.</p>
       <tr>
         <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPathLib.NormalizedPath.html">NormalizedPath</a>&gt;</td>
         <td><p>A list of <a class="xref" href="JsonCons.JsonPathLib.NormalizedPath.html">NormalizedPath</a> identifying the values within the root value that match the provided JSONPath expression</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPathLib.JsonPathParseException.html">JsonPathParseException</a></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">pathStr</code> parameter is not a valid JSONPath expression.</p>
 </td>
       </tr>
     </tbody>

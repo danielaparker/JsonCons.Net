@@ -71,7 +71,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Parse
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 70
+    startLine: 73
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -88,6 +88,10 @@ items:
       description: A JsonPath.
     content.vb: Public Shared Function Parse(pathStr As String) As JsonPath
   overload: JsonCons.JsonPathLib.JsonPath.Parse*
+  exceptions:
+  - type: JsonCons.JsonPathLib.JsonPathParseException
+    commentId: T:JsonCons.JsonPathLib.JsonPathParseException
+    description: "\nThe <code data-dev-comment-type=\"paramref\" class=\"paramref\">pathStr</code> parameter is not a valid JSONPath expression.\n"
   modifiers.csharp:
   - public
   - static
@@ -112,7 +116,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Select
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 92
+    startLine: 96
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -154,7 +158,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectPaths
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 166
+    startLine: 170
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -196,7 +200,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectNodes
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 218
+    startLine: 222
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -238,7 +242,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Select
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 270
+    startLine: 277
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -261,6 +265,10 @@ items:
       description: A list of values within the root value that match the provided JSONPath expression
     content.vb: Public Shared Function Select(root As JsonElement, pathStr As String, options As ResultOptions = CType(0, ResultOptions)) As IList(Of JsonElement)
   overload: JsonCons.JsonPathLib.JsonPath.Select*
+  exceptions:
+  - type: JsonCons.JsonPathLib.JsonPathParseException
+    commentId: T:JsonCons.JsonPathLib.JsonPathParseException
+    description: "\nThe <code data-dev-comment-type=\"paramref\" class=\"paramref\">pathStr</code> parameter is not a valid JSONPath expression.\n"
   modifiers.csharp:
   - public
   - static
@@ -285,7 +293,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectPaths
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 285
+    startLine: 295
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -308,6 +316,10 @@ items:
       description: A list of <xref href="JsonCons.JsonPathLib.NormalizedPath" data-throw-if-not-resolved="false"></xref> identifying the values within the root value that match the provided JSONPath expression
     content.vb: Public Shared Function SelectPaths(root As JsonElement, pathStr As String, options As ResultOptions = ResultOptions.Path) As IList(Of NormalizedPath)
   overload: JsonCons.JsonPathLib.JsonPath.SelectPaths*
+  exceptions:
+  - type: JsonCons.JsonPathLib.JsonPathParseException
+    commentId: T:JsonCons.JsonPathLib.JsonPathParseException
+    description: "\nThe <code data-dev-comment-type=\"paramref\" class=\"paramref\">pathStr</code> parameter is not a valid JSONPath expression.\n"
   modifiers.csharp:
   - public
   - static
@@ -332,7 +344,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectNodes
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 301
+    startLine: 314
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -355,6 +367,10 @@ items:
       description: "A list of <xref href=\"JsonCons.JsonPathLib.JsonPathNode\" data-throw-if-not-resolved=\"false\"></xref> representing locations-value pairs \nwithin the root value that match the provided JSONPath expression"
     content.vb: Public Shared Function SelectNodes(root As JsonElement, pathStr As String, options As ResultOptions = ResultOptions.Path) As IList(Of JsonPathNode)
   overload: JsonCons.JsonPathLib.JsonPath.SelectNodes*
+  exceptions:
+  - type: JsonCons.JsonPathLib.JsonPathParseException
+    commentId: T:JsonCons.JsonPathLib.JsonPathParseException
+    description: "\nThe <code data-dev-comment-type=\"paramref\" class=\"paramref\">pathStr</code> parameter is not a valid JSONPath expression.\n"
   modifiers.csharp:
   - public
   - static
@@ -659,6 +675,11 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: JsonCons.JsonPathLib.JsonPathParseException
+  commentId: T:JsonCons.JsonPathLib.JsonPathParseException
+  name: JsonPathParseException
+  nameWithType: JsonPathParseException
+  fullName: JsonCons.JsonPathLib.JsonPathParseException
 - uid: JsonCons.JsonPathLib.JsonPath.Parse*
   commentId: Overload:JsonCons.JsonPathLib.JsonPath.Parse
   name: Parse

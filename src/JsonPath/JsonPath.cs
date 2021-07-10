@@ -67,6 +67,9 @@ namespace JsonCons.JsonPathLib
         /// </summary>
         /// <param name="pathStr">A JSONPath string.</param>
         /// <returns>A JsonPath.</returns>
+        /// <exception cref="JsonPathParseException">
+        ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+        /// </exception>
 
         public static JsonPath Parse(string pathStr)
         {
@@ -90,6 +93,7 @@ namespace JsonCons.JsonPathLib
         /// <param name="root">The root value.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of values within the root value that match this JSONPath expression</returns>
+
         public IList<JsonElement> Select(JsonElement root, ResultOptions options = 0)
         {
             options |= _requiredOptions;
@@ -268,6 +272,9 @@ namespace JsonCons.JsonPathLib
         /// <param name="pathStr">A JSONPath string.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of values within the root value that match the provided JSONPath expression</returns>
+        /// <exception cref="JsonPathParseException">
+        ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+        /// </exception>
         public static IList<JsonElement> Select(JsonElement root, string pathStr, ResultOptions options = 0)
         {
             var expr = JsonPath.Parse(pathStr);
@@ -282,6 +289,9 @@ namespace JsonCons.JsonPathLib
         /// <param name="pathStr">A JSONPath string.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value that match the provided JSONPath expression</returns>
+        /// <exception cref="JsonPathParseException">
+        ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+        /// </exception>
 
         public static IList<NormalizedPath> SelectPaths(JsonElement root, string pathStr, ResultOptions options = ResultOptions.Path)
         {
@@ -298,6 +308,9 @@ namespace JsonCons.JsonPathLib
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of <see cref="JsonPathNode"/> representing locations-value pairs 
         /// within the root value that match the provided JSONPath expression</returns>
+        /// <exception cref="JsonPathParseException">
+        ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+        /// </exception>
 
         public static IList<JsonPathNode> SelectNodes(JsonElement root, string pathStr, ResultOptions options = ResultOptions.Path)
         {

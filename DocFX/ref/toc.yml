@@ -8,6 +8,8 @@
     name: JsonPath
   - uid: JsonCons.JsonPathLib.JsonPathNode
     name: JsonPathNode
+  - uid: JsonCons.JsonPathLib.JsonPathParseException
+    name: JsonPathParseException
   - uid: JsonCons.JsonPathLib.NormalizedPath
     name: NormalizedPath
   - uid: JsonCons.JsonPathLib.PathComponent

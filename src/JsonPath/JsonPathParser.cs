@@ -9,6 +9,35 @@ using System.Text.RegularExpressions;
         
 namespace JsonCons.JsonPathLib
 {
+    /// <summary>
+    /// Defines a custom exception object that is thrown when JSONPath parsing fails.
+    /// </summary>    
+
+    public class JsonPathParseException : Exception
+    {
+        /// <summary>
+        /// The line in the JSONPath string where a parse error was detected.
+        /// </summary>
+        public int LineNumber {get;}
+
+        /// <summary>
+        /// The column in the JSONPath string where a parse error was detected.
+        /// </summary>
+        public int ColumnNumber {get;}
+
+        internal JsonPathParseException(string message, int line, int column)
+            : base(message)
+        {
+            LineNumber = line;
+            ColumnNumber = column;
+        }
+
+        public override string ToString ()
+        {
+            return $"{base.Message} at line {LineNumber} and column {ColumnNumber}";
+        }
+    };
+
     enum JsonPathState
     {
         Start,
@@ -27,7 +56,7 @@ namespace JsonCons.JsonPathLib
         JsonStringValue,
         Function,
         FunctionName,
-        JsonElement,
+        JsonLiteral,
         AppendDoubleQuote,
         IdentifierOrFunctionExpr,
         NameOrLeftBracket,
@@ -282,7 +311,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             case '.':
-                                throw new JsonException("Expected identifier");
+                                throw new JsonPathParseException("Expected identifier", _line, _column);
                             default:
                                 buffer.Clear();
                                 _stateStack.Pop(); 
@@ -312,7 +341,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                throw new JsonException("Syntax error");
+                                throw new JsonPathParseException("Syntax error", _line, _column);
                         }
                         break;
                     case JsonPathState.UnquotedString: 
@@ -342,7 +371,7 @@ namespace JsonCons.JsonPathLib
                                 IFunction func; 
                                 if (!BuiltInFunctions.Instance.TryGetFunction(buffer.ToString(), out func))
                                 {
-                                    throw new JsonException("Function not found");
+                                    throw new JsonPathParseException("Function not found", _line, _column);
                                 }
                                 buffer.Clear();
                                 PushToken(new Token(func));
@@ -523,7 +552,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Push(JsonPathState.EscapeExpectSurrogatePair2);
                                 break;
                             default:
-                                throw new JsonException("Invalid codepoint");
+                                throw new JsonPathParseException("Invalid codepoint", _line, _column);
                         }
                         break;
                     case JsonPathState.EscapeExpectSurrogatePair2:
@@ -536,7 +565,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Push(JsonPathState.EscapeU5);
                                 break;
                             default:
-                                throw new JsonException("Invalid codepoint");
+                                throw new JsonPathParseException("Invalid codepoint", _line, _column);
                         }
                         break;
                     case JsonPathState.EscapeU5:
@@ -668,7 +697,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                throw new JsonException("Expected bracket specifier or union");
+                                throw new JsonPathParseException("Expected bracket specifier or union", _line, _column);
                         }
                         break;
                     case JsonPathState.WildcardOrUnion:
@@ -696,7 +725,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                throw new JsonException("Expected right bracket");
+                                throw new JsonPathParseException("Expected right bracket", _line, _column);
                         }
                         break;
                     case JsonPathState.UnionExpression:
@@ -728,7 +757,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                throw new JsonException("Expected right bracket");
+                                throw new JsonPathParseException("Expected right bracket", _line, _column);
                         }
                         break;
                     case JsonPathState.UnionElement:
@@ -793,7 +822,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                throw new JsonException("Expected bracket specifier or union");
+                                throw new JsonPathParseException("Expected bracket specifier or union", _line, _column);
                         }
                         break;
                     case JsonPathState.FilterExpression:
@@ -811,7 +840,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             }
                             default:
-                                throw new JsonException("Expected comma or right bracket");
+                                throw new JsonPathParseException("Expected comma or right bracket", _line, _column);
                         }
                         break;
                     }
@@ -840,7 +869,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                throw new JsonException("Expected right bracket");
+                                throw new JsonPathParseException("Expected right bracket", _line, _column);
                         }
                         break;
                     case JsonPathState.BracketedWildcard:
@@ -858,7 +887,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Pop();
                                 break;
                             default:
-                                throw new JsonException("Expected right bracket");
+                                throw new JsonPathParseException("Expected right bracket", _line, _column);
                         }
                         break;
                     case JsonPathState.IndexOrSliceOrUnion:
@@ -872,7 +901,7 @@ namespace JsonCons.JsonPathLib
                                 Int32 n;
                                 if (!Int32.TryParse(buffer.ToString(),out n))
                                 {
-                                    throw new JsonException("Invalid index");
+                                    throw new JsonPathParseException("Invalid index", _line, _column);
                                 }
                                 PushToken(new Token(new IndexSelector(n)));
                                 buffer.Clear();
@@ -887,7 +916,7 @@ namespace JsonCons.JsonPathLib
                                 Int32 n;
                                 if (!Int32.TryParse(buffer.ToString(), out n))
                                 {
-                                    throw new JsonException("Invalid index");
+                                    throw new JsonPathParseException("Invalid index", _line, _column);
                                 }
                                 PushToken(new Token(new IndexSelector(n)));
                                 buffer.Clear();
@@ -923,7 +952,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             }
                             default:
-                                throw new JsonException("Expected right bracket");
+                                throw new JsonPathParseException("Expected right bracket", _line, _column);
                         }
                         break;
                     case JsonPathState.Index:
@@ -939,7 +968,7 @@ namespace JsonCons.JsonPathLib
                                 Int32 n;
                                 if (!Int32.TryParse(buffer.ToString(), out n))
                                 {
-                                    throw new JsonException("Invalid index");
+                                    throw new JsonPathParseException("Invalid index", _line, _column);
                                 }
                                 PushToken(new Token(new IndexSelector(n)));
                                 buffer.Clear();
@@ -947,7 +976,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             }
                             default:
-                                throw new JsonException("Expected right bracket");
+                                throw new JsonPathParseException("Expected right bracket", _line, _column);
                         }
                         break;
                     case JsonPathState.SliceExpressionStop:
@@ -984,7 +1013,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                throw new JsonException("Expected right bracket");
+                                throw new JsonPathParseException("Expected right bracket", _line, _column);
                         }
                         break;
                     }
@@ -995,12 +1024,12 @@ namespace JsonCons.JsonPathLib
                             Int32 n;
                             if (!Int32.TryParse(buffer.ToString(), out n))
                             {
-                                throw new JsonException("Invalid slice stop");
+                                throw new JsonPathParseException("Invalid slice stop", _line, _column);
                             }
                             buffer.Clear();
                             if (n == 0)
                             {
-                                throw new JsonException("Slice step cannot be zero");
+                                throw new JsonPathParseException("Slice step cannot be zero", _line, _column);
                             }
                             sliceStep = n;
                             buffer.Clear();
@@ -1020,7 +1049,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Pop(); // SliceExpressionStep
                                 break;
                             default:
-                                throw new JsonException("Expected right bracket");
+                                throw new JsonPathParseException("Expected right bracket", _line, _column);
                         }
                         break;
                     }
@@ -1036,7 +1065,7 @@ namespace JsonCons.JsonPathLib
                                 Int32 n;
                                 if (!Int32.TryParse(buffer.ToString(), out n))
                                 {
-                                    throw new JsonException("Invalid index");
+                                    throw new JsonPathParseException("Invalid index", _line, _column);
                                 }
                                 PushToken(new Token(new IndexSelector(n)));
                                 buffer.Clear();
@@ -1064,7 +1093,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             }
                             default:
-                                throw new JsonException("Expected right bracket");
+                                throw new JsonPathParseException("Expected right bracket", _line, _column);
                         }
                         break;
                     case JsonPathState.Integer:
@@ -1199,14 +1228,14 @@ namespace JsonCons.JsonPathLib
                             case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
                             {
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.JsonElement);
+                                _stateStack.Push(JsonPathState.JsonLiteral);
                                 _stateStack.Push(JsonPathState.Number);
                                 break;
                             }
                             case '{':
                             case '[':
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.JsonElement);
+                                _stateStack.Push(JsonPathState.JsonLiteral);
                                 _stateStack.Push(JsonPathState.JsonText);
                                 mark = _index;
                                 break;
@@ -1229,7 +1258,7 @@ namespace JsonCons.JsonPathLib
                                 IFunction func; 
                                 if (!BuiltInFunctions.Instance.TryGetFunction(buffer.ToString(), out func))
                                 {
-                                    throw new JsonException("Function not found");
+                                    throw new JsonPathParseException("Function not found", _line, _column);
                                 }
                                 buffer.Clear();
                                 PushToken(new Token(func));
@@ -1242,7 +1271,7 @@ namespace JsonCons.JsonPathLib
                             }
                             default:
                             {
-                                throw new JsonException("Expected function");
+                                throw new JsonPathParseException("Expected function", _line, _column);
                             }
                         }
                         break;
@@ -1271,7 +1300,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             }
                             default:
-                                throw new JsonException("Syntax error");
+                                throw new JsonPathParseException("Syntax error", _line, _column);
                         }
                         break;
                     }
@@ -1333,7 +1362,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             }
                             default:
-                                throw new JsonException("Expected comma or right parenthesis");
+                                throw new JsonPathParseException("Expected comma or right parenthesis", _line, _column);
                         }
                         break;
                     }
@@ -1397,7 +1426,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 if (_index == _span.Length)
                                 {
-                                    throw new JsonException("Unexpected end of input");
+                                    throw new JsonPathParseException("Unexpected end of input", _line, _column);
                                 }
                                 buffer.Append(_span[_index]);
                                 ++_index;
@@ -1416,13 +1445,20 @@ namespace JsonCons.JsonPathLib
                                 break;
                         };
                         break;
-                    case JsonPathState.JsonElement:
+                    case JsonPathState.JsonLiteral:
                     {
-                        using (var doc = JsonDocument.Parse(buffer.ToString()))
-                        {            
-                            PushToken(new Token(new JsonElementValue(doc.RootElement.Clone())));
-                            buffer.Clear();
-                            _stateStack.Pop(); 
+                        try
+                        {
+                            using (var doc = JsonDocument.Parse(buffer.ToString()))
+                            {            
+                                PushToken(new Token(new JsonElementValue(doc.RootElement.Clone())));
+                                buffer.Clear();
+                                _stateStack.Pop(); 
+                            }
+                        }
+                        catch (JsonException e)
+                        {
+                            throw new JsonPathParseException("Invalid JSON literal", _line, _column);
                         }
                         break;
                     }
@@ -1536,7 +1572,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Pop();
                                 break;
                             default:
-                                throw new JsonException("Syntax error");
+                                throw new JsonPathParseException("Syntax error", _line, _column);
                         };
                         break;
                     case JsonPathState.EqOrRegex:
@@ -1568,7 +1604,7 @@ namespace JsonCons.JsonPathLib
                                 }
                                 else
                                 {
-                                    throw new JsonException("Syntax error");
+                                    throw new JsonPathParseException("Syntax error", _line, _column);
                                 }
                                 break;
                         }
@@ -1630,7 +1666,7 @@ namespace JsonCons.JsonPathLib
                                 }
                                 else
                                 {
-                                    throw new JsonException("Syntax error");
+                                    throw new JsonPathParseException("Syntax error", _line, _column);
                                 }
                                 break;
                         }
@@ -1762,7 +1798,7 @@ namespace JsonCons.JsonPathLib
 
             if (_stateStack.Count == 0)
             {
-                throw new JsonException("Syntax error");
+                throw new JsonPathParseException("Syntax error", _line, _column);
             }
             while (_stateStack.Count > 1)
             {
@@ -1808,17 +1844,17 @@ namespace JsonCons.JsonPathLib
                         _stateStack.Pop();
                         break;
                     default:
-                        throw new JsonException("Syntax error");
+                        throw new JsonPathParseException("Syntax error", _line, _column);
                 }
             }
 
             if (_outputStack.Count < 1)
             {
-                throw new JsonException("Invalid state 1");
+                throw new JsonPathParseException("Invalid state 1", _line, _column);
             }
             if (_outputStack.Peek().TokenKind != JsonPathTokenKind.Selector)
             {
-                throw new JsonException("Invalid state 2");
+                throw new JsonPathParseException("Invalid state 2", _line, _column);
             }
             Token token = _outputStack.Pop();
 
@@ -1833,7 +1869,7 @@ namespace JsonCons.JsonPathLib
             }
             if (_operatorStack.Count == 0)
             {
-                throw new JsonException("Unbalanced parentheses");
+                throw new JsonPathParseException("Unbalanced parentheses", _line, _column);
             }
             _operatorStack.Pop(); // JsonPathTokenKind.LeftParen
         }
@@ -1856,7 +1892,7 @@ namespace JsonCons.JsonPathLib
                     }
                     if (_outputStack.Count == 0)
                     {
-                        throw new JsonException("Unbalanced parentheses");
+                        throw new JsonPathParseException("Unbalanced parentheses", _line, _column);
                     }
                     _outputStack.Pop(); // JsonPathTokenKind.LeftParen
                     tokens.Reverse();
@@ -1910,7 +1946,7 @@ namespace JsonCons.JsonPathLib
                     }
                     if (_outputStack.Count == 0)
                     {
-                        throw new JsonException("Syntax error");
+                        throw new JsonPathParseException("Syntax error", _line, _column);
                     }
                     selectors.Reverse();
                     _outputStack.Pop(); // JsonPathTokenKind.BeginUnion
@@ -1986,13 +2022,13 @@ namespace JsonCons.JsonPathLib
                     }
                     if (_outputStack.Count == 0)
                     {
-                        throw new JsonException("Unbalanced parentheses");
+                        throw new JsonPathParseException("Unbalanced parentheses", _line, _column);
                     }
                     tokens.Reverse();
 
                     if (_outputStack.Peek().GetFunction().Arity.HasValue && _outputStack.Peek().GetFunction().Arity.Value != argCount)
                     {
-                        throw new JsonException("Invalid arity");
+                        throw new JsonPathParseException("Invalid arity", _line, _column);
                     }
                     tokens.Add(_outputStack.Pop()); // Function
 
@@ -2009,7 +2045,7 @@ namespace JsonCons.JsonPathLib
                     }
                     if (_outputStack.Count == 0)
                     {
-                        throw new JsonException("Unbalanced parentheses");
+                        throw new JsonPathParseException("Unbalanced parentheses", _line, _column);
                     }
                     tokens.Reverse();
                     _outputStack.Pop(); // JsonPathTokenKind.BeginArgument
@@ -2036,7 +2072,7 @@ namespace JsonCons.JsonPathLib
             }
             else
             {
-                throw new JsonException("Invalid codepoint");
+                throw new JsonPathParseException("Invalid codepoint", _line, _column);
             }
             return cp;
         }
