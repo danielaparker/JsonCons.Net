@@ -10,51 +10,68 @@ It is a type error if either argument is not a string.
 
 ### Example
 
-```c++
-#include <iostream>
-#include <jsoncons/json.hpp>
-#include <jsoncons_ext/jsonpath/jsonpath.hpp>
+```csharp
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPathLib;
 
-using json = jsoncons::json;
-namespace jsonpath = jsoncons::jsonpath;
-
-int main() 
+namespace JsonCons.Examples
 {
-    std::string data = R"(
+    public static class JsonPathExamples
+    {
+        public static void Main(string[] args)
+        {
+            string jsonString = @"
 {
-    "books":
+    ""books"":
     [
         {
-            "title" : "A Wild Sheep Chase",
-            "author" : "Haruki Murakami"
+            ""category"": ""fiction"",
+            ""title"" : ""A Wild Sheep Chase"",
+            ""author"" : ""Haruki Murakami"",
+            ""price"" : 22.72
         },
         {
-            "title" : "Almost Transparent Blue",
-            "author" : "Ryu Murakami"
+            ""category"": ""fiction"",
+            ""title"" : ""The Night Watch"",
+            ""author"" : ""Sergei Lukyanenko"",
+            ""price"" : 23.58
         },
         {
-            "title" : "The Quiet American",
-            "author" : "Graham Greene"
+            ""category"": ""fiction"",
+            ""title"" : ""The Comedians"",
+            ""author"" : ""Graham Greene"",
+            ""price"" : 21.99
+        },
+        { 
+          ""category"": ""fiction"",
+          ""author"": ""J. R. R. Tolkien"",
+          ""title"": ""The Lord of the Rings""
         }
     ]
 }
-    )";
+            ";
 
-    json j = json::parse(data);
-
-    // All titles whose author's last name is 'Murakami'
-    std::string expr = R"($.books[?(tokenize(@.author,'\\s+')[-1] == 'Murakami')].title)";
-
-    json result = jsonpath::json_query(j, expr);
-    std::cout << pretty_print(result) << "\n\n";
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                IList<JsonElement> results = JsonPath.Select(doc.RootElement, @"$.books[?(tokenize(@.author,'\\s+')[-1] == 'Tolkien')]");
+                foreach (var value in results)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
+    }
+}
+```
+Output:
+```
+{
+    "category": "fiction",
+    "author": "J. R. R. Tolkien",
+    "title": "The Lord of the Rings"
 }
 ```
 
-Output:
-
-```json
-[
-    "A Wild Sheep Chase",
-    "Almost Transparent Blue"
-]
-```

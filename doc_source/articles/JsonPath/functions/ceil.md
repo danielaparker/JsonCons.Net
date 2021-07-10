@@ -10,46 +10,69 @@ It is a type error if the provided argument is not a number.
 
 ### Examples
 
-```c++
-#include <iostream>
-#include <jsoncons/json.hpp>
-#include <jsoncons_ext/jsonpath/jsonpath.hpp>
+```csharp
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPathLib;
 
-// for brevity
-using jsoncons::json; 
-namespace jsonpath = jsoncons::jsonpath;
-
-int main() 
+namespace JsonCons.Examples
 {
-    std::string data = R"(
+    public static class JsonPathExamples
     {
-        "books":
-        [
+        public static void Main(string[] args)
+        {
+            string jsonString = @"
+{
+    ""books"":
+    [
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""A Wild Sheep Chase"",
+            ""author"" : ""Haruki Murakami"",
+            ""price"" : 22.72
+        },
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""The Night Watch"",
+            ""author"" : ""Sergei Lukyanenko"",
+            ""price"" : 23.58
+        },
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""The Comedians"",
+            ""author"" : ""Graham Greene"",
+            ""price"" : 21.99
+        },
+        { 
+          ""category"": ""fiction"",
+          ""author"": ""J. R. R. Tolkien"",
+          ""title"": ""The Lord of the Rings""
+        }
+    ]
+}
+            ";
+
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
             {
-                "title" : "A Wild Sheep Chase",
-                "author" : "Haruki Murakami",
-                "price" : 22.72
-            },
-            {
-                "title" : "The Night Watch",
-                "author" : "Sergei Lukyanenko",
-                "price" : 23.58
-            }            
-        ]
+                IList<JsonElement> results = JsonPath.Select(doc.RootElement, @"$.books[?(ceil(@.price*10) == 236)]");
+                foreach (var value in results)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
     }
-    )";
-
-    json j = json::parse(data);
-
-    json result1 = jsonpath::json_query(j, "$.books[?(ceil(@.price) == 23.0)]");
-    std::cout << "(1) " << result1 << "\n\n";
-    json result2 = jsonpath::json_query(j, "$.books[?(ceil(@.price*100) == 2358.0)]"); // (since 0.164.0)
-    std::cout << "(2) " << result2 << "\n\n";
+}
 ```
 Output:
 ```
-(1) [{"author":"Haruki Murakami","price":22.72,"title":"A Wild Sheep Chase"}]
-
-(2) [{"author":"Sergei Lukyanenko","price":23.58,"title":"The Night Watch"}]
+{
+    "category": "fiction",
+    "title" : "The Night Watch",
+    "author" : "Sergei Lukyanenko",
+    "price" : 23.58
+}
 ```
 

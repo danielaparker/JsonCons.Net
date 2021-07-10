@@ -175,7 +175,7 @@ namespace JsonCons.JsonPathLib
                             }
                             default:
                             {
-                                throw new JsonException($"Invalid state");
+                                throw new JsonPathParseException($"Invalid state", _line, _column);
                             }
                         }
                         break;
@@ -501,7 +501,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Push(JsonPathState.EscapeU1);
                                 break;
                             default:
-                                throw new JsonException($"Illegal escape character '{_span[_index]}'");
+                                throw new JsonPathParseException($"Illegal escape character '{_span[_index]}'", _line, _column);
                         }
                         break;
                     case JsonPathState.EscapeU1:
@@ -611,7 +611,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                throw new JsonException("Expected ]");
+                                throw new JsonPathParseException("Expected ']'", _line, _column);
                         }
                         break;
                     case JsonPathState.ExpectRightParen:
@@ -628,7 +628,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
                                 break;
                             default:
-                                throw new JsonException("Expected )");
+                                throw new JsonPathParseException("Expected ')'", _line, _column);
                         }
                         break;
                     case JsonPathState.BracketSpecifierOrUnion:
@@ -1620,7 +1620,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                throw new JsonException("Expected '|'");
+                                throw new JsonPathParseException("Expected '|'", _line, _column);
                         }
                         break;
                     }
@@ -1635,7 +1635,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                throw new JsonException("Expected '&'");
+                                throw new JsonPathParseException("Expected '&'", _line, _column);
                         }
                         break;
                     }
@@ -1686,7 +1686,7 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default: 
-                                throw new JsonException("Expected '/'");
+                                throw new JsonPathParseException("Expected '/'", _line, _column);
                         };
                         break;
                     case JsonPathState.Regex: 
@@ -1787,12 +1787,12 @@ namespace JsonCons.JsonPathLib
                                 ++_column;
                                 break;
                             default:
-                                throw new JsonException("Expected '='");
+                                throw new JsonPathParseException("Expected '='", _line, _column);
                         }
                         break;
                     }
                     default:
-                        throw new JsonException($"Unhandled JSONPath state {_stateStack.Peek()}");
+                        throw new JsonPathParseException($"Unhandled JSONPath state '{_stateStack.Peek()}'", _line, _column);
                 }
             }
 

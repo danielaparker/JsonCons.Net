@@ -7,5 +7,7 @@ with support for:
 
 ## Documentation
 
+- [JsonCons JsonPath](https://danielaparker.github.io/JsonCons.Net/articles/JsonPath/JsonConsJsonPath.html)
+
 - [Reference](https://danielaparker.github.io/JsonCons.Net/ref/toc.html)
 

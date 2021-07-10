@@ -10,45 +10,69 @@ It is a type error if the provided argument is not a number.
 
 ### Examples
 
-```c++
-#include <iostream>
-#include <jsoncons/json.hpp>
-#include <jsoncons_ext/jsonpath/jsonpath.hpp>
+```csharp
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPathLib;
 
-// for brevity
-using jsoncons::json; 
-namespace jsonpath = jsoncons::jsonpath;
-
-int main() 
+namespace JsonCons.Examples
 {
-        std::string data = R"(
-        [
-          {
-            "number" : 8.95
-          },
-          {
-            "number" : -8.95
-          }
-        ]        
-        )";
+    public static class JsonPathExamples
+    {
+        public static void Main(string[] args)
+        {
+            string jsonString = @"
+{
+    ""books"":
+    [
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""A Wild Sheep Chase"",
+            ""author"" : ""Haruki Murakami"",
+            ""price"" : 22.72
+        },
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""The Night Watch"",
+            ""author"" : ""Sergei Lukyanenko"",
+            ""price"" : 23.58
+        },
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""The Comedians"",
+            ""author"" : ""Graham Greene"",
+            ""price"" : 21.99
+        },
+        { 
+          ""category"": ""fiction"",
+          ""author"": ""J. R. R. Tolkien"",
+          ""title"": ""The Lord of the Rings""
+        }
+    ]
+}
+            ";
 
-        json j = json::parse(data);
-
-        json result1 = jsonpath::json_query(j, "$[?(floor(@.number*100) == 895)]");
-        std::cout << "(1) " << result1 << "\n\n";
-        json result2 = jsonpath::json_query(j, "$[?(floor(@.number*100) == 894)]"); // (since 0.164.0)
-        std::cout << "(2) " << result2 << "\n\n";
-        json result3 = jsonpath::json_query(j, "$[?(floor(@.number*100) == -895)]"); // (since 0.164.0)
-        std::cout << "(3) " << result3 << "\n\n";
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                IList<JsonElement> results = JsonPath.Select(doc.RootElement, @"$.books[?(floor(@.price*10) == 235)]");
+                foreach (var value in results)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
+    }
 }
 ```
 Output:
 ```
-(1) []
-
-(2) [{"number":8.95}]
-
-(3) [{"number":-8.95}]
+{
+    "category": "fiction",
+    "title" : "A Wild Sheep Chase",
+    "author" : "Haruki Murakami",
+    "price" : 22.72
+}
 ```
 
-(Note that the representable floating point number closest to 8.95*100 is strictly less than 895.0)

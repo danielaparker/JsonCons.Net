@@ -382,14 +382,40 @@ the last, and the third from <a href="https://goessner.net/articles/JsonPath/ind
 </code></pre>
 <p>JsonCons supports the parent operator, <code>^</code>, borrowed from <a href="https://www.npmjs.com/package/jsonpath-plus">JSONPath Plus</a>,
 that allows you to select book objects based on criteria applied to descendent values.</p>
-<h2 id="query-----------------------------output-paths----------------------------------------------reviewsrating--5----1reviews0-----------------------------2reviews1reviewsrating--5---1reviews-----------------------------2reviewsreviewsrating--5--1-----------------------------2">Query                             |Output paths
-----------------------------------|------------
-<code>$[*]reviews[?(@.rating == 5)]</code>   | &quot;$[1]['reviews'][0]&quot;
-                             | &quot;$[2]['reviews'][1]&quot;
-<code>$[*]reviews[?(@.rating == 5)]^</code>  | &quot;$[1]['reviews']&quot;
-                             | &quot;$[2]['reviews']&quot;
-<code>$[*]reviews[?(@.rating == 5)]^^</code> | &quot;$[1]&quot;
-                             | &quot;$[2]&quot;</h2>
+<table>
+<thead>
+<tr>
+<th>Query</th>
+<th>Output paths</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$[*]reviews[?(@.rating == 5)]</code></td>
+<td>&quot;$[1]['reviews'][0]&quot;</td>
+</tr>
+<tr>
+<td> </td>
+<td>&quot;$[2]['reviews'][1]&quot;</td>
+</tr>
+<tr>
+<td><code>$[*]reviews[?(@.rating == 5)]^</code></td>
+<td>&quot;$[1]['reviews']&quot;</td>
+</tr>
+<tr>
+<td> </td>
+<td>&quot;$[2]['reviews']&quot;</td>
+</tr>
+<tr>
+<td><code>$[*]reviews[?(@.rating == 5)]^^</code></td>
+<td>&quot;$[1]&quot;</td>
+</tr>
+<tr>
+<td> </td>
+<td>&quot;$[2]&quot;</td>
+</tr>
+</tbody>
+</table>
 <p>The JSONPath expression</p>
 <pre><code>$[*].reviews[?(@.rating == 5)]^^
 </code></pre>

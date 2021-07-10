@@ -74,45 +74,69 @@
 <p>Returns the largest integer value not greater than the given number.</p>
 <p>It is a type error if the provided argument is not a number.</p>
 <h3 id="examples">Examples</h3>
-<pre><code class="lang-c++">#include &lt;iostream&gt;
-#include &lt;jsoncons/json.hpp&gt;
-#include &lt;jsoncons_ext/jsonpath/jsonpath.hpp&gt;
+<pre><code class="lang-csharp">using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPathLib;
 
-// for brevity
-using jsoncons::json; 
-namespace jsonpath = jsoncons::jsonpath;
-
-int main() 
+namespace JsonCons.Examples
 {
-        std::string data = R&quot;(
-        [
-          {
-            &quot;number&quot; : 8.95
-          },
-          {
-            &quot;number&quot; : -8.95
-          }
-        ]        
-        )&quot;;
+    public static class JsonPathExamples
+    {
+        public static void Main(string[] args)
+        {
+            string jsonString = @&quot;
+{
+    &quot;&quot;books&quot;&quot;:
+    [
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;A Wild Sheep Chase&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Haruki Murakami&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 22.72
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Night Watch&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Sergei Lukyanenko&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 23.58
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Comedians&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Graham Greene&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 21.99
+        },
+        { 
+          &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+          &quot;&quot;author&quot;&quot;: &quot;&quot;J. R. R. Tolkien&quot;&quot;,
+          &quot;&quot;title&quot;&quot;: &quot;&quot;The Lord of the Rings&quot;&quot;
+        }
+    ]
+}
+            &quot;;
 
-        json j = json::parse(data);
-
-        json result1 = jsonpath::json_query(j, &quot;$[?(floor(@.number*100) == 895)]&quot;);
-        std::cout &lt;&lt; &quot;(1) &quot; &lt;&lt; result1 &lt;&lt; &quot;\n\n&quot;;
-        json result2 = jsonpath::json_query(j, &quot;$[?(floor(@.number*100) == 894)]&quot;); // (since 0.164.0)
-        std::cout &lt;&lt; &quot;(2) &quot; &lt;&lt; result2 &lt;&lt; &quot;\n\n&quot;;
-        json result3 = jsonpath::json_query(j, &quot;$[?(floor(@.number*100) == -895)]&quot;); // (since 0.164.0)
-        std::cout &lt;&lt; &quot;(3) &quot; &lt;&lt; result3 &lt;&lt; &quot;\n\n&quot;;
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                IList&lt;JsonElement&gt; results = JsonPath.Select(doc.RootElement, @&quot;$.books[?(floor(@.price*10) == 235)]&quot;);
+                foreach (var value in results)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
+    }
 }
 </code></pre>
 <p>Output:</p>
-<pre><code>(1) []
-
-(2) [{&quot;number&quot;:8.95}]
-
-(3) [{&quot;number&quot;:-8.95}]
+<pre><code>{
+    &quot;category&quot;: &quot;fiction&quot;,
+    &quot;title&quot; : &quot;A Wild Sheep Chase&quot;,
+    &quot;author&quot; : &quot;Haruki Murakami&quot;,
+    &quot;price&quot; : 22.72
+}
 </code></pre>
-<p>(Note that the representable floating point number closest to 8.95*100 is strictly less than 895.0)</p>
 </article>
           </div>
           
