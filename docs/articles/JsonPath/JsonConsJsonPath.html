@@ -492,6 +492,10 @@ and arithmetic operators.</p>
 <td>Left divided by right</td>
 </tr>
 <tr>
+<td><code>%</code></td>
+<td>Remainder</td>
+</tr>
+<tr>
 <td><code>+</code></td>
 <td>Left plus right</td>
 </tr>
@@ -580,7 +584,7 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 </tr>
 <tr>
 <td>3</td>
-<td><code>*</code> <code>/</code></td>
+<td><code>*</code> <code>/</code>  <code>%</code></td>
 <td>Left</td>
 </tr>
 <tr>
@@ -611,23 +615,6 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 </tbody>
 </table>
 <p>The precedence rules may be overriden with explicit parentheses, e.g. (a || b) &amp;&amp; c.</p>
-<h4 id="properties">Properties</h4>
-<table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Description</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>length</td>
-<td>Gets the number of elements in an array, or the number of codepoints in a string</td>
-<td><code>$[?(@.length == 2)]</code></td>
-</tr>
-</tbody>
-</table>
 <div id="S7"></div> 
 <h3 id="functions">Functions</h3>
 <p>Support for function expressions is a JsonCons extension.</p>
