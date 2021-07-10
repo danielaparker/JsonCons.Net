@@ -65,7 +65,6 @@ namespace JsonCons.Examples
                 {
                     Console.WriteLine(value);
                 }
-                Console.WriteLine();
             }
         }
     }

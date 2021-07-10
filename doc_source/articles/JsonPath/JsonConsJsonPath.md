@@ -1,7 +1,7 @@
 # JsonCons JSONPath
 
 [JSONPath](http://goessner.net/articles/JsonPath/) is a loosely standardized syntax for querying JSON. 
-There are many implementations, which differ significantly, see Christoph Burgmer's [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
+There are many implementations that differ significantly, see Christoph Burgmer's [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
 
 The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:
 
