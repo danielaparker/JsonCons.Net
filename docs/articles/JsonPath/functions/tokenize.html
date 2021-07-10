@@ -5,17 +5,17 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>PLACEHOLDER </title>
+    <title>tokenize </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="PLACEHOLDER ">
+    <meta name="title" content="tokenize ">
     <meta name="generator" content="docfx 2.58.0.0">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <link rel="shortcut icon" href="../../../favicon.ico">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
     
     
     
@@ -34,8 +34,8 @@
                 <span class="icon-bar"></span>
               </button>
               
-              <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../logo.svg" alt="">
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../logo.svg" alt="">
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
@@ -67,9 +67,57 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="placeholder">PLACEHOLDER</h1>
+<h3 id="tokenize">tokenize</h3>
 
-<p>TODO: Add .NET projects to the <em>src</em> folder and run <code>docfx</code> to generate <strong>REAL</strong> <em>API Documentation</em>!</p>
+<pre><code>array[string] tokenize(string source, string pattern)
+</code></pre>
+<p>Returns an array of strings formed by splitting the source string into an array of strings, separated by substrings that match the given regular expression pattern.</p>
+<p>It is a type error if either argument is not a string.</p>
+<h3 id="example">Example</h3>
+<pre><code class="lang-c++">#include &lt;iostream&gt;
+#include &lt;jsoncons/json.hpp&gt;
+#include &lt;jsoncons_ext/jsonpath/jsonpath.hpp&gt;
+
+using json = jsoncons::json;
+namespace jsonpath = jsoncons::jsonpath;
+
+int main() 
+{
+    std::string data = R&quot;(
+{
+    &quot;books&quot;:
+    [
+        {
+            &quot;title&quot; : &quot;A Wild Sheep Chase&quot;,
+            &quot;author&quot; : &quot;Haruki Murakami&quot;
+        },
+        {
+            &quot;title&quot; : &quot;Almost Transparent Blue&quot;,
+            &quot;author&quot; : &quot;Ryu Murakami&quot;
+        },
+        {
+            &quot;title&quot; : &quot;The Quiet American&quot;,
+            &quot;author&quot; : &quot;Graham Greene&quot;
+        }
+    ]
+}
+    )&quot;;
+
+    json j = json::parse(data);
+
+    // All titles whose author's last name is 'Murakami'
+    std::string expr = R&quot;($.books[?(tokenize(@.author,'\\s+')[-1] == 'Murakami')].title)&quot;;
+
+    json result = jsonpath::json_query(j, expr);
+    std::cout &lt;&lt; pretty_print(result) &lt;&lt; &quot;\n\n&quot;;
+}
+</code></pre>
+<p>Output:</p>
+<pre><code class="lang-json">[
+    &quot;A Wild Sheep Chase&quot;,
+    &quot;Almost Transparent Blue&quot;
+]
+</code></pre>
 </article>
           </div>
           
@@ -78,7 +126,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/ref/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/articles/JsonPath/functions/tokenize.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -105,8 +153,8 @@
       </footer>
     </div>
     
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
-    <script type="text/javascript" src="../styles/docfx.js"></script>
-    <script type="text/javascript" src="../styles/main.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
   </body>
 </html>

@@ -5,17 +5,17 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>PLACEHOLDER </title>
+    <title>ceil </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="PLACEHOLDER ">
+    <meta name="title" content="ceil ">
     <meta name="generator" content="docfx 2.58.0.0">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <link rel="shortcut icon" href="../../../favicon.ico">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
     
     
     
@@ -34,8 +34,8 @@
                 <span class="icon-bar"></span>
               </button>
               
-              <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../logo.svg" alt="">
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../logo.svg" alt="">
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
@@ -67,9 +67,53 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="placeholder">PLACEHOLDER</h1>
+<h3 id="ceil">ceil</h3>
 
-<p>TODO: Add .NET projects to the <em>src</em> folder and run <code>docfx</code> to generate <strong>REAL</strong> <em>API Documentation</em>!</p>
+<pre><code>integer ceil(number value)
+</code></pre>
+<p>Returns the smallest integer value not less than the provided number.</p>
+<p>It is a type error if the provided argument is not a number.</p>
+<h3 id="examples">Examples</h3>
+<pre><code class="lang-c++">#include &lt;iostream&gt;
+#include &lt;jsoncons/json.hpp&gt;
+#include &lt;jsoncons_ext/jsonpath/jsonpath.hpp&gt;
+
+// for brevity
+using jsoncons::json; 
+namespace jsonpath = jsoncons::jsonpath;
+
+int main() 
+{
+    std::string data = R&quot;(
+    {
+        &quot;books&quot;:
+        [
+            {
+                &quot;title&quot; : &quot;A Wild Sheep Chase&quot;,
+                &quot;author&quot; : &quot;Haruki Murakami&quot;,
+                &quot;price&quot; : 22.72
+            },
+            {
+                &quot;title&quot; : &quot;The Night Watch&quot;,
+                &quot;author&quot; : &quot;Sergei Lukyanenko&quot;,
+                &quot;price&quot; : 23.58
+            }            
+        ]
+    }
+    )&quot;;
+
+    json j = json::parse(data);
+
+    json result1 = jsonpath::json_query(j, &quot;$.books[?(ceil(@.price) == 23.0)]&quot;);
+    std::cout &lt;&lt; &quot;(1) &quot; &lt;&lt; result1 &lt;&lt; &quot;\n\n&quot;;
+    json result2 = jsonpath::json_query(j, &quot;$.books[?(ceil(@.price*100) == 2358.0)]&quot;); // (since 0.164.0)
+    std::cout &lt;&lt; &quot;(2) &quot; &lt;&lt; result2 &lt;&lt; &quot;\n\n&quot;;
+</code></pre>
+<p>Output:</p>
+<pre><code>(1) [{&quot;author&quot;:&quot;Haruki Murakami&quot;,&quot;price&quot;:22.72,&quot;title&quot;:&quot;A Wild Sheep Chase&quot;}]
+
+(2) [{&quot;author&quot;:&quot;Sergei Lukyanenko&quot;,&quot;price&quot;:23.58,&quot;title&quot;:&quot;The Night Watch&quot;}]
+</code></pre>
 </article>
           </div>
           
@@ -78,7 +122,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/ref/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/articles/JsonPath/functions/ceil.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -105,8 +149,8 @@
       </footer>
     </div>
     
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
-    <script type="text/javascript" src="../styles/docfx.js"></script>
-    <script type="text/javascript" src="../styles/main.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
   </body>
 </html>

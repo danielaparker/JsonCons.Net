@@ -1,0 +1,723 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>JsonCons JSONPath </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="JsonCons JSONPath ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="jsoncons-jsonpath">JsonCons JSONPath</h1>
+
+<p><a href="http://goessner.net/articles/JsonPath/">JSONPath</a> is a loosely standardized syntax for querying JSON.
+There are many implementations, which differ significantly, see Christoph Burgmer's <a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.</p>
+<p>The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:</p>
+<ul>
+<li><p>Stefan Goessner's implemention returns <code>false</code> in case of no match, but in a note he suggests an alternative is to return an empty array.
+The <code>JsonCons</code> implementation returns an empty array in case of no match.</p>
+</li>
+<li><p>Names in the dot notation may be unquoted (no spaces), single-quoted, or double-quoted.</p>
+</li>
+<li><p>Names in the square bracket notation may be single-quoted or double-quoted.</p>
+</li>
+<li><p>Wildcards are allowed in the dot notation</p>
+</li>
+<li><p>Unions of separate JSONPath expressions are allowed, e.g.</p>
+<p>$..[@.firstName,@.address.city]</p>
+</li>
+<li><p>Fiter expressions, e.g. <code>$..book[?(@.price&lt;10)]</code>, may omit the enclosing parentheses, like so <code>$..book[?@.price&lt;10]</code>.</p>
+</li>
+<li><p>A parent operator <code>^</code> provides access to the parent node.</p>
+</li>
+<li><p>Options are provided to exclude results corresponding to duplicate paths, and to sort results according to paths.</p>
+</li>
+</ul>
+<p><a href="#S1">Paths</a></p>
+<p><a href="#S2">Duplicates and ordering</a></p>
+<p><a href="#S3">Slices</a></p>
+<p><a href="#S4">Unions</a></p>
+<p><a href="#S5">Parent operator</a></p>
+<p><a href="#S6">Filter expressions</a></p>
+<p><a href="#S7">Functions</a></p>
+<div id="S1"></div> 
+<h3 id="paths">Paths</h3>
+<p>JSONPath uses paths to select values. It is a feature of JSONPath that it selects values in the original JSON document,
+and does not create JSON elements that are not in the original.</p>
+<table>
+<thead>
+<tr>
+<th>Selector</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$</code></td>
+<td>Represents the root JSON value</td>
+</tr>
+<tr>
+<td><code>@</code></td>
+<td>Represents the value currently being processed</td>
+</tr>
+<tr>
+<td><code>.&lt;name&gt;</code> or <code>.'&lt;name&gt;'</code> or <code>.&quot;&lt;name&gt;&quot;</code></td>
+<td>The '.' character followed by a JSON object member name, unquoted or quoted</td>
+</tr>
+<tr>
+<td><code>['&lt;name&gt;']</code> or <code>[&quot;&lt;name&gt;&quot;]</code></td>
+<td>Subscript operator with quoted JSON object member name</td>
+</tr>
+<tr>
+<td><code>[&lt;index&gt;]</code></td>
+<td>Index expression used to access elements in a JSON array. A negative index value indicates that indexing is relative to the end of the array.</td>
+</tr>
+<tr>
+<td><code>*</code> or ['*']</td>
+<td>Wildcard. All objects/elements regardless their names.</td>
+</tr>
+<tr>
+<td><code>[start:stop:step]</code></td>
+<td>Array slice notation, following <a href="https://python-reference.readthedocs.io/en/latest/docs/brackets/slicing.html">Python</a></td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>Parent operator borrowed from <a href="https://www.npmjs.com/package/jsonpath-plus">JSONPath Plus</a></td>
+</tr>
+<tr>
+<td><code>..</code></td>
+<td>Recursive descent</td>
+</tr>
+<tr>
+<td><code>[,]</code></td>
+<td>Union operator for alternative object names or array indices or JSONPath expressions</td>
+</tr>
+<tr>
+<td><code>?&lt;expr&gt;</code></td>
+<td>Filter by expression</td>
+</tr>
+</tbody>
+</table>
+<p>Paths can use the dot-notation or the bracket-notation.</p>
+<p>Select the first (indexed 0) book in <a href="https://goessner.net/articles/JsonPath/index.html#e3">Stefan Goessner's store</a> using the dot notation:</p>
+<pre><code>$.store.book[0]
+</code></pre>
+<p>or</p>
+<pre><code>$.'store'.'book'[0]
+</code></pre>
+<p>or</p>
+<pre><code>$.&quot;store&quot;.&quot;book&quot;[0]
+</code></pre>
+<p>The leading <code>$</code> represents the root JSON value.
+Unquoted names in the dot notation are restricted to digits 0-9, letters A-Z and a-z,
+the underscore character _, and unicode coded characters that are non-ascii. Note
+that names with hyphens must be quoted.</p>
+<p>Select the first (indexed 0) book using the bracket-notation:</p>
+<pre><code>$['store']['book'][0]
+</code></pre>
+<p>or</p>
+<pre><code>$[&quot;store&quot;][&quot;book&quot;][0]
+</code></pre>
+<p>Recursively select all book titles under '$.store':</p>
+<pre><code>$.'store'..'title'
+</code></pre>
+<p>Union of a subset of books identified by index:</p>
+<pre><code>$.store[@.book[0],@.book[1],@.book[3]]
+</code></pre>
+<p>Union of the fourth book and all books with price &gt; 10:</p>
+<pre><code>$.store[@.book[3],@.book[?(@.price &gt; 10)]]
+</code></pre>
+<div id="S2"></div> 
+<h3 id="duplicates-and-ordering">Duplicates and ordering</h3>
+<p>Consider the JSON document</p>
+<pre><code class="lang-json">{
+    &quot;books&quot;:
+    [
+        {
+            &quot;title&quot; : &quot;A Wild Sheep Chase&quot;,
+            &quot;author&quot; : &quot;Haruki Murakami&quot;
+        },
+        {
+            &quot;title&quot; : &quot;The Night Watch&quot;,
+            &quot;author&quot; : &quot;Sergei Lukyanenko&quot;
+        },
+        {
+            &quot;title&quot; : &quot;The Comedians&quot;,
+            &quot;author&quot; : &quot;Graham Greene&quot;
+        },
+        {
+            &quot;title&quot; : &quot;The Night Watch&quot;,
+            &quot;author&quot; : &quot;Phillips, David Atlee&quot;
+        }
+    ]
+}
+</code></pre>
+<p>with selector</p>
+<pre><code>$.books[1,1,3].title
+</code></pre>
+<p>Note that the second book, <em>The Night Watch</em> by Sergei Lukyanenko, is selected twice.</p>
+<p>The majority of JSONPath implementations will produce (with duplicate paths allowed):</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$['books'][1]['title']</code></td>
+<td>&quot;The Night Watch&quot;</td>
+</tr>
+<tr>
+<td><code>$['books'][1]['title']</code></td>
+<td>&quot;The Night Watch&quot;</td>
+</tr>
+<tr>
+<td><code>$['books'][3]['title']</code></td>
+<td>&quot;The Night Watch&quot;</td>
+</tr>
+</tbody>
+</table>
+<p>A minority will produce (with duplicate paths excluded):</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$['books'][1]['title']</code></td>
+<td>&quot;The Night Watch&quot;</td>
+</tr>
+<tr>
+<td><code>$['books'][3]['title']</code></td>
+<td>&quot;The Night Watch&quot;</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>JsonPath.Select</code> functions default to allowing
+duplicates, but have an option for no duplicates.</p>
+<p>By default, the ordering of results is unspecified, although the user may
+expect array ordering at least to be preserved.  The <code>JsonPath.Select</code> functions
+provide an option for sorting results by paths.</p>
+<div id="S3"></div> 
+<h3 id="slices">Slices</h3>
+<p>JsonCons jsonpath slices have the same semantics as Python slices</p>
+<p>The syntax for a slice is</p>
+<pre><code>[start:stop:step]
+</code></pre>
+<p>Each component is optional.</p>
+<ul>
+<li><p>If <code>start</code> is omitted, it defaults to <code>0</code> if <code>step</code> is positive,
+or the end of the array if <code>step</code> is negative.</p>
+</li>
+<li><p>If <code>stop</code> is omitted, it defaults to the length of the array if <code>step</code>
+is positive, or the beginning of the array if <code>step</code> is negative.</p>
+</li>
+<li><p>If <code>step</code> is omitted, it defaults to <code>1</code>.</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Slice expression</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[start:stop]</code></td>
+<td>Items <code>start</code> through <code>stop-1</code></td>
+</tr>
+<tr>
+<td><code>[start:]</code></td>
+<td>Items <code>start</code> to the end of the array</td>
+</tr>
+<tr>
+<td><code>[:stop]</code></td>
+<td>Items from the beginning of the array through <code>stop-1</code></td>
+</tr>
+<tr>
+<td><code>[:]</code></td>
+<td>All items</td>
+</tr>
+<tr>
+<td><code>[start:stop:step]</code></td>
+<td>Items <code>start</code> up to but not including <code>stop</code>, by <code>step</code></td>
+</tr>
+</tbody>
+</table>
+<p>A component <code>start</code>, <code>stop</code>, or <code>step</code> may be a negative number.</p>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$[-1]</td>
+<td>Last item</td>
+</tr>
+<tr>
+<td>$[-2:]</td>
+<td>Last two items</td>
+</tr>
+<tr>
+<td>$[:-2]</td>
+<td>All items except the last two</td>
+</tr>
+<tr>
+<td>$[::-1]</td>
+<td>All items, reversed</td>
+</tr>
+<tr>
+<td>$[1::-1]</td>
+<td>First two items, reversed</td>
+</tr>
+<tr>
+<td>$[:-3:-1]</td>
+<td>Last two items, reversed</td>
+</tr>
+<tr>
+<td>$[-3::-1]</td>
+<td>All items except the last two, reversed</td>
+</tr>
+</tbody>
+</table>
+<div id="S4"></div> 
+<h3 id="unions">Unions</h3>
+<p>In JsonCons, a JSONPath union element can be</p>
+<ul>
+<li>an index or slice expression</li>
+<li>a single quoted name</li>
+<li>a double quoted name</li>
+<li>a filter</li>
+<li>a wildcard, i.e. <code>*</code></li>
+<li>a path relative to the root of the JSON document (begins with <code>$</code>)</li>
+<li>a path relative to the current value being processed (begins with <code>@</code>)</li>
+</ul>
+<p>To illustrate, the path expression below selects the first and second titles,
+the last, and the third from <a href="https://goessner.net/articles/JsonPath/index.html#e3">Stefan Goessner's store</a>:</p>
+<pre><code>&quot;$.store.book[0:2,-1,?(@.author=='Herman Melville')].title&quot;
+</code></pre>
+<div id="S5"></div> 
+<h3 id="parent-operator">Parent operator</h3>
+<p>Consider the JSON document</p>
+<pre><code>[
+    {
+      &quot;author&quot; : &quot;Haruki Murakami&quot;,
+      &quot;title&quot;: &quot;A Wild Sheep Chase&quot;,
+      &quot;reviews&quot;: [{&quot;rating&quot;: 4, &quot;reviewer&quot;: &quot;Nan&quot;}]
+    },
+    {
+      &quot;author&quot; : &quot;Sergei Lukyanenko&quot;,
+      &quot;title&quot;: &quot;The Night Watch&quot;,
+      &quot;reviews&quot;: [{&quot;rating&quot;: 5, &quot;reviewer&quot;: &quot;Alan&quot;},
+                  {&quot;rating&quot;: 3,&quot;reviewer&quot;: &quot;Anne&quot;}]
+    },
+    {
+      &quot;author&quot; : &quot;Graham Greene&quot;,
+      &quot;title&quot;: &quot;The Comedians&quot;,
+      &quot;reviews&quot;: [{&quot;rating&quot;: 4, &quot;reviewer&quot;: &quot;Lisa&quot;},
+                  {&quot;rating&quot;: 5, &quot;reviewer&quot;: &quot;Robert&quot;}]
+    }
+]
+</code></pre>
+<p>JsonCons supports the parent operator, <code>^</code>, borrowed from <a href="https://www.npmjs.com/package/jsonpath-plus">JSONPath Plus</a>,
+that allows you to select book objects based on criteria applied to descendent values.</p>
+<h2 id="query---------------------------output-paths--------------------------------------------reviewsrating--5----1reviews0---------------------------2reviews1reviewsrating--5---1reviews---------------------------2reviewsreviewsrating--5--1---------------------------2">Query                           |Output paths
+--------------------------------|------------
+$[<em>]reviews[?(@.rating == 5)]   | &quot;$[1]['reviews'][0]&quot;
+                           | &quot;$[2]['reviews'][1]&quot;
+$[</em>]reviews[?(@.rating == 5)]^  | &quot;$[1]['reviews']&quot;
+                           | &quot;$[2]['reviews']&quot;
+$[*]reviews[?(@.rating == 5)]^^ | &quot;$[1]&quot;
+                           | &quot;$[2]&quot;</h2>
+<p>The JSONPath expression</p>
+<pre><code>$[*].reviews[?(@.rating == 5)]^^
+</code></pre>
+<p>selects all the book objects that have ratings of 5:</p>
+<pre><code>[
+    {
+        &quot;author&quot;: &quot;Sergei Lukyanenko&quot;,
+        &quot;reviews&quot;: [
+            {
+                &quot;rating&quot;: 5,
+                &quot;reviewer&quot;: &quot;Alan&quot;
+            },
+            {
+                &quot;rating&quot;: 3,
+                &quot;reviewer&quot;: &quot;Anne&quot;
+            }
+        ],
+        &quot;title&quot;: &quot;The Night Watch&quot;
+    },
+    {
+        &quot;author&quot;: &quot;Graham Greene&quot;,
+        &quot;reviews&quot;: [
+            {
+                &quot;rating&quot;: 4,
+                &quot;reviewer&quot;: &quot;Lisa&quot;
+            },
+            {
+                &quot;rating&quot;: 5,
+                &quot;reviewer&quot;: &quot;Robert&quot;
+            }
+        ],
+        &quot;title&quot;: &quot;The Comedians&quot;
+    }
+]
+</code></pre>
+<div id="S6"></div> 
+<h3 id="filter-expressions">Filter expressions</h3>
+<p>JSONPath uses filter expressions <code>[?&lt;expr&gt;]</code> to restrict the set of nodes
+returned by a path, e.g. <code>$..book[?(@.price&lt;10)]</code> returns the books with
+prices less than 10. Filter expressions are applied to each element in a
+JSON array or each member in a JSON object. The symbol <code>@</code> represents the
+value currently being processed. An expression evaluates to true or false,
+if true, the array element, or value part of an object member, is selected.</p>
+<p>An expression is considered false if it evaluates to any of the following values:</p>
+<ul>
+<li>empty array: [],</li>
+<li>empty object: {},</li>
+<li>empty string: &quot;&quot;,</li>
+<li>false,</li>
+<li>null,</li>
+<li>zero.</li>
+</ul>
+<p>It is considered true if it is not false.</p>
+<p><a href="http://goessner.net/articles/JsonPath/">Stefan Goessner's JSONPath</a>
+does not provide any specification for the allowable filter expressions,
+simply stating that expressions can be anything that the underlying script
+engine can handle. <code>JsonCons</code> expressions support the following comparision
+and arithmetic operators.</p>
+<h4 id="binary-operators">Binary operators</h4>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>Left times right</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>Left divided by right</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>Left plus right</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>Left minus right</td>
+</tr>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td>Left is true and right is true</td>
+</tr>
+<tr>
+<td><code>||</code></td>
+<td>Left is true or right is true</td>
+</tr>
+<tr>
+<td><code>==</code></td>
+<td>Left is equal to right</td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>Left is not equal to right</td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>Left is less than right</td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>Left is less than or equal to right</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>Left is greater than right</td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td>Left is greater than or equal to right</td>
+</tr>
+<tr>
+<td><code>=~</code></td>
+<td>Left matches regular expression, e.g. [?(@.author =~ /Evelyn.*?/)]</td>
+</tr>
+</tbody>
+</table>
+<p>The ordering operators <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code> are only valid if both left and right are numbers,
+or if both left and right are strings. Otherwise the item will be excluded from the result set.</p>
+<h4 id="unary-operators">Unary operators</h4>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>!</code></td>
+<td>Negate right</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>Unary minus</td>
+</tr>
+</tbody>
+</table>
+<h4 id="operator-precedence">Operator precedence</h4>
+<table>
+<thead>
+<tr>
+<th>Precedence</th>
+<th>Operator</th>
+<th>Associativity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>!</code> unary <code>-</code></td>
+<td>Right</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>=~</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>*</code> <code>/</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>+</code> <code>-</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>==</code> <code>!=</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>&amp;&amp;</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>||</code></td>
+<td>Left</td>
+</tr>
+</tbody>
+</table>
+<p>The precedence rules may be overriden with explicit parentheses, e.g. (a || b) &amp;&amp; c.</p>
+<h4 id="properties">Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>length</td>
+<td>Gets the number of elements in an array, or the number of codepoints in a string</td>
+<td><code>$[?(@.length == 2)]</code></td>
+</tr>
+</tbody>
+</table>
+<div id="S7"></div> 
+<h3 id="functions">Functions</h3>
+<p>Support for function expressions is a JsonCons extension.</p>
+<p>Functions can be passed JSONPath paths, single quoted strings and literal JSON values
+such as <code>1.5</code>, <code>true</code>, or <code>{&quot;foo&quot; : &quot;bar&quot;}</code>.
+Outside a filter predicate, functions can be passed paths that select from
+the root JSON value <code>$</code>. Within a filter predicate, functions can be passed either a
+path that selects from the root JSON value <code>$</code>, or a path that selects from the current node <code>@</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="functions/abs.html">abs</a></td>
+<td>Returns the absolute value of a number.</td>
+</tr>
+<tr>
+<td><a href="functions/avg.html">avg</a></td>
+<td>Returns the average of the items in an array of numbers.</td>
+</tr>
+<tr>
+<td><a href="functions/ceil.html">ceil</a></td>
+<td>Returns the smallest integer value not less than a given number.</td>
+</tr>
+<tr>
+<td><a href="functions/contains.html">contains</a></td>
+<td>Returns true if a source array contains a search value, or a source string contains a search string.</td>
+</tr>
+<tr>
+<td><a href="functions/ends_with.html">ends_with</a></td>
+<td>Returns true if the source string ends with the suffix string, otherwise false.</td>
+</tr>
+<tr>
+<td><a href="functions/floor.html">floor</a></td>
+<td>Returns the largest integer value not greater than a given number.</td>
+</tr>
+<tr>
+<td><a href="functions/keys.html">keys</a></td>
+<td>Returns an array of keys in an object.</td>
+</tr>
+<tr>
+<td><a href="functions/length.html">length</a></td>
+<td>Returns the length of an array, object or string.</td>
+</tr>
+<tr>
+<td><a href="functions/max.html">max</a></td>
+<td>Returns the highest number found in an array of numbers,or the highest string in an array of strings.</td>
+</tr>
+<tr>
+<td><a href="functions/min.html">min</a></td>
+<td>Returns the lowest number found in an array of numbers, or the lowest string in an array of strings.</td>
+</tr>
+<tr>
+<td><a href="functions/prod.html">prod</a></td>
+<td>Returns the product of the items in an array of numbers.</td>
+</tr>
+<tr>
+<td><a href="functions/starts_with.html">starts_with</a></td>
+<td>Returns true if the source string starts with the prefix string, otherwise false.</td>
+</tr>
+<tr>
+<td><a href="functions/sum.html">sum</a></td>
+<td>Returns the sum of the items in an array of numbers.</td>
+</tr>
+<tr>
+<td><a href="functions/to_number.html">to_number</a></td>
+<td>If string, returns the parsed number. If number, returns the passed in value.</td>
+</tr>
+<tr>
+<td><a href="functions/tokenize.html">tokenize</a></td>
+<td>Returns an array of strings formed by splitting the source string into an array of strings, separated by substrings that match a given regular expression pattern.</td>
+</tr>
+</tbody>
+</table>
+<p>The library supports augmenting the list of built in JSONPath functions with user-provided functions</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/articles/JsonPath/JsonConsJsonPath.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
