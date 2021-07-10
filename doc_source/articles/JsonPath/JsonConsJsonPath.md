@@ -360,13 +360,6 @@ Precedence|Operator|Associativity
 
 The precedence rules may be overriden with explicit parentheses, e.g. (a || b) && c.
 
-#### Properties
-
-Property|Description|Example
---------|-----------|-------
-length  | Gets the number of elements in an array, or the number of codepoints in a string | `$[?(@.length == 2)]`
-
-
 <div id="S7"/> 
 
 ### Functions
