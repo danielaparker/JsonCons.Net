@@ -323,30 +323,6 @@ namespace JsonCons.JsonPathLib
 
             return hash;
         }
-
-        public bool TryGet(JsonElement root, out JsonElement element)
-        {
-            element = root;
-            foreach (var component in _components)
-            {
-                if (component.ComponentKind == PathComponentKind.Index)
-                {
-                    if (element.ValueKind != JsonValueKind.Array || component.GetIndex() >= element.GetArrayLength())
-                    {
-                        return false; 
-                    }
-                    element = element[component.GetIndex()];
-                }
-                else if (component.ComponentKind == PathComponentKind.Name)
-                {
-                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(component.GetName(), out element))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-    };
+    }
 
 } // namespace JsonCons.JsonPathLib

@@ -12,6 +12,7 @@ items:
   - JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)
   - JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
   - JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)
+  - JsonCons.JsonPathLib.JsonPath.TrySelectSingle(System.Text.Json.JsonElement,JsonCons.JsonPathLib.NormalizedPath,System.Text.Json.JsonElement@)
   langs:
   - csharp
   - vb
@@ -377,6 +378,53 @@ items:
   modifiers.vb:
   - Public
   - Shared
+- uid: JsonCons.JsonPathLib.JsonPath.TrySelectSingle(System.Text.Json.JsonElement,JsonCons.JsonPathLib.NormalizedPath,System.Text.Json.JsonElement@)
+  commentId: M:JsonCons.JsonPathLib.JsonPath.TrySelectSingle(System.Text.Json.JsonElement,JsonCons.JsonPathLib.NormalizedPath,System.Text.Json.JsonElement@)
+  id: TrySelectSingle(System.Text.Json.JsonElement,JsonCons.JsonPathLib.NormalizedPath,System.Text.Json.JsonElement@)
+  parent: JsonCons.JsonPathLib.JsonPath
+  langs:
+  - csharp
+  - vb
+  name: TrySelectSingle(JsonElement, NormalizedPath, out JsonElement)
+  nameWithType: JsonPath.TrySelectSingle(JsonElement, NormalizedPath, out JsonElement)
+  fullName: JsonCons.JsonPathLib.JsonPath.TrySelectSingle(System.Text.Json.JsonElement, JsonCons.JsonPathLib.NormalizedPath, out System.Text.Json.JsonElement)
+  type: Method
+  source:
+    remote:
+      path: src/JsonPath/JsonPath.cs
+      branch: main
+      repo: https://github.com/danielaparker/JsonCons.Net.git
+    id: TrySelectSingle
+    path: ../src/JsonPath/JsonPath.cs
+    startLine: 331
+  assemblies:
+  - JsonPath
+  namespace: JsonCons.JsonPathLib
+  summary: "\nLooks for a value within the root value that matches the provided normalized path, returning\n<xref uid=\"langword_csharp_true\" name=\"true\" href=\"\"></xref> if such a value exists, <xref uid=\"langword_csharp_false\" name=\"false\" href=\"\"></xref> otherwise. When the value exists <code data-dev-comment-type=\"paramref\" class=\"paramref\">element</code>\nis assigned that value.\n"
+  example: []
+  syntax:
+    content: public bool TrySelectSingle(JsonElement root, NormalizedPath path, out JsonElement element)
+    parameters:
+    - id: root
+      type: System.Text.Json.JsonElement
+    - id: path
+      type: JsonCons.JsonPathLib.NormalizedPath
+      description: A <xref href="JsonCons.JsonPathLib.NormalizedPath" data-throw-if-not-resolved="false"></xref> identifying a single value within the root value.
+    - id: element
+      type: System.Text.Json.JsonElement
+      description: Receives the value.
+    return:
+      type: System.Boolean
+      description: "\n<xref uid=\"langword_csharp_true\" name=\"true\" href=\"\"></xref> if the value was found, <xref uid=\"langword_csharp_false\" name=\"false\" href=\"\"></xref> otherwise.\n"
+    content.vb: Public Function TrySelectSingle(root As JsonElement, path As NormalizedPath, ByRef element As JsonElement) As Boolean
+  overload: JsonCons.JsonPathLib.JsonPath.TrySelectSingle*
+  nameWithType.vb: JsonPath.TrySelectSingle(JsonElement, NormalizedPath, ByRef JsonElement)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: JsonCons.JsonPathLib.JsonPath.TrySelectSingle(System.Text.Json.JsonElement, JsonCons.JsonPathLib.NormalizedPath, ByRef System.Text.Json.JsonElement)
+  name.vb: TrySelectSingle(JsonElement, NormalizedPath, ByRef JsonElement)
 references:
 - uid: JsonCons.JsonPathLib
   commentId: N:JsonCons.JsonPathLib
@@ -917,3 +965,15 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: JsonCons.JsonPathLib.JsonPath.TrySelectSingle*
+  commentId: Overload:JsonCons.JsonPathLib.JsonPath.TrySelectSingle
+  name: TrySelectSingle
+  nameWithType: JsonPath.TrySelectSingle
+  fullName: JsonCons.JsonPathLib.JsonPath.TrySelectSingle
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean

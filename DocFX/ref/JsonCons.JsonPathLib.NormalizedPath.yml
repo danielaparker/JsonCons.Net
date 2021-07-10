@@ -15,7 +15,6 @@ items:
   - JsonCons.JsonPathLib.NormalizedPath.System#Collections#IEnumerable#GetEnumerator
   - JsonCons.JsonPathLib.NormalizedPath.ToJsonPointer
   - JsonCons.JsonPathLib.NormalizedPath.ToString
-  - JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
   langs:
   - csharp
   - vb
@@ -420,46 +419,6 @@ items:
   modifiers.vb:
   - Public
   - Overrides
-- uid: JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
-  commentId: M:JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
-  id: TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
-  parent: JsonCons.JsonPathLib.NormalizedPath
-  langs:
-  - csharp
-  - vb
-  name: TryGet(JsonElement, out JsonElement)
-  nameWithType: NormalizedPath.TryGet(JsonElement, out JsonElement)
-  fullName: JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement, out System.Text.Json.JsonElement)
-  type: Method
-  source:
-    remote:
-      path: src/JsonPath/NormalizedPath.cs
-      branch: main
-      repo: https://github.com/danielaparker/JsonCons.Net.git
-    id: TryGet
-    path: ../src/JsonPath/NormalizedPath.cs
-    startLine: 326
-  assemblies:
-  - JsonPath
-  namespace: JsonCons.JsonPathLib
-  syntax:
-    content: public bool TryGet(JsonElement root, out JsonElement element)
-    parameters:
-    - id: root
-      type: System.Text.Json.JsonElement
-    - id: element
-      type: System.Text.Json.JsonElement
-    return:
-      type: System.Boolean
-    content.vb: Public Function TryGet(root As JsonElement, ByRef element As JsonElement) As Boolean
-  overload: JsonCons.JsonPathLib.NormalizedPath.TryGet*
-  nameWithType.vb: NormalizedPath.TryGet(JsonElement, ByRef JsonElement)
-  modifiers.csharp:
-  - public
-  modifiers.vb:
-  - Public
-  fullName.vb: JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement, ByRef System.Text.Json.JsonElement)
-  name.vb: TryGet(JsonElement, ByRef JsonElement)
 references:
 - uid: JsonCons.JsonPathLib
   commentId: N:JsonCons.JsonPathLib
@@ -1442,21 +1401,3 @@ references:
   name: GetHashCode
   nameWithType: NormalizedPath.GetHashCode
   fullName: JsonCons.JsonPathLib.NormalizedPath.GetHashCode
-- uid: JsonCons.JsonPathLib.NormalizedPath.TryGet*
-  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.TryGet
-  name: TryGet
-  nameWithType: NormalizedPath.TryGet
-  fullName: JsonCons.JsonPathLib.NormalizedPath.TryGet
-- uid: System.Text.Json.JsonElement
-  commentId: T:System.Text.Json.JsonElement
-  parent: System.Text.Json
-  isExternal: true
-  name: JsonElement
-  nameWithType: JsonElement
-  fullName: System.Text.Json.JsonElement
-- uid: System.Text.Json
-  commentId: N:System.Text.Json
-  isExternal: true
-  name: System.Text.Json
-  nameWithType: System.Text.Json
-  fullName: System.Text.Json
