@@ -365,13 +365,12 @@ The precedence rules may be overriden with explicit parentheses, e.g. (a || b) &
 
 ### Functions
 
-Support for function expressions is a JsonCons extension.
+Support for function in filter expressions is a JsonCons extension.
 
-Functions can be passed JSONPath paths, single quoted strings and literal JSON values
-such as `1.5`, `true`, or `{"foo" : "bar"}`. 
-Outside a filter predicate, functions can be passed paths that select from
-the root JSON value `$`. Within a filter predicate, functions can be passed either a 
-path that selects from the root JSON value `$`, or a path that selects from the current node `@`.
+Functions can be passed JSONPath paths, single quoted strings, literal JSON values
+such as `1.5`, `true`, or `{"foo" : "bar"}`, or expressions such as `@.price*10`. 
+Functions can be passed either a path that selects from the root JSON value `$`, 
+or a path that selects from the current node `@`.
 
 Function|Description
 ----------|--------

@@ -617,12 +617,11 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 <p>The precedence rules may be overriden with explicit parentheses, e.g. (a || b) &amp;&amp; c.</p>
 <div id="S7"></div> 
 <h3 id="functions">Functions</h3>
-<p>Support for function expressions is a JsonCons extension.</p>
-<p>Functions can be passed JSONPath paths, single quoted strings and literal JSON values
-such as <code>1.5</code>, <code>true</code>, or <code>{&quot;foo&quot; : &quot;bar&quot;}</code>.
-Outside a filter predicate, functions can be passed paths that select from
-the root JSON value <code>$</code>. Within a filter predicate, functions can be passed either a
-path that selects from the root JSON value <code>$</code>, or a path that selects from the current node <code>@</code>.</p>
+<p>Support for function in filter expressions is a JsonCons extension.</p>
+<p>Functions can be passed JSONPath paths, single quoted strings, literal JSON values
+such as <code>1.5</code>, <code>true</code>, or <code>{&quot;foo&quot; : &quot;bar&quot;}</code>, or expressions such as <code>@.price*10</code>.
+Functions can be passed either a path that selects from the root JSON value <code>$</code>,
+or a path that selects from the current node <code>@</code>.</p>
 <table>
 <thead>
 <tr>
