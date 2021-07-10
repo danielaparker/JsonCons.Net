@@ -16,7 +16,7 @@ namespace JsonCons.JsonPathLib.Tests
             string text = System.IO.File.ReadAllText(path);
             var jsonOptions = new JsonDocumentOptions();
             jsonOptions.CommentHandling = JsonCommentHandling.Skip; 
-            JsonDocument doc = JsonDocument.Parse(text, jsonOptions);
+            using JsonDocument doc = JsonDocument.Parse(text, jsonOptions);
             var testsEnumeratable = doc.RootElement.EnumerateArray();
             var comparer = JsonElementEqualityComparer.Instance;
 

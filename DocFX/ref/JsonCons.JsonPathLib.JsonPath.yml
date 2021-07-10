@@ -5,7 +5,6 @@ items:
   id: JsonPath
   parent: JsonCons.JsonPathLib
   children:
-  - JsonCons.JsonPathLib.JsonPath.Dispose
   - JsonCons.JsonPathLib.JsonPath.Parse(System.String)
   - JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)
   - JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)
@@ -27,22 +26,17 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: JsonPath
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 62
+    startLine: 58
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
   summary: "\nRepresents a JsonPath expression.\n"
-  remarks: "\nA JsonPath may own references to some <xref href=\"System.Text.Json.JsonDocument\" data-throw-if-not-resolved=\"false\"></xref> objects. \nIt should be disposed to ensure that these objects are properly disposed.\n"
   example: []
   syntax:
-    content: 'public sealed class JsonPath : IDisposable'
-    content.vb: >-
-      Public NotInheritable Class JsonPath
-          Implements IDisposable
+    content: public sealed class JsonPath
+    content.vb: Public NotInheritable Class JsonPath
   inheritance:
   - System.Object
-  implements:
-  - System.IDisposable
   inheritedMembers:
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
@@ -77,7 +71,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Parse
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 75
+    startLine: 70
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -118,7 +112,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Select
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 99
+    startLine: 92
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -160,7 +154,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectPaths
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 173
+    startLine: 166
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -202,7 +196,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectNodes
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 225
+    startLine: 218
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -226,40 +220,6 @@ items:
   - public
   modifiers.vb:
   - Public
-- uid: JsonCons.JsonPathLib.JsonPath.Dispose
-  commentId: M:JsonCons.JsonPathLib.JsonPath.Dispose
-  id: Dispose
-  parent: JsonCons.JsonPathLib.JsonPath
-  langs:
-  - csharp
-  - vb
-  name: Dispose()
-  nameWithType: JsonPath.Dispose()
-  fullName: JsonCons.JsonPathLib.JsonPath.Dispose()
-  type: Method
-  source:
-    remote:
-      path: src/JsonPath/JsonPath.cs
-      branch: main
-      repo: https://github.com/danielaparker/JsonCons.Net.git
-    id: Dispose
-    path: ../src/JsonPath/JsonPath.cs
-    startLine: 272
-  assemblies:
-  - JsonPath
-  namespace: JsonCons.JsonPathLib
-  summary: "\nReleases the resources used by this JsonPath instance. \n"
-  example: []
-  syntax:
-    content: public void Dispose()
-    content.vb: Public Sub Dispose
-  overload: JsonCons.JsonPathLib.JsonPath.Dispose*
-  implements:
-  - System.IDisposable.Dispose
-  modifiers.csharp:
-  - public
-  modifiers.vb:
-  - Public
 - uid: JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)
   commentId: M:JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)
   id: Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)
@@ -278,7 +238,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: Select
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 285
+    startLine: 270
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -325,7 +285,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectPaths
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 302
+    startLine: 285
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -372,7 +332,7 @@ items:
       repo: https://github.com/danielaparker/JsonCons.Net.git
     id: SelectNodes
     path: ../src/JsonPath/JsonPath.cs
-    startLine: 320
+    startLine: 301
   assemblies:
   - JsonPath
   namespace: JsonCons.JsonPathLib
@@ -402,9 +362,6 @@ items:
   - Public
   - Shared
 references:
-- uid: System.Text.Json.JsonDocument
-  commentId: T:System.Text.Json.JsonDocument
-  isExternal: true
 - uid: JsonCons.JsonPathLib
   commentId: N:JsonCons.JsonPathLib
   name: JsonCons.JsonPathLib
@@ -417,13 +374,6 @@ references:
   name: Object
   nameWithType: Object
   fullName: System.Object
-- uid: System.IDisposable
-  commentId: T:System.IDisposable
-  parent: System
-  isExternal: true
-  name: IDisposable
-  nameWithType: IDisposable
-  fullName: System.IDisposable
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
   parent: System.Object
@@ -943,42 +893,6 @@ references:
     name: JsonPathNode
     nameWithType: JsonPathNode
     fullName: JsonCons.JsonPathLib.JsonPathNode
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: JsonCons.JsonPathLib.JsonPath.Dispose*
-  commentId: Overload:JsonCons.JsonPathLib.JsonPath.Dispose
-  name: Dispose
-  nameWithType: JsonPath.Dispose
-  fullName: JsonCons.JsonPathLib.JsonPath.Dispose
-- uid: System.IDisposable.Dispose
-  commentId: M:System.IDisposable.Dispose
-  parent: System.IDisposable
-  isExternal: true
-  name: Dispose()
-  nameWithType: IDisposable.Dispose()
-  fullName: System.IDisposable.Dispose()
-  spec.csharp:
-  - uid: System.IDisposable.Dispose
-    name: Dispose
-    nameWithType: IDisposable.Dispose
-    fullName: System.IDisposable.Dispose
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.IDisposable.Dispose
-    name: Dispose
-    nameWithType: IDisposable.Dispose
-    fullName: System.IDisposable.Dispose
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
   - name: )
     nameWithType: )
     fullName: )

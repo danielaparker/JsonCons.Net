@@ -58,19 +58,6 @@ references:
   commentId: T:JsonCons.JsonPathLib.JsonPath
   fullName: JsonCons.JsonPathLib.JsonPath
   nameWithType: JsonPath
-- uid: JsonCons.JsonPathLib.JsonPath.Dispose
-  name: Dispose()
-  href: ref/JsonCons.JsonPathLib.JsonPath.html#JsonCons_JsonPathLib_JsonPath_Dispose
-  commentId: M:JsonCons.JsonPathLib.JsonPath.Dispose
-  fullName: JsonCons.JsonPathLib.JsonPath.Dispose()
-  nameWithType: JsonPath.Dispose()
-- uid: JsonCons.JsonPathLib.JsonPath.Dispose*
-  name: Dispose
-  href: ref/JsonCons.JsonPathLib.JsonPath.html#JsonCons_JsonPathLib_JsonPath_Dispose_
-  commentId: Overload:JsonCons.JsonPathLib.JsonPath.Dispose
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.JsonPath.Dispose
-  nameWithType: JsonPath.Dispose
 - uid: JsonCons.JsonPathLib.JsonPath.Parse(System.String)
   name: Parse(String)
   href: ref/JsonCons.JsonPathLib.JsonPath.html#JsonCons_JsonPathLib_JsonPath_Parse_System_String_

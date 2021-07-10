@@ -55,14 +55,9 @@ namespace JsonCons.JsonPathLib
     /// <summary>
     ///   Represents a JsonPath expression.
     /// </summary>
-    /// <remarks>
-    ///   A JsonPath may own references to some <see cref="JsonDocument"/> objects. 
-    ///   It should be disposed to ensure that these objects are properly disposed.
-    /// </remarks>
 
-    public sealed class JsonPath : IDisposable
+    public sealed class JsonPath
     {
-        readonly StaticResources _resources;
         readonly ISelector _selector;
         readonly ResultOptions _requiredOptions;
 
@@ -79,11 +74,9 @@ namespace JsonCons.JsonPathLib
             return compiler.Parse();
         }
 
-        internal JsonPath(StaticResources resources, 
-                          ISelector selector, 
+        internal JsonPath(ISelector selector, 
                           bool pathsRequired)
         {
-            _resources = resources;
             _selector = selector;
             if (pathsRequired)
             {
@@ -268,14 +261,6 @@ namespace JsonCons.JsonPathLib
         }
 
         /// <summary>
-        /// Releases the resources used by this JsonPath instance. 
-        /// </summary>
-        public void Dispose()
-        {
-            _resources.Dispose();
-        }
-
-        /// <summary>
         /// Selects values within the root value that match the provided JSONPath expression. 
         /// This method parses and applies the expression in one operation.
         /// </summary>
@@ -285,10 +270,8 @@ namespace JsonCons.JsonPathLib
         /// <returns>A list of values within the root value that match the provided JSONPath expression</returns>
         public static IList<JsonElement> Select(JsonElement root, string pathStr, ResultOptions options = 0)
         {
-            using (var expr = JsonPath.Parse(pathStr))
-            {
-                return expr.Select(root, options);
-            }
+            var expr = JsonPath.Parse(pathStr);
+            return expr.Select(root, options);
         }
 
         /// <summary>
@@ -302,10 +285,8 @@ namespace JsonCons.JsonPathLib
 
         public static IList<NormalizedPath> SelectPaths(JsonElement root, string pathStr, ResultOptions options = ResultOptions.Path)
         {
-            using (var expr = JsonPath.Parse(pathStr))
-            {
-                return expr.SelectPaths(root, options);
-            }
+            var expr = JsonPath.Parse(pathStr);
+            return expr.SelectPaths(root, options);
         }
 
         /// <summary>
@@ -320,10 +301,8 @@ namespace JsonCons.JsonPathLib
 
         public static IList<JsonPathNode> SelectNodes(JsonElement root, string pathStr, ResultOptions options = ResultOptions.Path)
         {
-            using (var expr = JsonPath.Parse(pathStr))
-            {
-                return expr.SelectNodes(root, options);
-            }
+            var expr = JsonPath.Parse(pathStr);
+            return expr.SelectNodes(root, options);
         }
     }
 

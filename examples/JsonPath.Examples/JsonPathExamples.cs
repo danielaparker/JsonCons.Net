@@ -260,13 +260,9 @@ namespace JsonCons.Examples
 }
             ";
 
-            JsonDocument doc = null;
-            JsonPath path = null;
-
-            try
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
             {
-                doc = JsonDocument.Parse(jsonString);
-                path = JsonPath.Parse("$.books[3,1,1].title");
+                JsonPath path = JsonPath.Parse("$.books[3,1,1].title");
 
                 Console.WriteLine("Allow duplicate nodes");
                 IList<JsonPathNode> nodes = path.SelectNodes(doc.RootElement);
@@ -302,14 +298,6 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
             }
-            finally
-            {
-                if (!Object.ReferenceEquals(null, doc)) 
-                    doc.Dispose();
-                if (!Object.ReferenceEquals(null, path)) 
-                    path.Dispose();
-            }
-
         }
 
         public static void UsingTheParentOperator()
@@ -336,13 +324,9 @@ namespace JsonCons.Examples
 ]
             ";
 
-            JsonDocument doc = null;
-            JsonPath path = null;
-
-            try
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
             {
-                doc = JsonDocument.Parse(jsonString);
-                path = JsonPath.Parse("$[*].reviews[?(@.rating == 5)]^^");
+                JsonPath path = JsonPath.Parse("$[*].reviews[?(@.rating == 5)]^^");
 
                 Console.WriteLine("Select grandparent nodes");
                 IList<JsonElement> values = path.Select(doc.RootElement);
@@ -352,14 +336,6 @@ namespace JsonCons.Examples
                 }
                 Console.WriteLine();
             }
-            finally
-            {
-                if (!Object.ReferenceEquals(null, doc)) 
-                    doc.Dispose();
-                if (!Object.ReferenceEquals(null, path)) 
-                    path.Dispose();
-            }
-
         }
 
         public static void Main(string[] args)

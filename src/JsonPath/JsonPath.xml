@@ -37,10 +37,6 @@
             <summary>
               Represents a JsonPath expression.
             </summary>
-            <remarks>
-              A JsonPath may own references to some <see cref="T:System.Text.Json.JsonDocument"/> objects. 
-              It should be disposed to ensure that these objects are properly disposed.
-            </remarks>
         </member>
         <member name="M:JsonCons.JsonPathLib.JsonPath.Parse(System.String)">
             <summary>
@@ -74,11 +70,6 @@
             <param name="options">Options for handling duplicate paths and order of results.</param>
             <returns>A list of <see cref="T:JsonCons.JsonPathLib.JsonPathNode"/> representing locations-value pairs 
             within the root value that match this JSONPath expression</returns>
-        </member>
-        <member name="M:JsonCons.JsonPathLib.JsonPath.Dispose">
-            <summary>
-            Releases the resources used by this JsonPath instance. 
-            </summary>
         </member>
         <member name="M:JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)">
             <summary>

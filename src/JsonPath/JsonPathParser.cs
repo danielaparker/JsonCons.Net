@@ -9,26 +9,6 @@ using System.Text.RegularExpressions;
         
 namespace JsonCons.JsonPathLib
 {
-    sealed class StaticResources : IDisposable
-    {
-        IList<IDisposable> _disposables = new List<IDisposable>();
-
-        internal JsonElement CreateJsonElement(string json)
-        {
-            var doc = JsonDocument.Parse(json); 
-            _disposables.Add(doc);
-            return doc.RootElement;
-        }
-
-        public void Dispose()
-        {
-            foreach (var item in _disposables)
-            {
-                item.Dispose();
-            }
-        }
-    };
-
     enum JsonPathState
     {
         Start,
@@ -124,25 +104,6 @@ namespace JsonCons.JsonPathLib
         }
 
         internal JsonPath Parse()
-        {
-            StaticResources resources = null;
-            try
-            {
-                resources = new StaticResources();
-                var expr = _Parse(resources);
-                return expr;
-            }
-            catch (Exception ex)
-            {
-                if (resources != null)
-                {
-                    resources.Dispose();
-                }
-                throw ex;
-            }
-        }
-
-        private JsonPath _Parse(StaticResources resources)
         {
             _stateStack = new Stack<JsonPathState>();
             _index = 0;
@@ -1457,9 +1418,12 @@ namespace JsonCons.JsonPathLib
                         break;
                     case JsonPathState.JsonElement:
                     {
-                        PushToken(new Token(new JsonElementValue(resources.CreateJsonElement(buffer.ToString()))));
-                        buffer.Clear();
-                        _stateStack.Pop(); 
+                        using (var doc = JsonDocument.Parse(buffer.ToString()))
+                        {            
+                            PushToken(new Token(new JsonElementValue(doc.RootElement.Clone())));
+                            buffer.Clear();
+                            _stateStack.Pop(); 
+                        }
                         break;
                     }
                     case JsonPathState.JsonStringValue:
@@ -1858,7 +1822,7 @@ namespace JsonCons.JsonPathLib
             }
             Token token = _outputStack.Pop();
 
-            return new JsonPath(resources, token.GetSelector(), pathsRequired);
+            return new JsonPath(token.GetSelector(), pathsRequired);
         }
 
         void UnwindRParen()
