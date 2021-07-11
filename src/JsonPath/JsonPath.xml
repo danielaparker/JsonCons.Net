@@ -19,7 +19,7 @@
         </member>
         <member name="F:JsonCons.JsonPathLib.ResultOptions.Path">
             <summary>
-            This bit indicates that paths are required and is automatically set when required, e.g.
+            This bit indicates that paths are required and is automatically set as needed, e.g.
             if NoDups is set.
             </summary>
         </member>

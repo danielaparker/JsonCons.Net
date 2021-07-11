@@ -38,7 +38,7 @@ namespace JsonCons.JsonPathLib
 	 [Flags]
     public enum ResultOptions {
         /// <summary>
-        /// This bit indicates that paths are required and is automatically set when required, e.g.
+        /// This bit indicates that paths are required and is automatically set as needed, e.g.
         /// if NoDups is set.
         /// </summary>
         Path=1, 
