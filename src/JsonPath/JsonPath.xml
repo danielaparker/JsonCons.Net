@@ -48,6 +48,9 @@
             <exception cref="T:JsonCons.JsonPathLib.JsonPathParseException">
               The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
             </exception>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="pathStr"/> is <see langword="null"/>.
+            </exception>
         </member>
         <member name="M:JsonCons.JsonPathLib.JsonPath.Select(System.Text.Json.JsonElement,JsonCons.JsonPathLib.ResultOptions)">
             <summary>
@@ -86,6 +89,9 @@
             <exception cref="T:JsonCons.JsonPathLib.JsonPathParseException">
               The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
             </exception>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="pathStr"/> is <see langword="null"/>.
+            </exception>
         </member>
         <member name="M:JsonCons.JsonPathLib.JsonPath.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)">
             <summary>
@@ -98,6 +104,9 @@
             <returns>A list of <see cref="T:JsonCons.JsonPathLib.NormalizedPath"/> identifying the values within the root value that match the provided JSONPath expression</returns>
             <exception cref="T:JsonCons.JsonPathLib.JsonPathParseException">
               The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="pathStr"/> is <see langword="null"/>.
             </exception>
         </member>
         <member name="M:JsonCons.JsonPathLib.JsonPath.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPathLib.ResultOptions)">
@@ -112,6 +121,9 @@
             within the root value that match the provided JSONPath expression</returns>
             <exception cref="T:JsonCons.JsonPathLib.JsonPathParseException">
               The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="pathStr"/> is <see langword="null"/>.
             </exception>
         </member>
         <member name="T:JsonCons.JsonPathLib.JsonPathNode">
@@ -185,6 +197,36 @@
              Gets the type of the component.
             
              </summary>
+        </member>
+        <member name="M:JsonCons.JsonPathLib.PathComponent.#ctor(System.String)">
+            <summary>
+            Constructs the root path component from a name
+            </summary>
+            <param name="name">The name.</param>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="name"/> is <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.String)">
+            <summary>
+            Constructs a path component from a parent and name
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="name">The name.</param>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="parent"/> is <see langword="null"/>.
+              <paramref name="name"/> is <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.Int32)">
+            <summary>
+            Constructs a path component from a parent and an index
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="index">The index.</param>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="parent"/> is <see langword="null"/>.
+            </exception>
         </member>
         <member name="M:JsonCons.JsonPathLib.PathComponent.GetName">
              <summary>

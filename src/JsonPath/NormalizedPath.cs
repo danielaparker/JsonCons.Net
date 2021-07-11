@@ -51,6 +51,14 @@ namespace JsonCons.JsonPathLib
         private readonly string _name;
         private readonly Int32 _index;
 
+        /// <summary>
+        /// Constructs the root path component from a name
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <exception cref="ArgumentNullException">
+        ///   <paramref name="name"/> is <see langword="null"/>.
+        /// </exception>
+
         public PathComponent(string name)
         {
             if (name == null)
@@ -63,8 +71,22 @@ namespace JsonCons.JsonPathLib
             _index = 0;
         }
 
+        /// <summary>
+        /// Constructs a path component from a parent and name
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="name">The name.</param>
+        /// <exception cref="ArgumentNullException">
+        ///   <paramref name="parent"/> is <see langword="null"/>.
+        ///   <paramref name="name"/> is <see langword="null"/>.
+        /// </exception>
+
         public PathComponent(PathComponent parent, string name)
         {
+            if (parent == null)
+            {
+                throw new ArgumentNullException(nameof(parent));
+            }
             if (name == null)
             {
                 throw new ArgumentNullException(nameof(name));
@@ -75,8 +97,21 @@ namespace JsonCons.JsonPathLib
             _index = 0;
         }
 
+        /// <summary>
+        /// Constructs a path component from a parent and an index
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="index">The index.</param>
+        /// <exception cref="ArgumentNullException">
+        ///   <paramref name="parent"/> is <see langword="null"/>.
+        /// </exception>
+
         public PathComponent(PathComponent parent, Int32 index)
         {
+            if (parent == null)
+            {
+                throw new ArgumentNullException(nameof(parent));
+            }
             Parent = parent;
             ComponentKind = PathComponentKind.Index;
             _name = null;

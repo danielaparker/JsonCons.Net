@@ -70,7 +70,9 @@ namespace JsonCons.JsonPathLib
         /// <exception cref="JsonPathParseException">
         ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
         /// </exception>
-
+        /// <exception cref="ArgumentNullException">
+        ///   <paramref name="pathStr"/> is <see langword="null"/>.
+        /// </exception>
         public static JsonPath Parse(string pathStr)
         {
             if (pathStr == null)
@@ -279,6 +281,9 @@ namespace JsonCons.JsonPathLib
         /// <exception cref="JsonPathParseException">
         ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
         /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///   <paramref name="pathStr"/> is <see langword="null"/>.
+        /// </exception>
         public static IList<JsonElement> Select(JsonElement root, string pathStr, ResultOptions options = 0)
         {
             if (pathStr == null)
@@ -299,6 +304,9 @@ namespace JsonCons.JsonPathLib
         /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value that match the provided JSONPath expression</returns>
         /// <exception cref="JsonPathParseException">
         ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///   <paramref name="pathStr"/> is <see langword="null"/>.
         /// </exception>
 
         public static IList<NormalizedPath> SelectPaths(JsonElement root, string pathStr, ResultOptions options = ResultOptions.Path)
@@ -323,9 +331,16 @@ namespace JsonCons.JsonPathLib
         /// <exception cref="JsonPathParseException">
         ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
         /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///   <paramref name="pathStr"/> is <see langword="null"/>.
+        /// </exception>
 
         public static IList<JsonPathNode> SelectNodes(JsonElement root, string pathStr, ResultOptions options = ResultOptions.Path)
         {
+            if (pathStr == null)
+            {
+                throw new ArgumentNullException(nameof(pathStr));
+            }
             var expr = JsonPath.Parse(pathStr);
             return expr.SelectNodes(root, options);
         }

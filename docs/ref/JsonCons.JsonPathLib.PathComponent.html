@@ -115,11 +115,12 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_PathComponent__ctor_JsonCons_JsonPathLib_PathComponent_System_Int32_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.PathComponent.%23ctor(JsonCons.JsonPathLib.PathComponent%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L78">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L109">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_PathComponent__ctor_" data-uid="JsonCons.JsonPathLib.PathComponent.#ctor*"></a>
   <h4 id="JsonCons_JsonPathLib_PathComponent__ctor_JsonCons_JsonPathLib_PathComponent_System_Int32_" data-uid="JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.Int32)">PathComponent(PathComponent, Int32)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Constructs a path component from a parent and an index</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -138,12 +139,30 @@
       <tr>
         <td><a class="xref" href="JsonCons.JsonPathLib.PathComponent.html">PathComponent</a></td>
         <td><span class="parametername">parent</span></td>
-        <td></td>
+        <td><p>The parent.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">index</span></td>
-        <td></td>
+        <td><p>The index.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">parent</code> is <span class="xref">null</span>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -152,11 +171,12 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_PathComponent__ctor_JsonCons_JsonPathLib_PathComponent_System_String_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.PathComponent.%23ctor(JsonCons.JsonPathLib.PathComponent%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L66">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L84">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_PathComponent__ctor_" data-uid="JsonCons.JsonPathLib.PathComponent.#ctor*"></a>
   <h4 id="JsonCons_JsonPathLib_PathComponent__ctor_JsonCons_JsonPathLib_PathComponent_System_String_" data-uid="JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.String)">PathComponent(PathComponent, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Constructs a path component from a parent and name</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -175,12 +195,31 @@
       <tr>
         <td><a class="xref" href="JsonCons.JsonPathLib.PathComponent.html">PathComponent</a></td>
         <td><span class="parametername">parent</span></td>
-        <td></td>
+        <td><p>The parent.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">parent</code> is <span class="xref">null</span>.
+<code data-dev-comment-type="paramref" class="paramref">name</code> is <span class="xref">null</span>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -189,11 +228,12 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_PathComponent__ctor_System_String_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.PathComponent.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L54">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L62">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_PathComponent__ctor_" data-uid="JsonCons.JsonPathLib.PathComponent.#ctor*"></a>
   <h4 id="JsonCons_JsonPathLib_PathComponent__ctor_System_String_" data-uid="JsonCons.JsonPathLib.PathComponent.#ctor(System.String)">PathComponent(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Constructs the root path component from a name</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -212,7 +252,24 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">name</code> is <span class="xref">null</span>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -287,7 +344,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_PathComponent_CompareTo_JsonCons_JsonPathLib_PathComponent_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.PathComponent.CompareTo(JsonCons.JsonPathLib.PathComponent)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L104">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L139">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_PathComponent_CompareTo_" data-uid="JsonCons.JsonPathLib.PathComponent.CompareTo*"></a>
   <h4 id="JsonCons_JsonPathLib_PathComponent_CompareTo_JsonCons_JsonPathLib_PathComponent_" data-uid="JsonCons.JsonPathLib.PathComponent.CompareTo(JsonCons.JsonPathLib.PathComponent)">CompareTo(PathComponent)</h4>
@@ -334,7 +391,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_PathComponent_GetHashCode.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.PathComponent.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L133">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L168">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_PathComponent_GetHashCode_" data-uid="JsonCons.JsonPathLib.PathComponent.GetHashCode*"></a>
   <h4 id="JsonCons_JsonPathLib_PathComponent_GetHashCode" data-uid="JsonCons.JsonPathLib.PathComponent.GetHashCode">GetHashCode()</h4>
@@ -366,7 +423,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_PathComponent_GetIndex.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.PathComponent.GetIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L99">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L134">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_PathComponent_GetIndex_" data-uid="JsonCons.JsonPathLib.PathComponent.GetIndex*"></a>
   <h4 id="JsonCons_JsonPathLib_PathComponent_GetIndex" data-uid="JsonCons.JsonPathLib.PathComponent.GetIndex">GetIndex()</h4>
@@ -397,7 +454,7 @@
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPathLib_PathComponent_GetName.md&amp;value=---%0Auid%3A%20JsonCons.JsonPathLib.PathComponent.GetName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L90">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/NormalizedPath.cs/#L125">View Source</a>
   </span>
   <a id="JsonCons_JsonPathLib_PathComponent_GetName_" data-uid="JsonCons.JsonPathLib.PathComponent.GetName*"></a>
   <h4 id="JsonCons_JsonPathLib_PathComponent_GetName" data-uid="JsonCons.JsonPathLib.PathComponent.GetName">GetName()</h4>
