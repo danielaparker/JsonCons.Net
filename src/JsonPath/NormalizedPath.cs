@@ -53,6 +53,10 @@ namespace JsonCons.JsonPathLib
 
         public PathComponent(string name)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
             Parent = null;
             ComponentKind = PathComponentKind.Root;
             _name = name;
@@ -61,6 +65,10 @@ namespace JsonCons.JsonPathLib
 
         public PathComponent(PathComponent parent, string name)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
             Parent = parent;
             ComponentKind = PathComponentKind.Name;
             _name = name;
@@ -323,6 +331,42 @@ namespace JsonCons.JsonPathLib
 
             return hash;
         }
+
+        /// <summary>
+        ///   Looks for a value within the root value that matches this normalized path, returning
+        ///   <see langword="true"/> if such a value exists, <see langword="false"/> otherwise. When the value exists <paramref name="element"/>
+        ///   is assigned that value.
+        /// </summary>
+        /// <param name="root">The root value.</param>
+        /// <param name="element">Receives the value.</param>
+        /// <returns>
+        ///   <see langword="true"/> if the value was found, <see langword="false"/> otherwise.
+        /// </returns>
+
+        public bool TryGet(JsonElement root, out JsonElement element)
+        {
+            element = root;
+            foreach (var component in _components)
+            {
+                if (component.ComponentKind == PathComponentKind.Index)
+                {
+                    if (element.ValueKind != JsonValueKind.Array || component.GetIndex() >= element.GetArrayLength())
+                    {
+                        return false; 
+                    }
+                    element = element[component.GetIndex()];
+                }
+                else if (component.ComponentKind == PathComponentKind.Name)
+                {
+                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(component.GetName(), out element))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
     }
 
 } // namespace JsonCons.JsonPathLib
