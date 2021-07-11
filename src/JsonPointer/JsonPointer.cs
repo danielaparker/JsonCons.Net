@@ -19,7 +19,7 @@ namespace JsonCons.JsonPointerLib
             _tokens = tokens;
         }
 
-        public JsonPointer Parse(string str)
+        public static JsonPointer Parse(string str)
         {
             var tokens = new List<string>();
 
@@ -76,10 +76,10 @@ namespace JsonCons.JsonPointerLib
                         default:
                             throw new JsonException("Invalid state");
                     }
-                    tokens.Add(buffer.ToString());
-                    buffer.Clear();
                     ++index;
                 }
+                tokens.Add(buffer.ToString());
+                buffer.Clear();
             }
             if (buffer.Length > 0)
             {
@@ -163,6 +163,45 @@ namespace JsonCons.JsonPointerLib
                 hashCode += 17*token.GetHashCode();
             }
             return hashCode;
+        }
+
+        public bool TryGet(JsonElement root, out JsonElement value)
+        {
+            value = root;
+
+            foreach (var token in _tokens)
+            {
+                if (value.ValueKind == JsonValueKind.Array)
+                {
+                    if (token == "-")
+                    {
+                        return false;
+                    }
+                    int index = 0;
+                    if (!int.TryParse(token, out index))
+                    {
+                        return false;
+                    }
+                    if (index >= value.GetArrayLength())
+                    {
+                        return false;
+                    }
+                    value = value[index];
+                }
+                else if (value.ValueKind == JsonValueKind.Object)
+                {
+                    if (!value.TryGetProperty(token, out value))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 

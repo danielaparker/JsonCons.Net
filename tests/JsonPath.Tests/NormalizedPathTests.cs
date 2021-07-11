@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JsonCons.JsonPathLib;
 
-namespace JsonPath.Tests
+namespace JsonPathLib.Tests
 {
     [TestClass]
     public class PathNodeTests
