@@ -128,22 +128,6 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPathLib.JsonPath.SelectPaths
   nameWithType: JsonPath.SelectPaths
-- uid: JsonCons.JsonPathLib.JsonPath.TrySelectSingle(System.Text.Json.JsonElement,JsonCons.JsonPathLib.NormalizedPath,System.Text.Json.JsonElement@)
-  name: TrySelectSingle(JsonElement, NormalizedPath, out JsonElement)
-  href: ref/JsonCons.JsonPathLib.JsonPath.html#JsonCons_JsonPathLib_JsonPath_TrySelectSingle_System_Text_Json_JsonElement_JsonCons_JsonPathLib_NormalizedPath_System_Text_Json_JsonElement__
-  commentId: M:JsonCons.JsonPathLib.JsonPath.TrySelectSingle(System.Text.Json.JsonElement,JsonCons.JsonPathLib.NormalizedPath,System.Text.Json.JsonElement@)
-  name.vb: TrySelectSingle(JsonElement, NormalizedPath, ByRef JsonElement)
-  fullName: JsonCons.JsonPathLib.JsonPath.TrySelectSingle(System.Text.Json.JsonElement, JsonCons.JsonPathLib.NormalizedPath, out System.Text.Json.JsonElement)
-  fullName.vb: JsonCons.JsonPathLib.JsonPath.TrySelectSingle(System.Text.Json.JsonElement, JsonCons.JsonPathLib.NormalizedPath, ByRef System.Text.Json.JsonElement)
-  nameWithType: JsonPath.TrySelectSingle(JsonElement, NormalizedPath, out JsonElement)
-  nameWithType.vb: JsonPath.TrySelectSingle(JsonElement, NormalizedPath, ByRef JsonElement)
-- uid: JsonCons.JsonPathLib.JsonPath.TrySelectSingle*
-  name: TrySelectSingle
-  href: ref/JsonCons.JsonPathLib.JsonPath.html#JsonCons_JsonPathLib_JsonPath_TrySelectSingle_
-  commentId: Overload:JsonCons.JsonPathLib.JsonPath.TrySelectSingle
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.JsonPath.TrySelectSingle
-  nameWithType: JsonPath.TrySelectSingle
 - uid: JsonCons.JsonPathLib.JsonPathNode
   name: JsonPathNode
   href: ref/JsonCons.JsonPathLib.JsonPathNode.html
@@ -393,6 +377,22 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPathLib.NormalizedPath.ToString
   nameWithType: NormalizedPath.ToString
+- uid: JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
+  name: TryGet(JsonElement, out JsonElement)
+  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_TryGet_System_Text_Json_JsonElement_System_Text_Json_JsonElement__
+  commentId: M:JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
+  name.vb: TryGet(JsonElement, ByRef JsonElement)
+  fullName: JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement, out System.Text.Json.JsonElement)
+  fullName.vb: JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement, ByRef System.Text.Json.JsonElement)
+  nameWithType: NormalizedPath.TryGet(JsonElement, out JsonElement)
+  nameWithType.vb: NormalizedPath.TryGet(JsonElement, ByRef JsonElement)
+- uid: JsonCons.JsonPathLib.NormalizedPath.TryGet*
+  name: TryGet
+  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_TryGet_
+  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.TryGet
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.NormalizedPath.TryGet
+  nameWithType: NormalizedPath.TryGet
 - uid: JsonCons.JsonPathLib.PathComponent
   name: PathComponent
   href: ref/JsonCons.JsonPathLib.PathComponent.html

@@ -73,6 +73,10 @@ namespace JsonCons.JsonPathLib
 
         public static JsonPath Parse(string pathStr)
         {
+            if (pathStr == null)
+            {
+                throw new ArgumentNullException(nameof(pathStr));
+            }
             var compiler = new JsonPathParser(pathStr);
             return compiler.Parse();
         }
@@ -277,6 +281,10 @@ namespace JsonCons.JsonPathLib
         /// </exception>
         public static IList<JsonElement> Select(JsonElement root, string pathStr, ResultOptions options = 0)
         {
+            if (pathStr == null)
+            {
+                throw new ArgumentNullException(nameof(pathStr));
+            }
             var expr = JsonPath.Parse(pathStr);
             return expr.Select(root, options);
         }
@@ -295,6 +303,10 @@ namespace JsonCons.JsonPathLib
 
         public static IList<NormalizedPath> SelectPaths(JsonElement root, string pathStr, ResultOptions options = ResultOptions.Path)
         {
+            if (pathStr == null)
+            {
+                throw new ArgumentNullException(nameof(pathStr));
+            }
             var expr = JsonPath.Parse(pathStr);
             return expr.SelectPaths(root, options);
         }
@@ -316,41 +328,6 @@ namespace JsonCons.JsonPathLib
         {
             var expr = JsonPath.Parse(pathStr);
             return expr.SelectNodes(root, options);
-        }
-
-        /// <summary>
-        ///   Looks for a value within the root value that matches the provided normalized path, returning
-        ///   <see langword="true"/> if such a value exists, <see langword="false"/> otherwise. When the value exists <paramref name="element"/>
-        ///   is assigned that value.
-        /// </summary>
-        /// <param name="path">A <see cref="NormalizedPath"/> identifying a single value within the root value.</param>
-        /// <param name="element">Receives the value.</param>
-        /// <returns>
-        ///   <see langword="true"/> if the value was found, <see langword="false"/> otherwise.
-        /// </returns>
-        
-        public bool TrySelectSingle(JsonElement root, NormalizedPath path, out JsonElement element)
-        {
-            element = root;
-            foreach (var component in path)
-            {
-                if (component.ComponentKind == PathComponentKind.Index)
-                {
-                    if (element.ValueKind != JsonValueKind.Array || component.GetIndex() >= element.GetArrayLength())
-                    {
-                        return false; 
-                    }
-                    element = element[component.GetIndex()];
-                }
-                else if (component.ComponentKind == PathComponentKind.Name)
-                {
-                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(component.GetName(), out element))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
         }
 
     }

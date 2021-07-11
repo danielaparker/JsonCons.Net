@@ -114,18 +114,6 @@
               The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
             </exception>
         </member>
-        <member name="M:JsonCons.JsonPathLib.JsonPath.TrySelectSingle(System.Text.Json.JsonElement,JsonCons.JsonPathLib.NormalizedPath,System.Text.Json.JsonElement@)">
-            <summary>
-              Looks for a value within the root value that matches the provided normalized path, returning
-              <see langword="true"/> if such a value exists, <see langword="false"/> otherwise. When the value exists <paramref name="element"/>
-              is assigned that value.
-            </summary>
-            <param name="path">A <see cref="T:JsonCons.JsonPathLib.NormalizedPath"/> identifying a single value within the root value.</param>
-            <param name="element">Receives the value.</param>
-            <returns>
-              <see langword="true"/> if the value was found, <see langword="false"/> otherwise.
-            </returns>
-        </member>
         <member name="T:JsonCons.JsonPathLib.JsonPathNode">
              <summary>
              Represents a specific location-value pair within a root JSON value.
@@ -249,6 +237,18 @@
              specification.
             
              </summary>
+        </member>
+        <member name="M:JsonCons.JsonPathLib.NormalizedPath.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)">
+            <summary>
+              Looks for a value within the root value that matches this normalized path, returning
+              <see langword="true"/> if such a value exists, <see langword="false"/> otherwise. When the value exists <paramref name="element"/>
+              is assigned that value.
+            </summary>
+            <param name="root">The root value.</param>
+            <param name="element">Receives the value.</param>
+            <returns>
+              <see langword="true"/> if the value was found, <see langword="false"/> otherwise.
+            </returns>
         </member>
     </members>
 </doc>
