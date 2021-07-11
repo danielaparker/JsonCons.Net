@@ -68,10 +68,13 @@
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
 
-<p>path = absolute-path / relative-path</p>
-<p>absolute-path = &quot;$&quot; [qualified-path]</p>
+<p>absolute-path = &quot;$&quot; [relative-path]
+relative-path = sub-path / bracket-specifier
+sub-path = relative-path . (identifier / &quot;*&quot;)</p>
 <p>qualified path = recursive-location / relative-location</p>
 <p>recursive-location = &quot;..&quot; relative-path</p>
+<p>relative-location &quot;.&quot; relative-path</p>
+<p>relative-path = step qualified-path</p>
 </article>
           </div>
           
