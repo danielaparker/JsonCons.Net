@@ -8,7 +8,7 @@ using System.Text.Json;
         
 namespace JsonCons.JsonPointerLib
 {
-    public sealed class JsonPointer : IEnumerable<string>
+    public sealed class JsonPointer : IEnumerable<string>, IEquatable<JsonPointer>
     {
         enum JsonPointerState {Start, Escaped, Delim}
 
