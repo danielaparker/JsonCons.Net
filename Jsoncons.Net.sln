@@ -16,9 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocFX", "doc_source\DocFX.c
 		{6579BE90-397E-44CF-B079-B042D731EB28} = {6579BE90-397E-44CF-B079-B042D731EB28}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPointer", "src\JsonPointer\JsonPointer.csproj", "{BD0584AB-F783-401F-B7DE-49476D5922D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPointer", "src\JsonPointer\JsonPointer.csproj", "{BD0584AB-F783-401F-B7DE-49476D5922D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPointer.Tests", "src\JsonPointer.Tests\JsonPointer.Tests.csproj", "{5AF7375F-00AB-416A-89C9-5CC1060F53C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPointer.Tests", "tests\JsonPointer.Tests\JsonPointer.Tests.csproj", "{8D229B10-0912-4E5E-9C84-42A6B4C4FF83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,10 +46,10 @@ Global
 		{BD0584AB-F783-401F-B7DE-49476D5922D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD0584AB-F783-401F-B7DE-49476D5922D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD0584AB-F783-401F-B7DE-49476D5922D7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5AF7375F-00AB-416A-89C9-5CC1060F53C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5AF7375F-00AB-416A-89C9-5CC1060F53C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5AF7375F-00AB-416A-89C9-5CC1060F53C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5AF7375F-00AB-416A-89C9-5CC1060F53C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D229B10-0912-4E5E-9C84-42A6B4C4FF83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D229B10-0912-4E5E-9C84-42A6B4C4FF83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D229B10-0912-4E5E-9C84-42A6B4C4FF83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D229B10-0912-4E5E-9C84-42A6B4C4FF83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
