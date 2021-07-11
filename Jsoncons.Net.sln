@@ -22,6 +22,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPointer.Tests", "tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json", "src\Json\Json.csproj", "{021CF987-5D6B-4E68-AC68-FC73D3A44224}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPatch", "src\JsonPatch\JsonPatch.csproj", "{D83A82D7-6D99-41B8-87DA-FDDCB87D9360}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPatch.Tests", "tests\JsonPatch.Tests\JsonPatch.Tests.csproj", "{8AEC37E2-D136-4C17-9EA8-F0D874049577}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +60,14 @@ Global
 		{021CF987-5D6B-4E68-AC68-FC73D3A44224}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{021CF987-5D6B-4E68-AC68-FC73D3A44224}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{021CF987-5D6B-4E68-AC68-FC73D3A44224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D83A82D7-6D99-41B8-87DA-FDDCB87D9360}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D83A82D7-6D99-41B8-87DA-FDDCB87D9360}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D83A82D7-6D99-41B8-87DA-FDDCB87D9360}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D83A82D7-6D99-41B8-87DA-FDDCB87D9360}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AEC37E2-D136-4C17-9EA8-F0D874049577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AEC37E2-D136-4C17-9EA8-F0D874049577}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AEC37E2-D136-4C17-9EA8-F0D874049577}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AEC37E2-D136-4C17-9EA8-F0D874049577}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
