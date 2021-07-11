@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace JsonCons.JsonPathLib
+namespace JsonCons.JsonLib
 {
     /// <summary>
     /// Compares two <see cref="JsonElement"/> instances for equality by using value-based comparison.

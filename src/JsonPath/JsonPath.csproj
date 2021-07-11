@@ -19,4 +19,8 @@
     <None Remove="docfx.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Json\Json.csproj" />
+  </ItemGroup>
+
 </Project>

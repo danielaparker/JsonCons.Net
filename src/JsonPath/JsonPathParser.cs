@@ -1456,7 +1456,7 @@ namespace JsonCons.JsonPathLib
                                 _stateStack.Pop(); 
                             }
                         }
-                        catch (JsonException e)
+                        catch (JsonException)
                         {
                             throw new JsonPathParseException("Invalid JSON literal", _line, _column);
                         }
