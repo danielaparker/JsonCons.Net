@@ -44,7 +44,7 @@ namespace JsonCons.JsonPathLib
         RootOrCurrentNode,
         ExpectFunctionExpr,
         JsonPath,
-        PathRhs,
+        DotOrLeftBracketOrCaret,
         ParentOperator,
         AncestorDepth,
         FilterExpression,
@@ -168,7 +168,7 @@ namespace JsonCons.JsonPathLib
                             case '@':
                             {
                                 PushToken(new Token(new CurrentNodeSelector()));
-                                _stateStack.Push(JsonPathState.PathRhs);
+                                _stateStack.Push(JsonPathState.DotOrLeftBracketOrCaret);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -180,7 +180,7 @@ namespace JsonCons.JsonPathLib
                         }
                         break;
                     }
-                    case JsonPathState.PathRhs: 
+                    case JsonPathState.DotOrLeftBracketOrCaret: 
                     {
                         switch (_span[_index])
                         {
@@ -683,7 +683,7 @@ namespace JsonCons.JsonPathLib
                                 PushToken(new Token(new RootSelector(_index)));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
-                                _stateStack.Push(JsonPathState.PathRhs);                                
+                                _stateStack.Push(JsonPathState.DotOrLeftBracketOrCaret);                                
                                 ++_index;
                                 ++_column;
                                 break;
@@ -692,7 +692,7 @@ namespace JsonCons.JsonPathLib
                                 PushToken(new Token(new CurrentNodeSelector()));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
-                                _stateStack.Push(JsonPathState.PathRhs);
+                                _stateStack.Push(JsonPathState.DotOrLeftBracketOrCaret);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -789,21 +789,21 @@ namespace JsonCons.JsonPathLib
                             case '*':
                                 PushToken(new Token(new WildcardSelector()));
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.PathRhs);
+                                _stateStack.Push(JsonPathState.DotOrLeftBracketOrCaret);
                                 ++_index;
                                 ++_column;
                                 break;
                             case '$':
                                 PushToken(new Token(new RootSelector(_index)));
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.PathRhs);
+                                _stateStack.Push(JsonPathState.DotOrLeftBracketOrCaret);
                                 ++_index;
                                 ++_column;
                                 break;
                             case '@':
                                 PushToken(new Token(new CurrentNodeSelector()));
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.PathRhs);
+                                _stateStack.Push(JsonPathState.DotOrLeftBracketOrCaret);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1139,7 +1139,7 @@ namespace JsonCons.JsonPathLib
                             case '$':
                             case '@':
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.PathRhs);
+                                _stateStack.Push(JsonPathState.DotOrLeftBracketOrCaret);
                                 _stateStack.Push(JsonPathState.RootOrCurrentNode);
                                 break;
                             case '(':
@@ -1823,7 +1823,7 @@ namespace JsonCons.JsonPathLib
                     case JsonPathState.UnquotedString: 
                         _stateStack.Pop(); // UnquotedString
                         break;                    
-                    case JsonPathState.PathRhs: 
+                    case JsonPathState.DotOrLeftBracketOrCaret: 
                         _stateStack.Pop();
                         break;
                     case JsonPathState.Identifier:
