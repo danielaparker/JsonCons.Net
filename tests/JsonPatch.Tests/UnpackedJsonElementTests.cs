@@ -18,28 +18,29 @@ namespace JsonPatchLib.Tests
             using var doc = JsonDocument.Parse(@"{""foo"": ""bar""}");
 
             var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
+            var result = unpacked.ToJsonDocument();
 
-            //var s = unpacked.ToString();
-            //Debug.WriteLine(s);
+            JsonElementEqualityComparer.Instance.Equals(doc.RootElement,
+                                                        result.RootElement);
         }
 
         [TestMethod]
         public void Test2()
         {
             using var doc = JsonDocument.Parse(@"{""foo"": [""bar"", ""baz""]}");
+            using var expected = JsonDocument.Parse(@"""bar""");
 
             var root = doc.RootElement;
             var unpacked = UnpackedJsonElement.Unpack(root);
-
-            var s = unpacked.ToString();
-            Debug.WriteLine(s);
 
             var pointer = JsonPointer.Parse("/foo/0");
 
             UnpackedJsonElement value;
             Assert.IsTrue(pointer.TryGet(unpacked, out value));
-            //var s2 = value.ToString();
-            //Debug.WriteLine(s2);
+            var result = value.ToJsonDocument();
+
+            JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
+                                                        result.RootElement);
         }
 
         [TestMethod]
@@ -53,14 +54,9 @@ namespace JsonPatchLib.Tests
             var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
             var unpackedValue = UnpackedJsonElement.Unpack(value.RootElement);
 
-            var s = unpacked.ToString();
-            //Debug.WriteLine(s);
-
             var location = JsonPointer.Parse(@"/baz");
 
             Assert.IsTrue(location.TryAdd(ref unpacked, unpackedValue));
-            var s2 = unpacked.ToString();
-            Debug.WriteLine(s2);
             JsonDocument result = unpacked.ToJsonDocument();
 
             JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
@@ -78,14 +74,13 @@ namespace JsonPatchLib.Tests
             var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
             var unpackedValue = UnpackedJsonElement.Unpack(value.RootElement);
 
-            var s = unpacked.ToString();
-            //Debug.WriteLine(s);
-
             var location = JsonPointer.Parse(@"/foo/1");
 
             Assert.IsTrue(location.TryAdd(ref unpacked, unpackedValue));
-            var s2 = unpacked.ToString();
-            Debug.WriteLine(s2);
+            JsonDocument result = unpacked.ToJsonDocument();
+
+            JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
+                                                        result.RootElement);
         }
 
         [TestMethod]
@@ -99,14 +94,13 @@ namespace JsonPatchLib.Tests
             var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
             var unpackedValue = UnpackedJsonElement.Unpack(value.RootElement);
 
-            var s = unpacked.ToString();
-            //Debug.WriteLine(s);
-
             var location = JsonPointer.Parse(@"/foo/-");
 
             Assert.IsTrue(location.TryAdd(ref unpacked, unpackedValue));
-            var s2 = unpacked.ToString();
-            Debug.WriteLine(s2);
+            JsonDocument result = unpacked.ToJsonDocument();
+
+            JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
+                                                        result.RootElement);
         }
 
         [TestMethod]
@@ -118,15 +112,13 @@ namespace JsonPatchLib.Tests
 
             var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
 
-            var s = unpacked.ToString();
-            //Debug.WriteLine(s);
-
             var location = JsonPointer.Parse(@"/baz");
 
             Assert.IsTrue(location.TryRemove(ref unpacked));
-            var s2 = unpacked.ToString();
-            Debug.WriteLine(s2);
-        }
+            JsonDocument result = unpacked.ToJsonDocument();
 
+            JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
+                                                        result.RootElement);
+        }
     }
 }

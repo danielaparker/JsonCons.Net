@@ -129,8 +129,17 @@ namespace JsonCons.JsonPatchLib
                 case JsonValueKind.Array:
                 {
                     buffer.Append("[");
+                    bool first = true;
                     foreach (var item in GetList())
                     {
+                        if (!first)
+                        {
+                            buffer.Append(",");
+                        }
+                        else
+                        {
+                            first = false;
+                        }
                         item.ToString(buffer);
                     }
                     buffer.Append("]");
