@@ -61,6 +61,10 @@ namespace JsonPatchLib.Tests
             Assert.IsTrue(location.TryAdd(ref unpacked, unpackedValue));
             var s2 = unpacked.ToString();
             Debug.WriteLine(s2);
+            JsonDocument result = unpacked.ToJsonDocument();
+
+            JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
+                                                        result.RootElement);
         }
 
         [TestMethod]

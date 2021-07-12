@@ -138,14 +138,23 @@ namespace JsonCons.JsonPatchLib
                 }
                 case JsonValueKind.Object:
                 {
-                    buffer.Append("[");
+                    buffer.Append("{");
+                    bool first = true;
                     foreach (var property in GetDictionary())
                     {
-                        buffer.Append(property.Key);
+                        if (!first)
+                        {
+                            buffer.Append(",");
+                        }
+                        else
+                        {
+                            first = false;
+                        }
+                        buffer.Append(JsonSerializer.Serialize(property.Key));
                         buffer.Append(":");
                         property.Value.ToString(buffer);
                     }
-                    buffer.Append("]");
+                    buffer.Append("}");
                     break;
                 }
                 default:
