@@ -13,11 +13,6 @@ namespace JsonPatchLib.Tests
     {
         static JsonElementEqualityComparer comparer = JsonElementEqualityComparer.Instance;
 
-        void Success(JsonPatchError error)
-        {
-            Assert.IsFalse(true);
-        }
-
         [TestMethod]
         public void TestTest()
         {
@@ -34,7 +29,7 @@ namespace JsonPatchLib.Tests
 ]
             ");
 
-            var result = JsonPatch.ApplyPatch(doc.RootElement, patch.RootElement, Success);
+            var result = JsonPatch.ApplyPatch(doc.RootElement, patch.RootElement);
             Assert.IsTrue(comparer.Equals(doc.RootElement,result.RootElement));
 
         }
@@ -55,7 +50,7 @@ namespace JsonPatchLib.Tests
     { ""baz"":""qux"", ""foo"": [ ""bar"", ""baz"" ]}
             ");
 
-            var result = JsonPatch.ApplyPatch(doc.RootElement, patch.RootElement, Success);
+            var result = JsonPatch.ApplyPatch(doc.RootElement, patch.RootElement);
             Assert.IsTrue(comparer.Equals(expected.RootElement,result.RootElement));
 
         }
@@ -72,7 +67,7 @@ namespace JsonPatchLib.Tests
 
             var patch = JsonPatch.FromDiff(source.RootElement, target.RootElement);
 
-            var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement, Success);
+            var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement);
 
             Assert.IsTrue(comparer.Equals(target.RootElement,result.RootElement));
         }
@@ -95,7 +90,7 @@ namespace JsonPatchLib.Tests
 
             var patch = JsonPatch.FromDiff(source.RootElement, target.RootElement);
 
-            var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement, Success);
+            var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement);
 
             Assert.IsTrue(comparer.Equals(target.RootElement,result.RootElement));
         }
@@ -112,7 +107,7 @@ namespace JsonPatchLib.Tests
 
             var patch = JsonPatch.FromDiff(source.RootElement, target.RootElement);
 
-            var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement, Success);
+            var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement);
 
             Assert.IsTrue(comparer.Equals(target.RootElement,result.RootElement));
         }
@@ -129,7 +124,7 @@ namespace JsonPatchLib.Tests
 
             var patch = JsonPatch.FromDiff(source.RootElement, target.RootElement);
 
-            var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement, Success);
+            var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement);
 
             Debug.WriteLine($"source: {source.RootElement}");
             Debug.WriteLine($"target: {target.RootElement}");

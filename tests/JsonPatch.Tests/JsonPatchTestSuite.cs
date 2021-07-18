@@ -13,11 +13,6 @@ namespace JsonCons.JsonPatchLib.Tests
     {
         static JsonElementEqualityComparer comparer = JsonElementEqualityComparer.Instance;
 
-        void Success(JsonPatchError error)
-        {
-            Assert.IsFalse(true);
-        }
-
         public void RunJsonPatchTests(string path)
         {
             Debug.WriteLine($"Test {path}");
@@ -57,7 +52,7 @@ namespace JsonCons.JsonPatchLib.Tests
                         }
                         else if (testCase.TryGetProperty("result", out expected))
                         {
-                            JsonDocument result = JsonPatch.ApplyPatch(given, patch, Success);
+                            JsonDocument result = JsonPatch.ApplyPatch(given, patch);
                             Assert.IsTrue(comparer.Equals(result.RootElement,expected));
                         }
                     }

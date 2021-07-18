@@ -13,16 +13,16 @@ namespace JsonCons.JsonPatchLib
      /// <summary>
     /// Captures error message and the related entity and the operation that caused it.
     /// </summary>
-    public class JsonPatchError
+    public class JsonPatchException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="JsonPatchError"/>.
+        /// Initializes a new instance of <see cref="JsonPatchException"/>.
         /// </summary>
         /// <param name="operation">The operation that caused the error.</param>
         /// <param name="message">The error message.</param>
-        public JsonPatchError(
+        public JsonPatchException(
             string operation,
-            string message)
+            string message) : base(message)
         {
             if (message == null)
             {
@@ -30,30 +30,24 @@ namespace JsonCons.JsonPatchLib
             }
 
             Operation = operation;
-            ErrorMessage = message;
         }
 
         /// <summary>
         /// Gets the <see cref="string"/> that caused the error.
         /// </summary>
         public string Operation { get; }
-
-        /// <summary>
-        /// Gets the error message.
-        /// </summary>
-        public string ErrorMessage { get; }
     }
 
     public static class JsonPatch
     {
-        public static JsonDocument ApplyPatch(JsonElement target, JsonElement patch, Action<JsonPatchError> errorReporter)
+        public static JsonDocument ApplyPatch(JsonElement target, JsonElement patch)
         {
             var documentBuilder = new JsonDocumentBuilder(target);
-            ApplyPatch(ref documentBuilder, patch, errorReporter);
+            ApplyPatch(ref documentBuilder, patch);
             return documentBuilder.ToJsonDocument();
         }
 
-        static void ApplyPatch(ref JsonDocumentBuilder target, JsonElement patch, Action<JsonPatchError> errorReporter)
+        static void ApplyPatch(ref JsonDocumentBuilder target, JsonElement patch)
         {
             JsonElementEqualityComparer comparer = JsonElementEqualityComparer.Instance;
 
@@ -77,8 +71,7 @@ namespace JsonCons.JsonPatchLib
                 JsonElement pathElement;
                 if (!operation.TryGetProperty("path", out pathElement))
                 {
-                    errorReporter(new JsonPatchError(op, "Invalid patch"));
-                    return;
+                    throw new JsonPatchException(op, "Invalid patch");
                 }
                 string path = pathElement.GetString();
 
@@ -89,23 +82,20 @@ namespace JsonCons.JsonPatchLib
                     JsonElement value;
                     if (!operation.TryGetProperty("value", out value))
                     {
-                        errorReporter(new JsonPatchError(op, "Invalid patch"));
-                        return;
+                        throw new JsonPatchException(op, "Invalid patch");
                     }
 
                     JsonDocumentBuilder tested;
                     if (!location.TryGet(target, out tested))
                     {
-                        errorReporter(new JsonPatchError(op, "Invalid patch"));
-                        return;
+                        throw new JsonPatchException(op, "Invalid patch");
                     }
 
                     using (var doc = tested.ToJsonDocument())
                     {
                         if (!comparer.Equals(doc.RootElement, value))
                         {
-                            errorReporter(new JsonPatchError(op, "Test failed"));
-                            return;
+                            throw new JsonPatchException(op, "Test failed");
                         }
                     }
                 }
@@ -114,16 +104,14 @@ namespace JsonCons.JsonPatchLib
                     JsonElement value;
                     if (!operation.TryGetProperty("value", out value))
                     {
-                        errorReporter(new JsonPatchError(op, "Invalid patch"));
-                        return;
+                        throw new JsonPatchException(op, "Invalid patch");
                     }
                     var valueBuilder = new JsonDocumentBuilder(value);
                     if (!location.TryAddIfAbsent(ref target, valueBuilder)) // try insert without replace
                     {
                         if (!location.TryReplace(ref target, valueBuilder)) // try insert without replace
                         {
-                            errorReporter(new JsonPatchError(op, "Add failed"));
-                            return;
+                            throw new JsonPatchException(op, "Add failed");
                         }
                     }
                 }
@@ -131,8 +119,7 @@ namespace JsonCons.JsonPatchLib
                 {
                     if (!location.TryRemove(ref target)) 
                     {
-                        errorReporter(new JsonPatchError(op, "Add failed"));
-                        return;
+                        throw new JsonPatchException(op, "Add failed");
                     }
                 }
                 else if (op =="replace")
@@ -140,14 +127,12 @@ namespace JsonCons.JsonPatchLib
                     JsonElement value;
                     if (!operation.TryGetProperty("value", out value))
                     {
-                        errorReporter(new JsonPatchError(op, "Invalid patch"));
-                        return;
+                        throw new JsonPatchException(op, "Invalid patch");
                     }
                     var valueBuilder = new JsonDocumentBuilder(value);
                     if (!location.TryReplace(ref target, valueBuilder))
                     {
-                        errorReporter(new JsonPatchError(op, "Replace failed"));
-                        return;
+                        throw new JsonPatchException(op, "Replace failed");
                     }
                 }
                 else if (op =="move")
@@ -155,8 +140,7 @@ namespace JsonCons.JsonPatchLib
                     JsonElement fromElement;
                     if (!operation.TryGetProperty("from", out fromElement))
                     {
-                        errorReporter(new JsonPatchError(op, "Invalid patch"));
-                        return;
+                        throw new JsonPatchException(op, "Invalid patch");
                     }
                     string from = fromElement.GetString();
 
@@ -164,21 +148,18 @@ namespace JsonCons.JsonPatchLib
                     JsonDocumentBuilder value;
                     if (!fromPointer.TryGet(target, out value))
                     {
-                        errorReporter(new JsonPatchError(op, "Move failed"));
-                        return;
+                        throw new JsonPatchException(op, "Move failed");
                     }
 
                     if (!fromPointer.TryRemove(ref target))
                     {
-                        errorReporter(new JsonPatchError(op, "Move failed"));
-                        return;
+                        throw new JsonPatchException(op, "Move failed");
                     }
                     if (!location.TryAddIfAbsent(ref target, value))
                     {
                         if (!location.TryReplace(ref target, value)) // try insert without replace
                         {
-                            errorReporter(new JsonPatchError(op, "Move failed"));
-                            return;
+                            throw new JsonPatchException(op, "Move failed");
                         }
                     }
                 }
@@ -187,8 +168,7 @@ namespace JsonCons.JsonPatchLib
                     JsonElement fromElement;
                     if (!operation.TryGetProperty("from", out fromElement))
                     {
-                        errorReporter(new JsonPatchError(op, "Invalid patch"));
-                        return;
+                        throw new JsonPatchException(op, "Invalid patch");
                     }
                     string from = fromElement.GetString();
                     var fromPointer = JsonPointer.Parse(from);
@@ -196,15 +176,13 @@ namespace JsonCons.JsonPatchLib
                     JsonDocumentBuilder value;
                     if (!fromPointer.TryGet(target, out value))
                     {
-                        errorReporter(new JsonPatchError(op, "Copy failed"));
-                        return;
+                        throw new JsonPatchException(op, "Copy failed");
                     }
                     if (!location.TryAddIfAbsent(ref target, value))
                     {
                         if (!location.TryReplace(ref target, value)) // try insert without replace
                         {
-                            errorReporter(new JsonPatchError(op, "Move failed"));
-                            return;
+                            throw new JsonPatchException(op, "Move failed");
                         }
                     }
                 }
