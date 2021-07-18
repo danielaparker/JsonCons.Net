@@ -49,7 +49,7 @@ namespace JsonCons.JsonPatchLib.Tests
                     try
                     {
                         JsonElement patch;
-                        Assert.IsTrue(testCase.TryGetProperty("patch", out patch) && commentElement.ValueKind == JsonValueKind.Array);
+                        Assert.IsTrue(testCase.TryGetProperty("patch", out patch) && patch.ValueKind == JsonValueKind.Array);
                         JsonElement expected;
                         if (testCase.TryGetProperty("error", out expected))
                         {

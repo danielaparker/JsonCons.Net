@@ -162,7 +162,7 @@ namespace JsonCons.JsonPatchLib
 
                     var fromPointer = JsonPointer.Parse(from);
                     UnpackedJsonElement value;
-                    if (!location.TryGet(target, out value))
+                    if (!fromPointer.TryGet(target, out value))
                     {
                         errorReporter(new JsonPatchError(op, "Move failed"));
                         return;
@@ -256,7 +256,6 @@ namespace JsonCons.JsonPatchLib
                     result.GetList().Add(val);
                 }
                 // Element in target, not in source - add, 
-                // Fix contributed by Alexander rog13
                 for (int i = source.GetArrayLength(); i < target.GetArrayLength(); ++i)
                 {
                     var a = target[i];

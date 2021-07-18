@@ -529,7 +529,7 @@ namespace JsonCons.JsonPatchLib
                     {
                         return false;
                     }
-                    current.GetList().Insert(index,value);
+                    current.GetList()[index] = value;
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)

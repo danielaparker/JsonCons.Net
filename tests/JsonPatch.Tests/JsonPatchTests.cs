@@ -74,10 +74,67 @@ namespace JsonPatchLib.Tests
 
             var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement, Success);
 
+            Assert.IsTrue(comparer.Equals(target.RootElement,result.RootElement));
+        }
+
+        [TestMethod]
+        public void TestDiff2()
+        {
+            using var source = JsonDocument.Parse(@"
+{ 
+    ""/"": 3,
+    ""foo"": ""bar""
+}
+            ");
+            using var target = JsonDocument.Parse(@"
+{
+    ""/"": 9,
+    ""~1"": 10
+}
+            ");
+
+            var patch = JsonPatch.FromDiff(source.RootElement, target.RootElement);
+
+            var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement, Success);
+
+            Assert.IsTrue(comparer.Equals(target.RootElement,result.RootElement));
+        }
+
+        [TestMethod]
+        public void TestDiffWithAddedItemsInTarget()
+        {
+            using var source = JsonDocument.Parse(@"
+{""/"": 9, ""foo"": [ ""bar""]}
+            ");
+            using var target = JsonDocument.Parse(@"
+{ ""baz"":""qux"", ""foo"": [ ""bar"", ""baz"" ]}
+            ");
+
+            var patch = JsonPatch.FromDiff(source.RootElement, target.RootElement);
+
+            var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement, Success);
+
+            Assert.IsTrue(comparer.Equals(target.RootElement,result.RootElement));
+        }
+
+        [TestMethod]
+        public void TestDiffWithAddedItemsInTarget2()
+        {
+            using var source = JsonDocument.Parse(@"
+{""/"": 9, ""foo"": [ ""bar"", ""bar""]}
+            ");
+            using var target = JsonDocument.Parse(@"
+{ ""baz"":""qux"", ""foo"": [ ""bar"", ""baz"" ]}
+            ");
+
+            var patch = JsonPatch.FromDiff(source.RootElement, target.RootElement);
+
+            var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement, Success);
+
             Debug.WriteLine($"source: {source.RootElement}");
+            Debug.WriteLine($"target: {target.RootElement}");
             Debug.WriteLine($"patch: {patch.RootElement}");
             Debug.WriteLine($"result: {result.RootElement}");
-            Debug.WriteLine($"target: {target.RootElement}");
 
             Assert.IsTrue(comparer.Equals(target.RootElement,result.RootElement));
         }
