@@ -12,11 +12,11 @@ namespace JsonCons.JsonPointerLib
     {
         enum JsonPointerState {Start, Escaped, Delim}
 
-        readonly List<string> _tokens;
+        public IReadOnlyList<string> Tokens {get;}
 
         public JsonPointer(List<string> tokens)
         {
-            _tokens = tokens;
+            Tokens = tokens;
         }
 
         public static JsonPointer Parse(string str)
@@ -90,7 +90,7 @@ namespace JsonCons.JsonPointerLib
 
         public IEnumerator<string> GetEnumerator()
         {
-            return _tokens.GetEnumerator();
+            return Tokens.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -101,7 +101,7 @@ namespace JsonCons.JsonPointerLib
         public override string ToString()
         {
             var buffer = new StringBuilder();
-            foreach (var token in _tokens)
+            foreach (var token in Tokens)
             {
                 buffer.Append("/");
                 foreach (var c in token)
@@ -131,13 +131,13 @@ namespace JsonCons.JsonPointerLib
             {
                return false;
             }
-            if (_tokens.Count != other._tokens.Count)
+            if (Tokens.Count != other.Tokens.Count)
             {
                 return false;
             }
-            for (int i = 0; i < _tokens.Count; ++i)
+            for (int i = 0; i < Tokens.Count; ++i)
             {
-                if (!_tokens[i].Equals(other._tokens[i]))
+                if (!Tokens[i].Equals(other.Tokens[i]))
                 {
                     return false;
                 }
@@ -157,8 +157,8 @@ namespace JsonCons.JsonPointerLib
 
         public override int GetHashCode()
         {
-            int hashCode = _tokens.GetHashCode();
-            foreach (var token in _tokens)
+            int hashCode = Tokens.GetHashCode();
+            foreach (var token in Tokens)
             {
                 hashCode += 17*token.GetHashCode();
             }
@@ -169,7 +169,7 @@ namespace JsonCons.JsonPointerLib
         {
             value = root;
 
-            foreach (var token in _tokens)
+            foreach (var token in Tokens)
             {
                 if (value.ValueKind == JsonValueKind.Array)
                 {
@@ -203,6 +203,31 @@ namespace JsonCons.JsonPointerLib
 
             return true;
         }
+
+        public static string Escape(string s)
+        {
+            var result = new StringBuilder();
+
+            foreach (var c in s)
+            {
+                if (c == '~')
+                {
+                    result.Append('~');
+                    result.Append('0');
+                }
+                else if (c == '/')
+                {
+                    result.Append('~');
+                    result.Append('1');
+                }
+                else
+                {
+                    result.Append(c);
+                }
+            }
+            return result.ToString();
+        }
+
     }
 
 } // namespace JsonCons.JsonPointerLib

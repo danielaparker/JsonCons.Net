@@ -15,6 +15,23 @@ namespace JsonCons.JsonPatchLib
 
         object _item;
 
+        internal UnpackedJsonElement(JsonValueKind valueKind)
+        {
+            ValueKind = valueKind;
+            switch (valueKind)
+            {
+                case JsonValueKind.Array:
+                    _item = new List<UnpackedJsonElement>();
+                    break;
+                case JsonValueKind.Object:
+                    _item = new Dictionary<string,UnpackedJsonElement>();
+                    break;
+                default:
+                    _item = null;
+                    break;
+            }
+        }
+
         internal UnpackedJsonElement(IList<UnpackedJsonElement> list)
         {
             ValueKind = JsonValueKind.Array;
@@ -27,10 +44,24 @@ namespace JsonCons.JsonPatchLib
             _item = dict;
         }
 
+        internal UnpackedJsonElement(string str)
+        {
+            ValueKind = JsonValueKind.String;
+            _item = str;
+        }
+
         internal UnpackedJsonElement(JsonElement element)
         {
             ValueKind = element.ValueKind;
-            _item = element;
+            switch (element.ValueKind)
+            {
+                case JsonValueKind.String:
+                    _item = element.GetString();
+                    break;
+                default:
+                    _item = element;
+                    break;
+            }
         }
 
         internal IList<UnpackedJsonElement> GetList()
@@ -217,6 +248,24 @@ namespace JsonCons.JsonPatchLib
             }
 
             return true;
+        }
+
+        public static JsonPointer ToDefinitePath(this JsonPointer pointer, UnpackedJsonElement value)
+        {
+            if (value.ValueKind == JsonValueKind.Array && pointer.Tokens.Count > 0 && pointer.Tokens[pointer.Tokens.Count-1] == "-")
+            {
+                var tokens = new List<string>();
+                for (int i = 0; i < pointer.Tokens.Count-1; ++i)
+                {
+                    tokens.Add(pointer.Tokens[i]);
+                }
+                tokens.Add(value.GetArrayLength().ToString());
+                return new JsonPointer(tokens);
+            }
+            else
+            {
+                return pointer;
+            }
         }
 
         public static bool TryGet(this JsonPointer pointer, UnpackedJsonElement root, out UnpackedJsonElement value)
