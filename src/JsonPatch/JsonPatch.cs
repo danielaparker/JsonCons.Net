@@ -48,12 +48,12 @@ namespace JsonCons.JsonPatchLib
     {
         public static JsonDocument ApplyPatch(JsonElement target, JsonElement patch, Action<JsonPatchError> errorReporter)
         {
-            var unpacked = UnpackedJsonElement.Unpack(target);
-            ApplyPatch(ref unpacked, patch, errorReporter);
-            return unpacked.ToJsonDocument();
+            var documentBuilder = new JsonDocumentBuilder(target);
+            ApplyPatch(ref documentBuilder, patch, errorReporter);
+            return documentBuilder.ToJsonDocument();
         }
 
-        static void ApplyPatch(ref UnpackedJsonElement target, JsonElement patch, Action<JsonPatchError> errorReporter)
+        static void ApplyPatch(ref JsonDocumentBuilder target, JsonElement patch, Action<JsonPatchError> errorReporter)
         {
             JsonElementEqualityComparer comparer = JsonElementEqualityComparer.Instance;
 
@@ -93,7 +93,7 @@ namespace JsonCons.JsonPatchLib
                         return;
                     }
 
-                    UnpackedJsonElement tested;
+                    JsonDocumentBuilder tested;
                     if (!location.TryGet(target, out tested))
                     {
                         errorReporter(new JsonPatchError(op, "Invalid patch"));
@@ -117,10 +117,10 @@ namespace JsonCons.JsonPatchLib
                         errorReporter(new JsonPatchError(op, "Invalid patch"));
                         return;
                     }
-                    var unpackedValue = UnpackedJsonElement.Unpack(value);
-                    if (!location.TryAddIfAbsent(ref target, unpackedValue)) // try insert without replace
+                    var valueBuilder = new JsonDocumentBuilder(value);
+                    if (!location.TryAddIfAbsent(ref target, valueBuilder)) // try insert without replace
                     {
-                        if (!location.TryReplace(ref target, unpackedValue)) // try insert without replace
+                        if (!location.TryReplace(ref target, valueBuilder)) // try insert without replace
                         {
                             errorReporter(new JsonPatchError(op, "Add failed"));
                             return;
@@ -143,8 +143,8 @@ namespace JsonCons.JsonPatchLib
                         errorReporter(new JsonPatchError(op, "Invalid patch"));
                         return;
                     }
-                    var unpackedValue = UnpackedJsonElement.Unpack(value);
-                    if (!location.TryReplace(ref target, unpackedValue))
+                    var valueBuilder = new JsonDocumentBuilder(value);
+                    if (!location.TryReplace(ref target, valueBuilder))
                     {
                         errorReporter(new JsonPatchError(op, "Replace failed"));
                         return;
@@ -161,7 +161,7 @@ namespace JsonCons.JsonPatchLib
                     string from = fromElement.GetString();
 
                     var fromPointer = JsonPointer.Parse(from);
-                    UnpackedJsonElement value;
+                    JsonDocumentBuilder value;
                     if (!fromPointer.TryGet(target, out value))
                     {
                         errorReporter(new JsonPatchError(op, "Move failed"));
@@ -193,7 +193,7 @@ namespace JsonCons.JsonPatchLib
                     string from = fromElement.GetString();
                     var fromPointer = JsonPointer.Parse(from);
 
-                    UnpackedJsonElement value;
+                    JsonDocumentBuilder value;
                     if (!fromPointer.TryGet(target, out value))
                     {
                         errorReporter(new JsonPatchError(op, "Copy failed"));
@@ -217,17 +217,17 @@ namespace JsonCons.JsonPatchLib
             return FromDiff(source, target, "").ToJsonDocument();
         }
 
-        static UnpackedJsonElement FromDiff(JsonElement source, 
+        static JsonDocumentBuilder FromDiff(JsonElement source, 
                                             JsonElement target, 
                                             string path)
         {
-            var result = new UnpackedJsonElement(JsonValueKind.Array);
+            var resultBuilder = new JsonDocumentBuilder(JsonValueKind.Array);
 
             JsonElementEqualityComparer comparer = JsonElementEqualityComparer.Instance;
 
             if (comparer.Equals(source,target))
             {
-                return result;
+                return resultBuilder;
             }
 
             if (source.ValueKind == JsonValueKind.Array && target.ValueKind == JsonValueKind.Array)
@@ -241,7 +241,7 @@ namespace JsonCons.JsonPatchLib
                     var temp_diff = FromDiff(source[i], target[i], buffer.ToString());
                     foreach (var item in temp_diff.GetList())
                     {
-                        result.GetList().Add(item);
+                        resultBuilder.GetList().Add(item);
                     }
                 }
                 // Element in source, not in target - remove
@@ -250,10 +250,10 @@ namespace JsonCons.JsonPatchLib
                     var buffer = new StringBuilder(path); 
                     buffer.Append("/");
                     buffer.Append(i.ToString());
-                    var val = new UnpackedJsonElement(JsonValueKind.Object);
-                    val.GetDictionary().Add("op", new UnpackedJsonElement("remove"));
-                    val.GetDictionary().Add("path", new UnpackedJsonElement(buffer.ToString()));
-                    result.GetList().Add(val);
+                    var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
+                    valBuilder.GetDictionary().Add("op", new JsonDocumentBuilder("remove"));
+                    valBuilder.GetDictionary().Add("path", new JsonDocumentBuilder(buffer.ToString()));
+                    resultBuilder.GetList().Add(valBuilder);
                 }
                 // Element in target, not in source - add, 
                 for (int i = source.GetArrayLength(); i < target.GetArrayLength(); ++i)
@@ -262,11 +262,11 @@ namespace JsonCons.JsonPatchLib
                     var buffer = new StringBuilder(path); 
                     buffer.Append("/");
                     buffer.Append(i.ToString());
-                    var val = new UnpackedJsonElement(JsonValueKind.Object);
-                    val.GetDictionary().Add("op", new UnpackedJsonElement("add"));
-                    val.GetDictionary().Add("path", new UnpackedJsonElement(buffer.ToString()));
-                    val.GetDictionary().Add("value", UnpackedJsonElement.Unpack(a));
-                    result.GetList().Add(val);
+                    var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
+                    valBuilder.GetDictionary().Add("op", new JsonDocumentBuilder("add"));
+                    valBuilder.GetDictionary().Add("path", new JsonDocumentBuilder(buffer.ToString()));
+                    valBuilder.GetDictionary().Add("value", new JsonDocumentBuilder(a));
+                    resultBuilder.GetList().Add(valBuilder);
                 }
             }
             else if (source.ValueKind == JsonValueKind.Object && target.ValueKind == JsonValueKind.Object)
@@ -283,15 +283,15 @@ namespace JsonCons.JsonPatchLib
                         var temp_diff = FromDiff(a.Value, element, buffer.ToString());
                         foreach (var item in temp_diff.GetList())
                         {
-                            result.GetList().Add(item);
+                            resultBuilder.GetList().Add(item);
                         }
                     }
                     else
                     {
-                        var val = new UnpackedJsonElement(JsonValueKind.Object);
-                        val.GetDictionary().Add("op", new UnpackedJsonElement("remove"));
-                        val.GetDictionary().Add("path", new UnpackedJsonElement(buffer.ToString()));
-                        result.GetList().Add(val);
+                        var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
+                        valBuilder.GetDictionary().Add("op", new JsonDocumentBuilder("remove"));
+                        valBuilder.GetDictionary().Add("path", new JsonDocumentBuilder(buffer.ToString()));
+                        resultBuilder.GetList().Add(valBuilder);
                     }
                 }
                 foreach (var a in target.EnumerateObject())
@@ -302,24 +302,24 @@ namespace JsonCons.JsonPatchLib
                         var buffer = new StringBuilder(path); 
                         buffer.Append("/");
                         buffer.Append(JsonPointer.Escape(a.Name));
-                        var val = new UnpackedJsonElement(JsonValueKind.Object);
-                        val.GetDictionary().Add("op", new UnpackedJsonElement("add"));
-                        val.GetDictionary().Add("path", new UnpackedJsonElement(buffer.ToString()));
-                        val.GetDictionary().Add("value", UnpackedJsonElement.Unpack(a.Value));
-                        result.GetList().Add(val);
+                        var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
+                        valBuilder.GetDictionary().Add("op", new JsonDocumentBuilder("add"));
+                        valBuilder.GetDictionary().Add("path", new JsonDocumentBuilder(buffer.ToString()));
+                        valBuilder.GetDictionary().Add("value", new JsonDocumentBuilder(a.Value));
+                        resultBuilder.GetList().Add(valBuilder);
                     }
                 }
             }
             else
             {
-                var val = new UnpackedJsonElement(JsonValueKind.Object);
-                val.GetDictionary().Add("op", new UnpackedJsonElement("replace"));
-                val.GetDictionary().Add("path", new UnpackedJsonElement(path));
-                val.GetDictionary().Add("value", UnpackedJsonElement.Unpack(target));
-                result.GetList().Add(val);
+                var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
+                valBuilder.GetDictionary().Add("op", new JsonDocumentBuilder("replace"));
+                valBuilder.GetDictionary().Add("path", new JsonDocumentBuilder(path));
+                valBuilder.GetDictionary().Add("value", new JsonDocumentBuilder(target));
+                resultBuilder.GetList().Add(valBuilder);
             }
 
-            return result;
+            return resultBuilder;
         }
     }
 

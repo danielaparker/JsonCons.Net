@@ -9,22 +9,22 @@ using JsonCons.JsonPointerLib;
         
 namespace JsonCons.JsonPatchLib
 {
-    public class UnpackedJsonElement
+    public class JsonDocumentBuilder
     {
         internal JsonValueKind ValueKind {get;}
 
         object _item;
 
-        internal UnpackedJsonElement(JsonValueKind valueKind)
+        internal JsonDocumentBuilder(JsonValueKind valueKind)
         {
             ValueKind = valueKind;
             switch (valueKind)
             {
                 case JsonValueKind.Array:
-                    _item = new List<UnpackedJsonElement>();
+                    _item = new List<JsonDocumentBuilder>();
                     break;
                 case JsonValueKind.Object:
-                    _item = new Dictionary<string,UnpackedJsonElement>();
+                    _item = new Dictionary<string,JsonDocumentBuilder>();
                     break;
                 default:
                     _item = null;
@@ -32,31 +32,44 @@ namespace JsonCons.JsonPatchLib
             }
         }
 
-        internal UnpackedJsonElement(IList<UnpackedJsonElement> list)
+        internal JsonDocumentBuilder(IList<JsonDocumentBuilder> list)
         {
             ValueKind = JsonValueKind.Array;
             _item = list;
         }
 
-        internal UnpackedJsonElement(IDictionary<string,UnpackedJsonElement> dict)
+        internal JsonDocumentBuilder(IDictionary<string,JsonDocumentBuilder> dict)
         {
             ValueKind = JsonValueKind.Object;
             _item = dict;
         }
 
-        internal UnpackedJsonElement(string str)
+        internal JsonDocumentBuilder(string str)
         {
             ValueKind = JsonValueKind.String;
             _item = str;
         }
 
-        internal UnpackedJsonElement(JsonElement element)
+        public JsonDocumentBuilder(JsonElement element)
         {
             ValueKind = element.ValueKind;
             switch (element.ValueKind)
             {
-                case JsonValueKind.String:
-                    _item = element.GetString();
+                case JsonValueKind.Array:
+                    var list = new List<JsonDocumentBuilder>();
+                    foreach (var item in element.EnumerateArray())
+                    {
+                        list.Add(new JsonDocumentBuilder(item));
+                    }
+                    _item = list;
+                    break;
+                case JsonValueKind.Object:
+                    var dict = new Dictionary<string,JsonDocumentBuilder>();
+                    foreach (var property in element.EnumerateObject())
+                    {
+                        dict.Add(property.Name, new JsonDocumentBuilder(property.Value));
+                    }
+                    _item = dict;
                     break;
                 default:
                     _item = element;
@@ -64,25 +77,25 @@ namespace JsonCons.JsonPatchLib
             }
         }
 
-        internal IList<UnpackedJsonElement> GetList()
+        internal IList<JsonDocumentBuilder> GetList()
         {
             if (ValueKind != JsonValueKind.Array)
             {
                 throw new InvalidOperationException("This value's ValueKind is not Array.");
             }
-            return (IList<UnpackedJsonElement>)_item;
+            return (IList<JsonDocumentBuilder>)_item;
         }
 
-        internal IDictionary<string, UnpackedJsonElement> GetDictionary()
+        internal IDictionary<string, JsonDocumentBuilder> GetDictionary()
         {
             if (ValueKind != JsonValueKind.Object)
             {
                 throw new InvalidOperationException("This value's ValueKind is not Object.");
             }
-            return (IDictionary<string, UnpackedJsonElement>)_item;
+            return (IDictionary<string, JsonDocumentBuilder>)_item;
         }
 
-        public UnpackedJsonElement this[int i]
+        public JsonDocumentBuilder this[int i]
         {
             get { 
                 if (ValueKind != JsonValueKind.Array)
@@ -109,7 +122,7 @@ namespace JsonCons.JsonPatchLib
             return GetList().Count;
         }
 
-        public bool TryGetProperty(string name, out UnpackedJsonElement value)
+        public bool TryGetProperty(string name, out JsonDocumentBuilder value)
         {
             if (ValueKind != JsonValueKind.Object)
             {
@@ -121,29 +134,6 @@ namespace JsonCons.JsonPatchLib
                 return false;
             }
             return GetDictionary().TryGetValue(name, out value);
-        }
-
-        public static UnpackedJsonElement Unpack(JsonElement element)
-        {
-            switch (element.ValueKind)
-            {
-                case JsonValueKind.Array:
-                    var list = new List<UnpackedJsonElement>();
-                    foreach (var item in element.EnumerateArray())
-                    {
-                        list.Add(Unpack(item));
-                    }
-                    return new UnpackedJsonElement(list);
-                case JsonValueKind.Object:
-                    var dict = new Dictionary<string,UnpackedJsonElement>();
-                    foreach (var property in element.EnumerateObject())
-                    {
-                        dict.Add(property.Name, Unpack(property.Value));
-                    }
-                    return new UnpackedJsonElement(dict);
-                default:
-                    return new UnpackedJsonElement(element);
-            }
         }
 
         public override string ToString()
@@ -214,7 +204,7 @@ namespace JsonCons.JsonPatchLib
 
     public static class JsonPointerExtensions
     {
-        public static bool TryResolve(string token, UnpackedJsonElement current, out UnpackedJsonElement result)
+        public static bool TryResolve(string token, JsonDocumentBuilder current, out JsonDocumentBuilder result)
         {
             result = current;
 
@@ -250,7 +240,7 @@ namespace JsonCons.JsonPatchLib
             return true;
         }
 
-        public static JsonPointer ToDefinitePath(this JsonPointer pointer, UnpackedJsonElement value)
+        public static JsonPointer ToDefinitePath(this JsonPointer pointer, JsonDocumentBuilder value)
         {
             if (value.ValueKind == JsonValueKind.Array && pointer.Tokens.Count > 0 && pointer.Tokens[pointer.Tokens.Count-1] == "-")
             {
@@ -268,7 +258,7 @@ namespace JsonCons.JsonPatchLib
             }
         }
 
-        public static bool TryGet(this JsonPointer pointer, UnpackedJsonElement root, out UnpackedJsonElement value)
+        public static bool TryGet(this JsonPointer pointer, JsonDocumentBuilder root, out JsonDocumentBuilder value)
         {
             value = root;
 
@@ -284,10 +274,10 @@ namespace JsonCons.JsonPatchLib
         }
 
         public static bool TryAdd(this JsonPointer location, 
-                                  ref UnpackedJsonElement root, 
-                                  UnpackedJsonElement value)
+                                  ref JsonDocumentBuilder root, 
+                                  JsonDocumentBuilder value)
         {
-            UnpackedJsonElement current = root;
+            JsonDocumentBuilder current = root;
             string token = null;
 
             var enumerator = location.GetEnumerator();
@@ -356,10 +346,10 @@ namespace JsonCons.JsonPatchLib
         }
 
         public static bool TryAddIfAbsent(this JsonPointer location, 
-                                          ref UnpackedJsonElement root, 
-                                          UnpackedJsonElement value)
+                                          ref JsonDocumentBuilder root, 
+                                          JsonDocumentBuilder value)
         {
-            UnpackedJsonElement current = root;
+            JsonDocumentBuilder current = root;
             string token = null;
 
             var enumerator = location.GetEnumerator();
@@ -428,9 +418,9 @@ namespace JsonCons.JsonPatchLib
         }
 
         public static bool TryRemove(this JsonPointer location, 
-                                     ref UnpackedJsonElement root)
+                                     ref JsonDocumentBuilder root)
         {
-            UnpackedJsonElement current = root;
+            JsonDocumentBuilder current = root;
             string token = null;
 
             var enumerator = location.GetEnumerator();
@@ -487,10 +477,10 @@ namespace JsonCons.JsonPatchLib
         }
 
         public static bool TryReplace(this JsonPointer location, 
-                                      ref UnpackedJsonElement root, 
-                                      UnpackedJsonElement value)
+                                      ref JsonDocumentBuilder root, 
+                                      JsonDocumentBuilder value)
         {
-            UnpackedJsonElement current = root;
+            JsonDocumentBuilder current = root;
             string token = null;
 
             var enumerator = location.GetEnumerator();

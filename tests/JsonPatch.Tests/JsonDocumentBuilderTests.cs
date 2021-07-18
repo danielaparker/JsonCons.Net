@@ -17,8 +17,8 @@ namespace JsonPatchLib.Tests
         {
             using var doc = JsonDocument.Parse(@"{""foo"": ""bar""}");
 
-            var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
-            var result = unpacked.ToJsonDocument();
+            var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
+            var result = documentBuilder.ToJsonDocument();
 
             JsonElementEqualityComparer.Instance.Equals(doc.RootElement,
                                                         result.RootElement);
@@ -31,12 +31,12 @@ namespace JsonPatchLib.Tests
             using var expected = JsonDocument.Parse(@"""bar""");
 
             var root = doc.RootElement;
-            var unpacked = UnpackedJsonElement.Unpack(root);
+            var documentBuilder = new JsonDocumentBuilder(root);
 
             var pointer = JsonPointer.Parse("/foo/0");
 
-            UnpackedJsonElement value;
-            Assert.IsTrue(pointer.TryGet(unpacked, out value));
+            JsonDocumentBuilder value;
+            Assert.IsTrue(pointer.TryGet(documentBuilder, out value));
             var result = value.ToJsonDocument();
 
             JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
@@ -51,13 +51,13 @@ namespace JsonPatchLib.Tests
 
             using var expected = JsonDocument.Parse(@"{ ""foo"": ""bar"", ""baz"" : ""qux""}");
 
-            var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
-            var unpackedValue = UnpackedJsonElement.Unpack(value.RootElement);
+            var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
+            var valueBuilder = new JsonDocumentBuilder(value.RootElement);
 
             var location = JsonPointer.Parse(@"/baz");
 
-            Assert.IsTrue(location.TryAdd(ref unpacked, unpackedValue));
-            JsonDocument result = unpacked.ToJsonDocument();
+            Assert.IsTrue(location.TryAdd(ref documentBuilder, valueBuilder));
+            JsonDocument result = documentBuilder.ToJsonDocument();
 
             JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
                                                         result.RootElement);
@@ -71,13 +71,13 @@ namespace JsonPatchLib.Tests
 
             using var expected = JsonDocument.Parse(@"{ ""foo"": [ ""bar"", ""qux"", ""baz"" ] }");
 
-            var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
-            var unpackedValue = UnpackedJsonElement.Unpack(value.RootElement);
+            var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
+            var valueBuilder = new JsonDocumentBuilder(value.RootElement);
 
             var location = JsonPointer.Parse(@"/foo/1");
 
-            Assert.IsTrue(location.TryAdd(ref unpacked, unpackedValue));
-            JsonDocument result = unpacked.ToJsonDocument();
+            Assert.IsTrue(location.TryAdd(ref documentBuilder, valueBuilder));
+            JsonDocument result = documentBuilder.ToJsonDocument();
 
             JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
                                                         result.RootElement);
@@ -91,13 +91,13 @@ namespace JsonPatchLib.Tests
 
             using var expected = JsonDocument.Parse(@"{ ""foo"": [""bar"", [""abc"", ""def""]] }");
 
-            var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
-            var unpackedValue = UnpackedJsonElement.Unpack(value.RootElement);
+            var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
+            var valueBuilder = new JsonDocumentBuilder(value.RootElement);
 
             var location = JsonPointer.Parse(@"/foo/-");
 
-            Assert.IsTrue(location.TryAdd(ref unpacked, unpackedValue));
-            JsonDocument result = unpacked.ToJsonDocument();
+            Assert.IsTrue(location.TryAdd(ref documentBuilder, valueBuilder));
+            JsonDocument result = documentBuilder.ToJsonDocument();
 
             JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
                                                         result.RootElement);
@@ -110,12 +110,12 @@ namespace JsonPatchLib.Tests
 
             using var expected = JsonDocument.Parse(@"{ ""foo"": ""bar""}");
 
-            var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
+            var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
 
             var location = JsonPointer.Parse(@"/baz");
 
-            Assert.IsTrue(location.TryRemove(ref unpacked));
-            JsonDocument result = unpacked.ToJsonDocument();
+            Assert.IsTrue(location.TryRemove(ref documentBuilder));
+            JsonDocument result = documentBuilder.ToJsonDocument();
 
             JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
                                                         result.RootElement);
@@ -128,12 +128,12 @@ namespace JsonPatchLib.Tests
 
             using var expected = JsonDocument.Parse(@"{ ""foo"": [ ""bar"", ""baz"" ] }");
 
-            var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
+            var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
 
             var location = JsonPointer.Parse(@"/foo/1");
 
-            Assert.IsTrue(location.TryRemove(ref unpacked));
-            JsonDocument result = unpacked.ToJsonDocument();
+            Assert.IsTrue(location.TryRemove(ref documentBuilder));
+            JsonDocument result = documentBuilder.ToJsonDocument();
 
             JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
                                                         result.RootElement);
@@ -155,13 +155,13 @@ namespace JsonPatchLib.Tests
             }
             ");
 
-            var unpacked = UnpackedJsonElement.Unpack(doc.RootElement);
-            var unpackedValue = UnpackedJsonElement.Unpack(value.RootElement);
+            var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
+            var valueBuilder = new JsonDocumentBuilder(value.RootElement);
 
             var location = JsonPointer.Parse(@"/baz");
 
-            Assert.IsTrue(location.TryAdd(ref unpacked, unpackedValue));
-            JsonDocument result = unpacked.ToJsonDocument();
+            Assert.IsTrue(location.TryAdd(ref documentBuilder, valueBuilder));
+            JsonDocument result = documentBuilder.ToJsonDocument();
 
             JsonElementEqualityComparer.Instance.Equals(expected.RootElement,
                                                         result.RootElement);
