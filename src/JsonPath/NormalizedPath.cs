@@ -52,21 +52,25 @@ namespace JsonCons.JsonPathLib
         private readonly Int32 _index;
 
         /// <summary>
-        /// Constructs the root path component from a name
+        /// Gets a root component 
+        ///
         /// </summary>
-        /// <param name="name">The name.</param>
-        /// <exception cref="ArgumentNullException">
-        ///   <paramref name="name"/> is <see langword="null"/>.
-        /// </exception>
+        public static PathComponent Root {get;} = new PathComponent(PathComponentKind.Root, "$");
 
-        public PathComponent(string name)
+        /// <summary>
+        /// Gets a current component 
+        ///
+        /// </summary>
+        public static PathComponent Current { get;} = new PathComponent(PathComponentKind.Root, "@");
+
+        PathComponent(PathComponentKind componentKind, string name)
         {
             if (name == null)
             {
                 throw new ArgumentNullException(nameof(name));
             }
             Parent = null;
-            ComponentKind = PathComponentKind.Root;
+            ComponentKind = componentKind;
             _name = name;
             _index = 0;
         }

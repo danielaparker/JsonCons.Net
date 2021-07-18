@@ -20,11 +20,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPath.Tests", "tests\Jso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPointer.Tests", "tests\JsonPointer.Tests\JsonPointer.Tests.csproj", "{3862C16D-3687-4350-8012-1BD4C9441688}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json", "src\Json\Json.csproj", "{021CF987-5D6B-4E68-AC68-FC73D3A44224}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Json", "src\Json\Json.csproj", "{021CF987-5D6B-4E68-AC68-FC73D3A44224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPatch", "src\JsonPatch\JsonPatch.csproj", "{D83A82D7-6D99-41B8-87DA-FDDCB87D9360}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPatch", "src\JsonPatch\JsonPatch.csproj", "{D83A82D7-6D99-41B8-87DA-FDDCB87D9360}"
+	ProjectSection(ProjectDependencies) = postProject
+		{021CF987-5D6B-4E68-AC68-FC73D3A44224} = {021CF987-5D6B-4E68-AC68-FC73D3A44224}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPatch.Tests", "tests\JsonPatch.Tests\JsonPatch.Tests.csproj", "{8AEC37E2-D136-4C17-9EA8-F0D874049577}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPatch.Tests", "tests\JsonPatch.Tests\JsonPatch.Tests.csproj", "{8AEC37E2-D136-4C17-9EA8-F0D874049577}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

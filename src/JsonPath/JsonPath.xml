@@ -193,14 +193,17 @@
             
              </summary>
         </member>
-        <member name="M:JsonCons.JsonPathLib.PathComponent.#ctor(System.String)">
-            <summary>
-            Constructs the root path component from a name
-            </summary>
-            <param name="name">The name.</param>
-            <exception cref="T:System.ArgumentNullException">
-              <paramref name="name"/> is <see langword="null"/>.
-            </exception>
+        <member name="P:JsonCons.JsonPathLib.PathComponent.Root">
+             <summary>
+             Gets a root component 
+            
+             </summary>
+        </member>
+        <member name="P:JsonCons.JsonPathLib.PathComponent.Current">
+             <summary>
+             Gets a current component 
+            
+             </summary>
         </member>
         <member name="M:JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.String)">
             <summary>

@@ -9,12 +9,12 @@ namespace JsonPathLib.Tests
         [TestMethod]
         public void TestNormalizedPathEquals()
         {
-            PathComponent node1 = new PathComponent("$");
+            PathComponent node1 = PathComponent.Root;
             PathComponent node2 = new PathComponent(node1,"foo");
             PathComponent node3 = new PathComponent(node2,"bar");
             PathComponent node4 = new PathComponent(node3,0);
 
-            PathComponent node11 = new PathComponent("$");
+            PathComponent node11 = PathComponent.Root;
             PathComponent node12 = new PathComponent(node11,"foo");
             PathComponent node13 = new PathComponent(node12,"bar");
             PathComponent node14 = new PathComponent(node13,0);
@@ -29,7 +29,7 @@ namespace JsonPathLib.Tests
         [TestMethod]
         public void TestNormalizedPathToString()
         {
-            PathComponent node1 = new PathComponent("$");
+            PathComponent node1 = PathComponent.Root;
             PathComponent node2 = new PathComponent(node1,"foo");
             PathComponent node3 = new PathComponent(node2,"bar");
             PathComponent node4 = new PathComponent(node3,0);
@@ -41,7 +41,7 @@ namespace JsonPathLib.Tests
         [TestMethod]
         public void TestNormalizedPathWithSolidusToString()
         {
-            PathComponent node1 = new PathComponent("$");
+            PathComponent node1 = PathComponent.Root;
             PathComponent node2 = new PathComponent(node1,"foo's");
             PathComponent node3 = new PathComponent(node2,"bar");
             PathComponent node4 = new PathComponent(node3,0);
@@ -53,7 +53,7 @@ namespace JsonPathLib.Tests
         [TestMethod]
         public void TestNormalizedPathToJsonPointer()
         {
-            PathComponent node1 = new PathComponent("$");
+            PathComponent node1 = PathComponent.Root;
             PathComponent node2 = new PathComponent(node1,"a/b");
 
             NormalizedPath path = new NormalizedPath(node2);

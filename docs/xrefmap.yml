@@ -366,12 +366,6 @@ references:
   commentId: M:JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.String)
   fullName: JsonCons.JsonPathLib.PathComponent.PathComponent(JsonCons.JsonPathLib.PathComponent, System.String)
   nameWithType: PathComponent.PathComponent(PathComponent, String)
-- uid: JsonCons.JsonPathLib.PathComponent.#ctor(System.String)
-  name: PathComponent(String)
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent__ctor_System_String_
-  commentId: M:JsonCons.JsonPathLib.PathComponent.#ctor(System.String)
-  fullName: JsonCons.JsonPathLib.PathComponent.PathComponent(System.String)
-  nameWithType: PathComponent.PathComponent(String)
 - uid: JsonCons.JsonPathLib.PathComponent.#ctor*
   name: PathComponent
   href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent__ctor_
@@ -405,6 +399,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPathLib.PathComponent.ComponentKind
   nameWithType: PathComponent.ComponentKind
+- uid: JsonCons.JsonPathLib.PathComponent.Current
+  name: Current
+  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_Current
+  commentId: P:JsonCons.JsonPathLib.PathComponent.Current
+  fullName: JsonCons.JsonPathLib.PathComponent.Current
+  nameWithType: PathComponent.Current
+- uid: JsonCons.JsonPathLib.PathComponent.Current*
+  name: Current
+  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_Current_
+  commentId: Overload:JsonCons.JsonPathLib.PathComponent.Current
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.PathComponent.Current
+  nameWithType: PathComponent.Current
 - uid: JsonCons.JsonPathLib.PathComponent.GetHashCode
   name: GetHashCode()
   href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_GetHashCode
@@ -457,6 +464,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPathLib.PathComponent.Parent
   nameWithType: PathComponent.Parent
+- uid: JsonCons.JsonPathLib.PathComponent.Root
+  name: Root
+  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_Root
+  commentId: P:JsonCons.JsonPathLib.PathComponent.Root
+  fullName: JsonCons.JsonPathLib.PathComponent.Root
+  nameWithType: PathComponent.Root
+- uid: JsonCons.JsonPathLib.PathComponent.Root*
+  name: Root
+  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_Root_
+  commentId: Overload:JsonCons.JsonPathLib.PathComponent.Root
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.PathComponent.Root
+  nameWithType: PathComponent.Root
 - uid: JsonCons.JsonPathLib.PathComponentKind
   name: PathComponentKind
   href: ref/JsonCons.JsonPathLib.PathComponentKind.html
