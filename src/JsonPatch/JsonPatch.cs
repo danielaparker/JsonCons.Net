@@ -75,7 +75,11 @@ namespace JsonCons.JsonPatchLib
                 }
                 string path = pathElement.GetString();
 
-                var location = JsonPointer.Parse(path);
+                JsonPointer location;
+                if (!JsonPointer.TryParse(path, out location))
+                {
+                    throw new JsonPatchException(op, "Invalid patch");
+                }
 
                 if (op =="test")
                 {
@@ -144,7 +148,12 @@ namespace JsonCons.JsonPatchLib
                     }
                     string from = fromElement.GetString();
 
-                    var fromPointer = JsonPointer.Parse(from);
+                    JsonPointer fromPointer;
+                    if (!JsonPointer.TryParse(from, out fromPointer))
+                    {
+                        throw new JsonPatchException(op, "Invalid patch");
+                    }
+
                     JsonDocumentBuilder value;
                     if (!fromPointer.TryGet(target, out value))
                     {
@@ -171,7 +180,11 @@ namespace JsonCons.JsonPatchLib
                         throw new JsonPatchException(op, "Invalid patch");
                     }
                     string from = fromElement.GetString();
-                    var fromPointer = JsonPointer.Parse(from);
+                    JsonPointer fromPointer;
+                    if (!JsonPointer.TryParse(from, out fromPointer))
+                    {
+                        throw new JsonPatchException(op, "Invalid patch");
+                    }
 
                     JsonDocumentBuilder value;
                     if (!fromPointer.TryGet(target, out value))

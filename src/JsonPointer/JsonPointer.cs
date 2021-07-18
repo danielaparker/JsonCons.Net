@@ -19,7 +19,7 @@ namespace JsonCons.JsonPointerLib
             Tokens = tokens;
         }
 
-        public static JsonPointer Parse(string str)
+        public static bool TryParse(string str, out JsonPointer jsonPointer)
         {
             var tokens = new List<string>();
 
@@ -41,7 +41,8 @@ namespace JsonCons.JsonPointerLib
                                     state = JsonPointerState.Delim;
                                     break;
                                 default:
-                                    throw new JsonException("Expected slash");
+                                    jsonPointer = null;
+                                    return false;
                             };
                             break;
                         case JsonPointerState.Delim: 
@@ -70,11 +71,13 @@ namespace JsonCons.JsonPointerLib
                                     state = JsonPointerState.Delim;
                                     break;
                                 default:
-                                    throw new JsonException("Expected '0' or '1'");
+                                    jsonPointer = null;
+                                    return false;
                             };
                             break;
                         default:
-                            throw new JsonException("Invalid state");
+                            jsonPointer = null;
+                            return false;
                     }
                     ++index;
                 }
@@ -85,7 +88,8 @@ namespace JsonCons.JsonPointerLib
             {
                 tokens.Add(buffer.ToString());
             }
-            return new JsonPointer(tokens);
+            jsonPointer = new JsonPointer(tokens);
+            return true;
         }
 
         public IEnumerator<string> GetEnumerator()

@@ -33,7 +33,8 @@ namespace JsonPatchLib.Tests
             var root = doc.RootElement;
             var documentBuilder = new JsonDocumentBuilder(root);
 
-            var pointer = JsonPointer.Parse("/foo/0");
+            JsonPointer pointer;
+            Assert.IsTrue(JsonPointer.TryParse("/foo/0", out pointer));
 
             JsonDocumentBuilder value;
             Assert.IsTrue(pointer.TryGet(documentBuilder, out value));
@@ -54,7 +55,8 @@ namespace JsonPatchLib.Tests
             var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
             var valueBuilder = new JsonDocumentBuilder(value.RootElement);
 
-            var location = JsonPointer.Parse(@"/baz");
+            JsonPointer location;
+            Assert.IsTrue(JsonPointer.TryParse(@"/baz", out location));
 
             Assert.IsTrue(location.TryAdd(ref documentBuilder, valueBuilder));
             JsonDocument result = documentBuilder.ToJsonDocument();
@@ -74,7 +76,8 @@ namespace JsonPatchLib.Tests
             var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
             var valueBuilder = new JsonDocumentBuilder(value.RootElement);
 
-            var location = JsonPointer.Parse(@"/foo/1");
+            JsonPointer location;
+            Assert.IsTrue(JsonPointer.TryParse(@"/foo/1", out location));
 
             Assert.IsTrue(location.TryAdd(ref documentBuilder, valueBuilder));
             JsonDocument result = documentBuilder.ToJsonDocument();
@@ -94,7 +97,8 @@ namespace JsonPatchLib.Tests
             var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
             var valueBuilder = new JsonDocumentBuilder(value.RootElement);
 
-            var location = JsonPointer.Parse(@"/foo/-");
+            JsonPointer location;
+            Assert.IsTrue(JsonPointer.TryParse(@"/foo/-", out location));
 
             Assert.IsTrue(location.TryAdd(ref documentBuilder, valueBuilder));
             JsonDocument result = documentBuilder.ToJsonDocument();
@@ -112,7 +116,8 @@ namespace JsonPatchLib.Tests
 
             var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
 
-            var location = JsonPointer.Parse(@"/baz");
+            JsonPointer location;
+            Assert.IsTrue(JsonPointer.TryParse(@"/baz", out location));
 
             Assert.IsTrue(location.TryRemove(ref documentBuilder));
             JsonDocument result = documentBuilder.ToJsonDocument();
@@ -130,7 +135,8 @@ namespace JsonPatchLib.Tests
 
             var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
 
-            var location = JsonPointer.Parse(@"/foo/1");
+            JsonPointer location;
+            Assert.IsTrue(JsonPointer.TryParse(@"/foo/1", out location));
 
             Assert.IsTrue(location.TryRemove(ref documentBuilder));
             JsonDocument result = documentBuilder.ToJsonDocument();
@@ -158,7 +164,8 @@ namespace JsonPatchLib.Tests
             var documentBuilder = new JsonDocumentBuilder(doc.RootElement);
             var valueBuilder = new JsonDocumentBuilder(value.RootElement);
 
-            var location = JsonPointer.Parse(@"/baz");
+            JsonPointer location;
+            Assert.IsTrue(JsonPointer.TryParse(@"/baz", out location));
 
             Assert.IsTrue(location.TryAdd(ref documentBuilder, valueBuilder));
             JsonDocument result = documentBuilder.ToJsonDocument();

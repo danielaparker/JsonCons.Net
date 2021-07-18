@@ -17,7 +17,8 @@ namespace JsonPointerLib.Tests
             using (var doc = JsonDocument.Parse(@"{""foo"": [""bar"", ""baz""]}"))
             {
                 var root = doc.RootElement;
-                var pointer = JsonPointer.Parse("/foo/0");
+                JsonPointer pointer; 
+                Assert.IsTrue(JsonPointer.TryParse("/foo/0", out pointer));
                 JsonElement value;
                 Assert.IsTrue(pointer.TryGet(root, out value));
 
@@ -32,7 +33,8 @@ namespace JsonPointerLib.Tests
         {
             using (var doc = JsonDocument.Parse(@"{ ""foo"": ""bar"" }"))
             {
-                var pointer = JsonPointer.Parse("/baz");
+                JsonPointer pointer; 
+                Assert.IsTrue(JsonPointer.TryParse("/baz", out pointer));
                 JsonElement value;
                 Assert.IsFalse(pointer.TryGet(doc.RootElement, out value));
             }
