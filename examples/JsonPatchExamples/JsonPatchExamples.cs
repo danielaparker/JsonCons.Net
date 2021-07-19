@@ -9,7 +9,7 @@ namespace JsonCons.JsonPatchLib.Examples
     class JsonPatchExamples
     {
         // Source: http://jsonpatch.com/
-        static void AddOperation()
+        static void PatchExample()
         {
             using var doc = JsonDocument.Parse(@"
 {
@@ -39,9 +39,41 @@ namespace JsonCons.JsonPatchLib.Examples
             Console.WriteLine($"{JsonSerializer.Serialize(result, options)}\n");
         }
 
+        static void FromDiffExample()
+        {
+            using var sourceDoc = JsonDocument.Parse(@"
+{
+  ""baz"": ""qux"",
+  ""foo"": ""bar""
+}
+            ");
+
+            using var targetDoc = JsonDocument.Parse(@"
+{
+  ""baz"": ""boo"",
+  ""hello"": [
+    ""world""
+  ]
+}
+            ");
+
+            var options = new JsonSerializerOptions();
+            options.WriteIndented = true;
+
+            JsonDocument patch = JsonPatch.FromDiff(sourceDoc.RootElement, targetDoc.RootElement);
+
+            Console.WriteLine("The source document:\n");
+            Console.WriteLine($"{JsonSerializer.Serialize(sourceDoc.RootElement, options)}\n");
+            Console.WriteLine("The target document:\n");
+            Console.WriteLine($"{JsonSerializer.Serialize(targetDoc.RootElement, options)}\n");
+            Console.WriteLine("Patch to be applied to source:\n");
+            Console.WriteLine($"{JsonSerializer.Serialize(patch, options)}\n");
+        }
+
         static void Main(string[] args)
         {
-            JsonPatchExamples.AddOperation();
+            JsonPatchExamples.PatchExample();
+            JsonPatchExamples.FromDiffExample();
         }
     }
 }
