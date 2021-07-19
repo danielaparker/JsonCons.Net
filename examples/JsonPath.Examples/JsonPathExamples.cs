@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using JsonCons.JsonPathLib;
 
-namespace JsonCons.Examples
+namespace JsonCons.JsonPathLib.Examples
 {
     public static class JsonPathExamples
     {
