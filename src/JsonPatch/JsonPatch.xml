@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JsonPatch</name>
+    </assembly>
+    <members>
+        <member name="T:JsonCons.JsonPatchLib.JsonPatchException">
+            <summary>
+            Captures error message and the related entity and the operation that caused it.
+            </summary>
+        </member>
+        <member name="M:JsonCons.JsonPatchLib.JsonPatchException.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:JsonCons.JsonPatchLib.JsonPatchException"/>.
+            </summary>
+            <param name="operation">The operation that caused the error.</param>
+            <param name="message">The error message.</param>
+        </member>
+        <member name="P:JsonCons.JsonPatchLib.JsonPatchException.Operation">
+            <summary>
+            Gets the <see cref="T:System.String"/> that caused the error.
+            </summary>
+        </member>
+    </members>
+</doc>
