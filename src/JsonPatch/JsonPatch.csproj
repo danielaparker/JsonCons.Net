@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JsonHelpers\JsonHelpers.csproj" />
     <ProjectReference Include="..\JsonPointer\JsonPointer.csproj" />
-    <ProjectReference Include="..\Json\Json.csproj" />
   </ItemGroup>
 
 </Project>

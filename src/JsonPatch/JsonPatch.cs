@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
-using JsonCons.JsonLib;
+using JsonCons.JsonHelpersLib;
 using JsonCons.JsonPointerLib;
 
 namespace JsonCons.JsonPatchLib

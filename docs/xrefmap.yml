@@ -1,56 +1,56 @@
 ### YamlMime:XRefMap
 sorted: true
 references:
-- uid: JsonCons.JsonLib
-  name: JsonCons.JsonLib
-  href: ref/JsonCons.JsonLib.html
-  commentId: N:JsonCons.JsonLib
-  fullName: JsonCons.JsonLib
-  nameWithType: JsonCons.JsonLib
-- uid: JsonCons.JsonLib.JsonElementEqualityComparer
+- uid: JsonCons.JsonHelpersLib
+  name: JsonCons.JsonHelpersLib
+  href: ref/JsonCons.JsonHelpersLib.html
+  commentId: N:JsonCons.JsonHelpersLib
+  fullName: JsonCons.JsonHelpersLib
+  nameWithType: JsonCons.JsonHelpersLib
+- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer
   name: JsonElementEqualityComparer
-  href: ref/JsonCons.JsonLib.JsonElementEqualityComparer.html
-  commentId: T:JsonCons.JsonLib.JsonElementEqualityComparer
-  fullName: JsonCons.JsonLib.JsonElementEqualityComparer
+  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html
+  commentId: T:JsonCons.JsonHelpersLib.JsonElementEqualityComparer
+  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer
   nameWithType: JsonElementEqualityComparer
-- uid: JsonCons.JsonLib.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
   name: Equals(JsonElement, JsonElement)
-  href: ref/JsonCons.JsonLib.JsonElementEqualityComparer.html#JsonCons_JsonLib_JsonElementEqualityComparer_Equals_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
-  commentId: M:JsonCons.JsonLib.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
-  fullName: JsonCons.JsonLib.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
+  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_Equals_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
   nameWithType: JsonElementEqualityComparer.Equals(JsonElement, JsonElement)
-- uid: JsonCons.JsonLib.JsonElementEqualityComparer.Equals*
+- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals*
   name: Equals
-  href: ref/JsonCons.JsonLib.JsonElementEqualityComparer.html#JsonCons_JsonLib_JsonElementEqualityComparer_Equals_
-  commentId: Overload:JsonCons.JsonLib.JsonElementEqualityComparer.Equals
+  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_Equals_
+  commentId: Overload:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals
   isSpec: "True"
-  fullName: JsonCons.JsonLib.JsonElementEqualityComparer.Equals
+  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals
   nameWithType: JsonElementEqualityComparer.Equals
-- uid: JsonCons.JsonLib.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
+- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
   name: GetHashCode(JsonElement)
-  href: ref/JsonCons.JsonLib.JsonElementEqualityComparer.html#JsonCons_JsonLib_JsonElementEqualityComparer_GetHashCode_System_Text_Json_JsonElement_
-  commentId: M:JsonCons.JsonLib.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
-  fullName: JsonCons.JsonLib.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
+  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_GetHashCode_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
+  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
   nameWithType: JsonElementEqualityComparer.GetHashCode(JsonElement)
-- uid: JsonCons.JsonLib.JsonElementEqualityComparer.GetHashCode*
+- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode*
   name: GetHashCode
-  href: ref/JsonCons.JsonLib.JsonElementEqualityComparer.html#JsonCons_JsonLib_JsonElementEqualityComparer_GetHashCode_
-  commentId: Overload:JsonCons.JsonLib.JsonElementEqualityComparer.GetHashCode
+  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_GetHashCode_
+  commentId: Overload:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode
   isSpec: "True"
-  fullName: JsonCons.JsonLib.JsonElementEqualityComparer.GetHashCode
+  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode
   nameWithType: JsonElementEqualityComparer.GetHashCode
-- uid: JsonCons.JsonLib.JsonElementEqualityComparer.Instance
+- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance
   name: Instance
-  href: ref/JsonCons.JsonLib.JsonElementEqualityComparer.html#JsonCons_JsonLib_JsonElementEqualityComparer_Instance
-  commentId: P:JsonCons.JsonLib.JsonElementEqualityComparer.Instance
-  fullName: JsonCons.JsonLib.JsonElementEqualityComparer.Instance
+  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_Instance
+  commentId: P:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance
+  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance
   nameWithType: JsonElementEqualityComparer.Instance
-- uid: JsonCons.JsonLib.JsonElementEqualityComparer.Instance*
+- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance*
   name: Instance
-  href: ref/JsonCons.JsonLib.JsonElementEqualityComparer.html#JsonCons_JsonLib_JsonElementEqualityComparer_Instance_
-  commentId: Overload:JsonCons.JsonLib.JsonElementEqualityComparer.Instance
+  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_Instance_
+  commentId: Overload:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance
   isSpec: "True"
-  fullName: JsonCons.JsonLib.JsonElementEqualityComparer.Instance
+  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance
   nameWithType: JsonElementEqualityComparer.Instance
 - uid: JsonCons.JsonPatchLib
   name: JsonCons.JsonPatchLib
@@ -775,6 +775,15 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPointerLib.JsonPointer.ToString
   nameWithType: JsonPointer.ToString
+- uid: JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)
+  name: TryGet(JsonElement, String, out JsonElement)
+  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_TryGet_System_Text_Json_JsonElement_System_String_System_Text_Json_JsonElement__
+  commentId: M:JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)
+  name.vb: TryGet(JsonElement, String, ByRef JsonElement)
+  fullName: JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement, System.String, out System.Text.Json.JsonElement)
+  fullName.vb: JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement, System.String, ByRef System.Text.Json.JsonElement)
+  nameWithType: JsonPointer.TryGet(JsonElement, String, out JsonElement)
+  nameWithType.vb: JsonPointer.TryGet(JsonElement, String, ByRef JsonElement)
 - uid: JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
   name: TryGet(JsonElement, out JsonElement)
   href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_TryGet_System_Text_Json_JsonElement_System_Text_Json_JsonElement__

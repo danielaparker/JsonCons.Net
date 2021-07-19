@@ -3,7 +3,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using JsonCons.JsonLib;
+using JsonCons.JsonHelpersLib;
 using JsonCons.JsonPatchLib;
 
 namespace JsonCons.JsonPatchLib.Tests

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>JsonHelpers</name>
+        <name>Json</name>
     </assembly>
     <members>
-        <member name="T:JsonCons.JsonHelpersLib.JsonElementEqualityComparer">
+        <member name="T:JsonCons.JsonLib.JsonElementEqualityComparer">
             <summary>
             Compares two <see cref="T:System.Text.Json.JsonElement"/> instances for equality by using value-based comparison.
             </summary>

@@ -19,7 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\JsonPatch\JsonPatch.csproj" />
     <ProjectReference Include="..\..\src\JsonPointer\JsonPointer.csproj" />
-    <ProjectReference Include="..\..\src\Json\Json.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JsonCons.JsonPatchLib;
-using JsonCons.JsonLib;
+using JsonCons.JsonHelpersLib;
 
 namespace JsonPatchLib.Tests
 {

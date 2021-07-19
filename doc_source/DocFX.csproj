@@ -11,4 +11,11 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\src\JsonHelpers\JsonHelpers.csproj" />
+    <ProjectReference Include="..\src\JsonPatch\JsonPatch.csproj" />
+    <ProjectReference Include="..\src\JsonPath\JsonPath.csproj" />
+    <ProjectReference Include="..\src\JsonPointer\JsonPointer.csproj" />
+  </ItemGroup>
+
 </Project>
