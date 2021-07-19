@@ -208,6 +208,52 @@ namespace JsonCons.JsonPointerLib
             return true;
         }
 
+        public static bool TryGet(JsonElement root, string locationStr, out JsonElement value)
+        {
+            JsonPointer location;
+            if (!TryParse(locationStr, out location))
+            {
+                value = root;
+                return false;
+            }
+
+            value = root;
+
+            foreach (var token in location)
+            {
+                if (value.ValueKind == JsonValueKind.Array)
+                {
+                    if (token == "-")
+                    {
+                        return false;
+                    }
+                    int index = 0;
+                    if (!int.TryParse(token, out index))
+                    {
+                        return false;
+                    }
+                    if (index >= value.GetArrayLength())
+                    {
+                        return false;
+                    }
+                    value = value[index];
+                }
+                else if (value.ValueKind == JsonValueKind.Object)
+                {
+                    if (!value.TryGetProperty(token, out value))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public static string Escape(string s)
         {
             var result = new StringBuilder();
