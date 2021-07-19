@@ -6,7 +6,7 @@
           "files": [
             "**.csproj"
           ],
-          "src": "../src/Json;../src/JsonPath;../src/JsonPointer;../src/JsonPatch"
+          "src": "../src"
         }
       ],
       "dest": "ref",
