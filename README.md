@@ -1,9 +1,13 @@
 # JsonCons.Net
 
-The JsonCons.Net libraries complement the [System.Text.Json namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1) 
+The JsonCons.Net libraries complement the [System.Text.Json namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1)
 with support for:
 
+- JSONPointer
+- JSONPatch
 - JSONPath
+
+The libraries target .Net Standard 2.1.
 
 ## Documentation
 
