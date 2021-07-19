@@ -9,7 +9,7 @@ using JsonCons.JsonPointerLib;
         
 namespace JsonCons.JsonPatchLib
 {
-    public class JsonDocumentBuilder
+    class JsonDocumentBuilder
     {
         internal JsonValueKind ValueKind {get;}
 
@@ -50,7 +50,7 @@ namespace JsonCons.JsonPatchLib
             _item = str;
         }
 
-        public JsonDocumentBuilder(JsonElement element)
+        internal JsonDocumentBuilder(JsonElement element)
         {
             ValueKind = element.ValueKind;
             switch (element.ValueKind)
@@ -202,7 +202,7 @@ namespace JsonCons.JsonPatchLib
         }
     }
 
-    public static class JsonPointerExtensions
+    static class JsonPointerExtensions
     {
         public static bool TryResolve(string token, JsonDocumentBuilder current, out JsonDocumentBuilder result)
         {
