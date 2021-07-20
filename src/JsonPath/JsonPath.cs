@@ -53,7 +53,7 @@ namespace JsonCons.JsonPath
     };
 
     /// <summary>
-    ///   Represents a JsonSelector expression.
+    ///   Selects descendant JsonElement values from a root JsonElement.
     /// </summary>
 
     public sealed class JsonSelector

@@ -229,9 +229,9 @@ namespace JsonCons.Utilities
                     buffer.Append("/");
                     buffer.Append(i.ToString());
                     var temp_diff = FromDiff(source[i], target[i], buffer.ToString());
-                    foreach (var item in temp_diff.GetList())
+                    foreach (var item in temp_diff.EnumerateArray())
                     {
-                        resultBuilder.GetList().Add(item);
+                        resultBuilder.AddArrayItem(item);
                     }
                 }
                 // Element in source, not in target - remove
@@ -241,9 +241,9 @@ namespace JsonCons.Utilities
                     buffer.Append("/");
                     buffer.Append(i.ToString());
                     var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
-                    valBuilder.GetDictionary().Add("op", new JsonDocumentBuilder("remove"));
-                    valBuilder.GetDictionary().Add("path", new JsonDocumentBuilder(buffer.ToString()));
-                    resultBuilder.GetList().Add(valBuilder);
+                    valBuilder.AddProperty("op", new JsonDocumentBuilder("remove"));
+                    valBuilder.AddProperty("path", new JsonDocumentBuilder(buffer.ToString()));
+                    resultBuilder.AddArrayItem(valBuilder);
                 }
                 // Element in target, not in source - add, 
                 for (int i = source.GetArrayLength(); i < target.GetArrayLength(); ++i)
@@ -253,10 +253,10 @@ namespace JsonCons.Utilities
                     buffer.Append("/");
                     buffer.Append(i.ToString());
                     var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
-                    valBuilder.GetDictionary().Add("op", new JsonDocumentBuilder("add"));
-                    valBuilder.GetDictionary().Add("path", new JsonDocumentBuilder(buffer.ToString()));
-                    valBuilder.GetDictionary().Add("value", new JsonDocumentBuilder(a));
-                    resultBuilder.GetList().Add(valBuilder);
+                    valBuilder.AddProperty("op", new JsonDocumentBuilder("add"));
+                    valBuilder.AddProperty("path", new JsonDocumentBuilder(buffer.ToString()));
+                    valBuilder.AddProperty("value", new JsonDocumentBuilder(a));
+                    resultBuilder.AddArrayItem(valBuilder);
                 }
             }
             else if (source.ValueKind == JsonValueKind.Object && target.ValueKind == JsonValueKind.Object)
@@ -271,17 +271,17 @@ namespace JsonCons.Utilities
                     if (target.TryGetProperty(a.Name, out element))
                     { 
                         var temp_diff = FromDiff(a.Value, element, buffer.ToString());
-                        foreach (var item in temp_diff.GetList())
+                        foreach (var item in temp_diff.EnumerateArray())
                         {
-                            resultBuilder.GetList().Add(item);
+                            resultBuilder.AddArrayItem(item);
                         }
                     }
                     else
                     {
                         var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
-                        valBuilder.GetDictionary().Add("op", new JsonDocumentBuilder("remove"));
-                        valBuilder.GetDictionary().Add("path", new JsonDocumentBuilder(buffer.ToString()));
-                        resultBuilder.GetList().Add(valBuilder);
+                        valBuilder.AddProperty("op", new JsonDocumentBuilder("remove"));
+                        valBuilder.AddProperty("path", new JsonDocumentBuilder(buffer.ToString()));
+                        resultBuilder.AddArrayItem(valBuilder);
                     }
                 }
                 foreach (var a in target.EnumerateObject())
@@ -293,20 +293,20 @@ namespace JsonCons.Utilities
                         buffer.Append("/");
                         buffer.Append(JsonPointer.Escape(a.Name));
                         var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
-                        valBuilder.GetDictionary().Add("op", new JsonDocumentBuilder("add"));
-                        valBuilder.GetDictionary().Add("path", new JsonDocumentBuilder(buffer.ToString()));
-                        valBuilder.GetDictionary().Add("value", new JsonDocumentBuilder(a.Value));
-                        resultBuilder.GetList().Add(valBuilder);
+                        valBuilder.AddProperty("op", new JsonDocumentBuilder("add"));
+                        valBuilder.AddProperty("path", new JsonDocumentBuilder(buffer.ToString()));
+                        valBuilder.AddProperty("value", new JsonDocumentBuilder(a.Value));
+                        resultBuilder.AddArrayItem(valBuilder);
                     }
                 }
             }
             else
             {
                 var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
-                valBuilder.GetDictionary().Add("op", new JsonDocumentBuilder("replace"));
-                valBuilder.GetDictionary().Add("path", new JsonDocumentBuilder(path));
-                valBuilder.GetDictionary().Add("value", new JsonDocumentBuilder(target));
-                resultBuilder.GetList().Add(valBuilder);
+                valBuilder.AddProperty("op", new JsonDocumentBuilder("replace"));
+                valBuilder.AddProperty("path", new JsonDocumentBuilder(path));
+                valBuilder.AddProperty("value", new JsonDocumentBuilder(target));
+                resultBuilder.AddArrayItem(valBuilder);
             }
 
             return resultBuilder;

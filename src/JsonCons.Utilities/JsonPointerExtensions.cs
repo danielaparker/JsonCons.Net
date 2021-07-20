@@ -110,7 +110,7 @@ namespace JsonCons.Utilities
             {
                 if (token.Length == 1 && token[0] == '-')
                 {
-                    current.GetList().Add(value);
+                    current.AddArrayItem(value);
                     current = current[current.GetArrayLength()-1];
                 }
                 else
@@ -126,23 +126,23 @@ namespace JsonCons.Utilities
                     }
                     if (index == current.GetArrayLength())
                     {
-                        current.GetList().Add(value);
+                        current.AddArrayItem(value);
                         current = value;
                     }
                     else
                     {
-                        current.GetList().Insert(index,value);
+                        current.InsertArrayItem(index,value);
                         current = value;
                     }
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
-                if (current.GetDictionary().ContainsKey(token))
+                if (current.ContainsPropertyName(token))
                 {
-                    current.GetDictionary().Remove(token);
+                    current.RemoveProperty(token);
                 }
-                current.GetDictionary().Add(token, value);
+                current.AddProperty(token, value);
                 current = value;
             }
             else
@@ -182,7 +182,7 @@ namespace JsonCons.Utilities
             {
                 if (token.Length == 1 && token[0] == '-')
                 {
-                    current.GetList().Add(value);
+                    current.AddArrayItem(value);
                     current = current[current.GetArrayLength()-1];
                 }
                 else
@@ -198,23 +198,23 @@ namespace JsonCons.Utilities
                     }
                     if (index == current.GetArrayLength())
                     {
-                        current.GetList().Add(value);
+                        current.AddArrayItem(value);
                         current = value;
                     }
                     else
                     {
-                        current.GetList().Insert(index,value);
+                        current.InsertArrayItem(index,value);
                         current = value;
                     }
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
-                if (current.GetDictionary().ContainsKey(token))
+                if (current.ContainsPropertyName(token))
                 {
                     return false;
                 }
-                current.GetDictionary().Add(token, value);
+                current.AddProperty(token, value);
                 current = value;
             }
             else
@@ -266,14 +266,14 @@ namespace JsonCons.Utilities
                     {
                         return false;
                     }
-                    current.GetList().RemoveAt(index);
+                    current.RemoveArrayItemAt(index);
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
-                if (current.GetDictionary().ContainsKey(token))
+                if (current.ContainsPropertyName(token))
                 {
-                    current.GetDictionary().Remove(token);
+                    current.RemoveProperty(token);
                 }
             }
             else
@@ -326,20 +326,20 @@ namespace JsonCons.Utilities
                     {
                         return false;
                     }
-                    current.GetList()[index] = value;
+                    current[index] = value;
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
-                if (current.GetDictionary().ContainsKey(token))
+                if (current.ContainsPropertyName(token))
                 {
-                    current.GetDictionary().Remove(token);
+                    current.RemoveProperty(token);
                 }
                 else
                 {
                     return false;
                 }
-                current.GetDictionary().Add(token, value);
+                current.AddProperty(token, value);
             }
             else
             {

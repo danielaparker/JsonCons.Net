@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="JsonFlattener.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
   </ItemGroup>
 

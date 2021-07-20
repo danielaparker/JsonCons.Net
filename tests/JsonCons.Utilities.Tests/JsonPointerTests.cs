@@ -5,7 +5,7 @@ using System.Text.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JsonCons.Utilities;
 
-namespace JsonPointerLib.Tests
+namespace JsonCons.Utilities.Tests
 {
     [TestClass]
     public class JsonPointerTests

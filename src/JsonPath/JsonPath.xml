@@ -30,7 +30,7 @@
         </member>
         <member name="T:JsonCons.JsonPath.JsonSelector">
             <summary>
-              Represents a JsonSelector expression.
+              Selects descendant JsonElement values from a root JsonElement.
             </summary>
         </member>
         <member name="M:JsonCons.JsonPath.JsonSelector.Parse(System.String)">

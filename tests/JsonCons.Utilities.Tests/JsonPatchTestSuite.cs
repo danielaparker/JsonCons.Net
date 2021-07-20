@@ -8,7 +8,7 @@ using JsonCons.Utilities;
 namespace JsonCons.Utilities.Tests
 {
     [TestClass]
-    public class JsonPatchTests
+    public class JsonPatchTestSuite
     {
         static JsonElementEqualityComparer comparer = JsonElementEqualityComparer.Instance;
 

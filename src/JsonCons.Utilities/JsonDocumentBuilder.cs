@@ -76,7 +76,7 @@ namespace JsonCons.Utilities
             }
         }
 
-        internal IList<JsonDocumentBuilder> GetList()
+        internal IEnumerable<JsonDocumentBuilder> EnumerateArray()
         {
             if (ValueKind != JsonValueKind.Array)
             {
@@ -85,7 +85,7 @@ namespace JsonCons.Utilities
             return (IList<JsonDocumentBuilder>)_item;
         }
 
-        internal IDictionary<string, JsonDocumentBuilder> GetDictionary()
+        internal IEnumerable<KeyValuePair<string, JsonDocumentBuilder>> EnumerateObject()
         {
             if (ValueKind != JsonValueKind.Object)
             {
@@ -101,15 +101,69 @@ namespace JsonCons.Utilities
                 {
                     throw new InvalidOperationException("This value's ValueKind is not Array.");
                 }
-                return GetList()[i]; 
+                return ((IList<JsonDocumentBuilder>)_item) [i]; 
             }
             set { 
                 if (ValueKind != JsonValueKind.Array)
                 {
                     throw new InvalidOperationException("This value's ValueKind is not Array.");
                 }
-                GetList()[i] = value; 
+                ((IList<JsonDocumentBuilder>)_item)[i] = value; 
             }
+        }
+
+        internal void AddArrayItem(JsonDocumentBuilder value)
+        {
+            if (ValueKind != JsonValueKind.Array)
+            {
+                throw new InvalidOperationException("This value's ValueKind is not Array.");
+            }
+            ((IList<JsonDocumentBuilder>)_item).Add(value);
+        }
+
+        internal void InsertArrayItem(int index, JsonDocumentBuilder value)
+        {
+            if (ValueKind != JsonValueKind.Array)
+            {
+                throw new InvalidOperationException("This value's ValueKind is not Array.");
+            }
+            ((IList<JsonDocumentBuilder>)_item).Insert(index, value);
+        }
+
+        internal void RemoveArrayItemAt(int index)
+        {
+            if (ValueKind != JsonValueKind.Array)
+            {
+                throw new InvalidOperationException("This value's ValueKind is not Array.");
+            }
+            ((IList<JsonDocumentBuilder>)_item).RemoveAt(index);
+        }
+
+        internal void AddProperty(string name, JsonDocumentBuilder value)
+        {
+            if (ValueKind != JsonValueKind.Object)
+            {
+                throw new InvalidOperationException("This value's ValueKind is not Object.");
+            }
+            ((IDictionary<string,JsonDocumentBuilder>)_item).Add(name, value);
+        }
+
+        internal bool ContainsPropertyName(string name)
+        {
+            if (ValueKind != JsonValueKind.Object)
+            {
+                throw new InvalidOperationException("This value's ValueKind is not Object.");
+            }
+            return ((IDictionary<string,JsonDocumentBuilder>)_item).ContainsKey(name);
+        }
+
+        internal void RemoveProperty(string name)
+        {
+            if (ValueKind != JsonValueKind.Object)
+            {
+                throw new InvalidOperationException("This value's ValueKind is not Object.");
+            }
+            ((IDictionary<string,JsonDocumentBuilder>)_item).Remove(name);
         }
 
         internal int GetArrayLength()
@@ -118,7 +172,16 @@ namespace JsonCons.Utilities
             {
                 throw new InvalidOperationException("This value's ValueKind is not Array.");
             }
-            return GetList().Count;
+            return ((IList<JsonDocumentBuilder>)_item).Count();
+        }
+
+        internal int GetObjectLength()
+        {
+            if (ValueKind != JsonValueKind.Object)
+            {
+                throw new InvalidOperationException("This value's ValueKind is not Object.");
+            }
+            return ((IDictionary<string,JsonDocumentBuilder>)_item).Count();
         }
 
         internal bool TryGetProperty(string name, out JsonDocumentBuilder value)
@@ -132,7 +195,7 @@ namespace JsonCons.Utilities
                 value = null;
                 return false;
             }
-            return GetDictionary().TryGetValue(name, out value);
+            return ((IDictionary<string,JsonDocumentBuilder>)_item).TryGetValue(name, out value);
         }
 
         public override string ToString()
@@ -150,7 +213,7 @@ namespace JsonCons.Utilities
                 {
                     buffer.Append("[");
                     bool first = true;
-                    foreach (var item in GetList())
+                    foreach (var item in EnumerateArray())
                     {
                         if (!first)
                         {
@@ -169,7 +232,7 @@ namespace JsonCons.Utilities
                 {
                     buffer.Append("{");
                     bool first = true;
-                    foreach (var property in GetDictionary())
+                    foreach (var property in EnumerateObject())
                     {
                         if (!first)
                         {

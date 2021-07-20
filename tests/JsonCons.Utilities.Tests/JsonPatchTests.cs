@@ -5,7 +5,7 @@ using System.Text.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JsonCons.Utilities;
 
-namespace JsonPatchLib.Tests
+namespace JsonCons.Utilities.Tests
 {
     [TestClass]
     public class JsonPatchTests

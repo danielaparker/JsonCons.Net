@@ -10,29 +10,26 @@ namespace JsonCons.Utilities
 {
     public static class JsonFlattener
     {
-        void _Flatten(string parentKey,
-                      JsonElement parentValue,
-                      JsonDocumentBuilder result)
+        static void _Flatten(string parentKey,
+                            JsonElement parentValue,
+                            JsonDocumentBuilder result)
         {
             switch (parentValue.ValueKind)
             {
                 case JsonValueKind.Array:
                 {
-                    if (parentValue.empty())
+                    if (parentValue.GetArrayLength() == 0)
                     {
-                        // Flatten empty array to null
-                        //result.try_emplace(parentKey, null_type{});
-                        //result[parentKey] = parentValue;
-                        result.try_emplace(parentKey, parentValue);
+                        result.AddProperty(parentKey, new JsonDocumentBuilder(parentValue));
                     }
                     else
                     {
-                        for (std::size_t i = 0; i < parentValue.size(); ++i)
+                        for (int i = 0; i < parentValue.GetArrayLength(); ++i)
                         {
-                            string key(parentKey);
-                            key.push_back('/');
-                            jsoncons::detail::from_integer(i,key);
-                            _Flatten(key, parentValue.at(i), result);
+                            var buffer = new StringBuilder(parentKey);
+                            buffer.Append('/');
+                            buffer.Append(i.ToString());
+                            _Flatten(buffer.ToString(), parentValue[i], result);
                         }
                     }
                     break;
@@ -40,21 +37,18 @@ namespace JsonCons.Utilities
 
                 case JsonValueKind.Object:
                 {
-                    if (parentValue.empty())
+                    if (parentValue.EnumerateObject().Count() == 0)
                     {
-                        // Flatten empty object to null
-                        //result.try_emplace(parentKey, null_type{});
-                        //result[parentKey] = parentValue;
-                        result.try_emplace(parentKey, parentValue);
+                        result.AddProperty(parentKey, new JsonDocumentBuilder(parentValue));
                     }
                     else
                     {
-                        for (const auto& item : parentValue.object_range())
+                        foreach (var item in parentValue.EnumerateObject())
                         {
-                            string key(parentKey);
-                            key.push_back('/');
-                            escape(jsoncons::basic_string_view<char_type>(item.key().data(),item.key().size()), key);
-                            _Flatten(key, item.value(), result);
+                            var buffer = new StringBuilder(parentKey);
+                            buffer.Append('/');
+                            buffer.Append(JsonPointer.Escape(item.Name));
+                            _Flatten(buffer.ToString(), item.Value, result);
                         }
                     }
                     break;
@@ -62,42 +56,36 @@ namespace JsonCons.Utilities
 
                 default:
                 {
-                    // add primitive parentValue with its reference string
-                    //result[parentKey] = parentValue;
-                    result.try_emplace(parentKey, parentValue);
+                    result.AddProperty(parentKey, new JsonDocumentBuilder(parentValue));
                     break;
                 }
             }
         }
 
-        Json flatten(JsonElement value)
+        public static JsonDocument Flatten(JsonElement value)
         {
-            Json result;
-            string parentKey;
-            flatten_(parentKey, value, result);
-            return result;
+            var result = new JsonDocumentBuilder(new Dictionary<string,JsonDocumentBuilder>());
+            string parentKey = "";
+            _Flatten(parentKey, value, result);
+            return result.ToJsonDocument();
         }
 
-
+/*
         // unflatten
 
-        enum class UnflattenOptions {none,assume_object = 1
-        #if !defined(JSONCONS_NO_DEPRECATED)
-    ,object = assume_object
-    #endif
-    };
+        enum UnflattenOptions {None, AssumeObject = 1};
 
         Json SafeUnflatten (JsonDocumentBuilder value)
         {
-            if (!value.is_object() || value.empty())
+            if (value.ValueKind != JsonValueKind.Object || value.empty())
             {
                 return value;
             }
             bool safe = true;
-            std::size_t index = 0;
-            for (const auto& item : value.object_range())
+            int index = 0;
+            foreach (var item in value.EnumerateObject())
             {
-                std::size_t n;
+                int n;
                 auto r = jsoncons::detail::to_integer_decimal(item.key().data(),item.key().size(), n);
                 if (!r || (index++ != n))
                 {
@@ -110,12 +98,12 @@ namespace JsonCons.Utilities
             {
                 Json j(json_array_arg);
                 j.reserve(value.size());
-                for (auto& item : value.object_range())
+                for (auto& item : value.EnumerateObject())
                 {
                     j.emplace_back(std::move(item.value()));
                 }
                 Json a(json_array_arg);
-                for (auto& item : j.array_range())
+                for (auto& item : j.EnumerateArray())
                 {
                     a.emplace_back(SafeUnflatten (item));
                 }
@@ -124,7 +112,7 @@ namespace JsonCons.Utilities
             else
             {
                 Json o(json_object_arg);
-                for (auto& item : value.object_range())
+                for (auto& item : value.EnumerateObject())
                 {
                     o.try_emplace(item.key(), SafeUnflatten (item.value()));
                 }
@@ -134,17 +122,17 @@ namespace JsonCons.Utilities
 
         jsoncons::optional<Json> TryUnflattenArray(JsonElement value)
         {
-            if (JSONCONS_UNLIKELY(!value.is_object()))
+            if (JSONCONS_UNLIKELY(value.ValueKind != JsonValueKind.Object))
             {
                 JSONCONS_THROW(jsonpointer_error(jsonpointer_errc::argument_to_unflatten_invalid));
             }
             Json result;
 
-            for (const auto& item: value.object_range())
+            for (const auto& item: value.EnumerateObject())
             {
                 Json* part = &result;
                 basic_json_pointer<char_type> ptr(item.key());
-                std::size_t index = 0;
+                int index = 0;
                 for (auto it = ptr.begin(); it != ptr.end(); )
                 {
                     auto s = *it;
@@ -197,15 +185,15 @@ namespace JsonCons.Utilities
             return result;
         }
 
-        Json UnflattenToObject(JsonElement value, UnflattenOptions options = UnflattenOptions::none)
+        Json UnflattenToObject(JsonElement value, UnflattenOptions options = UnflattenOptions::None)
         {
-            if (JSONCONS_UNLIKELY(!value.is_object()))
+            if (JSONCONS_UNLIKELY(value.ValueKind != JsonValueKind.Object))
             {
                 JSONCONS_THROW(jsonpointer_error(jsonpointer_errc::argument_to_unflatten_invalid));
             }
             Json result;
 
-            for (const auto& item: value.object_range())
+            for (const auto& item: value.EnumerateObject())
             {
                 Json* part = &result;
                 basic_json_pointer<char_type> ptr(item.key());
@@ -225,12 +213,12 @@ namespace JsonCons.Utilities
                 }
             }
 
-            return options == UnflattenOptions::none ? SafeUnflatten (result) : result;
+            return options == UnflattenOptions::None ? SafeUnflatten (result) : result;
         }
 
-        Json Unflatten(JsonElement value, UnflattenOptions options = UnflattenOptions::none)
+        Json Unflatten(JsonElement value, UnflattenOptions options = UnflattenOptions::None)
         {
-            if (options == UnflattenOptions::none)
+            if (options == UnflattenOptions::None)
             {
                 jsoncons::optional<Json> j = TryUnflattenArray(value);
                 return j ? *j : UnflattenToObject(value,options);
@@ -240,6 +228,7 @@ namespace JsonCons.Utilities
                 return UnflattenToObject(value,options);
             }
         }
+*/
 
     }
 
