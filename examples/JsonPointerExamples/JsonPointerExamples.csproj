@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\JsonPointer\JsonPointer.csproj" />
+    <ProjectReference Include="..\..\src\JsonCons.Utilities\JsonCons.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

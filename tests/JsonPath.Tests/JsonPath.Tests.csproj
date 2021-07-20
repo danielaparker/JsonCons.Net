@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\JsonHelpers\JsonHelpers.csproj" />
+    <ProjectReference Include="..\..\src\JsonCons.Utilities\JsonCons.Utilities.csproj" />
     <ProjectReference Include="..\..\src\JsonPath\JsonPath.csproj" />
   </ItemGroup>
 

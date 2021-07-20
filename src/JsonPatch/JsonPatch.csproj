@@ -12,9 +12,4 @@
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\JsonHelpers\JsonHelpers.csproj" />
-    <ProjectReference Include="..\JsonPointer\JsonPointer.csproj" />
-  </ItemGroup>
-
 </Project>

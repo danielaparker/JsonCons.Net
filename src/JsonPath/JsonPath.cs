@@ -105,7 +105,7 @@ namespace JsonCons.JsonPathLib
             options |= _requiredOptions;
 
             var resources = new DynamicResources();
-            PathComponent pathStem = PathComponent.Root;
+            PathLink pathBack = PathLink.Root;
             var values = new List<JsonElement>();
 
             if ((options & ResultOptions.Sort | options & ResultOptions.NoDups) != 0)
@@ -114,7 +114,7 @@ namespace JsonCons.JsonPathLib
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
-                                 pathStem, 
+                                 pathBack, 
                                  new JsonElementValue(root), 
                                  accumulator, 
                                  options);
@@ -158,7 +158,7 @@ namespace JsonCons.JsonPathLib
                 INodeAccumulator accumulator = new JsonElementAccumulator(values);            
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
-                                 pathStem, 
+                                 pathBack, 
                                  new JsonElementValue(root), 
                                  accumulator, 
                                  options);
@@ -180,12 +180,12 @@ namespace JsonCons.JsonPathLib
 
             var resources = new DynamicResources();
 
-            PathComponent pathStem = PathComponent.Root;
+            PathLink pathBack = PathLink.Root;
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
             _selector.Select(resources, 
                              new JsonElementValue(root), 
-                             pathStem, 
+                             pathBack, 
                              new JsonElementValue(root), 
                              accumulator, 
                              options | ResultOptions.Path);
@@ -232,12 +232,12 @@ namespace JsonCons.JsonPathLib
 
             var resources = new DynamicResources();
 
-            PathComponent pathStem = PathComponent.Root;
+            PathLink pathBack = PathLink.Root;
             var nodes = new List<JsonPathNode>();
             var accumulator = new NodeAccumulator(nodes);
             _selector.Select(resources, 
                              new JsonElementValue(root), 
-                             pathStem, 
+                             pathBack, 
                              new JsonElementValue(root), 
                              accumulator, 
                              options | ResultOptions.Path);

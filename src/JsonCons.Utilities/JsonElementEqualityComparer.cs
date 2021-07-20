@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace JsonCons.JsonHelpersLib
+namespace JsonCons.Utilities
 {
     /// <summary>
     /// Compares two <see cref="JsonElement"/> instances for equality by using value-based comparison.

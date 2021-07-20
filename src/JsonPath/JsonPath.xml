@@ -175,37 +175,37 @@
             Indicates a path component that matches on array indices.
             </summary>
         </member>
-        <member name="T:JsonCons.JsonPathLib.PathComponent">
+        <member name="T:JsonCons.JsonPathLib.PathLink">
              <summary>
              Represents a component of a <see cref="T:JsonCons.JsonPathLib.NormalizedPath"/>.
             
              </summary>
         </member>
-        <member name="P:JsonCons.JsonPathLib.PathComponent.Parent">
+        <member name="P:JsonCons.JsonPathLib.PathLink.Parent">
              <summary>
              Gets the parent of this component.
             
              </summary>
         </member>
-        <member name="P:JsonCons.JsonPathLib.PathComponent.ComponentKind">
+        <member name="P:JsonCons.JsonPathLib.PathLink.ComponentKind">
              <summary>
              Gets the type of the component.
             
              </summary>
         </member>
-        <member name="P:JsonCons.JsonPathLib.PathComponent.Root">
+        <member name="P:JsonCons.JsonPathLib.PathLink.Root">
              <summary>
              Gets a root component 
             
              </summary>
         </member>
-        <member name="P:JsonCons.JsonPathLib.PathComponent.Current">
+        <member name="P:JsonCons.JsonPathLib.PathLink.Current">
              <summary>
              Gets a current component 
             
              </summary>
         </member>
-        <member name="M:JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.String)">
+        <member name="M:JsonCons.JsonPathLib.PathLink.#ctor(JsonCons.JsonPathLib.PathLink,System.String)">
             <summary>
             Constructs a path component from a parent and name
             </summary>
@@ -216,7 +216,7 @@
               <paramref name="name"/> is <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.Int32)">
+        <member name="M:JsonCons.JsonPathLib.PathLink.#ctor(JsonCons.JsonPathLib.PathLink,System.Int32)">
             <summary>
             Constructs a path component from a parent and an index
             </summary>
@@ -226,13 +226,13 @@
               <paramref name="parent"/> is <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:JsonCons.JsonPathLib.PathComponent.GetName">
+        <member name="M:JsonCons.JsonPathLib.PathLink.GetName">
              <summary>
              Gets the value of the component as a name.
             
              </summary>
         </member>
-        <member name="M:JsonCons.JsonPathLib.PathComponent.GetIndex">
+        <member name="M:JsonCons.JsonPathLib.PathLink.GetIndex">
              <summary>
              Gets the value of the component as an index.
             
@@ -244,13 +244,13 @@
             
              </summary>
         </member>
-        <member name="M:JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathComponent)">
+        <member name="M:JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathLink)">
              <summary>
              Constructs a normalized path from the last path component.
             
              </summary>
         </member>
-        <member name="P:JsonCons.JsonPathLib.NormalizedPath.Last">
+        <member name="P:JsonCons.JsonPathLib.NormalizedPath.Back">
              <summary>
              Gets the last component of the normalized path. 
             

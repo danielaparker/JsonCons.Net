@@ -2,9 +2,9 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text.Json;
-using JsonCons.JsonPointerLib;
+using JsonCons.Utilities;
 
-namespace JsonCons.JsonPointerLib.Examples
+namespace JsonCons.Utilities.Examples
 {
     class JsonPointerExamples
     {

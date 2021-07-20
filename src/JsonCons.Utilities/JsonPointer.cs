@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
         
-namespace JsonCons.JsonPointerLib
+namespace JsonCons.Utilities
 {
     public sealed class JsonPointer : IEnumerable<string>, IEquatable<JsonPointer>
     {
@@ -280,4 +280,4 @@ namespace JsonCons.JsonPointerLib
 
     }
 
-} // namespace JsonCons.JsonPointerLib
+} // namespace JsonCons.Utilities

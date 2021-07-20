@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
-using JsonCons.JsonHelpersLib;
-using JsonCons.JsonPointerLib;
+using JsonCons.Utilities;
 
-namespace JsonCons.JsonPatchLib
+namespace JsonCons.Utilities
 {
      /// <summary>
     /// Captures error message and the related entity and the operation that caused it.
@@ -314,4 +313,4 @@ namespace JsonCons.JsonPatchLib
         }
     }
 
-} // namespace JsonCons.JsonPointerLib
+} // namespace JsonCons.Utilities

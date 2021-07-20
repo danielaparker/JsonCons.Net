@@ -139,7 +139,7 @@ namespace JsonCons.JsonPathLib
                         IValue val = stack.Peek();
                         stack.Pop();
                         IValue value;
-                        if (token.GetSelector().TryEvaluate(resources, root, PathComponent.Current, val, options, out value))
+                        if (token.GetSelector().TryEvaluate(resources, root, PathLink.Current, val, options, out value))
                         {
                             stack.Push(value);
                         }

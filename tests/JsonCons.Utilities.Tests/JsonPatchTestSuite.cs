@@ -3,10 +3,9 @@ using System.IO;
 using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using JsonCons.JsonHelpersLib;
-using JsonCons.JsonPatchLib;
+using JsonCons.Utilities;
 
-namespace JsonCons.JsonPatchLib.Tests
+namespace JsonCons.Utilities.Tests
 {
     [TestClass]
     public class JsonPatchTests

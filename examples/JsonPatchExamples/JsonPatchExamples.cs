@@ -2,9 +2,9 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text.Json;
-using JsonCons.JsonPatchLib;
+using JsonCons.Utilities;
 
-namespace JsonCons.JsonPatchLib.Examples
+namespace JsonCons.Utilities.Examples
 {
     class JsonPatchExamples
     {

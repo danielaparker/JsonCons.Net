@@ -1,127 +1,6 @@
 ### YamlMime:XRefMap
 sorted: true
 references:
-- uid: JsonCons.JsonHelpersLib
-  name: JsonCons.JsonHelpersLib
-  href: ref/JsonCons.JsonHelpersLib.html
-  commentId: N:JsonCons.JsonHelpersLib
-  fullName: JsonCons.JsonHelpersLib
-  nameWithType: JsonCons.JsonHelpersLib
-- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer
-  name: JsonElementEqualityComparer
-  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html
-  commentId: T:JsonCons.JsonHelpersLib.JsonElementEqualityComparer
-  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer
-  nameWithType: JsonElementEqualityComparer
-- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
-  name: Equals(JsonElement, JsonElement)
-  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_Equals_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
-  commentId: M:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
-  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
-  nameWithType: JsonElementEqualityComparer.Equals(JsonElement, JsonElement)
-- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals*
-  name: Equals
-  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_Equals_
-  commentId: Overload:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals
-  isSpec: "True"
-  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Equals
-  nameWithType: JsonElementEqualityComparer.Equals
-- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
-  name: GetHashCode(JsonElement)
-  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_GetHashCode_System_Text_Json_JsonElement_
-  commentId: M:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
-  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
-  nameWithType: JsonElementEqualityComparer.GetHashCode(JsonElement)
-- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode*
-  name: GetHashCode
-  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_GetHashCode_
-  commentId: Overload:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode
-  isSpec: "True"
-  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.GetHashCode
-  nameWithType: JsonElementEqualityComparer.GetHashCode
-- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance
-  name: Instance
-  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_Instance
-  commentId: P:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance
-  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance
-  nameWithType: JsonElementEqualityComparer.Instance
-- uid: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance*
-  name: Instance
-  href: ref/JsonCons.JsonHelpersLib.JsonElementEqualityComparer.html#JsonCons_JsonHelpersLib_JsonElementEqualityComparer_Instance_
-  commentId: Overload:JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance
-  isSpec: "True"
-  fullName: JsonCons.JsonHelpersLib.JsonElementEqualityComparer.Instance
-  nameWithType: JsonElementEqualityComparer.Instance
-- uid: JsonCons.JsonPatchLib
-  name: JsonCons.JsonPatchLib
-  href: ref/JsonCons.JsonPatchLib.html
-  commentId: N:JsonCons.JsonPatchLib
-  fullName: JsonCons.JsonPatchLib
-  nameWithType: JsonCons.JsonPatchLib
-- uid: JsonCons.JsonPatchLib.JsonPatch
-  name: JsonPatch
-  href: ref/JsonCons.JsonPatchLib.JsonPatch.html
-  commentId: T:JsonCons.JsonPatchLib.JsonPatch
-  fullName: JsonCons.JsonPatchLib.JsonPatch
-  nameWithType: JsonPatch
-- uid: JsonCons.JsonPatchLib.JsonPatch.ApplyPatch(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
-  name: ApplyPatch(JsonElement, JsonElement)
-  href: ref/JsonCons.JsonPatchLib.JsonPatch.html#JsonCons_JsonPatchLib_JsonPatch_ApplyPatch_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
-  commentId: M:JsonCons.JsonPatchLib.JsonPatch.ApplyPatch(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
-  fullName: JsonCons.JsonPatchLib.JsonPatch.ApplyPatch(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
-  nameWithType: JsonPatch.ApplyPatch(JsonElement, JsonElement)
-- uid: JsonCons.JsonPatchLib.JsonPatch.ApplyPatch*
-  name: ApplyPatch
-  href: ref/JsonCons.JsonPatchLib.JsonPatch.html#JsonCons_JsonPatchLib_JsonPatch_ApplyPatch_
-  commentId: Overload:JsonCons.JsonPatchLib.JsonPatch.ApplyPatch
-  isSpec: "True"
-  fullName: JsonCons.JsonPatchLib.JsonPatch.ApplyPatch
-  nameWithType: JsonPatch.ApplyPatch
-- uid: JsonCons.JsonPatchLib.JsonPatch.FromDiff(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
-  name: FromDiff(JsonElement, JsonElement)
-  href: ref/JsonCons.JsonPatchLib.JsonPatch.html#JsonCons_JsonPatchLib_JsonPatch_FromDiff_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
-  commentId: M:JsonCons.JsonPatchLib.JsonPatch.FromDiff(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
-  fullName: JsonCons.JsonPatchLib.JsonPatch.FromDiff(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
-  nameWithType: JsonPatch.FromDiff(JsonElement, JsonElement)
-- uid: JsonCons.JsonPatchLib.JsonPatch.FromDiff*
-  name: FromDiff
-  href: ref/JsonCons.JsonPatchLib.JsonPatch.html#JsonCons_JsonPatchLib_JsonPatch_FromDiff_
-  commentId: Overload:JsonCons.JsonPatchLib.JsonPatch.FromDiff
-  isSpec: "True"
-  fullName: JsonCons.JsonPatchLib.JsonPatch.FromDiff
-  nameWithType: JsonPatch.FromDiff
-- uid: JsonCons.JsonPatchLib.JsonPatchException
-  name: JsonPatchException
-  href: ref/JsonCons.JsonPatchLib.JsonPatchException.html
-  commentId: T:JsonCons.JsonPatchLib.JsonPatchException
-  fullName: JsonCons.JsonPatchLib.JsonPatchException
-  nameWithType: JsonPatchException
-- uid: JsonCons.JsonPatchLib.JsonPatchException.#ctor(System.String,System.String)
-  name: JsonPatchException(String, String)
-  href: ref/JsonCons.JsonPatchLib.JsonPatchException.html#JsonCons_JsonPatchLib_JsonPatchException__ctor_System_String_System_String_
-  commentId: M:JsonCons.JsonPatchLib.JsonPatchException.#ctor(System.String,System.String)
-  fullName: JsonCons.JsonPatchLib.JsonPatchException.JsonPatchException(System.String, System.String)
-  nameWithType: JsonPatchException.JsonPatchException(String, String)
-- uid: JsonCons.JsonPatchLib.JsonPatchException.#ctor*
-  name: JsonPatchException
-  href: ref/JsonCons.JsonPatchLib.JsonPatchException.html#JsonCons_JsonPatchLib_JsonPatchException__ctor_
-  commentId: Overload:JsonCons.JsonPatchLib.JsonPatchException.#ctor
-  isSpec: "True"
-  fullName: JsonCons.JsonPatchLib.JsonPatchException.JsonPatchException
-  nameWithType: JsonPatchException.JsonPatchException
-- uid: JsonCons.JsonPatchLib.JsonPatchException.Operation
-  name: Operation
-  href: ref/JsonCons.JsonPatchLib.JsonPatchException.html#JsonCons_JsonPatchLib_JsonPatchException_Operation
-  commentId: P:JsonCons.JsonPatchLib.JsonPatchException.Operation
-  fullName: JsonCons.JsonPatchLib.JsonPatchException.Operation
-  nameWithType: JsonPatchException.Operation
-- uid: JsonCons.JsonPatchLib.JsonPatchException.Operation*
-  name: Operation
-  href: ref/JsonCons.JsonPatchLib.JsonPatchException.html#JsonCons_JsonPatchLib_JsonPatchException_Operation_
-  commentId: Overload:JsonCons.JsonPatchLib.JsonPatchException.Operation
-  isSpec: "True"
-  fullName: JsonCons.JsonPatchLib.JsonPatchException.Operation
-  nameWithType: JsonPatchException.Operation
 - uid: JsonCons.JsonPathLib
   name: JsonCons.JsonPathLib
   href: ref/JsonCons.JsonPathLib.html
@@ -326,12 +205,12 @@ references:
   commentId: T:JsonCons.JsonPathLib.NormalizedPath
   fullName: JsonCons.JsonPathLib.NormalizedPath
   nameWithType: NormalizedPath
-- uid: JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathComponent)
-  name: NormalizedPath(PathComponent)
-  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath__ctor_JsonCons_JsonPathLib_PathComponent_
-  commentId: M:JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathComponent)
-  fullName: JsonCons.JsonPathLib.NormalizedPath.NormalizedPath(JsonCons.JsonPathLib.PathComponent)
-  nameWithType: NormalizedPath.NormalizedPath(PathComponent)
+- uid: JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathLink)
+  name: NormalizedPath(PathLink)
+  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath__ctor_JsonCons_JsonPathLib_PathLink_
+  commentId: M:JsonCons.JsonPathLib.NormalizedPath.#ctor(JsonCons.JsonPathLib.PathLink)
+  fullName: JsonCons.JsonPathLib.NormalizedPath.NormalizedPath(JsonCons.JsonPathLib.PathLink)
+  nameWithType: NormalizedPath.NormalizedPath(PathLink)
 - uid: JsonCons.JsonPathLib.NormalizedPath.#ctor*
   name: NormalizedPath
   href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath__ctor_
@@ -339,6 +218,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPathLib.NormalizedPath.NormalizedPath
   nameWithType: NormalizedPath.NormalizedPath
+- uid: JsonCons.JsonPathLib.NormalizedPath.Back
+  name: Back
+  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Back
+  commentId: P:JsonCons.JsonPathLib.NormalizedPath.Back
+  fullName: JsonCons.JsonPathLib.NormalizedPath.Back
+  nameWithType: NormalizedPath.Back
+- uid: JsonCons.JsonPathLib.NormalizedPath.Back*
+  name: Back
+  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Back_
+  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.Back
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.NormalizedPath.Back
+  nameWithType: NormalizedPath.Back
 - uid: JsonCons.JsonPathLib.NormalizedPath.CompareTo(JsonCons.JsonPathLib.NormalizedPath)
   name: CompareTo(NormalizedPath)
   href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_CompareTo_JsonCons_JsonPathLib_NormalizedPath_
@@ -397,19 +289,6 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPathLib.NormalizedPath.GetHashCode
   nameWithType: NormalizedPath.GetHashCode
-- uid: JsonCons.JsonPathLib.NormalizedPath.Last
-  name: Last
-  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Last
-  commentId: P:JsonCons.JsonPathLib.NormalizedPath.Last
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Last
-  nameWithType: NormalizedPath.Last
-- uid: JsonCons.JsonPathLib.NormalizedPath.Last*
-  name: Last
-  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Last_
-  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.Last
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Last
-  nameWithType: NormalizedPath.Last
 - uid: JsonCons.JsonPathLib.NormalizedPath.System#Collections#IEnumerable#GetEnumerator
   name: IEnumerable.GetEnumerator()
   href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_System_Collections_IEnumerable_GetEnumerator
@@ -469,135 +348,6 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPathLib.NormalizedPath.TryGet
   nameWithType: NormalizedPath.TryGet
-- uid: JsonCons.JsonPathLib.PathComponent
-  name: PathComponent
-  href: ref/JsonCons.JsonPathLib.PathComponent.html
-  commentId: T:JsonCons.JsonPathLib.PathComponent
-  fullName: JsonCons.JsonPathLib.PathComponent
-  nameWithType: PathComponent
-- uid: JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.Int32)
-  name: PathComponent(PathComponent, Int32)
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent__ctor_JsonCons_JsonPathLib_PathComponent_System_Int32_
-  commentId: M:JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.Int32)
-  fullName: JsonCons.JsonPathLib.PathComponent.PathComponent(JsonCons.JsonPathLib.PathComponent, System.Int32)
-  nameWithType: PathComponent.PathComponent(PathComponent, Int32)
-- uid: JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.String)
-  name: PathComponent(PathComponent, String)
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent__ctor_JsonCons_JsonPathLib_PathComponent_System_String_
-  commentId: M:JsonCons.JsonPathLib.PathComponent.#ctor(JsonCons.JsonPathLib.PathComponent,System.String)
-  fullName: JsonCons.JsonPathLib.PathComponent.PathComponent(JsonCons.JsonPathLib.PathComponent, System.String)
-  nameWithType: PathComponent.PathComponent(PathComponent, String)
-- uid: JsonCons.JsonPathLib.PathComponent.#ctor*
-  name: PathComponent
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent__ctor_
-  commentId: Overload:JsonCons.JsonPathLib.PathComponent.#ctor
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.PathComponent.PathComponent
-  nameWithType: PathComponent.PathComponent
-- uid: JsonCons.JsonPathLib.PathComponent.CompareTo(JsonCons.JsonPathLib.PathComponent)
-  name: CompareTo(PathComponent)
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_CompareTo_JsonCons_JsonPathLib_PathComponent_
-  commentId: M:JsonCons.JsonPathLib.PathComponent.CompareTo(JsonCons.JsonPathLib.PathComponent)
-  fullName: JsonCons.JsonPathLib.PathComponent.CompareTo(JsonCons.JsonPathLib.PathComponent)
-  nameWithType: PathComponent.CompareTo(PathComponent)
-- uid: JsonCons.JsonPathLib.PathComponent.CompareTo*
-  name: CompareTo
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_CompareTo_
-  commentId: Overload:JsonCons.JsonPathLib.PathComponent.CompareTo
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.PathComponent.CompareTo
-  nameWithType: PathComponent.CompareTo
-- uid: JsonCons.JsonPathLib.PathComponent.ComponentKind
-  name: ComponentKind
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_ComponentKind
-  commentId: P:JsonCons.JsonPathLib.PathComponent.ComponentKind
-  fullName: JsonCons.JsonPathLib.PathComponent.ComponentKind
-  nameWithType: PathComponent.ComponentKind
-- uid: JsonCons.JsonPathLib.PathComponent.ComponentKind*
-  name: ComponentKind
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_ComponentKind_
-  commentId: Overload:JsonCons.JsonPathLib.PathComponent.ComponentKind
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.PathComponent.ComponentKind
-  nameWithType: PathComponent.ComponentKind
-- uid: JsonCons.JsonPathLib.PathComponent.Current
-  name: Current
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_Current
-  commentId: P:JsonCons.JsonPathLib.PathComponent.Current
-  fullName: JsonCons.JsonPathLib.PathComponent.Current
-  nameWithType: PathComponent.Current
-- uid: JsonCons.JsonPathLib.PathComponent.Current*
-  name: Current
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_Current_
-  commentId: Overload:JsonCons.JsonPathLib.PathComponent.Current
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.PathComponent.Current
-  nameWithType: PathComponent.Current
-- uid: JsonCons.JsonPathLib.PathComponent.GetHashCode
-  name: GetHashCode()
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_GetHashCode
-  commentId: M:JsonCons.JsonPathLib.PathComponent.GetHashCode
-  fullName: JsonCons.JsonPathLib.PathComponent.GetHashCode()
-  nameWithType: PathComponent.GetHashCode()
-- uid: JsonCons.JsonPathLib.PathComponent.GetHashCode*
-  name: GetHashCode
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_GetHashCode_
-  commentId: Overload:JsonCons.JsonPathLib.PathComponent.GetHashCode
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.PathComponent.GetHashCode
-  nameWithType: PathComponent.GetHashCode
-- uid: JsonCons.JsonPathLib.PathComponent.GetIndex
-  name: GetIndex()
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_GetIndex
-  commentId: M:JsonCons.JsonPathLib.PathComponent.GetIndex
-  fullName: JsonCons.JsonPathLib.PathComponent.GetIndex()
-  nameWithType: PathComponent.GetIndex()
-- uid: JsonCons.JsonPathLib.PathComponent.GetIndex*
-  name: GetIndex
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_GetIndex_
-  commentId: Overload:JsonCons.JsonPathLib.PathComponent.GetIndex
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.PathComponent.GetIndex
-  nameWithType: PathComponent.GetIndex
-- uid: JsonCons.JsonPathLib.PathComponent.GetName
-  name: GetName()
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_GetName
-  commentId: M:JsonCons.JsonPathLib.PathComponent.GetName
-  fullName: JsonCons.JsonPathLib.PathComponent.GetName()
-  nameWithType: PathComponent.GetName()
-- uid: JsonCons.JsonPathLib.PathComponent.GetName*
-  name: GetName
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_GetName_
-  commentId: Overload:JsonCons.JsonPathLib.PathComponent.GetName
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.PathComponent.GetName
-  nameWithType: PathComponent.GetName
-- uid: JsonCons.JsonPathLib.PathComponent.Parent
-  name: Parent
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_Parent
-  commentId: P:JsonCons.JsonPathLib.PathComponent.Parent
-  fullName: JsonCons.JsonPathLib.PathComponent.Parent
-  nameWithType: PathComponent.Parent
-- uid: JsonCons.JsonPathLib.PathComponent.Parent*
-  name: Parent
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_Parent_
-  commentId: Overload:JsonCons.JsonPathLib.PathComponent.Parent
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.PathComponent.Parent
-  nameWithType: PathComponent.Parent
-- uid: JsonCons.JsonPathLib.PathComponent.Root
-  name: Root
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_Root
-  commentId: P:JsonCons.JsonPathLib.PathComponent.Root
-  fullName: JsonCons.JsonPathLib.PathComponent.Root
-  nameWithType: PathComponent.Root
-- uid: JsonCons.JsonPathLib.PathComponent.Root*
-  name: Root
-  href: ref/JsonCons.JsonPathLib.PathComponent.html#JsonCons_JsonPathLib_PathComponent_Root_
-  commentId: Overload:JsonCons.JsonPathLib.PathComponent.Root
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.PathComponent.Root
-  nameWithType: PathComponent.Root
 - uid: JsonCons.JsonPathLib.PathComponentKind
   name: PathComponentKind
   href: ref/JsonCons.JsonPathLib.PathComponentKind.html
@@ -622,6 +372,135 @@ references:
   commentId: F:JsonCons.JsonPathLib.PathComponentKind.Root
   fullName: JsonCons.JsonPathLib.PathComponentKind.Root
   nameWithType: PathComponentKind.Root
+- uid: JsonCons.JsonPathLib.PathLink
+  name: PathLink
+  href: ref/JsonCons.JsonPathLib.PathLink.html
+  commentId: T:JsonCons.JsonPathLib.PathLink
+  fullName: JsonCons.JsonPathLib.PathLink
+  nameWithType: PathLink
+- uid: JsonCons.JsonPathLib.PathLink.#ctor(JsonCons.JsonPathLib.PathLink,System.Int32)
+  name: PathLink(PathLink, Int32)
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink__ctor_JsonCons_JsonPathLib_PathLink_System_Int32_
+  commentId: M:JsonCons.JsonPathLib.PathLink.#ctor(JsonCons.JsonPathLib.PathLink,System.Int32)
+  fullName: JsonCons.JsonPathLib.PathLink.PathLink(JsonCons.JsonPathLib.PathLink, System.Int32)
+  nameWithType: PathLink.PathLink(PathLink, Int32)
+- uid: JsonCons.JsonPathLib.PathLink.#ctor(JsonCons.JsonPathLib.PathLink,System.String)
+  name: PathLink(PathLink, String)
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink__ctor_JsonCons_JsonPathLib_PathLink_System_String_
+  commentId: M:JsonCons.JsonPathLib.PathLink.#ctor(JsonCons.JsonPathLib.PathLink,System.String)
+  fullName: JsonCons.JsonPathLib.PathLink.PathLink(JsonCons.JsonPathLib.PathLink, System.String)
+  nameWithType: PathLink.PathLink(PathLink, String)
+- uid: JsonCons.JsonPathLib.PathLink.#ctor*
+  name: PathLink
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink__ctor_
+  commentId: Overload:JsonCons.JsonPathLib.PathLink.#ctor
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.PathLink.PathLink
+  nameWithType: PathLink.PathLink
+- uid: JsonCons.JsonPathLib.PathLink.CompareTo(JsonCons.JsonPathLib.PathLink)
+  name: CompareTo(PathLink)
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_CompareTo_JsonCons_JsonPathLib_PathLink_
+  commentId: M:JsonCons.JsonPathLib.PathLink.CompareTo(JsonCons.JsonPathLib.PathLink)
+  fullName: JsonCons.JsonPathLib.PathLink.CompareTo(JsonCons.JsonPathLib.PathLink)
+  nameWithType: PathLink.CompareTo(PathLink)
+- uid: JsonCons.JsonPathLib.PathLink.CompareTo*
+  name: CompareTo
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_CompareTo_
+  commentId: Overload:JsonCons.JsonPathLib.PathLink.CompareTo
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.PathLink.CompareTo
+  nameWithType: PathLink.CompareTo
+- uid: JsonCons.JsonPathLib.PathLink.ComponentKind
+  name: ComponentKind
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_ComponentKind
+  commentId: P:JsonCons.JsonPathLib.PathLink.ComponentKind
+  fullName: JsonCons.JsonPathLib.PathLink.ComponentKind
+  nameWithType: PathLink.ComponentKind
+- uid: JsonCons.JsonPathLib.PathLink.ComponentKind*
+  name: ComponentKind
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_ComponentKind_
+  commentId: Overload:JsonCons.JsonPathLib.PathLink.ComponentKind
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.PathLink.ComponentKind
+  nameWithType: PathLink.ComponentKind
+- uid: JsonCons.JsonPathLib.PathLink.Current
+  name: Current
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_Current
+  commentId: P:JsonCons.JsonPathLib.PathLink.Current
+  fullName: JsonCons.JsonPathLib.PathLink.Current
+  nameWithType: PathLink.Current
+- uid: JsonCons.JsonPathLib.PathLink.Current*
+  name: Current
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_Current_
+  commentId: Overload:JsonCons.JsonPathLib.PathLink.Current
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.PathLink.Current
+  nameWithType: PathLink.Current
+- uid: JsonCons.JsonPathLib.PathLink.GetHashCode
+  name: GetHashCode()
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_GetHashCode
+  commentId: M:JsonCons.JsonPathLib.PathLink.GetHashCode
+  fullName: JsonCons.JsonPathLib.PathLink.GetHashCode()
+  nameWithType: PathLink.GetHashCode()
+- uid: JsonCons.JsonPathLib.PathLink.GetHashCode*
+  name: GetHashCode
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_GetHashCode_
+  commentId: Overload:JsonCons.JsonPathLib.PathLink.GetHashCode
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.PathLink.GetHashCode
+  nameWithType: PathLink.GetHashCode
+- uid: JsonCons.JsonPathLib.PathLink.GetIndex
+  name: GetIndex()
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_GetIndex
+  commentId: M:JsonCons.JsonPathLib.PathLink.GetIndex
+  fullName: JsonCons.JsonPathLib.PathLink.GetIndex()
+  nameWithType: PathLink.GetIndex()
+- uid: JsonCons.JsonPathLib.PathLink.GetIndex*
+  name: GetIndex
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_GetIndex_
+  commentId: Overload:JsonCons.JsonPathLib.PathLink.GetIndex
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.PathLink.GetIndex
+  nameWithType: PathLink.GetIndex
+- uid: JsonCons.JsonPathLib.PathLink.GetName
+  name: GetName()
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_GetName
+  commentId: M:JsonCons.JsonPathLib.PathLink.GetName
+  fullName: JsonCons.JsonPathLib.PathLink.GetName()
+  nameWithType: PathLink.GetName()
+- uid: JsonCons.JsonPathLib.PathLink.GetName*
+  name: GetName
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_GetName_
+  commentId: Overload:JsonCons.JsonPathLib.PathLink.GetName
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.PathLink.GetName
+  nameWithType: PathLink.GetName
+- uid: JsonCons.JsonPathLib.PathLink.Parent
+  name: Parent
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_Parent
+  commentId: P:JsonCons.JsonPathLib.PathLink.Parent
+  fullName: JsonCons.JsonPathLib.PathLink.Parent
+  nameWithType: PathLink.Parent
+- uid: JsonCons.JsonPathLib.PathLink.Parent*
+  name: Parent
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_Parent_
+  commentId: Overload:JsonCons.JsonPathLib.PathLink.Parent
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.PathLink.Parent
+  nameWithType: PathLink.Parent
+- uid: JsonCons.JsonPathLib.PathLink.Root
+  name: Root
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_Root
+  commentId: P:JsonCons.JsonPathLib.PathLink.Root
+  fullName: JsonCons.JsonPathLib.PathLink.Root
+  nameWithType: PathLink.Root
+- uid: JsonCons.JsonPathLib.PathLink.Root*
+  name: Root
+  href: ref/JsonCons.JsonPathLib.PathLink.html#JsonCons_JsonPathLib_PathLink_Root_
+  commentId: Overload:JsonCons.JsonPathLib.PathLink.Root
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.PathLink.Root
+  nameWithType: PathLink.Root
 - uid: JsonCons.JsonPathLib.ResultOptions
   name: ResultOptions
   href: ref/JsonCons.JsonPathLib.ResultOptions.html
@@ -646,173 +525,441 @@ references:
   commentId: F:JsonCons.JsonPathLib.ResultOptions.Sort
   fullName: JsonCons.JsonPathLib.ResultOptions.Sort
   nameWithType: ResultOptions.Sort
-- uid: JsonCons.JsonPointerLib
-  name: JsonCons.JsonPointerLib
-  href: ref/JsonCons.JsonPointerLib.html
-  commentId: N:JsonCons.JsonPointerLib
-  fullName: JsonCons.JsonPointerLib
-  nameWithType: JsonCons.JsonPointerLib
-- uid: JsonCons.JsonPointerLib.JsonPointer
+- uid: JsonCons.Utilities
+  name: JsonCons.Utilities
+  href: ref/JsonCons.Utilities.html
+  commentId: N:JsonCons.Utilities
+  fullName: JsonCons.Utilities
+  nameWithType: JsonCons.Utilities
+- uid: JsonCons.Utilities.JsonDocumentBuilder
+  name: JsonDocumentBuilder
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html
+  commentId: T:JsonCons.Utilities.JsonDocumentBuilder
+  fullName: JsonCons.Utilities.JsonDocumentBuilder
+  nameWithType: JsonDocumentBuilder
+- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Collections.Generic.IDictionary{System.String,JsonCons.Utilities.JsonDocumentBuilder})
+  name: JsonDocumentBuilder(IDictionary<String, JsonDocumentBuilder>)
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_System_Collections_Generic_IDictionary_System_String_JsonCons_Utilities_JsonDocumentBuilder__
+  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Collections.Generic.IDictionary{System.String,JsonCons.Utilities.JsonDocumentBuilder})
+  name.vb: JsonDocumentBuilder(IDictionary(Of String, JsonDocumentBuilder))
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Collections.Generic.IDictionary<System.String, JsonCons.Utilities.JsonDocumentBuilder>)
+  fullName.vb: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Collections.Generic.IDictionary(Of System.String, JsonCons.Utilities.JsonDocumentBuilder))
+  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder(IDictionary<String, JsonDocumentBuilder>)
+  nameWithType.vb: JsonDocumentBuilder.JsonDocumentBuilder(IDictionary(Of String, JsonDocumentBuilder))
+- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Collections.Generic.IList{JsonCons.Utilities.JsonDocumentBuilder})
+  name: JsonDocumentBuilder(IList<JsonDocumentBuilder>)
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_System_Collections_Generic_IList_JsonCons_Utilities_JsonDocumentBuilder__
+  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Collections.Generic.IList{JsonCons.Utilities.JsonDocumentBuilder})
+  name.vb: JsonDocumentBuilder(IList(Of JsonDocumentBuilder))
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Collections.Generic.IList<JsonCons.Utilities.JsonDocumentBuilder>)
+  fullName.vb: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Collections.Generic.IList(Of JsonCons.Utilities.JsonDocumentBuilder))
+  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder(IList<JsonDocumentBuilder>)
+  nameWithType.vb: JsonDocumentBuilder.JsonDocumentBuilder(IList(Of JsonDocumentBuilder))
+- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.String)
+  name: JsonDocumentBuilder(String)
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_System_String_
+  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.String)
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.String)
+  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder(String)
+- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Text.Json.JsonElement)
+  name: JsonDocumentBuilder(JsonElement)
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Text.Json.JsonElement)
+  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder(JsonElement)
+- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Text.Json.JsonValueKind)
+  name: JsonDocumentBuilder(JsonValueKind)
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_System_Text_Json_JsonValueKind_
+  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Text.Json.JsonValueKind)
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Text.Json.JsonValueKind)
+  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder(JsonValueKind)
+- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor*
+  name: JsonDocumentBuilder
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_
+  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.#ctor
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder
+  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder
+- uid: JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength
+  name: GetArrayLength()
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetArrayLength
+  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength()
+  nameWithType: JsonDocumentBuilder.GetArrayLength()
+- uid: JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength*
+  name: GetArrayLength
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetArrayLength_
+  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength
+  nameWithType: JsonDocumentBuilder.GetArrayLength
+- uid: JsonCons.Utilities.JsonDocumentBuilder.GetDictionary
+  name: GetDictionary()
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetDictionary
+  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.GetDictionary
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetDictionary()
+  nameWithType: JsonDocumentBuilder.GetDictionary()
+- uid: JsonCons.Utilities.JsonDocumentBuilder.GetDictionary*
+  name: GetDictionary
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetDictionary_
+  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.GetDictionary
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetDictionary
+  nameWithType: JsonDocumentBuilder.GetDictionary
+- uid: JsonCons.Utilities.JsonDocumentBuilder.GetList
+  name: GetList()
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetList
+  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.GetList
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetList()
+  nameWithType: JsonDocumentBuilder.GetList()
+- uid: JsonCons.Utilities.JsonDocumentBuilder.GetList*
+  name: GetList
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetList_
+  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.GetList
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetList
+  nameWithType: JsonDocumentBuilder.GetList
+- uid: JsonCons.Utilities.JsonDocumentBuilder.Item(System.Int32)
+  name: Item[Int32]
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_Item_System_Int32_
+  commentId: P:JsonCons.Utilities.JsonDocumentBuilder.Item(System.Int32)
+  name.vb: Item(Int32)
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.Item[System.Int32]
+  fullName.vb: JsonCons.Utilities.JsonDocumentBuilder.Item(System.Int32)
+  nameWithType: JsonDocumentBuilder.Item[Int32]
+  nameWithType.vb: JsonDocumentBuilder.Item(Int32)
+- uid: JsonCons.Utilities.JsonDocumentBuilder.Item*
+  name: Item
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_Item_
+  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.Item
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.Item
+  nameWithType: JsonDocumentBuilder.Item
+- uid: JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument
+  name: ToJsonDocument()
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ToJsonDocument
+  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument()
+  nameWithType: JsonDocumentBuilder.ToJsonDocument()
+- uid: JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument*
+  name: ToJsonDocument
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ToJsonDocument_
+  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument
+  nameWithType: JsonDocumentBuilder.ToJsonDocument
+- uid: JsonCons.Utilities.JsonDocumentBuilder.ToString
+  name: ToString()
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ToString
+  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.ToString
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.ToString()
+  nameWithType: JsonDocumentBuilder.ToString()
+- uid: JsonCons.Utilities.JsonDocumentBuilder.ToString*
+  name: ToString
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ToString_
+  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.ToString
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.ToString
+  nameWithType: JsonDocumentBuilder.ToString
+- uid: JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty(System.String,JsonCons.Utilities.JsonDocumentBuilder@)
+  name: TryGetProperty(String, out JsonDocumentBuilder)
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_TryGetProperty_System_String_JsonCons_Utilities_JsonDocumentBuilder__
+  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty(System.String,JsonCons.Utilities.JsonDocumentBuilder@)
+  name.vb: TryGetProperty(String, ByRef JsonDocumentBuilder)
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty(System.String, out JsonCons.Utilities.JsonDocumentBuilder)
+  fullName.vb: JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty(System.String, ByRef JsonCons.Utilities.JsonDocumentBuilder)
+  nameWithType: JsonDocumentBuilder.TryGetProperty(String, out JsonDocumentBuilder)
+  nameWithType.vb: JsonDocumentBuilder.TryGetProperty(String, ByRef JsonDocumentBuilder)
+- uid: JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty*
+  name: TryGetProperty
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_TryGetProperty_
+  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty
+  nameWithType: JsonDocumentBuilder.TryGetProperty
+- uid: JsonCons.Utilities.JsonDocumentBuilder.ValueKind
+  name: ValueKind
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ValueKind
+  commentId: P:JsonCons.Utilities.JsonDocumentBuilder.ValueKind
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.ValueKind
+  nameWithType: JsonDocumentBuilder.ValueKind
+- uid: JsonCons.Utilities.JsonDocumentBuilder.ValueKind*
+  name: ValueKind
+  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ValueKind_
+  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.ValueKind
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonDocumentBuilder.ValueKind
+  nameWithType: JsonDocumentBuilder.ValueKind
+- uid: JsonCons.Utilities.JsonElementEqualityComparer
+  name: JsonElementEqualityComparer
+  href: ref/JsonCons.Utilities.JsonElementEqualityComparer.html
+  commentId: T:JsonCons.Utilities.JsonElementEqualityComparer
+  fullName: JsonCons.Utilities.JsonElementEqualityComparer
+  nameWithType: JsonElementEqualityComparer
+- uid: JsonCons.Utilities.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  name: Equals(JsonElement, JsonElement)
+  href: ref/JsonCons.Utilities.JsonElementEqualityComparer.html#JsonCons_Utilities_JsonElementEqualityComparer_Equals_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.Utilities.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
+  nameWithType: JsonElementEqualityComparer.Equals(JsonElement, JsonElement)
+- uid: JsonCons.Utilities.JsonElementEqualityComparer.Equals*
+  name: Equals
+  href: ref/JsonCons.Utilities.JsonElementEqualityComparer.html#JsonCons_Utilities_JsonElementEqualityComparer_Equals_
+  commentId: Overload:JsonCons.Utilities.JsonElementEqualityComparer.Equals
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonElementEqualityComparer.Equals
+  nameWithType: JsonElementEqualityComparer.Equals
+- uid: JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
+  name: GetHashCode(JsonElement)
+  href: ref/JsonCons.Utilities.JsonElementEqualityComparer.html#JsonCons_Utilities_JsonElementEqualityComparer_GetHashCode_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)
+  nameWithType: JsonElementEqualityComparer.GetHashCode(JsonElement)
+- uid: JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode*
+  name: GetHashCode
+  href: ref/JsonCons.Utilities.JsonElementEqualityComparer.html#JsonCons_Utilities_JsonElementEqualityComparer_GetHashCode_
+  commentId: Overload:JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode
+  nameWithType: JsonElementEqualityComparer.GetHashCode
+- uid: JsonCons.Utilities.JsonElementEqualityComparer.Instance
+  name: Instance
+  href: ref/JsonCons.Utilities.JsonElementEqualityComparer.html#JsonCons_Utilities_JsonElementEqualityComparer_Instance
+  commentId: P:JsonCons.Utilities.JsonElementEqualityComparer.Instance
+  fullName: JsonCons.Utilities.JsonElementEqualityComparer.Instance
+  nameWithType: JsonElementEqualityComparer.Instance
+- uid: JsonCons.Utilities.JsonElementEqualityComparer.Instance*
+  name: Instance
+  href: ref/JsonCons.Utilities.JsonElementEqualityComparer.html#JsonCons_Utilities_JsonElementEqualityComparer_Instance_
+  commentId: Overload:JsonCons.Utilities.JsonElementEqualityComparer.Instance
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonElementEqualityComparer.Instance
+  nameWithType: JsonElementEqualityComparer.Instance
+- uid: JsonCons.Utilities.JsonPatch
+  name: JsonPatch
+  href: ref/JsonCons.Utilities.JsonPatch.html
+  commentId: T:JsonCons.Utilities.JsonPatch
+  fullName: JsonCons.Utilities.JsonPatch
+  nameWithType: JsonPatch
+- uid: JsonCons.Utilities.JsonPatch.ApplyPatch(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  name: ApplyPatch(JsonElement, JsonElement)
+  href: ref/JsonCons.Utilities.JsonPatch.html#JsonCons_Utilities_JsonPatch_ApplyPatch_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.Utilities.JsonPatch.ApplyPatch(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonPatch.ApplyPatch(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
+  nameWithType: JsonPatch.ApplyPatch(JsonElement, JsonElement)
+- uid: JsonCons.Utilities.JsonPatch.ApplyPatch*
+  name: ApplyPatch
+  href: ref/JsonCons.Utilities.JsonPatch.html#JsonCons_Utilities_JsonPatch_ApplyPatch_
+  commentId: Overload:JsonCons.Utilities.JsonPatch.ApplyPatch
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonPatch.ApplyPatch
+  nameWithType: JsonPatch.ApplyPatch
+- uid: JsonCons.Utilities.JsonPatch.FromDiff(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  name: FromDiff(JsonElement, JsonElement)
+  href: ref/JsonCons.Utilities.JsonPatch.html#JsonCons_Utilities_JsonPatch_FromDiff_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.Utilities.JsonPatch.FromDiff(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonPatch.FromDiff(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
+  nameWithType: JsonPatch.FromDiff(JsonElement, JsonElement)
+- uid: JsonCons.Utilities.JsonPatch.FromDiff*
+  name: FromDiff
+  href: ref/JsonCons.Utilities.JsonPatch.html#JsonCons_Utilities_JsonPatch_FromDiff_
+  commentId: Overload:JsonCons.Utilities.JsonPatch.FromDiff
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonPatch.FromDiff
+  nameWithType: JsonPatch.FromDiff
+- uid: JsonCons.Utilities.JsonPatchException
+  name: JsonPatchException
+  href: ref/JsonCons.Utilities.JsonPatchException.html
+  commentId: T:JsonCons.Utilities.JsonPatchException
+  fullName: JsonCons.Utilities.JsonPatchException
+  nameWithType: JsonPatchException
+- uid: JsonCons.Utilities.JsonPatchException.#ctor(System.String,System.String)
+  name: JsonPatchException(String, String)
+  href: ref/JsonCons.Utilities.JsonPatchException.html#JsonCons_Utilities_JsonPatchException__ctor_System_String_System_String_
+  commentId: M:JsonCons.Utilities.JsonPatchException.#ctor(System.String,System.String)
+  fullName: JsonCons.Utilities.JsonPatchException.JsonPatchException(System.String, System.String)
+  nameWithType: JsonPatchException.JsonPatchException(String, String)
+- uid: JsonCons.Utilities.JsonPatchException.#ctor*
+  name: JsonPatchException
+  href: ref/JsonCons.Utilities.JsonPatchException.html#JsonCons_Utilities_JsonPatchException__ctor_
+  commentId: Overload:JsonCons.Utilities.JsonPatchException.#ctor
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonPatchException.JsonPatchException
+  nameWithType: JsonPatchException.JsonPatchException
+- uid: JsonCons.Utilities.JsonPatchException.Operation
+  name: Operation
+  href: ref/JsonCons.Utilities.JsonPatchException.html#JsonCons_Utilities_JsonPatchException_Operation
+  commentId: P:JsonCons.Utilities.JsonPatchException.Operation
+  fullName: JsonCons.Utilities.JsonPatchException.Operation
+  nameWithType: JsonPatchException.Operation
+- uid: JsonCons.Utilities.JsonPatchException.Operation*
+  name: Operation
+  href: ref/JsonCons.Utilities.JsonPatchException.html#JsonCons_Utilities_JsonPatchException_Operation_
+  commentId: Overload:JsonCons.Utilities.JsonPatchException.Operation
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonPatchException.Operation
+  nameWithType: JsonPatchException.Operation
+- uid: JsonCons.Utilities.JsonPointer
   name: JsonPointer
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html
-  commentId: T:JsonCons.JsonPointerLib.JsonPointer
-  fullName: JsonCons.JsonPointerLib.JsonPointer
+  href: ref/JsonCons.Utilities.JsonPointer.html
+  commentId: T:JsonCons.Utilities.JsonPointer
+  fullName: JsonCons.Utilities.JsonPointer
   nameWithType: JsonPointer
-- uid: JsonCons.JsonPointerLib.JsonPointer.#ctor(System.Collections.Generic.List{System.String})
+- uid: JsonCons.Utilities.JsonPointer.#ctor(System.Collections.Generic.List{System.String})
   name: JsonPointer(List<String>)
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer__ctor_System_Collections_Generic_List_System_String__
-  commentId: M:JsonCons.JsonPointerLib.JsonPointer.#ctor(System.Collections.Generic.List{System.String})
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer__ctor_System_Collections_Generic_List_System_String__
+  commentId: M:JsonCons.Utilities.JsonPointer.#ctor(System.Collections.Generic.List{System.String})
   name.vb: JsonPointer(List(Of String))
-  fullName: JsonCons.JsonPointerLib.JsonPointer.JsonPointer(System.Collections.Generic.List<System.String>)
-  fullName.vb: JsonCons.JsonPointerLib.JsonPointer.JsonPointer(System.Collections.Generic.List(Of System.String))
+  fullName: JsonCons.Utilities.JsonPointer.JsonPointer(System.Collections.Generic.List<System.String>)
+  fullName.vb: JsonCons.Utilities.JsonPointer.JsonPointer(System.Collections.Generic.List(Of System.String))
   nameWithType: JsonPointer.JsonPointer(List<String>)
   nameWithType.vb: JsonPointer.JsonPointer(List(Of String))
-- uid: JsonCons.JsonPointerLib.JsonPointer.#ctor*
+- uid: JsonCons.Utilities.JsonPointer.#ctor*
   name: JsonPointer
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer__ctor_
-  commentId: Overload:JsonCons.JsonPointerLib.JsonPointer.#ctor
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer__ctor_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.#ctor
   isSpec: "True"
-  fullName: JsonCons.JsonPointerLib.JsonPointer.JsonPointer
+  fullName: JsonCons.Utilities.JsonPointer.JsonPointer
   nameWithType: JsonPointer.JsonPointer
-- uid: JsonCons.JsonPointerLib.JsonPointer.Equals(JsonCons.JsonPointerLib.JsonPointer)
+- uid: JsonCons.Utilities.JsonPointer.Equals(JsonCons.Utilities.JsonPointer)
   name: Equals(JsonPointer)
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_Equals_JsonCons_JsonPointerLib_JsonPointer_
-  commentId: M:JsonCons.JsonPointerLib.JsonPointer.Equals(JsonCons.JsonPointerLib.JsonPointer)
-  fullName: JsonCons.JsonPointerLib.JsonPointer.Equals(JsonCons.JsonPointerLib.JsonPointer)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Equals_JsonCons_Utilities_JsonPointer_
+  commentId: M:JsonCons.Utilities.JsonPointer.Equals(JsonCons.Utilities.JsonPointer)
+  fullName: JsonCons.Utilities.JsonPointer.Equals(JsonCons.Utilities.JsonPointer)
   nameWithType: JsonPointer.Equals(JsonPointer)
-- uid: JsonCons.JsonPointerLib.JsonPointer.Equals(System.Object)
+- uid: JsonCons.Utilities.JsonPointer.Equals(System.Object)
   name: Equals(Object)
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_Equals_System_Object_
-  commentId: M:JsonCons.JsonPointerLib.JsonPointer.Equals(System.Object)
-  fullName: JsonCons.JsonPointerLib.JsonPointer.Equals(System.Object)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Equals_System_Object_
+  commentId: M:JsonCons.Utilities.JsonPointer.Equals(System.Object)
+  fullName: JsonCons.Utilities.JsonPointer.Equals(System.Object)
   nameWithType: JsonPointer.Equals(Object)
-- uid: JsonCons.JsonPointerLib.JsonPointer.Equals*
+- uid: JsonCons.Utilities.JsonPointer.Equals*
   name: Equals
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_Equals_
-  commentId: Overload:JsonCons.JsonPointerLib.JsonPointer.Equals
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Equals_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.Equals
   isSpec: "True"
-  fullName: JsonCons.JsonPointerLib.JsonPointer.Equals
+  fullName: JsonCons.Utilities.JsonPointer.Equals
   nameWithType: JsonPointer.Equals
-- uid: JsonCons.JsonPointerLib.JsonPointer.Escape(System.String)
+- uid: JsonCons.Utilities.JsonPointer.Escape(System.String)
   name: Escape(String)
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_Escape_System_String_
-  commentId: M:JsonCons.JsonPointerLib.JsonPointer.Escape(System.String)
-  fullName: JsonCons.JsonPointerLib.JsonPointer.Escape(System.String)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Escape_System_String_
+  commentId: M:JsonCons.Utilities.JsonPointer.Escape(System.String)
+  fullName: JsonCons.Utilities.JsonPointer.Escape(System.String)
   nameWithType: JsonPointer.Escape(String)
-- uid: JsonCons.JsonPointerLib.JsonPointer.Escape*
+- uid: JsonCons.Utilities.JsonPointer.Escape*
   name: Escape
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_Escape_
-  commentId: Overload:JsonCons.JsonPointerLib.JsonPointer.Escape
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Escape_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.Escape
   isSpec: "True"
-  fullName: JsonCons.JsonPointerLib.JsonPointer.Escape
+  fullName: JsonCons.Utilities.JsonPointer.Escape
   nameWithType: JsonPointer.Escape
-- uid: JsonCons.JsonPointerLib.JsonPointer.GetEnumerator
+- uid: JsonCons.Utilities.JsonPointer.GetEnumerator
   name: GetEnumerator()
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_GetEnumerator
-  commentId: M:JsonCons.JsonPointerLib.JsonPointer.GetEnumerator
-  fullName: JsonCons.JsonPointerLib.JsonPointer.GetEnumerator()
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_GetEnumerator
+  commentId: M:JsonCons.Utilities.JsonPointer.GetEnumerator
+  fullName: JsonCons.Utilities.JsonPointer.GetEnumerator()
   nameWithType: JsonPointer.GetEnumerator()
-- uid: JsonCons.JsonPointerLib.JsonPointer.GetEnumerator*
+- uid: JsonCons.Utilities.JsonPointer.GetEnumerator*
   name: GetEnumerator
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_GetEnumerator_
-  commentId: Overload:JsonCons.JsonPointerLib.JsonPointer.GetEnumerator
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_GetEnumerator_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.GetEnumerator
   isSpec: "True"
-  fullName: JsonCons.JsonPointerLib.JsonPointer.GetEnumerator
+  fullName: JsonCons.Utilities.JsonPointer.GetEnumerator
   nameWithType: JsonPointer.GetEnumerator
-- uid: JsonCons.JsonPointerLib.JsonPointer.GetHashCode
+- uid: JsonCons.Utilities.JsonPointer.GetHashCode
   name: GetHashCode()
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_GetHashCode
-  commentId: M:JsonCons.JsonPointerLib.JsonPointer.GetHashCode
-  fullName: JsonCons.JsonPointerLib.JsonPointer.GetHashCode()
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_GetHashCode
+  commentId: M:JsonCons.Utilities.JsonPointer.GetHashCode
+  fullName: JsonCons.Utilities.JsonPointer.GetHashCode()
   nameWithType: JsonPointer.GetHashCode()
-- uid: JsonCons.JsonPointerLib.JsonPointer.GetHashCode*
+- uid: JsonCons.Utilities.JsonPointer.GetHashCode*
   name: GetHashCode
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_GetHashCode_
-  commentId: Overload:JsonCons.JsonPointerLib.JsonPointer.GetHashCode
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_GetHashCode_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.GetHashCode
   isSpec: "True"
-  fullName: JsonCons.JsonPointerLib.JsonPointer.GetHashCode
+  fullName: JsonCons.Utilities.JsonPointer.GetHashCode
   nameWithType: JsonPointer.GetHashCode
-- uid: JsonCons.JsonPointerLib.JsonPointer.System#Collections#IEnumerable#GetEnumerator
+- uid: JsonCons.Utilities.JsonPointer.System#Collections#IEnumerable#GetEnumerator
   name: IEnumerable.GetEnumerator()
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_System_Collections_IEnumerable_GetEnumerator
-  commentId: M:JsonCons.JsonPointerLib.JsonPointer.System#Collections#IEnumerable#GetEnumerator
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_System_Collections_IEnumerable_GetEnumerator
+  commentId: M:JsonCons.Utilities.JsonPointer.System#Collections#IEnumerable#GetEnumerator
   name.vb: System.Collections.IEnumerable.GetEnumerator()
-  fullName: JsonCons.JsonPointerLib.JsonPointer.System.Collections.IEnumerable.GetEnumerator()
+  fullName: JsonCons.Utilities.JsonPointer.System.Collections.IEnumerable.GetEnumerator()
   nameWithType: JsonPointer.IEnumerable.GetEnumerator()
   nameWithType.vb: JsonPointer.System.Collections.IEnumerable.GetEnumerator()
-- uid: JsonCons.JsonPointerLib.JsonPointer.System#Collections#IEnumerable#GetEnumerator*
+- uid: JsonCons.Utilities.JsonPointer.System#Collections#IEnumerable#GetEnumerator*
   name: IEnumerable.GetEnumerator
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_System_Collections_IEnumerable_GetEnumerator_
-  commentId: Overload:JsonCons.JsonPointerLib.JsonPointer.System#Collections#IEnumerable#GetEnumerator
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_System_Collections_IEnumerable_GetEnumerator_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.System#Collections#IEnumerable#GetEnumerator
   isSpec: "True"
   name.vb: System.Collections.IEnumerable.GetEnumerator
-  fullName: JsonCons.JsonPointerLib.JsonPointer.System.Collections.IEnumerable.GetEnumerator
+  fullName: JsonCons.Utilities.JsonPointer.System.Collections.IEnumerable.GetEnumerator
   nameWithType: JsonPointer.IEnumerable.GetEnumerator
   nameWithType.vb: JsonPointer.System.Collections.IEnumerable.GetEnumerator
-- uid: JsonCons.JsonPointerLib.JsonPointer.Tokens
+- uid: JsonCons.Utilities.JsonPointer.Tokens
   name: Tokens
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_Tokens
-  commentId: P:JsonCons.JsonPointerLib.JsonPointer.Tokens
-  fullName: JsonCons.JsonPointerLib.JsonPointer.Tokens
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Tokens
+  commentId: P:JsonCons.Utilities.JsonPointer.Tokens
+  fullName: JsonCons.Utilities.JsonPointer.Tokens
   nameWithType: JsonPointer.Tokens
-- uid: JsonCons.JsonPointerLib.JsonPointer.Tokens*
+- uid: JsonCons.Utilities.JsonPointer.Tokens*
   name: Tokens
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_Tokens_
-  commentId: Overload:JsonCons.JsonPointerLib.JsonPointer.Tokens
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Tokens_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.Tokens
   isSpec: "True"
-  fullName: JsonCons.JsonPointerLib.JsonPointer.Tokens
+  fullName: JsonCons.Utilities.JsonPointer.Tokens
   nameWithType: JsonPointer.Tokens
-- uid: JsonCons.JsonPointerLib.JsonPointer.ToString
+- uid: JsonCons.Utilities.JsonPointer.ToString
   name: ToString()
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_ToString
-  commentId: M:JsonCons.JsonPointerLib.JsonPointer.ToString
-  fullName: JsonCons.JsonPointerLib.JsonPointer.ToString()
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_ToString
+  commentId: M:JsonCons.Utilities.JsonPointer.ToString
+  fullName: JsonCons.Utilities.JsonPointer.ToString()
   nameWithType: JsonPointer.ToString()
-- uid: JsonCons.JsonPointerLib.JsonPointer.ToString*
+- uid: JsonCons.Utilities.JsonPointer.ToString*
   name: ToString
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_ToString_
-  commentId: Overload:JsonCons.JsonPointerLib.JsonPointer.ToString
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_ToString_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.ToString
   isSpec: "True"
-  fullName: JsonCons.JsonPointerLib.JsonPointer.ToString
+  fullName: JsonCons.Utilities.JsonPointer.ToString
   nameWithType: JsonPointer.ToString
-- uid: JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)
+- uid: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)
   name: TryGet(JsonElement, String, out JsonElement)
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_TryGet_System_Text_Json_JsonElement_System_String_System_Text_Json_JsonElement__
-  commentId: M:JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryGet_System_Text_Json_JsonElement_System_String_System_Text_Json_JsonElement__
+  commentId: M:JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)
   name.vb: TryGet(JsonElement, String, ByRef JsonElement)
-  fullName: JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement, System.String, out System.Text.Json.JsonElement)
-  fullName.vb: JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement, System.String, ByRef System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement, System.String, out System.Text.Json.JsonElement)
+  fullName.vb: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement, System.String, ByRef System.Text.Json.JsonElement)
   nameWithType: JsonPointer.TryGet(JsonElement, String, out JsonElement)
   nameWithType.vb: JsonPointer.TryGet(JsonElement, String, ByRef JsonElement)
-- uid: JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
+- uid: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
   name: TryGet(JsonElement, out JsonElement)
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_TryGet_System_Text_Json_JsonElement_System_Text_Json_JsonElement__
-  commentId: M:JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryGet_System_Text_Json_JsonElement_System_Text_Json_JsonElement__
+  commentId: M:JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
   name.vb: TryGet(JsonElement, ByRef JsonElement)
-  fullName: JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement, out System.Text.Json.JsonElement)
-  fullName.vb: JsonCons.JsonPointerLib.JsonPointer.TryGet(System.Text.Json.JsonElement, ByRef System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement, out System.Text.Json.JsonElement)
+  fullName.vb: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement, ByRef System.Text.Json.JsonElement)
   nameWithType: JsonPointer.TryGet(JsonElement, out JsonElement)
   nameWithType.vb: JsonPointer.TryGet(JsonElement, ByRef JsonElement)
-- uid: JsonCons.JsonPointerLib.JsonPointer.TryGet*
+- uid: JsonCons.Utilities.JsonPointer.TryGet*
   name: TryGet
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_TryGet_
-  commentId: Overload:JsonCons.JsonPointerLib.JsonPointer.TryGet
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryGet_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.TryGet
   isSpec: "True"
-  fullName: JsonCons.JsonPointerLib.JsonPointer.TryGet
+  fullName: JsonCons.Utilities.JsonPointer.TryGet
   nameWithType: JsonPointer.TryGet
-- uid: JsonCons.JsonPointerLib.JsonPointer.TryParse(System.String,JsonCons.JsonPointerLib.JsonPointer@)
+- uid: JsonCons.Utilities.JsonPointer.TryParse(System.String,JsonCons.Utilities.JsonPointer@)
   name: TryParse(String, out JsonPointer)
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_TryParse_System_String_JsonCons_JsonPointerLib_JsonPointer__
-  commentId: M:JsonCons.JsonPointerLib.JsonPointer.TryParse(System.String,JsonCons.JsonPointerLib.JsonPointer@)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryParse_System_String_JsonCons_Utilities_JsonPointer__
+  commentId: M:JsonCons.Utilities.JsonPointer.TryParse(System.String,JsonCons.Utilities.JsonPointer@)
   name.vb: TryParse(String, ByRef JsonPointer)
-  fullName: JsonCons.JsonPointerLib.JsonPointer.TryParse(System.String, out JsonCons.JsonPointerLib.JsonPointer)
-  fullName.vb: JsonCons.JsonPointerLib.JsonPointer.TryParse(System.String, ByRef JsonCons.JsonPointerLib.JsonPointer)
+  fullName: JsonCons.Utilities.JsonPointer.TryParse(System.String, out JsonCons.Utilities.JsonPointer)
+  fullName.vb: JsonCons.Utilities.JsonPointer.TryParse(System.String, ByRef JsonCons.Utilities.JsonPointer)
   nameWithType: JsonPointer.TryParse(String, out JsonPointer)
   nameWithType.vb: JsonPointer.TryParse(String, ByRef JsonPointer)
-- uid: JsonCons.JsonPointerLib.JsonPointer.TryParse*
+- uid: JsonCons.Utilities.JsonPointer.TryParse*
   name: TryParse
-  href: ref/JsonCons.JsonPointerLib.JsonPointer.html#JsonCons_JsonPointerLib_JsonPointer_TryParse_
-  commentId: Overload:JsonCons.JsonPointerLib.JsonPointer.TryParse
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryParse_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.TryParse
   isSpec: "True"
-  fullName: JsonCons.JsonPointerLib.JsonPointer.TryParse
+  fullName: JsonCons.Utilities.JsonPointer.TryParse
   nameWithType: JsonPointer.TryParse
