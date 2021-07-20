@@ -211,7 +211,7 @@ namespace JsonCons.JsonPathLib
         ///
         /// </summary>
 
-        public PathLink Back { get { return _components[_components.Count - 1]; } }
+        public PathLink Last { get { return _components[_components.Count - 1]; } }
 
         /// <summary>
         /// Returns an enumerator that iterates through the components of the normalized path. 

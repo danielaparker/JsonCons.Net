@@ -250,7 +250,7 @@
             
              </summary>
         </member>
-        <member name="P:JsonCons.JsonPathLib.NormalizedPath.Back">
+        <member name="P:JsonCons.JsonPathLib.NormalizedPath.Last">
              <summary>
              Gets the last component of the normalized path. 
             

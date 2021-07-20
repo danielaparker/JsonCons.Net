@@ -218,19 +218,6 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPathLib.NormalizedPath.NormalizedPath
   nameWithType: NormalizedPath.NormalizedPath
-- uid: JsonCons.JsonPathLib.NormalizedPath.Back
-  name: Back
-  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Back
-  commentId: P:JsonCons.JsonPathLib.NormalizedPath.Back
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Back
-  nameWithType: NormalizedPath.Back
-- uid: JsonCons.JsonPathLib.NormalizedPath.Back*
-  name: Back
-  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Back_
-  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.Back
-  isSpec: "True"
-  fullName: JsonCons.JsonPathLib.NormalizedPath.Back
-  nameWithType: NormalizedPath.Back
 - uid: JsonCons.JsonPathLib.NormalizedPath.CompareTo(JsonCons.JsonPathLib.NormalizedPath)
   name: CompareTo(NormalizedPath)
   href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_CompareTo_JsonCons_JsonPathLib_NormalizedPath_
@@ -289,6 +276,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPathLib.NormalizedPath.GetHashCode
   nameWithType: NormalizedPath.GetHashCode
+- uid: JsonCons.JsonPathLib.NormalizedPath.Last
+  name: Last
+  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Last
+  commentId: P:JsonCons.JsonPathLib.NormalizedPath.Last
+  fullName: JsonCons.JsonPathLib.NormalizedPath.Last
+  nameWithType: NormalizedPath.Last
+- uid: JsonCons.JsonPathLib.NormalizedPath.Last*
+  name: Last
+  href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_Last_
+  commentId: Overload:JsonCons.JsonPathLib.NormalizedPath.Last
+  isSpec: "True"
+  fullName: JsonCons.JsonPathLib.NormalizedPath.Last
+  nameWithType: NormalizedPath.Last
 - uid: JsonCons.JsonPathLib.NormalizedPath.System#Collections#IEnumerable#GetEnumerator
   name: IEnumerable.GetEnumerator()
   href: ref/JsonCons.JsonPathLib.NormalizedPath.html#JsonCons_JsonPathLib_NormalizedPath_System_Collections_IEnumerable_GetEnumerator
@@ -531,165 +531,6 @@ references:
   commentId: N:JsonCons.Utilities
   fullName: JsonCons.Utilities
   nameWithType: JsonCons.Utilities
-- uid: JsonCons.Utilities.JsonDocumentBuilder
-  name: JsonDocumentBuilder
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html
-  commentId: T:JsonCons.Utilities.JsonDocumentBuilder
-  fullName: JsonCons.Utilities.JsonDocumentBuilder
-  nameWithType: JsonDocumentBuilder
-- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Collections.Generic.IDictionary{System.String,JsonCons.Utilities.JsonDocumentBuilder})
-  name: JsonDocumentBuilder(IDictionary<String, JsonDocumentBuilder>)
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_System_Collections_Generic_IDictionary_System_String_JsonCons_Utilities_JsonDocumentBuilder__
-  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Collections.Generic.IDictionary{System.String,JsonCons.Utilities.JsonDocumentBuilder})
-  name.vb: JsonDocumentBuilder(IDictionary(Of String, JsonDocumentBuilder))
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Collections.Generic.IDictionary<System.String, JsonCons.Utilities.JsonDocumentBuilder>)
-  fullName.vb: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Collections.Generic.IDictionary(Of System.String, JsonCons.Utilities.JsonDocumentBuilder))
-  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder(IDictionary<String, JsonDocumentBuilder>)
-  nameWithType.vb: JsonDocumentBuilder.JsonDocumentBuilder(IDictionary(Of String, JsonDocumentBuilder))
-- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Collections.Generic.IList{JsonCons.Utilities.JsonDocumentBuilder})
-  name: JsonDocumentBuilder(IList<JsonDocumentBuilder>)
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_System_Collections_Generic_IList_JsonCons_Utilities_JsonDocumentBuilder__
-  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Collections.Generic.IList{JsonCons.Utilities.JsonDocumentBuilder})
-  name.vb: JsonDocumentBuilder(IList(Of JsonDocumentBuilder))
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Collections.Generic.IList<JsonCons.Utilities.JsonDocumentBuilder>)
-  fullName.vb: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Collections.Generic.IList(Of JsonCons.Utilities.JsonDocumentBuilder))
-  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder(IList<JsonDocumentBuilder>)
-  nameWithType.vb: JsonDocumentBuilder.JsonDocumentBuilder(IList(Of JsonDocumentBuilder))
-- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.String)
-  name: JsonDocumentBuilder(String)
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_System_String_
-  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.String)
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.String)
-  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder(String)
-- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Text.Json.JsonElement)
-  name: JsonDocumentBuilder(JsonElement)
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_System_Text_Json_JsonElement_
-  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Text.Json.JsonElement)
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Text.Json.JsonElement)
-  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder(JsonElement)
-- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Text.Json.JsonValueKind)
-  name: JsonDocumentBuilder(JsonValueKind)
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_System_Text_Json_JsonValueKind_
-  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.#ctor(System.Text.Json.JsonValueKind)
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder(System.Text.Json.JsonValueKind)
-  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder(JsonValueKind)
-- uid: JsonCons.Utilities.JsonDocumentBuilder.#ctor*
-  name: JsonDocumentBuilder
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder__ctor_
-  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.#ctor
-  isSpec: "True"
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.JsonDocumentBuilder
-  nameWithType: JsonDocumentBuilder.JsonDocumentBuilder
-- uid: JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength
-  name: GetArrayLength()
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetArrayLength
-  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength()
-  nameWithType: JsonDocumentBuilder.GetArrayLength()
-- uid: JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength*
-  name: GetArrayLength
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetArrayLength_
-  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength
-  isSpec: "True"
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetArrayLength
-  nameWithType: JsonDocumentBuilder.GetArrayLength
-- uid: JsonCons.Utilities.JsonDocumentBuilder.GetDictionary
-  name: GetDictionary()
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetDictionary
-  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.GetDictionary
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetDictionary()
-  nameWithType: JsonDocumentBuilder.GetDictionary()
-- uid: JsonCons.Utilities.JsonDocumentBuilder.GetDictionary*
-  name: GetDictionary
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetDictionary_
-  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.GetDictionary
-  isSpec: "True"
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetDictionary
-  nameWithType: JsonDocumentBuilder.GetDictionary
-- uid: JsonCons.Utilities.JsonDocumentBuilder.GetList
-  name: GetList()
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetList
-  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.GetList
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetList()
-  nameWithType: JsonDocumentBuilder.GetList()
-- uid: JsonCons.Utilities.JsonDocumentBuilder.GetList*
-  name: GetList
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_GetList_
-  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.GetList
-  isSpec: "True"
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.GetList
-  nameWithType: JsonDocumentBuilder.GetList
-- uid: JsonCons.Utilities.JsonDocumentBuilder.Item(System.Int32)
-  name: Item[Int32]
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_Item_System_Int32_
-  commentId: P:JsonCons.Utilities.JsonDocumentBuilder.Item(System.Int32)
-  name.vb: Item(Int32)
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.Item[System.Int32]
-  fullName.vb: JsonCons.Utilities.JsonDocumentBuilder.Item(System.Int32)
-  nameWithType: JsonDocumentBuilder.Item[Int32]
-  nameWithType.vb: JsonDocumentBuilder.Item(Int32)
-- uid: JsonCons.Utilities.JsonDocumentBuilder.Item*
-  name: Item
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_Item_
-  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.Item
-  isSpec: "True"
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.Item
-  nameWithType: JsonDocumentBuilder.Item
-- uid: JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument
-  name: ToJsonDocument()
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ToJsonDocument
-  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument()
-  nameWithType: JsonDocumentBuilder.ToJsonDocument()
-- uid: JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument*
-  name: ToJsonDocument
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ToJsonDocument_
-  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument
-  isSpec: "True"
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.ToJsonDocument
-  nameWithType: JsonDocumentBuilder.ToJsonDocument
-- uid: JsonCons.Utilities.JsonDocumentBuilder.ToString
-  name: ToString()
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ToString
-  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.ToString
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.ToString()
-  nameWithType: JsonDocumentBuilder.ToString()
-- uid: JsonCons.Utilities.JsonDocumentBuilder.ToString*
-  name: ToString
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ToString_
-  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.ToString
-  isSpec: "True"
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.ToString
-  nameWithType: JsonDocumentBuilder.ToString
-- uid: JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty(System.String,JsonCons.Utilities.JsonDocumentBuilder@)
-  name: TryGetProperty(String, out JsonDocumentBuilder)
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_TryGetProperty_System_String_JsonCons_Utilities_JsonDocumentBuilder__
-  commentId: M:JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty(System.String,JsonCons.Utilities.JsonDocumentBuilder@)
-  name.vb: TryGetProperty(String, ByRef JsonDocumentBuilder)
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty(System.String, out JsonCons.Utilities.JsonDocumentBuilder)
-  fullName.vb: JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty(System.String, ByRef JsonCons.Utilities.JsonDocumentBuilder)
-  nameWithType: JsonDocumentBuilder.TryGetProperty(String, out JsonDocumentBuilder)
-  nameWithType.vb: JsonDocumentBuilder.TryGetProperty(String, ByRef JsonDocumentBuilder)
-- uid: JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty*
-  name: TryGetProperty
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_TryGetProperty_
-  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty
-  isSpec: "True"
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.TryGetProperty
-  nameWithType: JsonDocumentBuilder.TryGetProperty
-- uid: JsonCons.Utilities.JsonDocumentBuilder.ValueKind
-  name: ValueKind
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ValueKind
-  commentId: P:JsonCons.Utilities.JsonDocumentBuilder.ValueKind
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.ValueKind
-  nameWithType: JsonDocumentBuilder.ValueKind
-- uid: JsonCons.Utilities.JsonDocumentBuilder.ValueKind*
-  name: ValueKind
-  href: ref/JsonCons.Utilities.JsonDocumentBuilder.html#JsonCons_Utilities_JsonDocumentBuilder_ValueKind_
-  commentId: Overload:JsonCons.Utilities.JsonDocumentBuilder.ValueKind
-  isSpec: "True"
-  fullName: JsonCons.Utilities.JsonDocumentBuilder.ValueKind
-  nameWithType: JsonDocumentBuilder.ValueKind
 - uid: JsonCons.Utilities.JsonElementEqualityComparer
   name: JsonElementEqualityComparer
   href: ref/JsonCons.Utilities.JsonElementEqualityComparer.html

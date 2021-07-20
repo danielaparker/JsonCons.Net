@@ -8,13 +8,13 @@ using System.Text.Json;
         
 namespace JsonCons.Utilities
 {
-    public class JsonDocumentBuilder
+    internal class JsonDocumentBuilder
     {
-        public JsonValueKind ValueKind {get;}
+        internal JsonValueKind ValueKind {get;}
 
         object _item;
 
-        public JsonDocumentBuilder(JsonValueKind valueKind)
+        internal JsonDocumentBuilder(JsonValueKind valueKind)
         {
             ValueKind = valueKind;
             switch (valueKind)
@@ -31,25 +31,25 @@ namespace JsonCons.Utilities
             }
         }
 
-        public JsonDocumentBuilder(IList<JsonDocumentBuilder> list)
+        internal JsonDocumentBuilder(IList<JsonDocumentBuilder> list)
         {
             ValueKind = JsonValueKind.Array;
             _item = list;
         }
 
-        public JsonDocumentBuilder(IDictionary<string,JsonDocumentBuilder> dict)
+        internal JsonDocumentBuilder(IDictionary<string,JsonDocumentBuilder> dict)
         {
             ValueKind = JsonValueKind.Object;
             _item = dict;
         }
 
-        public JsonDocumentBuilder(string str)
+        internal JsonDocumentBuilder(string str)
         {
             ValueKind = JsonValueKind.String;
             _item = str;
         }
 
-        public JsonDocumentBuilder(JsonElement element)
+        internal JsonDocumentBuilder(JsonElement element)
         {
             ValueKind = element.ValueKind;
             switch (element.ValueKind)
@@ -76,7 +76,7 @@ namespace JsonCons.Utilities
             }
         }
 
-        public IList<JsonDocumentBuilder> GetList()
+        internal IList<JsonDocumentBuilder> GetList()
         {
             if (ValueKind != JsonValueKind.Array)
             {
@@ -85,7 +85,7 @@ namespace JsonCons.Utilities
             return (IList<JsonDocumentBuilder>)_item;
         }
 
-        public IDictionary<string, JsonDocumentBuilder> GetDictionary()
+        internal IDictionary<string, JsonDocumentBuilder> GetDictionary()
         {
             if (ValueKind != JsonValueKind.Object)
             {
@@ -94,7 +94,7 @@ namespace JsonCons.Utilities
             return (IDictionary<string, JsonDocumentBuilder>)_item;
         }
 
-        public JsonDocumentBuilder this[int i]
+        internal JsonDocumentBuilder this[int i]
         {
             get { 
                 if (ValueKind != JsonValueKind.Array)
@@ -112,7 +112,7 @@ namespace JsonCons.Utilities
             }
         }
 
-        public int GetArrayLength()
+        internal int GetArrayLength()
         {
             if (ValueKind != JsonValueKind.Array)
             {
@@ -121,7 +121,7 @@ namespace JsonCons.Utilities
             return GetList().Count;
         }
 
-        public bool TryGetProperty(string name, out JsonDocumentBuilder value)
+        internal bool TryGetProperty(string name, out JsonDocumentBuilder value)
         {
             if (ValueKind != JsonValueKind.Object)
             {
@@ -194,7 +194,7 @@ namespace JsonCons.Utilities
             }
         }
 
-        public JsonDocument ToJsonDocument()
+        internal JsonDocument ToJsonDocument()
         {
             var json = ToString();
             return JsonDocument.Parse(json);
