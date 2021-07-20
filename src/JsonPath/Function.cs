@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.RegularExpressions;
         
-namespace JsonCons.JsonPathLib
+namespace JsonCons.JsonPath
 {
     interface IFunction 
     {
@@ -844,4 +844,4 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-} // namespace JsonCons.JsonPathLib
+} // namespace JsonCons.JsonPath

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
         
-namespace JsonCons.JsonPathLib
+namespace JsonCons.JsonPath
 {
     sealed class DynamicResources 
     {
@@ -29,7 +29,7 @@ namespace JsonCons.JsonPathLib
     };
 
     /// <summary>
-    /// Defines the various ways a JsonPath query can deal with duplicate
+    /// Defines the various ways a JsonSelector query can deal with duplicate
 	 /// paths and order of results.
     ///
     /// This enumeration has a FlagsAttribute attribute that allows a bitwise combination of its member values.
@@ -53,27 +53,27 @@ namespace JsonCons.JsonPathLib
     };
 
     /// <summary>
-    ///   Represents a JsonPath expression.
+    ///   Represents a JsonSelector expression.
     /// </summary>
 
-    public sealed class JsonPath
+    public sealed class JsonSelector
     {
         readonly ISelector _selector;
         readonly ResultOptions _requiredOptions;
 
         /// <summary>
-        /// Parses a JSONPath string into a JsonPath, for "parse once, use many times".
-        /// A JsonPath instance is thread safe and has no mutable state.
+        /// Parses a JSONPath string into a JsonSelector, for "parse once, use many times".
+        /// A JsonSelector instance is thread safe and has no mutable state.
         /// </summary>
         /// <param name="pathStr">A JSONPath string.</param>
-        /// <returns>A JsonPath.</returns>
+        /// <returns>A JsonSelector.</returns>
         /// <exception cref="JsonPathParseException">
         ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         ///   <paramref name="pathStr"/> is <see langword="null"/>.
         /// </exception>
-        public static JsonPath Parse(string pathStr)
+        public static JsonSelector Parse(string pathStr)
         {
             if (pathStr == null)
             {
@@ -83,7 +83,7 @@ namespace JsonCons.JsonPathLib
             return compiler.Parse();
         }
 
-        internal JsonPath(ISelector selector, 
+        internal JsonSelector(ISelector selector, 
                           bool pathsRequired)
         {
             _selector = selector;
@@ -287,7 +287,7 @@ namespace JsonCons.JsonPathLib
             {
                 throw new ArgumentNullException(nameof(pathStr));
             }
-            var expr = JsonPath.Parse(pathStr);
+            var expr = JsonSelector.Parse(pathStr);
             return expr.Select(root, options);
         }
 
@@ -312,7 +312,7 @@ namespace JsonCons.JsonPathLib
             {
                 throw new ArgumentNullException(nameof(pathStr));
             }
-            var expr = JsonPath.Parse(pathStr);
+            var expr = JsonSelector.Parse(pathStr);
             return expr.SelectPaths(root, options);
         }
 
@@ -338,10 +338,10 @@ namespace JsonCons.JsonPathLib
             {
                 throw new ArgumentNullException(nameof(pathStr));
             }
-            var expr = JsonPath.Parse(pathStr);
+            var expr = JsonSelector.Parse(pathStr);
             return expr.SelectNodes(root, options);
         }
 
     }
 
-} // namespace JsonCons.JsonPathLib
+} // namespace JsonCons.JsonPath

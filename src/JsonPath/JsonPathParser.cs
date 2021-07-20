@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.RegularExpressions;
         
-namespace JsonCons.JsonPathLib
+namespace JsonCons.JsonPath
 {
     /// <summary>
     /// Defines a custom exception object that is thrown when JSONPath parsing fails.
@@ -43,7 +43,7 @@ namespace JsonCons.JsonPathLib
         Start,
         RootOrCurrentNode,
         ExpectFunctionExpr,
-        JsonPath,
+        JsonSelector,
         DotOrLeftBracketOrCaret,
         ParentOperator,
         AncestorDepth,
@@ -132,7 +132,7 @@ namespace JsonCons.JsonPathLib
             _operatorStack = new Stack<Token>();
         }
 
-        internal JsonPath Parse()
+        internal JsonSelector Parse()
         {
             _stateStack = new Stack<JsonPathState>();
             _index = 0;
@@ -256,7 +256,7 @@ namespace JsonCons.JsonPathLib
                                 break;
                             default:
                                 _stateStack.Pop();
-                                _stateStack.Push(JsonPathState.JsonPath);
+                                _stateStack.Push(JsonPathState.JsonSelector);
                                 break;
                         }
                         break;
@@ -275,11 +275,11 @@ namespace JsonCons.JsonPathLib
                             default:
                                 buffer.Clear();
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.JsonPath);
+                                _stateStack.Push(JsonPathState.JsonSelector);
                                 break;
                         }
                         break;
-                    case JsonPathState.JsonPath: 
+                    case JsonPathState.JsonSelector: 
                         switch (_span[_index])
                         {
                             case ' ':case '\t':case '\r':case '\n':
@@ -735,7 +735,7 @@ namespace JsonCons.JsonPathLib
                                 SkipWhiteSpace();
                                 break;
                             case '.':
-                                _stateStack.Push(JsonPathState.JsonPath);
+                                _stateStack.Push(JsonPathState.JsonSelector);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1806,9 +1806,9 @@ namespace JsonCons.JsonPathLib
                 {
                     case JsonPathState.NameOrLeftBracket:
                         _stateStack.Pop(); 
-                        _stateStack.Push(JsonPathState.JsonPath);
+                        _stateStack.Push(JsonPathState.JsonSelector);
                         break;
-                    case JsonPathState.JsonPath: 
+                    case JsonPathState.JsonSelector: 
                         _stateStack.Pop();
                         _stateStack.Push(JsonPathState.IdentifierOrFunctionExpr);
                         _stateStack.Push(JsonPathState.UnquotedString);
@@ -1858,7 +1858,7 @@ namespace JsonCons.JsonPathLib
             }
             Token token = _outputStack.Pop();
 
-            return new JsonPath(token.GetSelector(), pathsRequired);
+            return new JsonSelector(token.GetSelector(), pathsRequired);
         }
 
         void UnwindRParen()
@@ -2103,4 +2103,4 @@ namespace JsonCons.JsonPathLib
         }
     };
 
-} // namespace JsonCons.JsonPathLib
+} // namespace JsonCons.JsonPath

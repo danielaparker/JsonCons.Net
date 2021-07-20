@@ -13,30 +13,28 @@ namespace JsonPointerLib.Tests
         [TestMethod]
         public void GetWithRefTest()
         {
-            using (var doc = JsonDocument.Parse(@"{""foo"": [""bar"", ""baz""]}"))
-            {
-                var root = doc.RootElement;
-                JsonPointer pointer; 
-                Assert.IsTrue(JsonPointer.TryParse("/foo/0", out pointer));
-                JsonElement value;
-                Assert.IsTrue(pointer.TryGet(root, out value));
+            using var doc = JsonDocument.Parse(@"{""foo"": [""bar"", ""baz""]}");
+            
+            var root = doc.RootElement;
+            JsonPointer pointer; 
+            Assert.IsTrue(JsonPointer.TryParse("/foo/0", out pointer));
+            JsonElement value;
+            Assert.IsTrue(pointer.TryGet(root, out value));
 
-                var comparer = JsonElementEqualityComparer.Instance;
+            var comparer = JsonElementEqualityComparer.Instance;
 
-                var expected = root.GetProperty("foo")[0];
-                Assert.IsTrue(comparer.Equals(value, expected));
-            }
+            var expected = root.GetProperty("foo")[0];
+            Assert.IsTrue(comparer.Equals(value, expected));
         }
         [TestMethod]
         public void GetWithNonexistentTarget()
         {
-            using (var doc = JsonDocument.Parse(@"{ ""foo"": ""bar"" }"))
-            {
-                JsonPointer pointer; 
-                Assert.IsTrue(JsonPointer.TryParse("/baz", out pointer));
-                JsonElement value;
-                Assert.IsFalse(pointer.TryGet(doc.RootElement, out value));
-            }
+            using var doc = JsonDocument.Parse(@"{ ""foo"": ""bar"" }");
+            
+            JsonPointer pointer; 
+            Assert.IsTrue(JsonPointer.TryParse("/baz", out pointer));
+            JsonElement value;
+            Assert.IsFalse(pointer.TryGet(doc.RootElement, out value));
         }
     }
 }

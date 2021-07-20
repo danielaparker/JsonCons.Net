@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JsonCons.Utilities;
-using JsonCons.JsonPathLib;
+using JsonCons.JsonPath;
 
-namespace JsonCons.JsonPathLib.Tests
+namespace JsonCons.JsonPath.Tests
 {
     [TestClass]
     public class JsonPathTests
@@ -58,11 +58,11 @@ namespace JsonCons.JsonPathLib.Tests
                         JsonElement expected;
                         if (testCase.TryGetProperty("error", out expected))
                         {
-                            Assert.ThrowsException<JsonPathParseException>(() => JsonPath.Parse(exprElement.ToString()));
+                            Assert.ThrowsException<JsonPathParseException>(() => JsonSelector.Parse(exprElement.ToString()));
                         }
                         else if (testCase.TryGetProperty("result", out expected))
                         {
-                            var expr = JsonPath.Parse(exprElement.ToString());
+                            var expr = JsonSelector.Parse(exprElement.ToString());
                             var items = expr.Select(given, options);
 
                             bool success = items.Count == expected.GetArrayLength();

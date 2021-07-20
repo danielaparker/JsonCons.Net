@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace JsonCons.JsonPathLib
+namespace JsonCons.JsonPath
 {
 
     /// <summary>
@@ -408,4 +408,4 @@ namespace JsonCons.JsonPathLib
 
     }
 
-} // namespace JsonCons.JsonPathLib
+} // namespace JsonCons.JsonPath

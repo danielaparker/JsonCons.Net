@@ -136,4 +136,4 @@ namespace JsonCons.Utilities
     }
 
 
-} // namespace JsonCons.JsonPathLib
+} // namespace JsonCons.JsonPath
