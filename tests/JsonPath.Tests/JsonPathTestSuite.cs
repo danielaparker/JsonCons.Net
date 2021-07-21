@@ -39,16 +39,16 @@ namespace JsonCons.JsonPath.Tests
                         comment = "";
                     }
 
-                    ResultOptions options = 0;
+                    var options = new JsonSelectorOptions();
 
                     JsonElement element;
                     if (testCase.TryGetProperty("nodups", out element) && element.ValueKind == JsonValueKind.True)
                     {
-                        options |= ResultOptions.NoDups;
+                        options.NoDuplicates = true;
                     }
                     if (testCase.TryGetProperty("sort", out element) && element.ValueKind == JsonValueKind.True)
                     {
-                        options |= ResultOptions.Sort;
+                        options.SortByPath = true;
                     }
 
                     var exprElement = testCase.GetProperty("expression");
@@ -79,11 +79,11 @@ namespace JsonCons.JsonPath.Tests
                                 Debug.WriteLine(comment);
                                 Debug.WriteLine("Document: " + given.ToString());
                                 Debug.WriteLine("Path: " + exprElement.ToString());
-                                if ((options & ResultOptions.NoDups) != 0)
+                                if (options.NoDuplicates)
                                 {
                                     Debug.WriteLine("nodups");
                                 }
-                                if ((options & ResultOptions.Sort) != 0)
+                                if (options.SortByPath)
                                 {
                                     Debug.WriteLine("sort");
                                 }

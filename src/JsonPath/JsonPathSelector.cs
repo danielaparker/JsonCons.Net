@@ -11,9 +11,9 @@ namespace JsonCons.JsonPath
     {
         static internal PathLink Generate(PathLink last, 
                                           Int32 index, 
-                                          ResultOptions options) 
+                                          ProcessingFlags options) 
         {
-            if ((options & ResultOptions.Path) != 0)
+            if ((options & ProcessingFlags.Path) != 0)
             {
                 return new PathLink(last, index);
             }
@@ -25,9 +25,9 @@ namespace JsonCons.JsonPath
 
         static internal PathLink Generate(PathLink last, 
                                           string identifier, 
-                                          ResultOptions options) 
+                                          ProcessingFlags options) 
         {
-            if ((options & ResultOptions.Path) != 0)
+            if ((options & ProcessingFlags.Path) != 0)
             {
                 return new PathLink(last, identifier);
             }
@@ -45,13 +45,13 @@ namespace JsonCons.JsonPath
                     PathLink last,
                     IValue current, 
                     INodeAccumulator accumulator,
-                    ResultOptions options);
+                    ProcessingFlags options);
 
         bool TryEvaluate(DynamicResources resources, 
                          IValue root,
                          PathLink last, 
                          IValue current, 
-                         ResultOptions options,
+                         ProcessingFlags options,
                          out IValue value);
 
         void AppendSelector(ISelector tail);
@@ -68,13 +68,13 @@ namespace JsonCons.JsonPath
                                     PathLink last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ResultOptions options);
+                                    ProcessingFlags options);
 
         public abstract bool TryEvaluate(DynamicResources resources, 
                                          IValue root, 
                                          PathLink last, 
                                          IValue current,
-                                         ResultOptions options,
+                                         ProcessingFlags options,
                                          out IValue value);
 
         public void AppendSelector(ISelector tail)
@@ -94,7 +94,7 @@ namespace JsonCons.JsonPath
                                   PathLink last,
                                   IValue current,
                                   INodeAccumulator accumulator,
-                                  ResultOptions options)
+                                  ProcessingFlags options)
         {
             if (Tail == null)
             {
@@ -110,7 +110,7 @@ namespace JsonCons.JsonPath
                                        IValue root, 
                                        PathLink last, 
                                        IValue current,
-                                       ResultOptions options,
+                                       ProcessingFlags options,
                                        out IValue value)
         {
             if (Tail == null)
@@ -144,7 +144,7 @@ namespace JsonCons.JsonPath
                                     PathLink last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ResultOptions options)
+                                    ProcessingFlags options)
         {
             this.TailSelect(resources, root, last, root, accumulator, options);        
         }
@@ -152,7 +152,7 @@ namespace JsonCons.JsonPath
                                          IValue root, 
                                          PathLink last, 
                                          IValue current,
-                                         ResultOptions options,
+                                         ProcessingFlags options,
                                          out IValue result)
         {
             if (resources.TryRetrieveFromCache(_id, out result))
@@ -189,14 +189,14 @@ namespace JsonCons.JsonPath
                                     PathLink last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ResultOptions options)
+                                    ProcessingFlags options)
         {
             this.TailSelect(resources, root, last, current, accumulator, options);        
         }
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathLink last, 
                                          IValue current,
-                                         ResultOptions options,
+                                         ProcessingFlags options,
                                          out IValue value)
         {
             return this.TryEvaluateTail(resources, root, last, current, options, out value);        
@@ -227,7 +227,7 @@ namespace JsonCons.JsonPath
                                     PathLink last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ResultOptions options)
+                                    ProcessingFlags options)
         {
             PathLink ancestor = last;
             int index = 0;
@@ -250,7 +250,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathLink last, 
                                          IValue current,
-                                         ResultOptions options,
+                                         ProcessingFlags options,
                                          out IValue result)
         {
             PathLink ancestor = last;
@@ -327,7 +327,7 @@ namespace JsonCons.JsonPath
                                     PathLink last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ResultOptions options)
+                                    ProcessingFlags options)
         {
             if (current.ValueKind == JsonValueKind.Object)
             { 
@@ -344,7 +344,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathLink last, 
                                          IValue current,
-                                         ResultOptions options,
+                                         ProcessingFlags options,
                                          out IValue value)
         {
             if (current.ValueKind == JsonValueKind.Object)
@@ -400,7 +400,7 @@ namespace JsonCons.JsonPath
                                     PathLink last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ResultOptions options)
+                                    ProcessingFlags options)
         {
             if (current.ValueKind == JsonValueKind.Array)
             { 
@@ -426,7 +426,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathLink last,
                                          IValue current,
-                                         ResultOptions options,
+                                         ProcessingFlags options,
                                          out IValue value)
         {
             if (current.ValueKind == JsonValueKind.Array)
@@ -480,7 +480,7 @@ namespace JsonCons.JsonPath
                                     PathLink last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ResultOptions options) 
+                                    ProcessingFlags options) 
         {
             if (current.ValueKind == JsonValueKind.Array)
             {
@@ -532,7 +532,7 @@ namespace JsonCons.JsonPath
                                          IValue root,
                                          PathLink last,
                                          IValue current,
-                                         ResultOptions options,
+                                         ProcessingFlags options,
                                          out IValue results) 
         {
             var elements = new List<IValue>();
@@ -560,7 +560,7 @@ namespace JsonCons.JsonPath
                                     PathLink last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ResultOptions options)
+                                    ProcessingFlags options)
         {
             if (current.ValueKind == JsonValueKind.Array)
             {
@@ -588,7 +588,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathLink last,
                                          IValue current,
-                                         ResultOptions options,
+                                         ProcessingFlags options,
                                          out IValue results)
         {
             var elements = new List<IValue>();
@@ -616,7 +616,7 @@ namespace JsonCons.JsonPath
                                     PathLink last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ResultOptions options)
+                                    ProcessingFlags options)
         {
             if (current.ValueKind == JsonValueKind.Array)
             {
@@ -642,7 +642,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathLink last,
                                          IValue current,
-                                         ResultOptions options,
+                                         ProcessingFlags options,
                                          out IValue results)
         {
             var elements = new List<IValue>();
@@ -695,7 +695,7 @@ namespace JsonCons.JsonPath
                            PathLink last,
                            IValue current,
                            INodeAccumulator accumulator,
-                           ResultOptions options)
+                           ProcessingFlags options)
         {
             foreach (var selector in _selectors)
             {
@@ -706,7 +706,7 @@ namespace JsonCons.JsonPath
         public bool TryEvaluate(DynamicResources resources, IValue root, 
                                 PathLink last,
                                 IValue current,
-                                ResultOptions options,
+                                ProcessingFlags options,
                                 out IValue results)
         {
             var elements = new List<IValue>();
@@ -746,7 +746,7 @@ namespace JsonCons.JsonPath
                                     PathLink last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ResultOptions options)
+                                    ProcessingFlags options)
         {
             if (current.ValueKind == JsonValueKind.Array)
             {
@@ -783,7 +783,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathLink last,
                                          IValue current,
-                                         ResultOptions options,
+                                         ProcessingFlags options,
                                          out IValue results)
         {
             var elements = new List<IValue>();

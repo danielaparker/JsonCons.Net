@@ -27,7 +27,7 @@ namespace JsonCons.JsonPath
          bool TryEvaluate(DynamicResources resources,
                           IValue root,
                           IValue current, 
-                          ResultOptions options,
+                          ProcessingFlags options,
                           out IValue value);
     }
 
@@ -80,7 +80,7 @@ namespace JsonCons.JsonPath
         public  bool TryEvaluate(DynamicResources resources,
                                  IValue root,
                                  IValue current, 
-                                 ResultOptions options,
+                                 ProcessingFlags options,
                                  out IValue result)
         {
             Stack<IValue> stack = new Stack<IValue>();

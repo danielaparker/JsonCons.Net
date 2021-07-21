@@ -293,7 +293,8 @@ namespace JsonCons.JsonPath.Examples
             Console.WriteLine();
 
             Console.WriteLine("Allow duplicate nodes and sort by selector");
-            IList<JsonPathNode> nodesSort = selector.SelectNodes(doc.RootElement, ResultOptions.Sort);
+            IList<JsonPathNode> nodesSort = selector.SelectNodes(doc.RootElement, 
+                                                                 new JsonSelectorOptions{SortByPath=true});
             foreach (var node in nodesSort)
             {
                 Console.WriteLine($"{node.Path} => {node.Value}");
@@ -302,7 +303,7 @@ namespace JsonCons.JsonPath.Examples
 
             Console.WriteLine("Remove duplicate nodes");
             IList<JsonPathNode> nodesNoDups = selector.SelectNodes(doc.RootElement, 
-                                                               ResultOptions.NoDups);
+                                                               new JsonSelectorOptions{NoDuplicates=true});
             foreach (var node in nodesNoDups)
             {
                 Console.WriteLine($"{node.Path} => {node.Value}");
@@ -311,7 +312,7 @@ namespace JsonCons.JsonPath.Examples
 
             Console.WriteLine("Remove duplicate nodes and sort by paths");
             IList<JsonPathNode> nodesNoDupsSort = selector.SelectNodes(doc.RootElement, 
-                                                                   ResultOptions.NoDups | ResultOptions.Sort);
+                                                                   new JsonSelectorOptions{NoDuplicates=true, SortByPath=true});
             foreach (var node in nodesNoDupsSort)
             {
                 Console.WriteLine($"{node.Path} => {node.Value}");
