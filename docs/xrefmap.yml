@@ -795,6 +795,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.Utilities.JsonPointer.ToString
   nameWithType: JsonPointer.ToString
+- uid: JsonCons.Utilities.JsonPointer.ToUriFragment
+  name: ToUriFragment()
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_ToUriFragment
+  commentId: M:JsonCons.Utilities.JsonPointer.ToUriFragment
+  fullName: JsonCons.Utilities.JsonPointer.ToUriFragment()
+  nameWithType: JsonPointer.ToUriFragment()
+- uid: JsonCons.Utilities.JsonPointer.ToUriFragment*
+  name: ToUriFragment
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_ToUriFragment_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.ToUriFragment
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonPointer.ToUriFragment
+  nameWithType: JsonPointer.ToUriFragment
 - uid: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)
   name: TryGet(JsonElement, String, out JsonElement)
   href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryGet_System_Text_Json_JsonElement_System_String_System_Text_Json_JsonElement__

@@ -11,6 +11,61 @@ namespace JsonCons.Utilities.Tests
     public class JsonPointerTests
     {
         [TestMethod]
+        public void ToUriFragmentTest()
+        {
+            JsonPointer pointer;
+            string s;
+
+            Assert.IsTrue(JsonPointer.TryParse("", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#");
+
+            Assert.IsTrue(JsonPointer.TryParse("/foo", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#/foo");
+
+            Assert.IsTrue(JsonPointer.TryParse("/foo/0", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#/foo/0");
+
+            Assert.IsTrue(JsonPointer.TryParse("/", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#/");
+
+            Assert.IsTrue(JsonPointer.TryParse("/a~1b", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#/a~1b");
+
+            Assert.IsTrue(JsonPointer.TryParse("/c%d", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#/c%25d");
+
+            Assert.IsTrue(JsonPointer.TryParse("/e^f", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#/e%5Ef");
+
+            Assert.IsTrue(JsonPointer.TryParse("/g|h", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#/g%7Ch");
+
+            Assert.IsTrue(JsonPointer.TryParse("/i\\j", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#/i%5Cj");
+
+            Assert.IsTrue(JsonPointer.TryParse("/k\"l", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#/k%22l");
+
+            Assert.IsTrue(JsonPointer.TryParse("/ ", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#/%20");
+
+            Assert.IsTrue(JsonPointer.TryParse("/m~0n", out pointer));
+            s = pointer.ToUriFragment();
+            Assert.IsTrue(s == "#/m~0n");
+        }
+
+        [TestMethod]
         public void GetWithRefTest()
         {
             using var doc = JsonDocument.Parse(@"{""foo"": [""bar"", ""baz""]}");

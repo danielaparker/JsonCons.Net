@@ -19,7 +19,39 @@ namespace JsonCons.Utilities
             Tokens = tokens;
         }
 
-        public static bool TryParse(string str, out JsonPointer jsonPointer)
+        static string UnescapePercent(string source)
+        {
+            if (source.Length >= 3)
+            {
+                var buffer = new StringBuilder();
+                int end = source.Length - 3;
+                int i = 0;
+                while (i < end)
+                {
+                    char c = source[i];
+                    switch (c)
+                    {
+                        case '%':
+                            string hex = source.Substring(i+1,2);
+                            char ch = (char)int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                            buffer.Append(ch);
+                            i += 3;
+                            break;
+                        default:
+                            buffer.Append(c);
+                            ++i;
+                            break;
+                    }
+                }
+                return buffer.ToString();
+            }
+            else
+            {
+                return source;
+            }
+        }
+
+        public static bool TryParse(string source, out JsonPointer jsonPointer)
         {
             var tokens = new List<string>();
 
@@ -27,15 +59,20 @@ namespace JsonCons.Utilities
             int index = 0;
             var buffer = new StringBuilder();
 
-            while (index < str.Length)
+            if (source.Length > 0 && source[0] == '#') 
+            {
+                source = UnescapePercent(source.Substring(1));
+            }
+
+            while (index < source.Length)
             {
                 bool done = false;
-                while (index < str.Length && !done)
+                while (index < source.Length && !done)
                 {
                     switch (state)
                     {
                         case JsonPointerState.Start: 
-                            switch (str[index])
+                            switch (source[index])
                             {
                                 case '/':
                                     state = JsonPointerState.Delim;
@@ -46,7 +83,7 @@ namespace JsonCons.Utilities
                             };
                             break;
                         case JsonPointerState.Delim: 
-                            switch (str[index])
+                            switch (source[index])
                             {
                                 case '/':
                                     done = true;
@@ -55,12 +92,12 @@ namespace JsonCons.Utilities
                                     state = JsonPointerState.Escaped;
                                     break;
                                 default:
-                                    buffer.Append(str[index]);
+                                    buffer.Append(source[index]);
                                     break;
                             };
                             break;
                         case JsonPointerState.Escaped: 
-                            switch (str[index])
+                            switch (source[index])
                             {
                                 case '0':
                                     buffer.Append('~');
@@ -122,6 +159,66 @@ namespace JsonCons.Utilities
                             break;
                         default:
                             buffer.Append(c);
+                            break;
+                    }
+                }
+            }
+            return buffer.ToString();
+        }
+
+        public string ToUriFragment()
+        {
+            var buffer = new StringBuilder();
+
+            buffer.Append("#");
+            foreach (var token in Tokens)
+            {
+                buffer.Append("/");
+                foreach (var c in token)
+                {
+                    switch (c)
+                    {
+                        case '~':
+                            buffer.Append('~');
+                            buffer.Append('0');
+                            break;
+                        case '/':
+                            buffer.Append('~');
+                            buffer.Append('1');
+                            break;
+                        default:
+                            switch (c)
+                            {
+                                case '%':
+                                case '^':
+                                case '|': 
+                                case '\\':
+                                case '\"':
+                                case ' ':
+                                case ':':
+                                case '?': 
+                                case '#':
+                                case '[':
+                                case ']':
+                                case '@':
+                                case '!':
+                                case '$': 
+                                case '&':
+                                case '\'':
+                                case '(':
+                                case ')':
+                                case '*':
+                                case '+':
+                                case ',':
+                                case ';':
+                                case '=':
+                                    buffer.Append('%');
+                                    buffer.Append(((int)c).ToString("X"));
+                                    break;
+                                default:
+                                    buffer.Append(c);
+                                    break;
+                            }
                             break;
                     }
                 }
