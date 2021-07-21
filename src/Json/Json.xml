@@ -26,5 +26,25 @@
             Gets the <see cref="T:System.String"/> that caused the error.
             </summary>
         </member>
+        <member name="T:JsonCons.Utilities.JsonPointer">
+            <summary>
+            Represents a JSON Pointer
+            </summary>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.#ctor(System.Collections.Generic.IReadOnlyList{System.String})">
+            <summary>
+            Constructs a new JSON Pointer object from a list of tokens 
+            </summary>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.ToString">
+            <summary>
+            Returns a string representing the JSON Pointer as a string value
+            </summary>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.ToUriFragment">
+            <summary>
+            Returns a string representing the JSON Pointer as a URI fragment identifier
+            </summary>
+        </member>
     </members>
 </doc>

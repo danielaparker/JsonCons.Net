@@ -52,10 +52,7 @@ namespace JsonCons.Utilities.Tests
 
             JsonDocument unflattenedDoc = JsonFlattener.Unflatten(flattenedDoc.RootElement);
 
-            var options = new JsonSerializerOptions();
-            options.WriteIndented = true;
-
-            Debug.WriteLine($"{JsonSerializer.Serialize(unflattenedDoc, options)}\n");
+            var options = new JsonSerializerOptions() { WriteIndented = true };
 
             Assert.IsTrue(JsonElementEqualityComparer.Instance.Equals(unflattenedDoc.RootElement,doc.RootElement));
         }

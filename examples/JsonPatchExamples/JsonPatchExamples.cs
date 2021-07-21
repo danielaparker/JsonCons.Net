@@ -26,8 +26,7 @@ namespace JsonCons.Utilities.Examples
 ]
             ");
 
-            var options = new JsonSerializerOptions();
-            options.WriteIndented = true;
+            var options = new JsonSerializerOptions() { WriteIndented = true };
 
             JsonDocument result = JsonPatch.ApplyPatch(doc.RootElement, patch.RootElement);
 
@@ -57,8 +56,7 @@ namespace JsonCons.Utilities.Examples
 }
             ");
 
-            var options = new JsonSerializerOptions();
-            options.WriteIndented = true;
+            var options = new JsonSerializerOptions() { WriteIndented = true };
 
             JsonDocument patch = JsonPatch.FromDiff(sourceDoc.RootElement, targetDoc.RootElement);
 

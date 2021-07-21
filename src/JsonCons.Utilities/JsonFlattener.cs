@@ -8,7 +8,7 @@ using System.Text.Json;
         
 namespace JsonCons.Utilities
 {
-    public enum UnflattenOptions { None, AssumeObject }
+    public enum IntTokenHandling { AttemptArray, AssumeObject }
 
     public static class JsonFlattener
     {
@@ -233,7 +233,7 @@ namespace JsonCons.Utilities
             return true;
         }
 
-        static JsonDocumentBuilder UnflattenToObject(JsonElement value, UnflattenOptions options = UnflattenOptions.None)
+        static JsonDocumentBuilder UnflattenToObject(JsonElement value, IntTokenHandling options = IntTokenHandling.AttemptArray)
         {
             if (value.ValueKind != JsonValueKind.Object)
             {
@@ -287,12 +287,12 @@ namespace JsonCons.Utilities
                 }
             }
 
-            return options == UnflattenOptions.None ? SafeUnflatten (result) : result;
+            return options == IntTokenHandling.AttemptArray ? SafeUnflatten (result) : result;
         }
 
-        public static JsonDocument Unflatten(JsonElement value, UnflattenOptions options = UnflattenOptions.None)
+        public static JsonDocument Unflatten(JsonElement value, IntTokenHandling options = IntTokenHandling.AttemptArray)
         {
-            if (options == UnflattenOptions.None)
+            if (options == IntTokenHandling.AttemptArray)
             {
                  JsonDocumentBuilder val;
                  if (TryUnflattenArray(value, out val))

@@ -8,13 +8,21 @@ using System.Text.Json;
         
 namespace JsonCons.Utilities
 {
+    /// <summary>
+    /// Represents a JSON Pointer
+    /// </summary>
+
     public sealed class JsonPointer : IEnumerable<string>, IEquatable<JsonPointer>
     {
         enum JsonPointerState {Start, Escaped, Delim}
 
         public IReadOnlyList<string> Tokens {get;}
 
-        public JsonPointer(List<string> tokens)
+        /// <summary>
+        /// Constructs a new JSON Pointer object from a list of tokens 
+        /// </summary>
+
+        public JsonPointer(IReadOnlyList<string> tokens)
         {
             Tokens = tokens;
         }
@@ -139,6 +147,10 @@ namespace JsonCons.Utilities
            return (System.Collections.IEnumerator) GetEnumerator();
         }
 
+        /// <summary>
+        /// Returns a string representing the JSON Pointer as a string value
+        /// </summary>
+
         public override string ToString()
         {
             var buffer = new StringBuilder();
@@ -165,6 +177,10 @@ namespace JsonCons.Utilities
             }
             return buffer.ToString();
         }
+
+        /// <summary>
+        /// Returns a string representing the JSON Pointer as a URI fragment identifier
+        /// </summary>
 
         public string ToUriFragment()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -6,7 +7,7 @@ using JsonCons.Utilities;
 
 namespace JsonCons.Utilities.Examples
 {
-    class JsonPointerExamples
+    static class JsonPointerExamples
     {
         // Example from RFC 6901
         static void GetExamples()
@@ -26,8 +27,7 @@ namespace JsonCons.Utilities.Examples
 }
             ");
 
-            var options = new JsonSerializerOptions();
-            options.WriteIndented = true;
+            var options = new JsonSerializerOptions() { WriteIndented = true };
 
             JsonElement result;
 
@@ -81,9 +81,75 @@ namespace JsonCons.Utilities.Examples
             }
         }
 
+        static void FlattenAndUnflatten()
+        {
+            using var doc = JsonDocument.Parse(@"
+{
+   ""application"": ""hiking"",
+   ""reputons"": [
+       {
+           ""rater"": ""HikingAsylum"",
+           ""assertion"": ""advanced"",
+           ""rated"": ""Marilyn C"",
+           ""rating"": 0.90
+        },
+        {
+           ""rater"": ""HikingAsylum"",
+           ""assertion"": ""intermediate"",
+           ""rated"": ""Hongmin"",
+           ""rating"": 0.75
+        }    
+    ]
+}
+            ");
+
+            JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+
+            var options = new JsonSerializerOptions() { WriteIndented = true };
+
+            Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
+
+            JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
+
+            var comparer = JsonElementEqualityComparer.Instance;
+            Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
+        }
+
+        static void UnflattenAssumingObject()
+        {
+            using var doc = JsonDocument.Parse(@"
+{
+    ""discards"": {
+        ""1000"": ""Record does not exist"",
+        ""1004"": ""Queue limit exceeded"",
+        ""1010"": ""Discarding timed-out partial msg""
+    },
+    ""warnings"": {
+        ""0"": ""Phone number missing country code"",
+        ""1"": ""State code missing"",
+        ""2"": ""Zip code missing""
+    }
+}
+            ");
+
+            JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+            Console.WriteLine($"(1) {JsonSerializer.Serialize(flattened, options)}\n");
+
+            var options = new JsonSerializerOptions() { WriteIndented = true };
+
+            JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement);
+            Console.WriteLine($"(2) {JsonSerializer.Serialize(unflattened1, options)}\n");
+
+            JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
+                                                                IntTokenHandling.AssumeObject);
+            Console.WriteLine($"(3) {JsonSerializer.Serialize(unflattened2, options)}\n");
+        }
+
         static void Main(string[] args)
         {
             JsonPointerExamples.GetExamples();
+            JsonPointerExamples.FlattenAndUnflatten();
+            JsonPointerExamples.UnflattenAssumingObject();
         }
     }
 }
