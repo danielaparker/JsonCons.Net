@@ -91,7 +91,7 @@ namespace JsonCons.JsonPath
         ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        ///   <paramref name="pathStr"/> is <see langword="null"/>.
+        ///   The <paramref name="pathStr"/> is <see langword="null"/>.
         /// </exception>
         public static JsonSelector Parse(string pathStr)
         {

@@ -10,12 +10,12 @@ using JsonCons.Utilities;
 namespace JsonCons.Utilities
 {
      /// <summary>
-    /// Captures error message and the related entity and the operation that caused it.
+    /// Captures error message and the operation that caused it.
     /// </summary>
     public class JsonPatchException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="JsonPatchException"/>.
+        /// Constructs a <see cref="JsonPatchException"/>.
         /// </summary>
         /// <param name="operation">The operation that caused the error.</param>
         /// <param name="message">The error message.</param>
@@ -37,11 +37,27 @@ namespace JsonCons.Utilities
         public string Operation { get; }
     }
 
+    /// <summary>
+    /// Provides functionality for applying a JSON Patch as 
+    /// defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see>
+    /// to a JSON value.
+    /// </summary>
     public static class JsonPatch
     {
-        public static JsonDocument ApplyPatch(JsonElement target, JsonElement patch)
+        /// <summary>
+        /// Applies a JSON Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see> 
+        /// to a source JSON value.
+        /// <returns>The patched Json document.</returns>
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// The <paramref name="patch"/> is invalid 
+        /// </exception>
+        /// <exception cref="JsonPatchException">
+        ///   A JSON Patch operation failed
+        /// </exception>
+        public static JsonDocument ApplyPatch(JsonElement source, JsonElement patch)
         {
-            var documentBuilder = new JsonDocumentBuilder(target);
+            var documentBuilder = new JsonDocumentBuilder(source);
             ApplyPatch(ref documentBuilder, patch);
             return documentBuilder.ToJsonDocument();
         }
@@ -50,8 +66,7 @@ namespace JsonCons.Utilities
         {
             JsonElementEqualityComparer comparer = JsonElementEqualityComparer.Instance;
 
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
+            Debug.Assert(target != null);
 
             if (patch.ValueKind != JsonValueKind.Array)
             {
@@ -201,8 +216,11 @@ namespace JsonCons.Utilities
             }
         }
 
-        public static JsonDocument FromDiff(JsonElement source, 
-                                            JsonElement target)
+        /// <summary>
+        /// Builds a JSON Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see> 
+        /// given two JSON values, a source and a target.
+        /// </summary>
+        public static JsonDocument FromDiff(JsonElement source, JsonElement target)
         {
             return FromDiff(source, target, "").ToJsonDocument();
         }

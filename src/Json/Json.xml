@@ -46,5 +46,22 @@
             Returns a string representing the JSON Pointer as a URI fragment identifier
             </summary>
         </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)">
+            <summary>
+            Evaluates this JSON Pointer on the provided target.
+            </summary>
+            <param name="target"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)">
+            <summary>
+            Returns the value at the referenced location in the specified target.
+            </summary>
+            <param name="target"></param>
+            <param name="pointer"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

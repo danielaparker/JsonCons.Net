@@ -9,7 +9,7 @@ using System.Text.Json;
 namespace JsonCons.Utilities
 {
     /// <summary>
-    /// Represents a JSON Pointer
+    /// Represents a JSON Pointer as defined by <see href="https://datatracker.ietf.org/doc/html/rfc6901">RFC 6901</see>
     /// </summary>
 
     public sealed class JsonPointer : IEnumerable<string>, IEquatable<JsonPointer>
@@ -27,40 +27,13 @@ namespace JsonCons.Utilities
             Tokens = tokens;
         }
 
-        static string UnescapePercent(string source)
+        public static bool TryParse(string source, out JsonPointer pointer)
         {
-            if (source.Length >= 3)
+            if (source == null)
             {
-                var buffer = new StringBuilder();
-                int end = source.Length - 3;
-                int i = 0;
-                while (i < end)
-                {
-                    char c = source[i];
-                    switch (c)
-                    {
-                        case '%':
-                            string hex = source.Substring(i+1,2);
-                            char ch = (char)int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
-                            buffer.Append(ch);
-                            i += 3;
-                            break;
-                        default:
-                            buffer.Append(c);
-                            ++i;
-                            break;
-                    }
-                }
-                return buffer.ToString();
+                throw new ArgumentNullException(nameof(source));
             }
-            else
-            {
-                return source;
-            }
-        }
 
-        public static bool TryParse(string source, out JsonPointer jsonPointer)
-        {
             var tokens = new List<string>();
 
             JsonPointerState state = JsonPointerState.Start;
@@ -86,7 +59,7 @@ namespace JsonCons.Utilities
                                     state = JsonPointerState.Delim;
                                     break;
                                 default:
-                                    jsonPointer = null;
+                                    pointer = null;
                                     return false;
                             };
                             break;
@@ -116,12 +89,12 @@ namespace JsonCons.Utilities
                                     state = JsonPointerState.Delim;
                                     break;
                                 default:
-                                    jsonPointer = null;
+                                    pointer = null;
                                     return false;
                             };
                             break;
                         default:
-                            jsonPointer = null;
+                            pointer = null;
                             return false;
                     }
                     ++index;
@@ -133,7 +106,7 @@ namespace JsonCons.Utilities
             {
                 tokens.Add(buffer.ToString());
             }
-            jsonPointer = new JsonPointer(tokens);
+            pointer = new JsonPointer(tokens);
             return true;
         }
 
@@ -190,54 +163,7 @@ namespace JsonCons.Utilities
             foreach (var token in Tokens)
             {
                 buffer.Append("/");
-                foreach (var c in token)
-                {
-                    switch (c)
-                    {
-                        case '~':
-                            buffer.Append('~');
-                            buffer.Append('0');
-                            break;
-                        case '/':
-                            buffer.Append('~');
-                            buffer.Append('1');
-                            break;
-                        default:
-                            switch (c)
-                            {
-                                case '%':
-                                case '^':
-                                case '|': 
-                                case '\\':
-                                case '\"':
-                                case ' ':
-                                case ':':
-                                case '?': 
-                                case '#':
-                                case '[':
-                                case ']':
-                                case '@':
-                                case '!':
-                                case '$': 
-                                case '&':
-                                case '\'':
-                                case '(':
-                                case ')':
-                                case '*':
-                                case '+':
-                                case ',':
-                                case ';':
-                                case '=':
-                                    buffer.Append('%');
-                                    buffer.Append(((int)c).ToString("X"));
-                                    break;
-                                default:
-                                    buffer.Append(c);
-                                    break;
-                            }
-                            break;
-                    }
-                }
+                buffer.Append(Uri.EscapeUriString(token));
             }
             return buffer.ToString();
         }
@@ -282,9 +208,15 @@ namespace JsonCons.Utilities
             return hashCode;
         }
 
-        public bool TryGet(JsonElement root, out JsonElement value)
+        /// <summary>
+        /// Evaluates this JSON Pointer on the provided target.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool TryGet(JsonElement target, out JsonElement value)
         {
-            value = root;
+            value = target;
 
             foreach (var token in Tokens)
             {
@@ -321,57 +253,39 @@ namespace JsonCons.Utilities
             return true;
         }
 
-        public static bool TryGet(JsonElement root, string locationStr, out JsonElement value)
+        /// <summary>
+        /// Returns the value at the referenced location in the specified target.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="pointer"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool TryGet(JsonElement target, string pointer, out JsonElement value)
         {
-            JsonPointer location;
-            if (!TryParse(locationStr, out location))
+            if (pointer == null)
             {
-                value = root;
+                throw new ArgumentNullException(nameof(pointer));
+            }
+            JsonPointer location;
+            if (!TryParse(pointer, out location))
+            {
+                value = target;
                 return false;
             }
 
-            value = root;
-
-            foreach (var token in location)
-            {
-                if (value.ValueKind == JsonValueKind.Array)
-                {
-                    if (token == "-")
-                    {
-                        return false;
-                    }
-                    int index = 0;
-                    if (!int.TryParse(token, out index))
-                    {
-                        return false;
-                    }
-                    if (index >= value.GetArrayLength())
-                    {
-                        return false;
-                    }
-                    value = value[index];
-                }
-                else if (value.ValueKind == JsonValueKind.Object)
-                {
-                    if (!value.TryGetProperty(token, out value))
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return location.TryGet(target, out value);
         }
 
-        public static string Escape(string s)
+        public static string Escape(string token)
         {
+            if (token == null)
+            {
+                throw new ArgumentNullException(nameof(token));
+            }
+
             var result = new StringBuilder();
 
-            foreach (var c in s)
+            foreach (var c in token)
             {
                 if (c == '~')
                 {
@@ -391,6 +305,37 @@ namespace JsonCons.Utilities
             return result.ToString();
         }
 
+        static string UnescapePercent(string source)
+        {
+            if (source.Length >= 3)
+            {
+                var buffer = new StringBuilder();
+                int end = source.Length - 3;
+                int i = 0;
+                while (i < end)
+                {
+                    char c = source[i];
+                    switch (c)
+                    {
+                        case '%':
+                            string hex = source.Substring(i+1,2);
+                            char ch = (char)int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                            buffer.Append(ch);
+                            i += 3;
+                            break;
+                        default:
+                            buffer.Append(c);
+                            ++i;
+                            break;
+                    }
+                }
+                return buffer.ToString();
+            }
+            else
+            {
+                return source;
+            }
+        }
     }
 
 } // namespace JsonCons.Utilities
