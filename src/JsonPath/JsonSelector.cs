@@ -85,21 +85,21 @@ namespace JsonCons.JsonPath
         /// Parses a JSONPath string into a JsonSelector, for "parse once, use many times".
         /// A JsonSelector instance is thread safe and has no mutable state.
         /// </summary>
-        /// <param name="pathStr">A JSONPath string.</param>
+        /// <param name="jsonPath">A JSONPath string.</param>
         /// <returns>A JsonSelector.</returns>
         /// <exception cref="JsonPathParseException">
-        ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+        ///   The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        ///   The <paramref name="pathStr"/> is <see langword="null"/>.
+        ///   The <paramref name="jsonPath"/> is <see langword="null"/>.
         /// </exception>
-        public static JsonSelector Parse(string pathStr)
+        public static JsonSelector Parse(string jsonPath)
         {
-            if (pathStr == null)
+            if (jsonPath == null)
             {
-                throw new ArgumentNullException(nameof(pathStr));
+                throw new ArgumentNullException(nameof(jsonPath));
             }
-            var compiler = new JsonPathParser(pathStr);
+            var compiler = new JsonPathParser(jsonPath);
             return compiler.Parse();
         }
 
@@ -328,24 +328,24 @@ namespace JsonCons.JsonPath
         /// This method parses and applies the expression in one operation.
         /// </summary>
         /// <param name="root">The root value.</param>
-        /// <param name="pathStr">A JSONPath string.</param>
+        /// <param name="jsonPath">A JSONPath string.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of values within the root value that match the provided JSONPath expression</returns>
         /// <exception cref="JsonPathParseException">
-        ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+        ///   The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        ///   <paramref name="pathStr"/> is <see langword="null"/>.
+        ///   <paramref name="jsonPath"/> is <see langword="null"/>.
         /// </exception>
 
-        public static IList<JsonElement> Select(JsonElement root, string pathStr, 
+        public static IList<JsonElement> Select(JsonElement root, string jsonPath, 
                                                 JsonSelectorOptions? options = default)
         {
-            if (pathStr == null)
+            if (jsonPath == null)
             {
-                throw new ArgumentNullException(nameof(pathStr));
+                throw new ArgumentNullException(nameof(jsonPath));
             }
-            var expr = JsonSelector.Parse(pathStr);
+            var expr = JsonSelector.Parse(jsonPath);
             return expr.Select(root, options);
         }
 
@@ -354,25 +354,25 @@ namespace JsonCons.JsonPath
         /// This method parses and applies the expression in one operation.
         /// </summary>
         /// <param name="root">The root value.</param>
-        /// <param name="pathStr">A JSONPath string.</param>
+        /// <param name="jsonPath">A JSONPath string.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value that match the provided JSONPath expression</returns>
         /// <exception cref="JsonPathParseException">
-        ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+        ///   The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        ///   <paramref name="pathStr"/> is <see langword="null"/>.
+        ///   <paramref name="jsonPath"/> is <see langword="null"/>.
         /// </exception>
 
         public static IList<NormalizedPath> SelectPaths(JsonElement root, 
-                                                        string pathStr, 
+                                                        string jsonPath, 
                                                         JsonSelectorOptions? options = default)
         {
-            if (pathStr == null)
+            if (jsonPath == null)
             {
-                throw new ArgumentNullException(nameof(pathStr));
+                throw new ArgumentNullException(nameof(jsonPath));
             }
-            var expr = JsonSelector.Parse(pathStr);
+            var expr = JsonSelector.Parse(jsonPath);
             return expr.SelectPaths(root, options);
         }
 
@@ -381,26 +381,26 @@ namespace JsonCons.JsonPath
         /// This method parses and applies the expression in one operation.
         /// </summary>
         /// <param name="root">The root value.</param>
-        /// <param name="pathStr">A JSONPath string.</param>
+        /// <param name="jsonPath">A JSONPath string.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of <see cref="JsonPathNode"/> representing locations-value pairs 
         /// within the root value that match the provided JSONPath expression</returns>
         /// <exception cref="JsonPathParseException">
-        ///   The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
+        ///   The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        ///   <paramref name="pathStr"/> is <see langword="null"/>.
+        ///   <paramref name="jsonPath"/> is <see langword="null"/>.
         /// </exception>
 
         public static IList<JsonPathNode> SelectNodes(JsonElement root, 
-                                                      string pathStr, 
+                                                      string jsonPath, 
                                                       JsonSelectorOptions? options = default)
         {
-            if (pathStr == null)
+            if (jsonPath == null)
             {
-                throw new ArgumentNullException(nameof(pathStr));
+                throw new ArgumentNullException(nameof(jsonPath));
             }
-            var expr = JsonSelector.Parse(pathStr);
+            var expr = JsonSelector.Parse(jsonPath);
             return expr.SelectNodes(root, options);
         }
 

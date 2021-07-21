@@ -128,7 +128,7 @@ A JsonSelector instance is thread safe and has no mutable state.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static JsonSelector Parse(string pathStr)</code></pre>
+    <pre><code class="lang-csharp hljs">public static JsonSelector Parse(string jsonPath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -142,7 +142,7 @@ A JsonSelector instance is thread safe and has no mutable state.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">pathStr</span></td>
+        <td><span class="parametername">jsonPath</span></td>
         <td><p>A JSONPath string.</p>
 </td>
       </tr>
@@ -175,12 +175,12 @@ A JsonSelector instance is thread safe and has no mutable state.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="JsonCons.JsonPath.JsonPathParseException.html">JsonPathParseException</a></td>
-        <td><p>The <code data-dev-comment-type="paramref" class="paramref">pathStr</code> parameter is not a valid JSONPath expression.</p>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">jsonPath</code> parameter is not a valid JSONPath expression.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>The <code data-dev-comment-type="paramref" class="paramref">pathStr</code> is <span class="xref">null</span>.</p>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">jsonPath</code> is <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -256,7 +256,7 @@ This method parses and applies the expression in one operation.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IList&lt;JsonElement&gt; Select(JsonElement root, string pathStr, JsonSelectorOptions options = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IList&lt;JsonElement&gt; Select(JsonElement root, string jsonPath, JsonSelectorOptions options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -276,7 +276,7 @@ This method parses and applies the expression in one operation.</p>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">pathStr</span></td>
+        <td><span class="parametername">jsonPath</span></td>
         <td><p>A JSONPath string.</p>
 </td>
       </tr>
@@ -315,12 +315,12 @@ This method parses and applies the expression in one operation.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="JsonCons.JsonPath.JsonPathParseException.html">JsonPathParseException</a></td>
-        <td><p>The <code data-dev-comment-type="paramref" class="paramref">pathStr</code> parameter is not a valid JSONPath expression.</p>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">jsonPath</code> parameter is not a valid JSONPath expression.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">pathStr</code> is <span class="xref">null</span>.</p>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">jsonPath</code> is <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -397,7 +397,7 @@ This method parses and applies the expression in one operation.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IList&lt;JsonPathNode&gt; SelectNodes(JsonElement root, string pathStr, JsonSelectorOptions options = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IList&lt;JsonPathNode&gt; SelectNodes(JsonElement root, string jsonPath, JsonSelectorOptions options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -417,7 +417,7 @@ This method parses and applies the expression in one operation.</p>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">pathStr</span></td>
+        <td><span class="parametername">jsonPath</span></td>
         <td><p>A JSONPath string.</p>
 </td>
       </tr>
@@ -457,12 +457,12 @@ within the root value that match the provided JSONPath expression</p>
     <tbody>
       <tr>
         <td><a class="xref" href="JsonCons.JsonPath.JsonPathParseException.html">JsonPathParseException</a></td>
-        <td><p>The <code data-dev-comment-type="paramref" class="paramref">pathStr</code> parameter is not a valid JSONPath expression.</p>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">jsonPath</code> parameter is not a valid JSONPath expression.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">pathStr</code> is <span class="xref">null</span>.</p>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">jsonPath</code> is <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -538,7 +538,7 @@ This method parses and applies the expression in one operation.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IList&lt;NormalizedPath&gt; SelectPaths(JsonElement root, string pathStr, JsonSelectorOptions options = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IList&lt;NormalizedPath&gt; SelectPaths(JsonElement root, string jsonPath, JsonSelectorOptions options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -558,7 +558,7 @@ This method parses and applies the expression in one operation.</p>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">pathStr</span></td>
+        <td><span class="parametername">jsonPath</span></td>
         <td><p>A JSONPath string.</p>
 </td>
       </tr>
@@ -597,12 +597,12 @@ This method parses and applies the expression in one operation.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="JsonCons.JsonPath.JsonPathParseException.html">JsonPathParseException</a></td>
-        <td><p>The <code data-dev-comment-type="paramref" class="paramref">pathStr</code> parameter is not a valid JSONPath expression.</p>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">jsonPath</code> parameter is not a valid JSONPath expression.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">pathStr</code> is <span class="xref">null</span>.</p>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">jsonPath</code> is <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>

@@ -28,7 +28,7 @@ namespace JsonCons.Utilities
         }
 
 
-        public static bool TryParse(string source, out JsonPointer pointer)
+        public static bool TryParse(string source, out JsonPointer jsonPointer)
         {
             if (source == null)
             {
@@ -61,7 +61,7 @@ namespace JsonCons.Utilities
                                     state = JsonPointerState.Delim;
                                     break;
                                 default:
-                                    pointer = null;
+                                    jsonPointer = null;
                                     return false;
                             };
                             break;
@@ -91,12 +91,12 @@ namespace JsonCons.Utilities
                                     state = JsonPointerState.Delim;
                                     break;
                                 default:
-                                    pointer = null;
+                                    jsonPointer = null;
                                     return false;
                             };
                             break;
                         default:
-                            pointer = null;
+                            jsonPointer = null;
                             return false;
                     }
                     ++index;
@@ -108,7 +108,7 @@ namespace JsonCons.Utilities
             {
                 tokens.Add(buffer.ToString());
             }
-            pointer = new JsonPointer(tokens);
+            jsonPointer = new JsonPointer(tokens);
             return true;
         }
 
@@ -278,17 +278,17 @@ namespace JsonCons.Utilities
         /// Returns the value at the referenced location in the specified target.
         /// </summary>
         /// <param name="target"></param>
-        /// <param name="pointer"></param>
+        /// <param name="jsonPointer"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool TryGet(JsonElement target, string pointer, out JsonElement value)
+        public static bool TryGet(JsonElement target, string jsonPointer, out JsonElement value)
         {
-            if (pointer == null)
+            if (jsonPointer == null)
             {
-                throw new ArgumentNullException(nameof(pointer));
+                throw new ArgumentNullException(nameof(jsonPointer));
             }
             JsonPointer location;
-            if (!TryParse(pointer, out location))
+            if (!TryParse(jsonPointer, out location))
             {
                 value = target;
                 return false;
