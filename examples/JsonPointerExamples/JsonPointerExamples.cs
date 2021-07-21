@@ -132,10 +132,10 @@ namespace JsonCons.Utilities.Examples
 }
             ");
 
+            var options = new JsonSerializerOptions() { WriteIndented = true };
+
             JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
             Console.WriteLine($"(1) {JsonSerializer.Serialize(flattened, options)}\n");
-
-            var options = new JsonSerializerOptions() { WriteIndented = true };
 
             JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement);
             Console.WriteLine($"(2) {JsonSerializer.Serialize(unflattened1, options)}\n");
