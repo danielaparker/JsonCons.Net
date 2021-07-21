@@ -8,7 +8,7 @@ using JsonCons.Utilities;
 namespace JsonCons.Utilities.Tests
 {
     [TestClass]
-    public class JsonFlattenTests
+    public class JsonFlattenerTests
     {
         [TestMethod]
         public void FlattenTest()
@@ -49,6 +49,15 @@ namespace JsonCons.Utilities.Tests
 
             JsonDocument flattenedDoc = JsonFlattener.Flatten(doc.RootElement);
             Assert.IsTrue(JsonElementEqualityComparer.Instance.Equals(flattenedDoc.RootElement,expected.RootElement));
+
+            JsonDocument unflattenedDoc = JsonFlattener.Unflatten(flattenedDoc.RootElement);
+
+            var options = new JsonSerializerOptions();
+            options.WriteIndented = true;
+
+            Debug.WriteLine($"{JsonSerializer.Serialize(unflattenedDoc, options)}\n");
+
+            Assert.IsTrue(JsonElementEqualityComparer.Instance.Equals(unflattenedDoc.RootElement,doc.RootElement));
         }
     }
 }

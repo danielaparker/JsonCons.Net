@@ -576,6 +576,38 @@ references:
   isSpec: "True"
   fullName: JsonCons.Utilities.JsonElementEqualityComparer.Instance
   nameWithType: JsonElementEqualityComparer.Instance
+- uid: JsonCons.Utilities.JsonFlattener
+  name: JsonFlattener
+  href: ref/JsonCons.Utilities.JsonFlattener.html
+  commentId: T:JsonCons.Utilities.JsonFlattener
+  fullName: JsonCons.Utilities.JsonFlattener
+  nameWithType: JsonFlattener
+- uid: JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)
+  name: Flatten(JsonElement)
+  href: ref/JsonCons.Utilities.JsonFlattener.html#JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)
+  nameWithType: JsonFlattener.Flatten(JsonElement)
+- uid: JsonCons.Utilities.JsonFlattener.Flatten*
+  name: Flatten
+  href: ref/JsonCons.Utilities.JsonFlattener.html#JsonCons_Utilities_JsonFlattener_Flatten_
+  commentId: Overload:JsonCons.Utilities.JsonFlattener.Flatten
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonFlattener.Flatten
+  nameWithType: JsonFlattener.Flatten
+- uid: JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.UnflattenOptions)
+  name: Unflatten(JsonElement, UnflattenOptions)
+  href: ref/JsonCons.Utilities.JsonFlattener.html#JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_UnflattenOptions_
+  commentId: M:JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.UnflattenOptions)
+  fullName: JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement, JsonCons.Utilities.UnflattenOptions)
+  nameWithType: JsonFlattener.Unflatten(JsonElement, UnflattenOptions)
+- uid: JsonCons.Utilities.JsonFlattener.Unflatten*
+  name: Unflatten
+  href: ref/JsonCons.Utilities.JsonFlattener.html#JsonCons_Utilities_JsonFlattener_Unflatten_
+  commentId: Overload:JsonCons.Utilities.JsonFlattener.Unflatten
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonFlattener.Unflatten
+  nameWithType: JsonFlattener.Unflatten
 - uid: JsonCons.Utilities.JsonPatch
   name: JsonPatch
   href: ref/JsonCons.Utilities.JsonPatch.html
@@ -804,3 +836,21 @@ references:
   isSpec: "True"
   fullName: JsonCons.Utilities.JsonPointer.TryParse
   nameWithType: JsonPointer.TryParse
+- uid: JsonCons.Utilities.UnflattenOptions
+  name: UnflattenOptions
+  href: ref/JsonCons.Utilities.UnflattenOptions.html
+  commentId: T:JsonCons.Utilities.UnflattenOptions
+  fullName: JsonCons.Utilities.UnflattenOptions
+  nameWithType: UnflattenOptions
+- uid: JsonCons.Utilities.UnflattenOptions.AssumeObject
+  name: AssumeObject
+  href: ref/JsonCons.Utilities.UnflattenOptions.html#JsonCons_Utilities_UnflattenOptions_AssumeObject
+  commentId: F:JsonCons.Utilities.UnflattenOptions.AssumeObject
+  fullName: JsonCons.Utilities.UnflattenOptions.AssumeObject
+  nameWithType: UnflattenOptions.AssumeObject
+- uid: JsonCons.Utilities.UnflattenOptions.None
+  name: None
+  href: ref/JsonCons.Utilities.UnflattenOptions.html#JsonCons_Utilities_UnflattenOptions_None
+  commentId: F:JsonCons.Utilities.UnflattenOptions.None
+  fullName: JsonCons.Utilities.UnflattenOptions.None
+  nameWithType: UnflattenOptions.None

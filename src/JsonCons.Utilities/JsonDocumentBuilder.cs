@@ -25,6 +25,21 @@ namespace JsonCons.Utilities
                 case JsonValueKind.Object:
                     _item = new Dictionary<string,JsonDocumentBuilder>();
                     break;
+                case JsonValueKind.True:
+                    _item = true;
+                    break;
+                case JsonValueKind.False:
+                    _item = false;
+                    break;
+                case JsonValueKind.Null:
+                    _item = null;
+                    break;
+                case JsonValueKind.String:
+                    _item = "";
+                    break;
+                case JsonValueKind.Number:
+                    _item = 0;
+                    break;
                 default:
                     _item = null;
                     break;
@@ -146,6 +161,15 @@ namespace JsonCons.Utilities
                 throw new InvalidOperationException("This value's ValueKind is not Object.");
             }
             ((IDictionary<string,JsonDocumentBuilder>)_item).Add(name, value);
+        }
+
+        internal bool TryAddProperty(string name, JsonDocumentBuilder value)
+        {
+            if (ValueKind != JsonValueKind.Object)
+            {
+                throw new InvalidOperationException("This value's ValueKind is not Object.");
+            }
+            return ((IDictionary<string,JsonDocumentBuilder>)_item).TryAdd(name, value);
         }
 
         internal bool ContainsPropertyName(string name)

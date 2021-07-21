@@ -8,6 +8,8 @@ using System.Text.Json;
         
 namespace JsonCons.Utilities
 {
+    public enum UnflattenOptions { None, AssumeObject }
+
     public static class JsonFlattener
     {
         static void _Flatten(string parentKey,
@@ -64,20 +66,17 @@ namespace JsonCons.Utilities
 
         public static JsonDocument Flatten(JsonElement value)
         {
-            var result = new JsonDocumentBuilder(new Dictionary<string,JsonDocumentBuilder>());
+            var result = new JsonDocumentBuilder(JsonValueKind.Object);
             string parentKey = "";
             _Flatten(parentKey, value, result);
             return result.ToJsonDocument();
         }
 
-/*
         // unflatten
 
-        enum UnflattenOptions {None, AssumeObject = 1};
-
-        Json SafeUnflatten (JsonDocumentBuilder value)
+        static JsonDocumentBuilder SafeUnflatten(JsonDocumentBuilder value)
         {
-            if (value.ValueKind != JsonValueKind.Object || value.empty())
+            if (value.ValueKind != JsonValueKind.Object || value.GetObjectLength() == 0)
             {
                 return value;
             }
@@ -86,8 +85,7 @@ namespace JsonCons.Utilities
             foreach (var item in value.EnumerateObject())
             {
                 int n;
-                auto r = jsoncons::detail::to_integer_decimal(item.key().data(),item.key().size(), n);
-                if (!r || (index++ != n))
+                if (!int.TryParse(item.Key, out n) || index++ != n)
                 {
                     safe = false;
                     break;
@@ -96,140 +94,221 @@ namespace JsonCons.Utilities
 
             if (safe)
             {
-                Json j(json_array_arg);
-                j.reserve(value.size());
-                for (auto& item : value.EnumerateObject())
+                var j = new JsonDocumentBuilder(JsonValueKind.Array);
+                foreach (var item in value.EnumerateObject())
                 {
-                    j.emplace_back(std::move(item.value()));
+                    j.AddArrayItem(item.Value);
                 }
-                Json a(json_array_arg);
-                for (auto& item : j.EnumerateArray())
+                var a = new JsonDocumentBuilder(JsonValueKind.Array);
+                foreach (var item in j.EnumerateArray())
                 {
-                    a.emplace_back(SafeUnflatten (item));
+                    a.AddArrayItem(SafeUnflatten(item));
                 }
                 return a;
             }
             else
             {
-                Json o(json_object_arg);
-                for (auto& item : value.EnumerateObject())
+                var o = new JsonDocumentBuilder(JsonValueKind.Object);
+                foreach (var item in value.EnumerateObject())
                 {
-                    o.try_emplace(item.key(), SafeUnflatten (item.value()));
+                    o.TryAddProperty(item.Key, SafeUnflatten (item.Value));
                 }
                 return o;
             }
         }
 
-        jsoncons::optional<Json> TryUnflattenArray(JsonElement value)
+        static bool TryUnflattenArray(JsonElement value, out JsonDocumentBuilder result)
         {
-            if (JSONCONS_UNLIKELY(value.ValueKind != JsonValueKind.Object))
+            if (value.ValueKind != JsonValueKind.Object)
             {
-                JSONCONS_THROW(jsonpointer_error(jsonpointer_errc::argument_to_unflatten_invalid));
+                throw new ArgumentException("Not an object");
             }
-            Json result;
 
-            for (const auto& item: value.EnumerateObject())
+            result = new JsonDocumentBuilder(JsonValueKind.Object);
+
+            foreach (var item in value.EnumerateObject())
             {
-                Json* part = &result;
-                basic_json_pointer<char_type> ptr(item.key());
-                int index = 0;
-                for (auto it = ptr.begin(); it != ptr.end(); )
+                JsonDocumentBuilder parent = null;
+                JsonDocumentBuilder part = result;
+                int parentIndex = 0;
+                string parentName = "";
+
+                JsonPointer ptr;
+                if (!JsonPointer.TryParse(item.Name, out ptr))
                 {
-                    auto s = *it;
-                    size_t n{0};
-                    auto r = jsoncons::detail::to_integer_decimal(s.data(), s.size(), n);
-                    if (r.ec == jsoncons::detail::to_integer_errc() && (index++ == n))
+                    throw new InvalidOperationException("Name contains invalid JSON Pointer");
+                }
+                int index = 0;
+
+                var it = ptr.GetEnumerator();
+                bool more = it.MoveNext();
+                while (more)
+                {
+                    string token = it.Current;
+                    int n;
+
+                    if (int.TryParse(token, out n) && index++ == n)
                     {
-                        if (!part->is_array())
+                        if (part.ValueKind != JsonValueKind.Array)
                         {
-                            *part = Json(json_array_arg);
-                        }
-                        if (++it != ptr.end())
-                        {
-                            if (n+1 > part->size())
+                            if (parent != null && parent.ValueKind == JsonValueKind.Object)
                             {
-                                Json& ref = part->emplace_back();
-                                part = std::addressof(ref);
+                                parent.RemoveProperty(parentName);
+                                var val = new JsonDocumentBuilder(JsonValueKind.Array);
+                                parent.AddProperty(parentName, val);
+                                part = val;
+                            }
+                            else if (parent != null && parent.ValueKind == JsonValueKind.Array)
+                            {
+                                var val = new JsonDocumentBuilder(JsonValueKind.Array);
+                                parent[parentIndex] = val;
+                                part = val;
                             }
                             else
                             {
-                                part = &part->at(n);
+                                return false;
+                            }
+                        }
+                        parent = part;
+                        parentIndex = n;
+                        parentName = token;
+                        more = it.MoveNext();
+                        if (more)
+                        {
+                            if (n >= part.GetArrayLength())
+                            {
+                                part.AddArrayItem(new JsonDocumentBuilder(JsonValueKind.Object));
+                                part = part[part.GetArrayLength() - 1];
+                            }
+                            else
+                            {
+                                part = part[n];
                             }
                         }
                         else
                         {
-                            Json& ref = part->emplace_back(item.value());
-                            part = std::addressof(ref);
+                            part.AddArrayItem(new JsonDocumentBuilder(item.Value));
+                            part = part[part.GetArrayLength() - 1];
                         }
                     }
-                    else if (part->is_object())
+                    else if (part.ValueKind == JsonValueKind.Object)
                     {
-                        if (++it != ptr.end())
+                        more = it.MoveNext();
+                        if (more)
                         {
-                            auto res = part->try_emplace(s,Json());
-                            part = &(res.first->value());
+                            JsonDocumentBuilder val;
+                            if (part.TryGetProperty(token, out val))
+                            {
+                                part = val;
+                            }
+                            else
+                            {
+                                val = new JsonDocumentBuilder(JsonValueKind.Object);
+                                part.AddProperty(token,val);
+                                part = val;
+                            }
                         }
                         else
                         {
-                            auto res = part->try_emplace(s, item.value());
-                            part = &(res.first->value());
+                            JsonDocumentBuilder val;
+                            if (part.TryGetProperty(token, out val))
+                            {
+                                part = val;
+                            }
+                            else
+                            {
+                                val = new JsonDocumentBuilder(item.Value);
+                                part.AddProperty(token,val);
+                                part = val;
+                            }
                         }
                     }
                     else 
                     {
-                        return jsoncons::optional<Json>();
+                        return false;
                     }
                 }
             }
 
-            return result;
+            return true;
         }
 
-        Json UnflattenToObject(JsonElement value, UnflattenOptions options = UnflattenOptions::None)
+        static JsonDocumentBuilder UnflattenToObject(JsonElement value, UnflattenOptions options = UnflattenOptions.None)
         {
-            if (JSONCONS_UNLIKELY(value.ValueKind != JsonValueKind.Object))
+            if (value.ValueKind != JsonValueKind.Object)
             {
-                JSONCONS_THROW(jsonpointer_error(jsonpointer_errc::argument_to_unflatten_invalid));
+                throw new ArgumentException("Not an object");
             }
-            Json result;
 
-            for (const auto& item: value.EnumerateObject())
+            var result = new JsonDocumentBuilder(JsonValueKind.Object);
+
+            foreach (var item in value.EnumerateObject())
             {
-                Json* part = &result;
-                basic_json_pointer<char_type> ptr(item.key());
-                for (auto it = ptr.begin(); it != ptr.end(); )
+                JsonDocumentBuilder part = result;
+                JsonPointer ptr;
+                if (!JsonPointer.TryParse(item.Name, out ptr))
                 {
-                    auto s = *it;
-                    if (++it != ptr.end())
+                    throw new InvalidOperationException("Name contains invalid JSON Pointer");
+                }
+                var it = ptr.GetEnumerator();
+                bool more = it.MoveNext();
+                while (more)
+                {
+                    var s = it.Current;
+                    more = it.MoveNext();
+                    if (more)
                     {
-                        auto res = part->try_emplace(s,Json());
-                        part = &(res.first->value());
+                        JsonDocumentBuilder val;
+                        if (part.TryGetProperty(s, out val))
+                        {
+                            part = val;
+                        }
+                        else
+                        {
+                            val = new JsonDocumentBuilder(JsonValueKind.Object);
+                            part.AddProperty(s,val);
+                            part = val;
+                        }
                     }
                     else
                     {
-                        auto res = part->try_emplace(s, item.value());
-                        part = &(res.first->value());
+                        JsonDocumentBuilder val;
+                        if (part.TryGetProperty(s, out val))
+                        {
+                            part = val;
+                        }
+                        else
+                        {
+                            val = new JsonDocumentBuilder(item.Value);
+                            part.AddProperty(s,val);
+                            part = val;
+                        }
                     }
                 }
             }
 
-            return options == UnflattenOptions::None ? SafeUnflatten (result) : result;
+            return options == UnflattenOptions.None ? SafeUnflatten (result) : result;
         }
 
-        Json Unflatten(JsonElement value, UnflattenOptions options = UnflattenOptions::None)
+        public static JsonDocument Unflatten(JsonElement value, UnflattenOptions options = UnflattenOptions.None)
         {
-            if (options == UnflattenOptions::None)
+            if (options == UnflattenOptions.None)
             {
-                jsoncons::optional<Json> j = TryUnflattenArray(value);
-                return j ? *j : UnflattenToObject(value,options);
+                 JsonDocumentBuilder val;
+                 if (TryUnflattenArray(value, out val))
+                 {
+                     return val.ToJsonDocument();
+                 }
+                 else
+                 {
+                     return UnflattenToObject(value, options).ToJsonDocument();
+                 }
             }
             else
             {
-                return UnflattenToObject(value,options);
+                return UnflattenToObject(value, options).ToJsonDocument();
             }
         }
-*/
-
     }
 
 } // namespace JsonCons.Utilities

@@ -125,10 +125,10 @@ namespace JsonCons.Utilities.Tests
 
             var result = JsonPatch.ApplyPatch(source.RootElement, patch.RootElement);
 
-            Debug.WriteLine($"source: {source.RootElement}");
-            Debug.WriteLine($"target: {target.RootElement}");
-            Debug.WriteLine($"patch: {patch.RootElement}");
-            Debug.WriteLine($"result: {result.RootElement}");
+            //Debug.WriteLine($"source: {source.RootElement}");
+            //Debug.WriteLine($"target: {target.RootElement}");
+            //Debug.WriteLine($"patch: {patch.RootElement}");
+            //Debug.WriteLine($"result: {result.RootElement}");
 
             Assert.IsTrue(comparer.Equals(target.RootElement,result.RootElement));
         }
