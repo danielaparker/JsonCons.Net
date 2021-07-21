@@ -42,7 +42,8 @@ namespace JsonCons.Utilities
 
             if (source.Length > 0 && source[0] == '#') 
             {
-                source = UnescapePercent(source.Substring(1));
+                source = Uri.UnescapeDataString(source);
+                index = 1;
             }
 
             while (index < source.Length)
@@ -163,7 +164,26 @@ namespace JsonCons.Utilities
             foreach (var token in Tokens)
             {
                 buffer.Append("/");
-                buffer.Append(Uri.EscapeUriString(token));
+                string s = Uri.EscapeUriString(token);
+                var span = s.AsSpan();
+                for (int i = 0; i < span.Length; ++i)
+                {
+                    char c = span[i];
+                    switch (c)
+                    {
+                        case '~':
+                            buffer.Append('~');
+                            buffer.Append('0');
+                            break;
+                        case '/':
+                            buffer.Append('~');
+                            buffer.Append('1');
+                            break;
+                        default:
+                            buffer.Append(c);
+                            break;
+                    }
+                }
             }
             return buffer.ToString();
         }
@@ -303,38 +323,6 @@ namespace JsonCons.Utilities
                 }
             }
             return result.ToString();
-        }
-
-        static string UnescapePercent(string source)
-        {
-            if (source.Length >= 3)
-            {
-                var buffer = new StringBuilder();
-                int end = source.Length - 3;
-                int i = 0;
-                while (i < end)
-                {
-                    char c = source[i];
-                    switch (c)
-                    {
-                        case '%':
-                            string hex = source.Substring(i+1,2);
-                            char ch = (char)int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
-                            buffer.Append(ch);
-                            i += 3;
-                            break;
-                        default:
-                            buffer.Append(c);
-                            ++i;
-                            break;
-                    }
-                }
-                return buffer.ToString();
-            }
-            else
-            {
-                return source;
-            }
         }
     }
 

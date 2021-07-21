@@ -93,7 +93,7 @@
               The <paramref name="pathStr"/> parameter is not a valid JSONPath expression.
             </exception>
             <exception cref="T:System.ArgumentNullException">
-              <paramref name="pathStr"/> is <see langword="null"/>.
+              The <paramref name="pathStr"/> is <see langword="null"/>.
             </exception>
         </member>
         <member name="M:JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">

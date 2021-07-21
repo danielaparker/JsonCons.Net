@@ -11,12 +11,12 @@
         </member>
         <member name="T:JsonCons.Utilities.JsonPatchException">
             <summary>
-            Captures error message and the related entity and the operation that caused it.
+            Captures error message and the operation that caused it.
             </summary>
         </member>
         <member name="M:JsonCons.Utilities.JsonPatchException.#ctor(System.String,System.String)">
             <summary>
-            Initializes a new instance of <see cref="T:JsonCons.Utilities.JsonPatchException"/>.
+            Constructs a <see cref="T:JsonCons.Utilities.JsonPatchException"/>.
             </summary>
             <param name="operation">The operation that caused the error.</param>
             <param name="message">The error message.</param>
@@ -26,9 +26,35 @@
             Gets the <see cref="T:System.String"/> that caused the error.
             </summary>
         </member>
+        <member name="T:JsonCons.Utilities.JsonPatch">
+            <summary>
+            Provides functionality for applying a JSON Patch as 
+            defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see>
+            to a JSON value.
+            </summary>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPatch.ApplyPatch(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
+            <summary>
+            Applies a JSON Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see> 
+            to a source JSON value.
+            <returns>The patched Json document.</returns>
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            The <paramref name="patch"/> is invalid 
+            </exception>
+            <exception cref="T:JsonCons.Utilities.JsonPatchException">
+              A JSON Patch operation failed
+            </exception>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPatch.FromDiff(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
+            <summary>
+            Builds a JSON Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see> 
+            given two JSON values, a source and a target.
+            </summary>
+        </member>
         <member name="T:JsonCons.Utilities.JsonPointer">
             <summary>
-            Represents a JSON Pointer
+            Represents a JSON Pointer as defined by <see href="https://datatracker.ietf.org/doc/html/rfc6901">RFC 6901</see>
             </summary>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.#ctor(System.Collections.Generic.IReadOnlyList{System.String})">

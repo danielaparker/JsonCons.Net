@@ -14,55 +14,94 @@ namespace JsonCons.Utilities.Tests
         public void ToUriFragmentTest()
         {
             JsonPointer pointer;
-            string s;
+            string fragment;
+            string location;
 
-            Assert.IsTrue(JsonPointer.TryParse("", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#");
+            location = "";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            Assert.IsTrue(fragment == "#");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
 
-            Assert.IsTrue(JsonPointer.TryParse("/foo", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#/foo");
+            location = "/foo";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            Assert.IsTrue(fragment == "#/foo");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
 
-            Assert.IsTrue(JsonPointer.TryParse("/foo/0", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#/foo/0");
+            location = "/foo/0";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            Assert.IsTrue(fragment == "#/foo/0");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
 
-            Assert.IsTrue(JsonPointer.TryParse("/", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#/");
+            location = "/";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            Assert.IsTrue(fragment == "#/");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
 
-            Assert.IsTrue(JsonPointer.TryParse("/a~1b", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#/a~1b");
+            location = "/a~1b";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            //Debug.WriteLine($"/a~1b");
+            Assert.IsTrue(fragment == "#/a~1b");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
 
-            Assert.IsTrue(JsonPointer.TryParse("/c%d", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#/c%25d");
+            location = "/c%d";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            Assert.IsTrue(fragment == "#/c%25d");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
 
-            Assert.IsTrue(JsonPointer.TryParse("/e^f", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#/e%5Ef");
+            location = "/e^f";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            Assert.IsTrue(fragment == "#/e%5Ef");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
 
-            Assert.IsTrue(JsonPointer.TryParse("/g|h", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#/g%7Ch");
+            location = "/g|h";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            Assert.IsTrue(fragment == "#/g%7Ch");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
 
-            Assert.IsTrue(JsonPointer.TryParse("/i\\j", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#/i%5Cj");
+            location = "/i\\j";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            Assert.IsTrue(fragment == "#/i%5Cj");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
 
-            Assert.IsTrue(JsonPointer.TryParse("/k\"l", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#/k%22l");
+            location = "/k\"l";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            Assert.IsTrue(fragment == "#/k%22l");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
 
-            Assert.IsTrue(JsonPointer.TryParse("/ ", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#/%20");
+            location = "/ ";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            Assert.IsTrue(fragment == "#/%20");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
 
-            Assert.IsTrue(JsonPointer.TryParse("/m~0n", out pointer));
-            s = pointer.ToUriFragment();
-            Assert.IsTrue(s == "#/m~0n");
+            location = "/m~0n";
+            Assert.IsTrue(JsonPointer.TryParse(location, out pointer));
+            fragment = pointer.ToUriFragment();
+            //Debug.WriteLine($"/m~0n {fragment}");
+            Assert.IsTrue(fragment == "#/m~0n");
+            Assert.IsTrue(JsonPointer.TryParse(fragment, out pointer));
+            Assert.IsTrue(pointer.ToString().Equals(location));
         }
 
         [TestMethod]
