@@ -59,7 +59,7 @@
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.#ctor(System.Collections.Generic.IReadOnlyList{System.String})">
             <summary>
-            Constructs a new JSON Pointer object from a list of tokens 
+            Constructs a JSON Pointer from a list of tokens 
             </summary>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.ToString">
