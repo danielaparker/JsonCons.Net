@@ -15,3 +15,11 @@ The libraries target .Net Standard 2.1.
 
 - [Reference](https://danielaparker.github.io/JsonCons.Net/ref/toc.html)
 
+## Examples
+
+[JSON Pointer examples](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPointerExamples/JsonPointerExamples.cs)
+
+[JSON Patch examples](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPatchExamples/JsonPatchExamples.cs)
+
+[JSONPath examples](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPath.Examples/JsonPathExamples.cs)
+
