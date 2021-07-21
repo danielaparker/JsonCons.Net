@@ -73,7 +73,7 @@ namespace JsonCons.JsonPath
     };
 
     /// <summary>
-    ///   Selects descendant JsonElement values from a root JsonElement.
+    ///   Provides functionality for retrieving selected values from a root <see href="https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement?view=net-5.0">JsonElement</see>.
     /// </summary>
 
     public sealed class JsonSelector

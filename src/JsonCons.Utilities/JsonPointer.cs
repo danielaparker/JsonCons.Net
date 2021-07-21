@@ -19,13 +19,14 @@ namespace JsonCons.Utilities
         public IReadOnlyList<string> Tokens {get;}
 
         /// <summary>
-        /// Constructs a new JSON Pointer object from a list of tokens 
+        /// Constructs a JSON Pointer from a list of tokens 
         /// </summary>
 
         public JsonPointer(IReadOnlyList<string> tokens)
         {
             Tokens = tokens;
         }
+
 
         public static bool TryParse(string source, out JsonPointer pointer)
         {
