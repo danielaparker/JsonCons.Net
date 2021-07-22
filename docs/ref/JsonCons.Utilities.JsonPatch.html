@@ -113,6 +113,77 @@ to a JSON value.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class JsonPatch</code></pre>
   </div>
+  <h5 id="JsonCons_Utilities_JsonPatch_examples"><strong>Examples</strong></h5>
+  <p>This example show how to flatten and unflatten a JSON value</p>
+<pre><code>using System;
+using System.Diagnostics;
+using System.Text.Json;
+using JsonCons.Utilities;
+
+public class Example
+{
+   public static void Main()
+   {
+    using var doc = JsonDocument.Parse(@&quot;
+{
+&quot;&quot;baz&quot;&quot;: &quot;&quot;qux&quot;&quot;,
+&quot;&quot;foo&quot;&quot;: &quot;&quot;bar&quot;&quot;
+}
+    &quot;);
+
+    using var patch = JsonDocument.Parse(@&quot;
+[
+{ &quot;&quot;op&quot;&quot;: &quot;&quot;replace&quot;&quot;, &quot;&quot;path&quot;&quot;: &quot;&quot;/baz&quot;&quot;, &quot;&quot;value&quot;&quot;: &quot;&quot;boo&quot;&quot; },
+{ &quot;&quot;op&quot;&quot;: &quot;&quot;add&quot;&quot;, &quot;&quot;path&quot;&quot;: &quot;&quot;/hello&quot;&quot;, &quot;&quot;value&quot;&quot;: [&quot;&quot;world&quot;&quot;] },
+{ &quot;&quot;op&quot;&quot;: &quot;&quot;remove&quot;&quot;, &quot;&quot;path&quot;&quot;: &quot;&quot;/foo&quot;&quot; }
+]
+    &quot;);
+
+    using JsonDocument result = JsonPatch.ApplyPatch(doc.RootElement, patch.RootElement);
+
+    var options = new JsonSerializerOptions() { WriteIndented = true };
+
+    Console.WriteLine(&quot;The original document:\n&quot;);
+    Console.WriteLine($&quot;{JsonSerializer.Serialize(doc.RootElement, options)}\n&quot;);
+    Console.WriteLine(&quot;The patch:\n&quot;);
+    Console.WriteLine($&quot;{JsonSerializer.Serialize(patch.RootElement, options)}\n&quot;);
+    Console.WriteLine(&quot;The result:\n&quot;);
+    Console.WriteLine($&quot;{JsonSerializer.Serialize(result, options)}\n&quot;);
+       &quot;);
+    }
+}</code></pre>
+<p>The original document:</p>
+<pre><code>{
+  &quot;baz&quot;: &quot;qux&quot;,
+  &quot;foo&quot;: &quot;bar&quot;
+}</code></pre>
+<p>The patch:</p>
+<pre><code>[
+  {
+    &quot;op&quot;: &quot;replace&quot;,
+    &quot;path&quot;: &quot;/baz&quot;,
+    &quot;value&quot;: &quot;boo&quot;
+  },
+  {
+    &quot;op&quot;: &quot;add&quot;,
+    &quot;path&quot;: &quot;/hello&quot;,
+    &quot;value&quot;: [
+      &quot;world&quot;
+    ]
+  },
+  {
+    &quot;op&quot;: &quot;remove&quot;,
+    &quot;path&quot;: &quot;/foo&quot;
+  }
+]</code></pre>
+<p>The result:</p>
+<pre><code>{
+  &quot;baz&quot;: &quot;boo&quot;,
+  &quot;hello&quot;: [
+    &quot;world&quot;
+  ]
+}</code></pre>
+
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">

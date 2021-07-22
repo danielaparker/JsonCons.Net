@@ -170,60 +170,60 @@
               <paramref name="jsonPath"/> is <see langword="null"/>.
             </exception>
         </member>
-        <member name="T:JsonCons.JsonPath.PathComponentKind">
+        <member name="T:JsonCons.JsonPath.PathNodeKind">
              <summary>
-             Specifies the type of a path component.
+             Specifies the type of a path node.
             
              </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.PathComponentKind.Root">
+        <member name="F:JsonCons.JsonPath.PathNodeKind.Root">
             <summary>
-            Indicates the root path component
+            Indicates the root path node
             </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.PathComponentKind.Name">
+        <member name="F:JsonCons.JsonPath.PathNodeKind.Name">
             <summary>
-            Indicates a path component that matches on property names.
+            Indicates a path node that matches on property names.
             </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.PathComponentKind.Index">
+        <member name="F:JsonCons.JsonPath.PathNodeKind.Index">
             <summary>
-            Indicates a path component that matches on array indices.
+            Indicates a path node that matches on array indices.
             </summary>
         </member>
         <member name="T:JsonCons.JsonPath.PathNode">
              <summary>
-             Represents a component of a <see cref="T:JsonCons.JsonPath.NormalizedPath"/>.
+             Represents a node of a <see cref="T:JsonCons.JsonPath.NormalizedPath"/>.
             
              </summary>
         </member>
         <member name="P:JsonCons.JsonPath.PathNode.Parent">
              <summary>
-             Gets the parent of this component.
+             Gets the parent of this path node.
             
              </summary>
         </member>
         <member name="P:JsonCons.JsonPath.PathNode.ComponentKind">
              <summary>
-             Gets the type of the component.
+             Gets the type of this path node.
             
              </summary>
         </member>
         <member name="P:JsonCons.JsonPath.PathNode.Root">
              <summary>
-             Gets a root component 
+             Gets a root node 
             
              </summary>
         </member>
         <member name="P:JsonCons.JsonPath.PathNode.Current">
              <summary>
-             Gets a current component 
+             Gets a current node 
             
              </summary>
         </member>
         <member name="M:JsonCons.JsonPath.PathNode.#ctor(JsonCons.JsonPath.PathNode,System.String)">
             <summary>
-            Constructs a path component from a parent and name
+            Constructs a path node from a parent and name
             </summary>
             <param name="parent">The parent.</param>
             <param name="name">The name.</param>
@@ -234,7 +234,7 @@
         </member>
         <member name="M:JsonCons.JsonPath.PathNode.#ctor(JsonCons.JsonPath.PathNode,System.Int32)">
             <summary>
-            Constructs a path component from a parent and an index
+            Constructs a path node from a parent and an index
             </summary>
             <param name="parent">The parent.</param>
             <param name="index">The index.</param>
@@ -244,13 +244,13 @@
         </member>
         <member name="M:JsonCons.JsonPath.PathNode.GetName">
              <summary>
-             Gets the value of the component as a name.
+             Gets the value of this path node as a name.
             
              </summary>
         </member>
         <member name="M:JsonCons.JsonPath.PathNode.GetIndex">
              <summary>
-             Gets the value of the component as an index.
+             Gets the value of this path node as an index.
             
              </summary>
         </member>
@@ -262,13 +262,13 @@
         </member>
         <member name="M:JsonCons.JsonPath.NormalizedPath.#ctor(JsonCons.JsonPath.PathNode)">
              <summary>
-             Constructs a normalized path from the last path component.
+             Constructs a normalized path from the last path node.
             
              </summary>
         </member>
         <member name="P:JsonCons.JsonPath.NormalizedPath.Last">
              <summary>
-             Gets the last component of the normalized path. 
+             Gets the last node of the normalized path. 
             
              </summary>
         </member>

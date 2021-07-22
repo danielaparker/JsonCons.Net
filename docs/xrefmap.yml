@@ -380,30 +380,6 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.NormalizedPath.TryGet
   nameWithType: NormalizedPath.TryGet
-- uid: JsonCons.JsonPath.PathComponentKind
-  name: PathComponentKind
-  href: ref/JsonCons.JsonPath.PathComponentKind.html
-  commentId: T:JsonCons.JsonPath.PathComponentKind
-  fullName: JsonCons.JsonPath.PathComponentKind
-  nameWithType: PathComponentKind
-- uid: JsonCons.JsonPath.PathComponentKind.Index
-  name: Index
-  href: ref/JsonCons.JsonPath.PathComponentKind.html#JsonCons_JsonPath_PathComponentKind_Index
-  commentId: F:JsonCons.JsonPath.PathComponentKind.Index
-  fullName: JsonCons.JsonPath.PathComponentKind.Index
-  nameWithType: PathComponentKind.Index
-- uid: JsonCons.JsonPath.PathComponentKind.Name
-  name: Name
-  href: ref/JsonCons.JsonPath.PathComponentKind.html#JsonCons_JsonPath_PathComponentKind_Name
-  commentId: F:JsonCons.JsonPath.PathComponentKind.Name
-  fullName: JsonCons.JsonPath.PathComponentKind.Name
-  nameWithType: PathComponentKind.Name
-- uid: JsonCons.JsonPath.PathComponentKind.Root
-  name: Root
-  href: ref/JsonCons.JsonPath.PathComponentKind.html#JsonCons_JsonPath_PathComponentKind_Root
-  commentId: F:JsonCons.JsonPath.PathComponentKind.Root
-  fullName: JsonCons.JsonPath.PathComponentKind.Root
-  nameWithType: PathComponentKind.Root
 - uid: JsonCons.JsonPath.PathNode
   name: PathNode
   href: ref/JsonCons.JsonPath.PathNode.html
@@ -533,6 +509,30 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.PathNode.Root
   nameWithType: PathNode.Root
+- uid: JsonCons.JsonPath.PathNodeKind
+  name: PathNodeKind
+  href: ref/JsonCons.JsonPath.PathNodeKind.html
+  commentId: T:JsonCons.JsonPath.PathNodeKind
+  fullName: JsonCons.JsonPath.PathNodeKind
+  nameWithType: PathNodeKind
+- uid: JsonCons.JsonPath.PathNodeKind.Index
+  name: Index
+  href: ref/JsonCons.JsonPath.PathNodeKind.html#JsonCons_JsonPath_PathNodeKind_Index
+  commentId: F:JsonCons.JsonPath.PathNodeKind.Index
+  fullName: JsonCons.JsonPath.PathNodeKind.Index
+  nameWithType: PathNodeKind.Index
+- uid: JsonCons.JsonPath.PathNodeKind.Name
+  name: Name
+  href: ref/JsonCons.JsonPath.PathNodeKind.html#JsonCons_JsonPath_PathNodeKind_Name
+  commentId: F:JsonCons.JsonPath.PathNodeKind.Name
+  fullName: JsonCons.JsonPath.PathNodeKind.Name
+  nameWithType: PathNodeKind.Name
+- uid: JsonCons.JsonPath.PathNodeKind.Root
+  name: Root
+  href: ref/JsonCons.JsonPath.PathNodeKind.html#JsonCons_JsonPath_PathNodeKind_Root
+  commentId: F:JsonCons.JsonPath.PathNodeKind.Root
+  fullName: JsonCons.JsonPath.PathNodeKind.Root
+  nameWithType: PathNodeKind.Root
 - uid: JsonCons.Utilities
   name: JsonCons.Utilities
   href: ref/JsonCons.Utilities.html

@@ -288,7 +288,7 @@ namespace JsonCons.JsonPath
             element = root;
             foreach (var pathComponent in path)
             {
-                if (pathComponent.ComponentKind == PathComponentKind.Index)
+                if (pathComponent.ComponentKind == PathNodeKind.Index)
                 {
                     if (element.ValueKind != JsonValueKind.Array || pathComponent.GetIndex() >= element.GetArrayLength())
                     {
@@ -296,7 +296,7 @@ namespace JsonCons.JsonPath
                     }
                     element = element[pathComponent.GetIndex()];
                 }
-                else if (pathComponent.ComponentKind == PathComponentKind.Name)
+                else if (pathComponent.ComponentKind == PathNodeKind.Name)
                 {
                     if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(pathComponent.GetName(), out element))
                     {

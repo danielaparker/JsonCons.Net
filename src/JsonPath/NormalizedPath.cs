@@ -9,61 +9,61 @@ namespace JsonCons.JsonPath
 {
 
     /// <summary>
-    /// Specifies the type of a path component.
+    /// Specifies the type of a path node.
     ///
     /// </summary>
 
-    public enum PathComponentKind 
+    public enum PathNodeKind 
     {
         /// <summary>
-        /// Indicates the root path component
+        /// Indicates the root path node
         /// </summary>
         Root,
         /// <summary>
-        /// Indicates a path component that matches on property names.
+        /// Indicates a path node that matches on property names.
         /// </summary>
         Name,
         /// <summary>
-        /// Indicates a path component that matches on array indices.
+        /// Indicates a path node that matches on array indices.
         /// </summary>
         Index
     };
 
     /// <summary>
-    /// Represents a component of a <see cref="NormalizedPath"/>.
+    /// Represents a node of a <see cref="NormalizedPath"/>.
     ///
     /// </summary>
     public sealed class PathNode
     {
 
         /// <summary>
-        /// Gets the parent of this component.
+        /// Gets the parent of this path node.
         ///
         /// </summary>
         public PathNode Parent {get;}
 
         /// <summary>
-        /// Gets the type of the component.
+        /// Gets the type of this path node.
         ///
         /// </summary>
-        public PathComponentKind ComponentKind {get;}
+        public PathNodeKind ComponentKind {get;}
 
         private readonly string _name;
         private readonly Int32 _index;
 
         /// <summary>
-        /// Gets a root component 
+        /// Gets a root node 
         ///
         /// </summary>
-        public static PathNode Root {get;} = new PathNode(PathComponentKind.Root, "$");
+        public static PathNode Root {get;} = new PathNode(PathNodeKind.Root, "$");
 
         /// <summary>
-        /// Gets a current component 
+        /// Gets a current node 
         ///
         /// </summary>
-        public static PathNode Current { get;} = new PathNode(PathComponentKind.Root, "@");
+        public static PathNode Current { get;} = new PathNode(PathNodeKind.Root, "@");
 
-        PathNode(PathComponentKind componentKind, string name)
+        PathNode(PathNodeKind componentKind, string name)
         {
             if (name == null)
             {
@@ -76,7 +76,7 @@ namespace JsonCons.JsonPath
         }
 
         /// <summary>
-        /// Constructs a path component from a parent and name
+        /// Constructs a path node from a parent and name
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <param name="name">The name.</param>
@@ -96,13 +96,13 @@ namespace JsonCons.JsonPath
                 throw new ArgumentNullException(nameof(name));
             }
             Parent = parent;
-            ComponentKind = PathComponentKind.Name;
+            ComponentKind = PathNodeKind.Name;
             _name = name;
             _index = 0;
         }
 
         /// <summary>
-        /// Constructs a path component from a parent and an index
+        /// Constructs a path node from a parent and an index
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <param name="index">The index.</param>
@@ -117,13 +117,13 @@ namespace JsonCons.JsonPath
                 throw new ArgumentNullException(nameof(parent));
             }
             Parent = parent;
-            ComponentKind = PathComponentKind.Index;
+            ComponentKind = PathNodeKind.Index;
             _name = null;
             _index = index;
         }
 
         /// <summary>
-        /// Gets the value of the component as a name.
+        /// Gets the value of this path node as a name.
         ///
         /// </summary>
         public string GetName()
@@ -132,7 +132,7 @@ namespace JsonCons.JsonPath
         }
 
         /// <summary>
-        /// Gets the value of the component as an index.
+        /// Gets the value of this path node as an index.
         ///
         /// </summary>
         public Int32 GetIndex()
@@ -155,13 +155,13 @@ namespace JsonCons.JsonPath
             {
                 switch (ComponentKind)
                 {
-                    case PathComponentKind.Root:
+                    case PathNodeKind.Root:
                         diff = string.Compare(_name, other._name);
                         break;
-                    case PathComponentKind.Index:
+                    case PathNodeKind.Index:
                         diff = _index - other._index;
                         break;
-                    case PathComponentKind.Name:
+                    case PathNodeKind.Name:
                         diff = string.Compare(_name, other._name);
                         break;
                 }
@@ -171,7 +171,7 @@ namespace JsonCons.JsonPath
 
         public override int GetHashCode()
         {
-            int hashCode = ComponentKind == PathComponentKind.Index ? _index.GetHashCode() : _name.GetHashCode();
+            int hashCode = ComponentKind == PathNodeKind.Index ? _index.GetHashCode() : _name.GetHashCode();
 
             return hashCode;
         }
@@ -187,19 +187,19 @@ namespace JsonCons.JsonPath
         readonly IReadOnlyList<PathNode> _components;
 
         /// <summary>
-        /// Constructs a normalized path from the last path component.
+        /// Constructs a normalized path from the last path node.
         ///
         /// </summary>
         public NormalizedPath(PathNode last)
         {
             var nodes = new List<PathNode>();
-            PathNode component = last;
+            PathNode node = last;
             do
             {
-                nodes.Add(component);
-                component = component.Parent;
+                nodes.Add(node);
+                node = node.Parent;
             }
-            while (component != null);
+            while (node != null);
             
             nodes.Reverse();
 
@@ -207,7 +207,7 @@ namespace JsonCons.JsonPath
         }
 
         /// <summary>
-        /// Gets the last component of the normalized path. 
+        /// Gets the last node of the normalized path. 
         ///
         /// </summary>
 
@@ -244,10 +244,10 @@ namespace JsonCons.JsonPath
             {
                 switch (item.ComponentKind)
                 {
-                    case PathComponentKind.Root:
+                    case PathNodeKind.Root:
                         buffer.Append(item.GetName());
                         break;
-                    case PathComponentKind.Name:
+                    case PathNodeKind.Name:
                         buffer.Append('[');
                         buffer.Append('\'');
                         if (item.GetName().Contains('\''))
@@ -261,7 +261,7 @@ namespace JsonCons.JsonPath
                         buffer.Append('\'');
                         buffer.Append(']');
                         break;
-                    case PathComponentKind.Index:
+                    case PathNodeKind.Index:
                         buffer.Append('[');
                         buffer.Append(item.GetIndex().ToString());
                         buffer.Append(']');
@@ -287,11 +287,11 @@ namespace JsonCons.JsonPath
             {
                 switch (node.ComponentKind)
                 {
-                    case PathComponentKind.Root:
+                    case PathNodeKind.Root:
                     {
                         break;
                     }
-                    case PathComponentKind.Name:
+                    case PathNodeKind.Name:
                     {
                         buffer.Append('/');
                         foreach (var c in node.GetName())
@@ -313,7 +313,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     }
-                    case PathComponentKind.Index:
+                    case PathNodeKind.Index:
                     {
                         buffer.Append('/');
                         buffer.Append(node.GetIndex().ToString());
@@ -385,19 +385,19 @@ namespace JsonCons.JsonPath
         public bool TryGet(JsonElement root, out JsonElement element)
         {
             element = root;
-            foreach (var component in _components)
+            foreach (var node in _components)
             {
-                if (component.ComponentKind == PathComponentKind.Index)
+                if (node.ComponentKind == PathNodeKind.Index)
                 {
-                    if (element.ValueKind != JsonValueKind.Array || component.GetIndex() >= element.GetArrayLength())
+                    if (element.ValueKind != JsonValueKind.Array || node.GetIndex() >= element.GetArrayLength())
                     {
                         return false; 
                     }
-                    element = element[component.GetIndex()];
+                    element = element[node.GetIndex()];
                 }
-                else if (component.ComponentKind == PathComponentKind.Name)
+                else if (node.ComponentKind == PathNodeKind.Name)
                 {
-                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(component.GetName(), out element))
+                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(node.GetName(), out element))
                     {
                         return false;
                     }

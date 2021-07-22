@@ -297,19 +297,7 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.NormalizedPath.html",
-          "hash": "abohiX69sefrEg54o8MrHRXGCFp6LKNUHwv1Z+TTYL8="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "ref/JsonCons.JsonPath.PathComponentKind.yml",
-      "output": {
-        ".html": {
-          "relative_path": "ref/JsonCons.JsonPath.PathComponentKind.html",
-          "hash": "cflkhJ+9ee8ZvBTrunn5s1MnJf4GLW9PA5IRskQmnyI="
+          "hash": "x9Dg+PyRFkmplXw9agf4SAyEbZwp9pkdTvY06TaYG9Y="
         }
       },
       "is_incremental": false,
@@ -321,7 +309,19 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.PathNode.html",
-          "hash": "eWnBzt0RiMmgFqQZfFWmGE2q1Fh77X7p4jESRzwlRtg="
+          "hash": "Z3UwaHIZTXfsrTAP8epskmLO1L2bpLGZW4S801WCIjU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.JsonPath.PathNodeKind.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.JsonPath.PathNodeKind.html",
+          "hash": "KwKMupsxWKXTSyIXMQdkvs2EVvLvmDUa5SFeupuogHA="
         }
       },
       "is_incremental": false,
@@ -333,7 +333,7 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.html",
-          "hash": "F4qC5mCGcg9N6aan+eRcU30ddxLvyLgY91Rf9HiF/oo="
+          "hash": "X4ElR6sy3m8uoaj3MSj3QUY9qJiqgjKqcXHg+UHuNMw="
         }
       },
       "is_incremental": false,
@@ -381,7 +381,7 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.JsonPatch.html",
-          "hash": "lDeDTYHVOFq2tvXvadumPDiRhrOR1HfKcMW9GNgQAjw="
+          "hash": "BCVnM1SGxzvKg9rMxzdzmS36i4M/kxwcVSdv1VOAbxY="
         }
       },
       "is_incremental": false,
@@ -393,7 +393,7 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.JsonPatchException.html",
-          "hash": "GqSil3JGiyDKBlw2dCeKrY/0LXAOQlWAkHhkGjFFqRY="
+          "hash": "6ePdRpSMjEwTUkcA/CB0ifCLzSBEd7n8EFLomgqXoaA="
         }
       },
       "is_incremental": false,
@@ -441,7 +441,7 @@
       "output": {
         ".html": {
           "relative_path": "ref/toc.html",
-          "hash": "dw8yLrlgO7WCdAxnvKayDgHKFz1LCuKVVssE+2LjylM="
+          "hash": "sGOFULqsTD6mkM4WlIz2UV9x2R2P+AJcVAHSw1zBY+g="
         }
       },
       "is_incremental": false,

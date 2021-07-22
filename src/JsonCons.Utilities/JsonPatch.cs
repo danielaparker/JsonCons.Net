@@ -12,6 +12,36 @@ namespace JsonCons.Utilities
     /// <summary>
     /// Captures error message and the operation that caused it.
     /// </summary>
+    public class JsonPatchException : Exception
+    {
+        /// <summary>
+        /// Constructs a <see cref="JsonPatchException"/>.
+        /// </summary>
+        /// <param name="operation">The operation that caused the error.</param>
+        /// <param name="message">The error message.</param>
+        public JsonPatchException(
+            string operation,
+            string message) : base(message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            Operation = operation;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="string"/> that caused the error.
+        /// </summary>
+        public string Operation { get; }
+    }
+
+    /// <summary>
+    /// Provides functionality for applying a JSON Patch as 
+    /// defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see>
+    /// to a JSON value.
+    /// </summary>
     /// <example>
     /// This example show how to flatten and unflatten a JSON value
     /// <code>
@@ -95,36 +125,6 @@ namespace JsonCons.Utilities
     /// }
     /// </code>
     /// </example>
-    public class JsonPatchException : Exception
-    {
-        /// <summary>
-        /// Constructs a <see cref="JsonPatchException"/>.
-        /// </summary>
-        /// <param name="operation">The operation that caused the error.</param>
-        /// <param name="message">The error message.</param>
-        public JsonPatchException(
-            string operation,
-            string message) : base(message)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
-            Operation = operation;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="string"/> that caused the error.
-        /// </summary>
-        public string Operation { get; }
-    }
-
-    /// <summary>
-    /// Provides functionality for applying a JSON Patch as 
-    /// defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see>
-    /// to a JSON value.
-    /// </summary>
     public static class JsonPatch
     {
         /// <summary>

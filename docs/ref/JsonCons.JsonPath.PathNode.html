@@ -73,7 +73,7 @@
   
   <h1 id="JsonCons_JsonPath_PathNode" data-uid="JsonCons.JsonPath.PathNode" class="text-break">Class PathNode
   </h1>
-  <div class="markdown level0 summary"><p>Represents a component of a <a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a>.</p>
+  <div class="markdown level0 summary"><p>Represents a node of a <a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -119,7 +119,7 @@
   </span>
   <a id="JsonCons_JsonPath_PathNode__ctor_" data-uid="JsonCons.JsonPath.PathNode.#ctor*"></a>
   <h4 id="JsonCons_JsonPath_PathNode__ctor_JsonCons_JsonPath_PathNode_System_Int32_" data-uid="JsonCons.JsonPath.PathNode.#ctor(JsonCons.JsonPath.PathNode,System.Int32)">PathNode(PathNode, Int32)</h4>
-  <div class="markdown level1 summary"><p>Constructs a path component from a parent and an index</p>
+  <div class="markdown level1 summary"><p>Constructs a path node from a parent and an index</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -175,7 +175,7 @@
   </span>
   <a id="JsonCons_JsonPath_PathNode__ctor_" data-uid="JsonCons.JsonPath.PathNode.#ctor*"></a>
   <h4 id="JsonCons_JsonPath_PathNode__ctor_JsonCons_JsonPath_PathNode_System_String_" data-uid="JsonCons.JsonPath.PathNode.#ctor(JsonCons.JsonPath.PathNode,System.String)">PathNode(PathNode, String)</h4>
-  <div class="markdown level1 summary"><p>Constructs a path component from a parent and name</p>
+  <div class="markdown level1 summary"><p>Constructs a path node from a parent and name</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -234,12 +234,12 @@
   </span>
   <a id="JsonCons_JsonPath_PathNode_ComponentKind_" data-uid="JsonCons.JsonPath.PathNode.ComponentKind*"></a>
   <h4 id="JsonCons_JsonPath_PathNode_ComponentKind" data-uid="JsonCons.JsonPath.PathNode.ComponentKind">ComponentKind</h4>
-  <div class="markdown level1 summary"><p>Gets the type of the component.</p>
+  <div class="markdown level1 summary"><p>Gets the type of this path node.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PathComponentKind ComponentKind { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public PathNodeKind ComponentKind { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -251,7 +251,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="JsonCons.JsonPath.PathComponentKind.html">PathComponentKind</a></td>
+        <td><a class="xref" href="JsonCons.JsonPath.PathNodeKind.html">PathNodeKind</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -265,7 +265,7 @@
   </span>
   <a id="JsonCons_JsonPath_PathNode_Current_" data-uid="JsonCons.JsonPath.PathNode.Current*"></a>
   <h4 id="JsonCons_JsonPath_PathNode_Current" data-uid="JsonCons.JsonPath.PathNode.Current">Current</h4>
-  <div class="markdown level1 summary"><p>Gets a current component</p>
+  <div class="markdown level1 summary"><p>Gets a current node</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -296,7 +296,7 @@
   </span>
   <a id="JsonCons_JsonPath_PathNode_Parent_" data-uid="JsonCons.JsonPath.PathNode.Parent*"></a>
   <h4 id="JsonCons_JsonPath_PathNode_Parent" data-uid="JsonCons.JsonPath.PathNode.Parent">Parent</h4>
-  <div class="markdown level1 summary"><p>Gets the parent of this component.</p>
+  <div class="markdown level1 summary"><p>Gets the parent of this path node.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -327,7 +327,7 @@
   </span>
   <a id="JsonCons_JsonPath_PathNode_Root_" data-uid="JsonCons.JsonPath.PathNode.Root*"></a>
   <h4 id="JsonCons_JsonPath_PathNode_Root" data-uid="JsonCons.JsonPath.PathNode.Root">Root</h4>
-  <div class="markdown level1 summary"><p>Gets a root component</p>
+  <div class="markdown level1 summary"><p>Gets a root node</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -439,7 +439,7 @@
   </span>
   <a id="JsonCons_JsonPath_PathNode_GetIndex_" data-uid="JsonCons.JsonPath.PathNode.GetIndex*"></a>
   <h4 id="JsonCons_JsonPath_PathNode_GetIndex" data-uid="JsonCons.JsonPath.PathNode.GetIndex">GetIndex()</h4>
-  <div class="markdown level1 summary"><p>Gets the value of the component as an index.</p>
+  <div class="markdown level1 summary"><p>Gets the value of this path node as an index.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -470,7 +470,7 @@
   </span>
   <a id="JsonCons_JsonPath_PathNode_GetName_" data-uid="JsonCons.JsonPath.PathNode.GetName*"></a>
   <h4 id="JsonCons_JsonPath_PathNode_GetName" data-uid="JsonCons.JsonPath.PathNode.GetName">GetName()</h4>
-  <div class="markdown level1 summary"><p>Gets the value of the component as a name.</p>
+  <div class="markdown level1 summary"><p>Gets the value of this path node as a name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
