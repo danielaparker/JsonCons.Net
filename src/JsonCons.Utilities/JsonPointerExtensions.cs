@@ -65,7 +65,7 @@ namespace JsonCons.Utilities
             }
         }
 
-        public static bool TryGet(this JsonPointer pointer, JsonDocumentBuilder root, out JsonDocumentBuilder value)
+        public static bool TryGetValue(this JsonPointer pointer, JsonDocumentBuilder root, out JsonDocumentBuilder value)
         {
             value = root;
 

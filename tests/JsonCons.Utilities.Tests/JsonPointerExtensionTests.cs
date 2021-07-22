@@ -35,7 +35,7 @@ namespace JsonCons.Utilities.Tests
             Assert.IsTrue(JsonPointer.TryParse("/foo/0", out pointer));
 
             JsonDocumentBuilder value;
-            Assert.IsTrue(pointer.TryGet(documentBuilder, out value));
+            Assert.IsTrue(pointer.TryGetValue(documentBuilder, out value));
             var result = value.ToJsonDocument();
 
             JsonElementEqualityComparer.Instance.Equals(expected.RootElement,

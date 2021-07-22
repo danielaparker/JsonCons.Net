@@ -29,7 +29,7 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Parses a JSON Pointer represented as a JSON string value or a 
+        /// Parses a JSON Pointer represented as a string value or a 
         /// fragment identifier (starts with <c>#</c>) into a JsonPointer.
         /// </summary>
         /// <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
@@ -54,7 +54,7 @@ namespace JsonCons.Utilities
         /// Parses a JSON Pointer represented as a string value or a 
         /// fragment identifier (starts with <c>#</c>) into a JsonPointer.
         /// </summary>
-        /// <param name="input">A JSON Pointer represented as a JSON string or a fragment identifier.</param>
+        /// <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
         /// <param name="pointer">The JSONPointer.</param>
         /// <returns><c>true</c> if the input string can be parsed into a list of tokens, <c>false</c> otherwise.</returns>
         /// <exception cref="ArgumentNullException">
@@ -66,14 +66,19 @@ namespace JsonCons.Utilities
             {
                 throw new ArgumentNullException(nameof(input));
             }
-
             var tokens = new List<string>();
+
+            if (input.Length == 0 || input.Equals("#")) 
+            {
+                pointer = new JsonPointer(tokens);
+                return true;
+            }
 
             JsonPointerState state = JsonPointerState.Start;
             int index = 0;
             var buffer = new StringBuilder();
 
-            if (input.Length > 0 && input[0] == '#') 
+            if (input[0] == '#') 
             {
                 input = Uri.UnescapeDataString(input);
                 index = 1;
@@ -261,9 +266,53 @@ namespace JsonCons.Utilities
         /// Evaluates this JSON Pointer on the provided target.
         /// </summary>
         /// <param name="target"></param>
+        /// <returns></returns>
+        public bool ContainsValue(JsonElement target)
+        {
+            JsonElement value = target;
+
+            foreach (var token in Tokens)
+            {
+                if (value.ValueKind == JsonValueKind.Array)
+                {
+                    if (token == "-")
+                    {
+                        return false;
+                    }
+                    int index = 0;
+                    if (!int.TryParse(token, out index))
+                    {
+                        return false;
+                    }
+                    if (index >= value.GetArrayLength())
+                    {
+                        return false;
+                    }
+                    value = value[index];
+                }
+                else if (value.ValueKind == JsonValueKind.Object)
+                {
+                    if (!value.TryGetProperty(token, out value))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Evaluates this JSON Pointer on the provided target.
+        /// </summary>
+        /// <param name="target"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool TryGet(JsonElement target, out JsonElement value)
+        public bool TryGetValue(JsonElement target, out JsonElement value)
         {
             value = target;
 
@@ -312,7 +361,7 @@ namespace JsonCons.Utilities
         /// <exception cref="ArgumentNullException">
         ///   The <paramref name="pointer"/> is <see langword="null"/>.
         /// </exception>
-        public static bool TryGet(JsonElement target, string pointer, out JsonElement value)
+        public static bool TryGetValue(JsonElement target, string pointer, out JsonElement value)
         {
             if (pointer == null)
             {
@@ -325,7 +374,7 @@ namespace JsonCons.Utilities
                 return false;
             }
 
-            return location.TryGet(target, out value);
+            return location.TryGetValue(target, out value);
         }
 
         /// <summary>

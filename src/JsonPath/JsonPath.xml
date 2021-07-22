@@ -294,7 +294,7 @@
             
              </summary>
         </member>
-        <member name="M:JsonCons.JsonPath.NormalizedPath.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)">
+        <member name="M:JsonCons.JsonPath.NormalizedPath.TryGetValue(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)">
             <summary>
               Looks for a value within the root value that matches this normalized path, returning
               <see langword="true"/> if such a value exists, <see langword="false"/> otherwise. When the value exists <paramref name="element"/>
@@ -302,6 +302,16 @@
             </summary>
             <param name="root">The root value.</param>
             <param name="element">Receives the value.</param>
+            <returns>
+              <see langword="true"/> if the value was found, <see langword="false"/> otherwise.
+            </returns>
+        </member>
+        <member name="M:JsonCons.JsonPath.NormalizedPath.ContainsValue(System.Text.Json.JsonElement)">
+            <summary>
+              Looks for a value within the root value that matches this normalized path, returning
+              <see langword="true"/> if such a value exists, <see langword="false"/> otherwise. 
+            </summary>
+            <param name="root">The root value.</param>
             <returns>
               <see langword="true"/> if the value was found, <see langword="false"/> otherwise.
             </returns>

@@ -194,7 +194,7 @@ namespace JsonCons.Utilities
                     }
 
                     JsonDocumentBuilder tested;
-                    if (!location.TryGet(target, out tested))
+                    if (!location.TryGetValue(target, out tested))
                     {
                         throw new ArgumentException(op, "Invalid patch");
                     }
@@ -259,7 +259,7 @@ namespace JsonCons.Utilities
                     }
 
                     JsonDocumentBuilder value;
-                    if (!fromPointer.TryGet(target, out value))
+                    if (!fromPointer.TryGetValue(target, out value))
                     {
                         throw new JsonPatchException(op, "Move failed");
                     }
@@ -291,7 +291,7 @@ namespace JsonCons.Utilities
                     }
 
                     JsonDocumentBuilder value;
-                    if (!fromPointer.TryGet(target, out value))
+                    if (!fromPointer.TryGetValue(target, out value))
                     {
                         throw new JsonPatchException(op, "Copy failed");
                     }

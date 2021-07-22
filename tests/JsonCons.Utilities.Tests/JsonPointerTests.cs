@@ -113,7 +113,7 @@ namespace JsonCons.Utilities.Tests
             JsonPointer pointer; 
             Assert.IsTrue(JsonPointer.TryParse("/foo/0", out pointer));
             JsonElement value;
-            Assert.IsTrue(pointer.TryGet(root, out value));
+            Assert.IsTrue(pointer.TryGetValue(root, out value));
 
             var comparer = JsonElementEqualityComparer.Instance;
 
@@ -128,7 +128,7 @@ namespace JsonCons.Utilities.Tests
             JsonPointer pointer; 
             Assert.IsTrue(JsonPointer.TryParse("/baz", out pointer));
             JsonElement value;
-            Assert.IsFalse(pointer.TryGet(doc.RootElement, out value));
+            Assert.IsFalse(pointer.TryGetValue(doc.RootElement, out value));
         }
     }
 }

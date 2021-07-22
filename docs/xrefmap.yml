@@ -263,6 +263,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.NormalizedPath.CompareTo
   nameWithType: NormalizedPath.CompareTo
+- uid: JsonCons.JsonPath.NormalizedPath.ContainsValue(System.Text.Json.JsonElement)
+  name: ContainsValue(JsonElement)
+  href: ref/JsonCons.JsonPath.NormalizedPath.html#JsonCons_JsonPath_NormalizedPath_ContainsValue_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.JsonPath.NormalizedPath.ContainsValue(System.Text.Json.JsonElement)
+  fullName: JsonCons.JsonPath.NormalizedPath.ContainsValue(System.Text.Json.JsonElement)
+  nameWithType: NormalizedPath.ContainsValue(JsonElement)
+- uid: JsonCons.JsonPath.NormalizedPath.ContainsValue*
+  name: ContainsValue
+  href: ref/JsonCons.JsonPath.NormalizedPath.html#JsonCons_JsonPath_NormalizedPath_ContainsValue_
+  commentId: Overload:JsonCons.JsonPath.NormalizedPath.ContainsValue
+  isSpec: "True"
+  fullName: JsonCons.JsonPath.NormalizedPath.ContainsValue
+  nameWithType: NormalizedPath.ContainsValue
 - uid: JsonCons.JsonPath.NormalizedPath.Equals(JsonCons.JsonPath.NormalizedPath)
   name: Equals(NormalizedPath)
   href: ref/JsonCons.JsonPath.NormalizedPath.html#JsonCons_JsonPath_NormalizedPath_Equals_JsonCons_JsonPath_NormalizedPath_
@@ -364,22 +377,22 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.NormalizedPath.ToString
   nameWithType: NormalizedPath.ToString
-- uid: JsonCons.JsonPath.NormalizedPath.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
-  name: TryGet(JsonElement, out JsonElement)
-  href: ref/JsonCons.JsonPath.NormalizedPath.html#JsonCons_JsonPath_NormalizedPath_TryGet_System_Text_Json_JsonElement_System_Text_Json_JsonElement__
-  commentId: M:JsonCons.JsonPath.NormalizedPath.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
-  name.vb: TryGet(JsonElement, ByRef JsonElement)
-  fullName: JsonCons.JsonPath.NormalizedPath.TryGet(System.Text.Json.JsonElement, out System.Text.Json.JsonElement)
-  fullName.vb: JsonCons.JsonPath.NormalizedPath.TryGet(System.Text.Json.JsonElement, ByRef System.Text.Json.JsonElement)
-  nameWithType: NormalizedPath.TryGet(JsonElement, out JsonElement)
-  nameWithType.vb: NormalizedPath.TryGet(JsonElement, ByRef JsonElement)
-- uid: JsonCons.JsonPath.NormalizedPath.TryGet*
-  name: TryGet
-  href: ref/JsonCons.JsonPath.NormalizedPath.html#JsonCons_JsonPath_NormalizedPath_TryGet_
-  commentId: Overload:JsonCons.JsonPath.NormalizedPath.TryGet
+- uid: JsonCons.JsonPath.NormalizedPath.TryGetValue(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
+  name: TryGetValue(JsonElement, out JsonElement)
+  href: ref/JsonCons.JsonPath.NormalizedPath.html#JsonCons_JsonPath_NormalizedPath_TryGetValue_System_Text_Json_JsonElement_System_Text_Json_JsonElement__
+  commentId: M:JsonCons.JsonPath.NormalizedPath.TryGetValue(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
+  name.vb: TryGetValue(JsonElement, ByRef JsonElement)
+  fullName: JsonCons.JsonPath.NormalizedPath.TryGetValue(System.Text.Json.JsonElement, out System.Text.Json.JsonElement)
+  fullName.vb: JsonCons.JsonPath.NormalizedPath.TryGetValue(System.Text.Json.JsonElement, ByRef System.Text.Json.JsonElement)
+  nameWithType: NormalizedPath.TryGetValue(JsonElement, out JsonElement)
+  nameWithType.vb: NormalizedPath.TryGetValue(JsonElement, ByRef JsonElement)
+- uid: JsonCons.JsonPath.NormalizedPath.TryGetValue*
+  name: TryGetValue
+  href: ref/JsonCons.JsonPath.NormalizedPath.html#JsonCons_JsonPath_NormalizedPath_TryGetValue_
+  commentId: Overload:JsonCons.JsonPath.NormalizedPath.TryGetValue
   isSpec: "True"
-  fullName: JsonCons.JsonPath.NormalizedPath.TryGet
-  nameWithType: NormalizedPath.TryGet
+  fullName: JsonCons.JsonPath.NormalizedPath.TryGetValue
+  nameWithType: NormalizedPath.TryGetValue
 - uid: JsonCons.JsonPath.PathNode
   name: PathNode
   href: ref/JsonCons.JsonPath.PathNode.html
@@ -720,6 +733,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.Utilities.JsonPointer.JsonPointer
   nameWithType: JsonPointer.JsonPointer
+- uid: JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement)
+  name: ContainsValue(JsonElement)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_ContainsValue_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement)
+  nameWithType: JsonPointer.ContainsValue(JsonElement)
+- uid: JsonCons.Utilities.JsonPointer.ContainsValue*
+  name: ContainsValue
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_ContainsValue_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.ContainsValue
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonPointer.ContainsValue
+  nameWithType: JsonPointer.ContainsValue
 - uid: JsonCons.Utilities.JsonPointer.Equals(JsonCons.Utilities.JsonPointer)
   name: Equals(JsonPointer)
   href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Equals_JsonCons_Utilities_JsonPointer_
@@ -847,31 +873,31 @@ references:
   isSpec: "True"
   fullName: JsonCons.Utilities.JsonPointer.ToUriFragment
   nameWithType: JsonPointer.ToUriFragment
-- uid: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)
-  name: TryGet(JsonElement, String, out JsonElement)
-  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryGet_System_Text_Json_JsonElement_System_String_System_Text_Json_JsonElement__
-  commentId: M:JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)
-  name.vb: TryGet(JsonElement, String, ByRef JsonElement)
-  fullName: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement, System.String, out System.Text.Json.JsonElement)
-  fullName.vb: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement, System.String, ByRef System.Text.Json.JsonElement)
-  nameWithType: JsonPointer.TryGet(JsonElement, String, out JsonElement)
-  nameWithType.vb: JsonPointer.TryGet(JsonElement, String, ByRef JsonElement)
-- uid: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
-  name: TryGet(JsonElement, out JsonElement)
-  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryGet_System_Text_Json_JsonElement_System_Text_Json_JsonElement__
-  commentId: M:JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
-  name.vb: TryGet(JsonElement, ByRef JsonElement)
-  fullName: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement, out System.Text.Json.JsonElement)
-  fullName.vb: JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement, ByRef System.Text.Json.JsonElement)
-  nameWithType: JsonPointer.TryGet(JsonElement, out JsonElement)
-  nameWithType.vb: JsonPointer.TryGet(JsonElement, ByRef JsonElement)
-- uid: JsonCons.Utilities.JsonPointer.TryGet*
-  name: TryGet
-  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryGet_
-  commentId: Overload:JsonCons.Utilities.JsonPointer.TryGet
+- uid: JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)
+  name: TryGetValue(JsonElement, String, out JsonElement)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryGetValue_System_Text_Json_JsonElement_System_String_System_Text_Json_JsonElement__
+  commentId: M:JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)
+  name.vb: TryGetValue(JsonElement, String, ByRef JsonElement)
+  fullName: JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement, System.String, out System.Text.Json.JsonElement)
+  fullName.vb: JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement, System.String, ByRef System.Text.Json.JsonElement)
+  nameWithType: JsonPointer.TryGetValue(JsonElement, String, out JsonElement)
+  nameWithType.vb: JsonPointer.TryGetValue(JsonElement, String, ByRef JsonElement)
+- uid: JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
+  name: TryGetValue(JsonElement, out JsonElement)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryGetValue_System_Text_Json_JsonElement_System_Text_Json_JsonElement__
+  commentId: M:JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)
+  name.vb: TryGetValue(JsonElement, ByRef JsonElement)
+  fullName: JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement, out System.Text.Json.JsonElement)
+  fullName.vb: JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement, ByRef System.Text.Json.JsonElement)
+  nameWithType: JsonPointer.TryGetValue(JsonElement, out JsonElement)
+  nameWithType.vb: JsonPointer.TryGetValue(JsonElement, ByRef JsonElement)
+- uid: JsonCons.Utilities.JsonPointer.TryGetValue*
+  name: TryGetValue
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryGetValue_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.TryGetValue
   isSpec: "True"
-  fullName: JsonCons.Utilities.JsonPointer.TryGet
-  nameWithType: JsonPointer.TryGet
+  fullName: JsonCons.Utilities.JsonPointer.TryGetValue
+  nameWithType: JsonPointer.TryGetValue
 - uid: JsonCons.Utilities.JsonPointer.TryParse(System.String,JsonCons.Utilities.JsonPointer@)
   name: TryParse(String, out JsonPointer)
   href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_TryParse_System_String_JsonCons_Utilities_JsonPointer__

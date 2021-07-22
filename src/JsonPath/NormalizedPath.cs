@@ -382,9 +382,42 @@ namespace JsonCons.JsonPath
         ///   <see langword="true"/> if the value was found, <see langword="false"/> otherwise.
         /// </returns>
 
-        public bool TryGet(JsonElement root, out JsonElement element)
+        public bool TryGetValue(JsonElement root, out JsonElement element)
         {
             element = root;
+            foreach (var node in _components)
+            {
+                if (node.ComponentKind == PathNodeKind.Index)
+                {
+                    if (element.ValueKind != JsonValueKind.Array || node.GetIndex() >= element.GetArrayLength())
+                    {
+                        return false; 
+                    }
+                    element = element[node.GetIndex()];
+                }
+                else if (node.ComponentKind == PathNodeKind.Name)
+                {
+                    if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(node.GetName(), out element))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        ///   Looks for a value within the root value that matches this normalized path, returning
+        ///   <see langword="true"/> if such a value exists, <see langword="false"/> otherwise. 
+        /// </summary>
+        /// <param name="root">The root value.</param>
+        /// <returns>
+        ///   <see langword="true"/> if the value was found, <see langword="false"/> otherwise.
+        /// </returns>
+
+        public bool ContainsValue(JsonElement root)
+        {
+            JsonElement element = root;
             foreach (var node in _components)
             {
                 if (node.ComponentKind == PathNodeKind.Index)
