@@ -29,7 +29,7 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Parses a JSON Pointer represented as a string value or a 
+        /// Parses a JSON Pointer represented as a JSON string value or a 
         /// fragment identifier (starts with <c>#</c>) into a JsonPointer.
         /// </summary>
         /// <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
@@ -54,7 +54,7 @@ namespace JsonCons.Utilities
         /// Parses a JSON Pointer represented as a string value or a 
         /// fragment identifier (starts with <c>#</c>) into a JsonPointer.
         /// </summary>
-        /// <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
+        /// <param name="input">A JSON Pointer represented as a JSON string or a fragment identifier.</param>
         /// <param name="pointer">The JSONPointer.</param>
         /// <returns><c>true</c> if the input string can be parsed into a list of tokens, <c>false</c> otherwise.</returns>
         /// <exception cref="ArgumentNullException">
@@ -169,23 +169,7 @@ namespace JsonCons.Utilities
             foreach (var token in Tokens)
             {
                 buffer.Append("/");
-                foreach (var c in token)
-                {
-                    switch (c)
-                    {
-                        case '~':
-                            buffer.Append('~');
-                            buffer.Append('0');
-                            break;
-                        case '/':
-                            buffer.Append('~');
-                            buffer.Append('1');
-                            break;
-                        default:
-                            buffer.Append(c);
-                            break;
-                    }
-                }
+                Escape(token, buffer);
             }
             return buffer.ToString();
         }
@@ -346,7 +330,9 @@ namespace JsonCons.Utilities
 
         /// <summary>
         /// Escapes a JSON Pointer token
-        //// </summary>
+        /// </summary>
+        /// <returns>
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         ///   The <paramref name="token"/> is <see langword="null"/>.
         /// </exception>
@@ -357,26 +343,35 @@ namespace JsonCons.Utilities
                 throw new ArgumentNullException(nameof(token));
             }
 
-            var result = new StringBuilder();
+            var buffer = new StringBuilder();
+            Escape(token, buffer);
+            return buffer.ToString();
+        }
+
+        static void Escape(string token, StringBuilder buffer)
+        {
+            if (token == null)
+            {
+                throw new ArgumentNullException(nameof(token));
+            }
 
             foreach (var c in token)
             {
-                if (c == '~')
+                switch (c)
                 {
-                    result.Append('~');
-                    result.Append('0');
-                }
-                else if (c == '/')
-                {
-                    result.Append('~');
-                    result.Append('1');
-                }
-                else
-                {
-                    result.Append(c);
+                    case '~':
+                        buffer.Append('~');
+                        buffer.Append('0');
+                        break;
+                    case '/':
+                        buffer.Append('~');
+                        buffer.Append('1');
+                        break;
+                    default:
+                        buffer.Append(c);
+                        break;
                 }
             }
-            return result.ToString();
         }
     }
 

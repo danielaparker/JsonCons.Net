@@ -274,7 +274,7 @@
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.Parse(System.String)">
             <summary>
-            Parses a JSON Pointer represented as a string value or a 
+            Parses a JSON Pointer represented as a JSON string value or a 
             fragment identifier (starts with <c>#</c>) into a JsonPointer.
             </summary>
             <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
@@ -291,7 +291,7 @@
             Parses a JSON Pointer represented as a string value or a 
             fragment identifier (starts with <c>#</c>) into a JsonPointer.
             </summary>
-            <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
+            <param name="input">A JSON Pointer represented as a JSON string or a fragment identifier.</param>
             <param name="pointer">The JSONPointer.</param>
             <returns><c>true</c> if the input string can be parsed into a list of tokens, <c>false</c> otherwise.</returns>
             <exception cref="T:System.ArgumentNullException">
@@ -345,6 +345,11 @@
             </exception>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.Escape(System.String)">
+            <summary>
+            Escapes a JSON Pointer token
+            </summary>
+            <returns>
+            </returns>
             <exception cref="T:System.ArgumentNullException">
               The <paramref name="token"/> is <see langword="null"/>.
             </exception>
