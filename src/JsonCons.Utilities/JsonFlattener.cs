@@ -30,7 +30,7 @@ namespace JsonCons.Utilities
     /// and to unflatten a flattened JSON object.
     /// </summary>
     /// <example>
-    /// This example show how to flatten and unflatten a JSON value
+    /// This example shows how to flatten and unflatten a JSON value
     /// <code>
     /// using System;
     /// using System.Diagnostics;

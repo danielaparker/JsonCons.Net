@@ -43,7 +43,7 @@ namespace JsonCons.Utilities
     /// to a JSON value.
     /// </summary>
     /// <example>
-    /// This example show how to flatten and unflatten a JSON value
+    /// This example shows how to apply a JSON Patch to a JSON value
     /// <code>
     /// using System;
     /// using System.Diagnostics;
