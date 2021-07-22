@@ -180,8 +180,8 @@ number, true, false, null, empty object, or empty array.</p>
   <h4 id="JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenHandling_" data-uid="JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenHandling)">Unflatten(JsonElement, IntegerTokenHandling)</h4>
   <div class="markdown level1 summary"><p>Recovers the orginal JSON value from a JSON object in flattened form, to the extent possible.
 There may not be a unique solution, an integer token in a JSON Pointer could be an array index or
-it could be an object name. The default is to attempt to preserve arrays. The <code data-dev-comment-type="paramref" class="paramref">options</code>
-provides additonal options.</p>
+it could be an object name. The default behavior is to attempt to recover arrays. The <code data-dev-comment-type="paramref" class="paramref">options</code>
+parameter can be used to recover objects with integer names instead.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

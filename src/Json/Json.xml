@@ -49,8 +49,8 @@
             <summary>
             Recovers the orginal JSON value from a JSON object in flattened form, to the extent possible. 
             There may not be a unique solution, an integer token in a JSON Pointer could be an array index or 
-            it could be an object name. The default is to attempt to preserve arrays. The <paramref name="options"/>
-            provides additonal options.
+            it could be an object name. The default behavior is to attempt to recover arrays. The <paramref name="options"/>
+            parameter can be used to recover objects with integer names instead.
             </summary>
             <remarks>
             It is the users responsibilty to properly Dispose the returned JSONDocument value
