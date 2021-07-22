@@ -145,7 +145,7 @@ namespace JsonCons.JsonPath
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
-                                 PathLink.Root, 
+                                 PathNode.Root, 
                                  new JsonElementValue(root), 
                                  accumulator, 
                                  flags);
@@ -189,7 +189,7 @@ namespace JsonCons.JsonPath
                 INodeAccumulator accumulator = new JsonElementAccumulator(values);            
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
-                                 PathLink.Root, 
+                                 PathNode.Root, 
                                  new JsonElementValue(root), 
                                  accumulator, 
                                  flags);
@@ -227,7 +227,7 @@ namespace JsonCons.JsonPath
             INodeAccumulator accumulator = new PathAccumulator(paths);
             _selector.Select(resources, 
                              new JsonElementValue(root), 
-                             PathLink.Root, 
+                             PathNode.Root, 
                              new JsonElementValue(root), 
                              accumulator, 
                              flags | ProcessingFlags.Path);
@@ -290,7 +290,7 @@ namespace JsonCons.JsonPath
             var accumulator = new NodeAccumulator(nodes);
             _selector.Select(resources, 
                              new JsonElementValue(root), 
-                             PathLink.Root, 
+                             PathNode.Root, 
                              new JsonElementValue(root), 
                              accumulator, 
                              flags | ProcessingFlags.Path);

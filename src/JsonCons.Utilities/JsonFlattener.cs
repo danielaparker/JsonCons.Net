@@ -9,7 +9,7 @@ using System.Text.Json;
 namespace JsonCons.Utilities
 {
     /// <summary>
-    /// Defines how the unflatten operation handles integer tokens in the JSON Pointer key
+    /// Defines how the unflatten operation handles integer tokens in a JSON Pointer 
     /// </summary>
     public enum IntegerTokenHandling { 
         /// <summary>

@@ -9,15 +9,15 @@ namespace JsonPath.Tests
         [TestMethod]
         public void TestNormalizedPathEquals()
         {
-            PathLink node1 = PathLink.Root;
-            PathLink node2 = new PathLink(node1,"foo");
-            PathLink node3 = new PathLink(node2,"bar");
-            PathLink node4 = new PathLink(node3,0);
+            PathNode node1 = PathNode.Root;
+            PathNode node2 = new PathNode(node1,"foo");
+            PathNode node3 = new PathNode(node2,"bar");
+            PathNode node4 = new PathNode(node3,0);
 
-            PathLink node11 = PathLink.Root;
-            PathLink node12 = new PathLink(node11,"foo");
-            PathLink node13 = new PathLink(node12,"bar");
-            PathLink node14 = new PathLink(node13,0);
+            PathNode node11 = PathNode.Root;
+            PathNode node12 = new PathNode(node11,"foo");
+            PathNode node13 = new PathNode(node12,"bar");
+            PathNode node14 = new PathNode(node13,0);
 
 
             NormalizedPath path1 = new NormalizedPath(node4);
@@ -29,10 +29,10 @@ namespace JsonPath.Tests
         [TestMethod]
         public void TestNormalizedPathToString()
         {
-            PathLink node1 = PathLink.Root;
-            PathLink node2 = new PathLink(node1,"foo");
-            PathLink node3 = new PathLink(node2,"bar");
-            PathLink node4 = new PathLink(node3,0);
+            PathNode node1 = PathNode.Root;
+            PathNode node2 = new PathNode(node1,"foo");
+            PathNode node3 = new PathNode(node2,"bar");
+            PathNode node4 = new PathNode(node3,0);
 
             NormalizedPath path1 = new NormalizedPath(node4);
             Assert.IsTrue(path1.ToString().Equals(@"$['foo']['bar'][0]"));
@@ -41,10 +41,10 @@ namespace JsonPath.Tests
         [TestMethod]
         public void TestNormalizedPathWithSolidusToString()
         {
-            PathLink node1 = PathLink.Root;
-            PathLink node2 = new PathLink(node1,"foo's");
-            PathLink node3 = new PathLink(node2,"bar");
-            PathLink node4 = new PathLink(node3,0);
+            PathNode node1 = PathNode.Root;
+            PathNode node2 = new PathNode(node1,"foo's");
+            PathNode node3 = new PathNode(node2,"bar");
+            PathNode node4 = new PathNode(node3,0);
 
             NormalizedPath path = new NormalizedPath(node4);
             Assert.IsTrue(path.ToString().Equals(@"$['foo\'s']['bar'][0]"));
@@ -53,8 +53,8 @@ namespace JsonPath.Tests
         [TestMethod]
         public void TestNormalizedPathToJsonPointer()
         {
-            PathLink node1 = PathLink.Root;
-            PathLink node2 = new PathLink(node1,"a/b");
+            PathNode node1 = PathNode.Root;
+            PathNode node2 = new PathNode(node1,"a/b");
 
             NormalizedPath path = new NormalizedPath(node2);
             Assert.IsTrue(path.ToJsonPointer().Equals(@"/a~1b"));

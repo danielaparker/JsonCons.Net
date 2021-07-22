@@ -237,12 +237,12 @@ references:
   commentId: T:JsonCons.JsonPath.NormalizedPath
   fullName: JsonCons.JsonPath.NormalizedPath
   nameWithType: NormalizedPath
-- uid: JsonCons.JsonPath.NormalizedPath.#ctor(JsonCons.JsonPath.PathLink)
-  name: NormalizedPath(PathLink)
-  href: ref/JsonCons.JsonPath.NormalizedPath.html#JsonCons_JsonPath_NormalizedPath__ctor_JsonCons_JsonPath_PathLink_
-  commentId: M:JsonCons.JsonPath.NormalizedPath.#ctor(JsonCons.JsonPath.PathLink)
-  fullName: JsonCons.JsonPath.NormalizedPath.NormalizedPath(JsonCons.JsonPath.PathLink)
-  nameWithType: NormalizedPath.NormalizedPath(PathLink)
+- uid: JsonCons.JsonPath.NormalizedPath.#ctor(JsonCons.JsonPath.PathNode)
+  name: NormalizedPath(PathNode)
+  href: ref/JsonCons.JsonPath.NormalizedPath.html#JsonCons_JsonPath_NormalizedPath__ctor_JsonCons_JsonPath_PathNode_
+  commentId: M:JsonCons.JsonPath.NormalizedPath.#ctor(JsonCons.JsonPath.PathNode)
+  fullName: JsonCons.JsonPath.NormalizedPath.NormalizedPath(JsonCons.JsonPath.PathNode)
+  nameWithType: NormalizedPath.NormalizedPath(PathNode)
 - uid: JsonCons.JsonPath.NormalizedPath.#ctor*
   name: NormalizedPath
   href: ref/JsonCons.JsonPath.NormalizedPath.html#JsonCons_JsonPath_NormalizedPath__ctor_
@@ -404,135 +404,135 @@ references:
   commentId: F:JsonCons.JsonPath.PathComponentKind.Root
   fullName: JsonCons.JsonPath.PathComponentKind.Root
   nameWithType: PathComponentKind.Root
-- uid: JsonCons.JsonPath.PathLink
-  name: PathLink
-  href: ref/JsonCons.JsonPath.PathLink.html
-  commentId: T:JsonCons.JsonPath.PathLink
-  fullName: JsonCons.JsonPath.PathLink
-  nameWithType: PathLink
-- uid: JsonCons.JsonPath.PathLink.#ctor(JsonCons.JsonPath.PathLink,System.Int32)
-  name: PathLink(PathLink, Int32)
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink__ctor_JsonCons_JsonPath_PathLink_System_Int32_
-  commentId: M:JsonCons.JsonPath.PathLink.#ctor(JsonCons.JsonPath.PathLink,System.Int32)
-  fullName: JsonCons.JsonPath.PathLink.PathLink(JsonCons.JsonPath.PathLink, System.Int32)
-  nameWithType: PathLink.PathLink(PathLink, Int32)
-- uid: JsonCons.JsonPath.PathLink.#ctor(JsonCons.JsonPath.PathLink,System.String)
-  name: PathLink(PathLink, String)
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink__ctor_JsonCons_JsonPath_PathLink_System_String_
-  commentId: M:JsonCons.JsonPath.PathLink.#ctor(JsonCons.JsonPath.PathLink,System.String)
-  fullName: JsonCons.JsonPath.PathLink.PathLink(JsonCons.JsonPath.PathLink, System.String)
-  nameWithType: PathLink.PathLink(PathLink, String)
-- uid: JsonCons.JsonPath.PathLink.#ctor*
-  name: PathLink
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink__ctor_
-  commentId: Overload:JsonCons.JsonPath.PathLink.#ctor
+- uid: JsonCons.JsonPath.PathNode
+  name: PathNode
+  href: ref/JsonCons.JsonPath.PathNode.html
+  commentId: T:JsonCons.JsonPath.PathNode
+  fullName: JsonCons.JsonPath.PathNode
+  nameWithType: PathNode
+- uid: JsonCons.JsonPath.PathNode.#ctor(JsonCons.JsonPath.PathNode,System.Int32)
+  name: PathNode(PathNode, Int32)
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode__ctor_JsonCons_JsonPath_PathNode_System_Int32_
+  commentId: M:JsonCons.JsonPath.PathNode.#ctor(JsonCons.JsonPath.PathNode,System.Int32)
+  fullName: JsonCons.JsonPath.PathNode.PathNode(JsonCons.JsonPath.PathNode, System.Int32)
+  nameWithType: PathNode.PathNode(PathNode, Int32)
+- uid: JsonCons.JsonPath.PathNode.#ctor(JsonCons.JsonPath.PathNode,System.String)
+  name: PathNode(PathNode, String)
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode__ctor_JsonCons_JsonPath_PathNode_System_String_
+  commentId: M:JsonCons.JsonPath.PathNode.#ctor(JsonCons.JsonPath.PathNode,System.String)
+  fullName: JsonCons.JsonPath.PathNode.PathNode(JsonCons.JsonPath.PathNode, System.String)
+  nameWithType: PathNode.PathNode(PathNode, String)
+- uid: JsonCons.JsonPath.PathNode.#ctor*
+  name: PathNode
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode__ctor_
+  commentId: Overload:JsonCons.JsonPath.PathNode.#ctor
   isSpec: "True"
-  fullName: JsonCons.JsonPath.PathLink.PathLink
-  nameWithType: PathLink.PathLink
-- uid: JsonCons.JsonPath.PathLink.CompareTo(JsonCons.JsonPath.PathLink)
-  name: CompareTo(PathLink)
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_CompareTo_JsonCons_JsonPath_PathLink_
-  commentId: M:JsonCons.JsonPath.PathLink.CompareTo(JsonCons.JsonPath.PathLink)
-  fullName: JsonCons.JsonPath.PathLink.CompareTo(JsonCons.JsonPath.PathLink)
-  nameWithType: PathLink.CompareTo(PathLink)
-- uid: JsonCons.JsonPath.PathLink.CompareTo*
+  fullName: JsonCons.JsonPath.PathNode.PathNode
+  nameWithType: PathNode.PathNode
+- uid: JsonCons.JsonPath.PathNode.CompareTo(JsonCons.JsonPath.PathNode)
+  name: CompareTo(PathNode)
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_CompareTo_JsonCons_JsonPath_PathNode_
+  commentId: M:JsonCons.JsonPath.PathNode.CompareTo(JsonCons.JsonPath.PathNode)
+  fullName: JsonCons.JsonPath.PathNode.CompareTo(JsonCons.JsonPath.PathNode)
+  nameWithType: PathNode.CompareTo(PathNode)
+- uid: JsonCons.JsonPath.PathNode.CompareTo*
   name: CompareTo
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_CompareTo_
-  commentId: Overload:JsonCons.JsonPath.PathLink.CompareTo
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_CompareTo_
+  commentId: Overload:JsonCons.JsonPath.PathNode.CompareTo
   isSpec: "True"
-  fullName: JsonCons.JsonPath.PathLink.CompareTo
-  nameWithType: PathLink.CompareTo
-- uid: JsonCons.JsonPath.PathLink.ComponentKind
+  fullName: JsonCons.JsonPath.PathNode.CompareTo
+  nameWithType: PathNode.CompareTo
+- uid: JsonCons.JsonPath.PathNode.ComponentKind
   name: ComponentKind
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_ComponentKind
-  commentId: P:JsonCons.JsonPath.PathLink.ComponentKind
-  fullName: JsonCons.JsonPath.PathLink.ComponentKind
-  nameWithType: PathLink.ComponentKind
-- uid: JsonCons.JsonPath.PathLink.ComponentKind*
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_ComponentKind
+  commentId: P:JsonCons.JsonPath.PathNode.ComponentKind
+  fullName: JsonCons.JsonPath.PathNode.ComponentKind
+  nameWithType: PathNode.ComponentKind
+- uid: JsonCons.JsonPath.PathNode.ComponentKind*
   name: ComponentKind
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_ComponentKind_
-  commentId: Overload:JsonCons.JsonPath.PathLink.ComponentKind
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_ComponentKind_
+  commentId: Overload:JsonCons.JsonPath.PathNode.ComponentKind
   isSpec: "True"
-  fullName: JsonCons.JsonPath.PathLink.ComponentKind
-  nameWithType: PathLink.ComponentKind
-- uid: JsonCons.JsonPath.PathLink.Current
+  fullName: JsonCons.JsonPath.PathNode.ComponentKind
+  nameWithType: PathNode.ComponentKind
+- uid: JsonCons.JsonPath.PathNode.Current
   name: Current
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_Current
-  commentId: P:JsonCons.JsonPath.PathLink.Current
-  fullName: JsonCons.JsonPath.PathLink.Current
-  nameWithType: PathLink.Current
-- uid: JsonCons.JsonPath.PathLink.Current*
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_Current
+  commentId: P:JsonCons.JsonPath.PathNode.Current
+  fullName: JsonCons.JsonPath.PathNode.Current
+  nameWithType: PathNode.Current
+- uid: JsonCons.JsonPath.PathNode.Current*
   name: Current
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_Current_
-  commentId: Overload:JsonCons.JsonPath.PathLink.Current
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_Current_
+  commentId: Overload:JsonCons.JsonPath.PathNode.Current
   isSpec: "True"
-  fullName: JsonCons.JsonPath.PathLink.Current
-  nameWithType: PathLink.Current
-- uid: JsonCons.JsonPath.PathLink.GetHashCode
+  fullName: JsonCons.JsonPath.PathNode.Current
+  nameWithType: PathNode.Current
+- uid: JsonCons.JsonPath.PathNode.GetHashCode
   name: GetHashCode()
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_GetHashCode
-  commentId: M:JsonCons.JsonPath.PathLink.GetHashCode
-  fullName: JsonCons.JsonPath.PathLink.GetHashCode()
-  nameWithType: PathLink.GetHashCode()
-- uid: JsonCons.JsonPath.PathLink.GetHashCode*
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_GetHashCode
+  commentId: M:JsonCons.JsonPath.PathNode.GetHashCode
+  fullName: JsonCons.JsonPath.PathNode.GetHashCode()
+  nameWithType: PathNode.GetHashCode()
+- uid: JsonCons.JsonPath.PathNode.GetHashCode*
   name: GetHashCode
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_GetHashCode_
-  commentId: Overload:JsonCons.JsonPath.PathLink.GetHashCode
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_GetHashCode_
+  commentId: Overload:JsonCons.JsonPath.PathNode.GetHashCode
   isSpec: "True"
-  fullName: JsonCons.JsonPath.PathLink.GetHashCode
-  nameWithType: PathLink.GetHashCode
-- uid: JsonCons.JsonPath.PathLink.GetIndex
+  fullName: JsonCons.JsonPath.PathNode.GetHashCode
+  nameWithType: PathNode.GetHashCode
+- uid: JsonCons.JsonPath.PathNode.GetIndex
   name: GetIndex()
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_GetIndex
-  commentId: M:JsonCons.JsonPath.PathLink.GetIndex
-  fullName: JsonCons.JsonPath.PathLink.GetIndex()
-  nameWithType: PathLink.GetIndex()
-- uid: JsonCons.JsonPath.PathLink.GetIndex*
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_GetIndex
+  commentId: M:JsonCons.JsonPath.PathNode.GetIndex
+  fullName: JsonCons.JsonPath.PathNode.GetIndex()
+  nameWithType: PathNode.GetIndex()
+- uid: JsonCons.JsonPath.PathNode.GetIndex*
   name: GetIndex
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_GetIndex_
-  commentId: Overload:JsonCons.JsonPath.PathLink.GetIndex
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_GetIndex_
+  commentId: Overload:JsonCons.JsonPath.PathNode.GetIndex
   isSpec: "True"
-  fullName: JsonCons.JsonPath.PathLink.GetIndex
-  nameWithType: PathLink.GetIndex
-- uid: JsonCons.JsonPath.PathLink.GetName
+  fullName: JsonCons.JsonPath.PathNode.GetIndex
+  nameWithType: PathNode.GetIndex
+- uid: JsonCons.JsonPath.PathNode.GetName
   name: GetName()
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_GetName
-  commentId: M:JsonCons.JsonPath.PathLink.GetName
-  fullName: JsonCons.JsonPath.PathLink.GetName()
-  nameWithType: PathLink.GetName()
-- uid: JsonCons.JsonPath.PathLink.GetName*
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_GetName
+  commentId: M:JsonCons.JsonPath.PathNode.GetName
+  fullName: JsonCons.JsonPath.PathNode.GetName()
+  nameWithType: PathNode.GetName()
+- uid: JsonCons.JsonPath.PathNode.GetName*
   name: GetName
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_GetName_
-  commentId: Overload:JsonCons.JsonPath.PathLink.GetName
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_GetName_
+  commentId: Overload:JsonCons.JsonPath.PathNode.GetName
   isSpec: "True"
-  fullName: JsonCons.JsonPath.PathLink.GetName
-  nameWithType: PathLink.GetName
-- uid: JsonCons.JsonPath.PathLink.Parent
+  fullName: JsonCons.JsonPath.PathNode.GetName
+  nameWithType: PathNode.GetName
+- uid: JsonCons.JsonPath.PathNode.Parent
   name: Parent
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_Parent
-  commentId: P:JsonCons.JsonPath.PathLink.Parent
-  fullName: JsonCons.JsonPath.PathLink.Parent
-  nameWithType: PathLink.Parent
-- uid: JsonCons.JsonPath.PathLink.Parent*
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_Parent
+  commentId: P:JsonCons.JsonPath.PathNode.Parent
+  fullName: JsonCons.JsonPath.PathNode.Parent
+  nameWithType: PathNode.Parent
+- uid: JsonCons.JsonPath.PathNode.Parent*
   name: Parent
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_Parent_
-  commentId: Overload:JsonCons.JsonPath.PathLink.Parent
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_Parent_
+  commentId: Overload:JsonCons.JsonPath.PathNode.Parent
   isSpec: "True"
-  fullName: JsonCons.JsonPath.PathLink.Parent
-  nameWithType: PathLink.Parent
-- uid: JsonCons.JsonPath.PathLink.Root
+  fullName: JsonCons.JsonPath.PathNode.Parent
+  nameWithType: PathNode.Parent
+- uid: JsonCons.JsonPath.PathNode.Root
   name: Root
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_Root
-  commentId: P:JsonCons.JsonPath.PathLink.Root
-  fullName: JsonCons.JsonPath.PathLink.Root
-  nameWithType: PathLink.Root
-- uid: JsonCons.JsonPath.PathLink.Root*
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_Root
+  commentId: P:JsonCons.JsonPath.PathNode.Root
+  fullName: JsonCons.JsonPath.PathNode.Root
+  nameWithType: PathNode.Root
+- uid: JsonCons.JsonPath.PathNode.Root*
   name: Root
-  href: ref/JsonCons.JsonPath.PathLink.html#JsonCons_JsonPath_PathLink_Root_
-  commentId: Overload:JsonCons.JsonPath.PathLink.Root
+  href: ref/JsonCons.JsonPath.PathNode.html#JsonCons_JsonPath_PathNode_Root_
+  commentId: Overload:JsonCons.JsonPath.PathNode.Root
   isSpec: "True"
-  fullName: JsonCons.JsonPath.PathLink.Root
-  nameWithType: PathLink.Root
+  fullName: JsonCons.JsonPath.PathNode.Root
+  nameWithType: PathNode.Root
 - uid: JsonCons.Utilities
   name: JsonCons.Utilities
   href: ref/JsonCons.Utilities.html

@@ -33,14 +33,14 @@ namespace JsonCons.JsonPath
     /// Represents a component of a <see cref="NormalizedPath"/>.
     ///
     /// </summary>
-    public sealed class PathLink
+    public sealed class PathNode
     {
 
         /// <summary>
         /// Gets the parent of this component.
         ///
         /// </summary>
-        public PathLink Parent {get;}
+        public PathNode Parent {get;}
 
         /// <summary>
         /// Gets the type of the component.
@@ -55,15 +55,15 @@ namespace JsonCons.JsonPath
         /// Gets a root component 
         ///
         /// </summary>
-        public static PathLink Root {get;} = new PathLink(PathComponentKind.Root, "$");
+        public static PathNode Root {get;} = new PathNode(PathComponentKind.Root, "$");
 
         /// <summary>
         /// Gets a current component 
         ///
         /// </summary>
-        public static PathLink Current { get;} = new PathLink(PathComponentKind.Root, "@");
+        public static PathNode Current { get;} = new PathNode(PathComponentKind.Root, "@");
 
-        PathLink(PathComponentKind componentKind, string name)
+        PathNode(PathComponentKind componentKind, string name)
         {
             if (name == null)
             {
@@ -85,7 +85,7 @@ namespace JsonCons.JsonPath
         ///   <paramref name="name"/> is <see langword="null"/>.
         /// </exception>
 
-        public PathLink(PathLink parent, string name)
+        public PathNode(PathNode parent, string name)
         {
             if (parent == null)
             {
@@ -110,7 +110,7 @@ namespace JsonCons.JsonPath
         ///   <paramref name="parent"/> is <see langword="null"/>.
         /// </exception>
 
-        public PathLink(PathLink parent, Int32 index)
+        public PathNode(PathNode parent, Int32 index)
         {
             if (parent == null)
             {
@@ -140,7 +140,7 @@ namespace JsonCons.JsonPath
             return _index;
         }
 
-        public int CompareTo(PathLink other)
+        public int CompareTo(PathNode other)
         {
             if (other == null)
             {
@@ -182,18 +182,18 @@ namespace JsonCons.JsonPath
     ///
     /// </summary>
 
-    public sealed class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>, IEnumerable<PathLink>
+    public sealed class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>, IEnumerable<PathNode>
     {
-        readonly IReadOnlyList<PathLink> _components;
+        readonly IReadOnlyList<PathNode> _components;
 
         /// <summary>
         /// Constructs a normalized path from the last path component.
         ///
         /// </summary>
-        public NormalizedPath(PathLink last)
+        public NormalizedPath(PathNode last)
         {
-            var nodes = new List<PathLink>();
-            PathLink component = last;
+            var nodes = new List<PathNode>();
+            PathNode component = last;
             do
             {
                 nodes.Add(component);
@@ -211,14 +211,14 @@ namespace JsonCons.JsonPath
         ///
         /// </summary>
 
-        public PathLink Last { get { return _components[_components.Count - 1]; } }
+        public PathNode Last { get { return _components[_components.Count - 1]; } }
 
         /// <summary>
         /// Returns an enumerator that iterates through the components of the normalized path. 
         ///
         /// </summary>
 
-        public IEnumerator<PathLink> GetEnumerator()
+        public IEnumerator<PathNode> GetEnumerator()
         {
             return _components.GetEnumerator();
         }
@@ -341,7 +341,7 @@ namespace JsonCons.JsonPath
                return false;
             }
 
-            return Equals(other as PathLink);
+            return Equals(other as PathNode);
         }
 
         public int CompareTo(NormalizedPath other)
