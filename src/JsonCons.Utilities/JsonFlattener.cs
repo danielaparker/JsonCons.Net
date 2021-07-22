@@ -76,17 +76,17 @@ namespace JsonCons.Utilities
     /// </code>
     /// Output:
     /// <code>
-    ///    {
-    ///      "/application": "hiking",
-    ///      "/reputons/0/rater": "HikingAsylum",
-    ///      "/reputons/0/assertion": "advanced",
-    ///      "/reputons/0/rated": "Marilyn C",
-    ///      "/reputons/0/rating": 0.90,
-    ///      "/reputons/1/rater": "HikingAsylum",
-    ///      "/reputons/1/assertion": "intermediate",
-    ///      "/reputons/1/rated": "Hongmin",
-    ///      "/reputons/1/rating": 0.75
-    ///    }
+    /// {
+    ///   "/application": "hiking",
+    ///   "/reputons/0/rater": "HikingAsylum",
+    ///   "/reputons/0/assertion": "advanced",
+    ///   "/reputons/0/rated": "Marilyn C",
+    ///   "/reputons/0/rating": 0.90,
+    ///   "/reputons/1/rater": "HikingAsylum",
+    ///   "/reputons/1/assertion": "intermediate",
+    ///   "/reputons/1/rated": "Hongmin",
+    ///   "/reputons/1/rating": 0.75
+    /// }
     /// </code>
     /// </example>
 

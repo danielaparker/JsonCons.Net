@@ -9,9 +9,92 @@ using JsonCons.Utilities;
 
 namespace JsonCons.Utilities
 {
-     /// <summary>
+    /// <summary>
     /// Captures error message and the operation that caused it.
     /// </summary>
+    /// <example>
+    /// This example show how to flatten and unflatten a JSON value
+    /// <code>
+    /// using System;
+    /// using System.Diagnostics;
+    /// using System.Text.Json;
+    /// using JsonCons.Utilities;
+    /// 
+    /// public class Example
+    /// {
+    ///    public static void Main()
+    ///    {
+    ///     using var doc = JsonDocument.Parse(@"
+    /// {
+    /// ""baz"": ""qux"",
+    /// ""foo"": ""bar""
+    /// }
+    ///     ");
+    /// 
+    ///     using var patch = JsonDocument.Parse(@"
+    /// [
+    /// { ""op"": ""replace"", ""path"": ""/baz"", ""value"": ""boo"" },
+    /// { ""op"": ""add"", ""path"": ""/hello"", ""value"": [""world""] },
+    /// { ""op"": ""remove"", ""path"": ""/foo"" }
+    /// ]
+    ///     ");
+    /// 
+    ///     using JsonDocument result = JsonPatch.ApplyPatch(doc.RootElement, patch.RootElement);
+    /// 
+    ///     var options = new JsonSerializerOptions() { WriteIndented = true };
+    /// 
+    ///     Console.WriteLine("The original document:\n");
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(doc.RootElement, options)}\n");
+    ///     Console.WriteLine("The patch:\n");
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(patch.RootElement, options)}\n");
+    ///     Console.WriteLine("The result:\n");
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(result, options)}\n");
+    ///        ");
+    ///     }
+    /// }
+    /// </code>
+    /// The original document:
+    /// 
+    /// <code>
+    /// {
+    ///   "baz": "qux",
+    ///   "foo": "bar"
+    /// }
+    /// </code>
+    /// 
+    /// The patch:
+    /// <code>
+    /// 
+    /// [
+    ///   {
+    ///     "op": "replace",
+    ///     "path": "/baz",
+    ///     "value": "boo"
+    ///   },
+    ///   {
+    ///     "op": "add",
+    ///     "path": "/hello",
+    ///     "value": [
+    ///       "world"
+    ///     ]
+    ///   },
+    ///   {
+    ///     "op": "remove",
+    ///     "path": "/foo"
+    ///   }
+    /// ]
+    /// </code>
+    /// 
+    /// The result:
+    /// <code>
+    /// {
+    ///   "baz": "boo",
+    ///   "hello": [
+    ///     "world"
+    ///   ]
+    /// }
+    /// </code>
+    /// </example>
     public class JsonPatchException : Exception
     {
         /// <summary>
