@@ -32,36 +32,47 @@ namespace JsonCons.Utilities
     /// <example>
     /// This example show how to flatten and unflatten a JSON value
     /// <code>
-    ///    using var doc = JsonDocument.Parse(@"
+    /// using System;
+    /// using System.Diagnostics;
+    /// using System.Text.Json;
+    /// using JsonCons.Utilities;
+    /// 
+    /// public class Example
+    /// {
+    ///    public static void Main()
     ///    {
-    ///       ""application"": ""hiking"",
-    ///       ""reputons"": [
-    ///           {
-    ///               ""rater"": ""HikingAsylum"",
-    ///               ""assertion"": ""advanced"",
-    ///               ""rated"": ""Marilyn C"",
-    ///               ""rating"": 0.90
-    ///            },
-    ///            {
-    ///               ""rater"": ""HikingAsylum"",
-    ///               ""assertion"": ""intermediate"",
-    ///               ""rated"": ""Hongmin"",
-    ///               ""rating"": 0.75
-    ///            }    
-    ///        ]
-    ///    }
-    ///    ");
-    ///
-    ///    using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
-    ///
-    ///    var options = new JsonSerializerOptions() { WriteIndented = true };
-    ///
-    ///    Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
-    ///
-    ///    using JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
-    ///
-    ///    var comparer = JsonElementEqualityComparer.Instance;
-    ///    Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
+    ///        using var doc = JsonDocument.Parse(@"
+    ///        {
+    ///           ""application"": ""hiking"",
+    ///           ""reputons"": [
+    ///               {
+    ///                   ""rater"": ""HikingAsylum"",
+    ///                   ""assertion"": ""advanced"",
+    ///                   ""rated"": ""Marilyn C"",
+    ///                   ""rating"": 0.90
+    ///                },
+    ///                {
+    ///                   ""rater"": ""HikingAsylum"",
+    ///                   ""assertion"": ""intermediate"",
+    ///                   ""rated"": ""Hongmin"",
+    ///                   ""rating"": 0.75
+    ///                }    
+    ///            ]
+    ///        }
+    ///        ");
+    ///    
+    ///        using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+    ///    
+    ///        var options = new JsonSerializerOptions() { WriteIndented = true };
+    ///    
+    ///        Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
+    ///    
+    ///        using JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
+    ///    
+    ///        var comparer = JsonElementEqualityComparer.Instance;
+    ///        Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
+    ///     }
+    /// }
     /// </code>
     /// Output:
     /// <code>
@@ -78,6 +89,7 @@ namespace JsonCons.Utilities
     ///    }
     /// </code>
     /// </example>
+
     public static class JsonFlattener
     {
         /// <summary>

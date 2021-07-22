@@ -28,59 +28,70 @@
             </summary>
         </member>
         <member name="T:JsonCons.Utilities.JsonFlattener">
-             <summary>
-             Provides functionality to flatten a JSON object or array to a single depth JSON object of JSON Pointer-value pairs,
-             and to unflatten a flattened JSON object.
-             </summary>
-             <example>
-             This example show how to flatten and unflatten a JSON value
-             <code>
-                using var doc = JsonDocument.Parse(@"
-                {
-                   ""application"": ""hiking"",
-                   ""reputons"": [
-                       {
-                           ""rater"": ""HikingAsylum"",
-                           ""assertion"": ""advanced"",
-                           ""rated"": ""Marilyn C"",
-                           ""rating"": 0.90
-                        },
-                        {
-                           ""rater"": ""HikingAsylum"",
-                           ""assertion"": ""intermediate"",
-                           ""rated"": ""Hongmin"",
-                           ""rating"": 0.75
-                        }    
-                    ]
+            <summary>
+            Provides functionality to flatten a JSON object or array to a single depth JSON object of JSON Pointer-value pairs,
+            and to unflatten a flattened JSON object.
+            </summary>
+            <example>
+            This example show how to flatten and unflatten a JSON value
+            <code>
+            using System;
+            using System.Diagnostics;
+            using System.Text.Json;
+            using JsonCons.Utilities;
+            
+            public class Example
+            {
+               public static void Main()
+               {
+                   using var doc = JsonDocument.Parse(@"
+                   {
+                      ""application"": ""hiking"",
+                      ""reputons"": [
+                          {
+                              ""rater"": ""HikingAsylum"",
+                              ""assertion"": ""advanced"",
+                              ""rated"": ""Marilyn C"",
+                              ""rating"": 0.90
+                           },
+                           {
+                              ""rater"": ""HikingAsylum"",
+                              ""assertion"": ""intermediate"",
+                              ""rated"": ""Hongmin"",
+                              ""rating"": 0.75
+                           }    
+                       ]
+                   }
+                   ");
+               
+                   using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+               
+                   var options = new JsonSerializerOptions() { WriteIndented = true };
+               
+                   Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
+               
+                   using JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
+               
+                   var comparer = JsonElementEqualityComparer.Instance;
+                   Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
                 }
-                ");
-            
-                using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
-            
-                var options = new JsonSerializerOptions() { WriteIndented = true };
-            
-                Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
-            
-                using JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
-            
-                var comparer = JsonElementEqualityComparer.Instance;
-                Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
-             </code>
-             Output:
-             <code>
-                {
-                  "/application": "hiking",
-                  "/reputons/0/rater": "HikingAsylum",
-                  "/reputons/0/assertion": "advanced",
-                  "/reputons/0/rated": "Marilyn C",
-                  "/reputons/0/rating": 0.90,
-                  "/reputons/1/rater": "HikingAsylum",
-                  "/reputons/1/assertion": "intermediate",
-                  "/reputons/1/rated": "Hongmin",
-                  "/reputons/1/rating": 0.75
-                }
-             </code>
-             </example>
+            }
+            </code>
+            Output:
+            <code>
+               {
+                 "/application": "hiking",
+                 "/reputons/0/rater": "HikingAsylum",
+                 "/reputons/0/assertion": "advanced",
+                 "/reputons/0/rated": "Marilyn C",
+                 "/reputons/0/rating": 0.90,
+                 "/reputons/1/rater": "HikingAsylum",
+                 "/reputons/1/assertion": "intermediate",
+                 "/reputons/1/rated": "Hongmin",
+                 "/reputons/1/rating": 0.75
+               }
+            </code>
+            </example>
         </member>
         <member name="M:JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)">
             <summary>
