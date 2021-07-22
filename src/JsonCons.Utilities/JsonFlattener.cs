@@ -26,13 +26,13 @@ namespace JsonCons.Utilities
     }
 
     /// <summary>
-    /// Provides functionality to flatten a JSON object or array to a JSON object of JSON Pointer-value pairs,
+    /// Provides functionality to flatten a JSON object or array to a single depth JSON object of JSON Pointer-value pairs,
     /// and to unflatten a flattened JSON object.
     /// </summary>
     public static class JsonFlattener
     {
         /// <summary>
-        /// Converts a JSON object or array into a flattened JSON object of name-value pairs,
+        /// Converts a JSON object or array into a single depth JSON object of name-value pairs,
         /// such that the names are JSON Pointer strings, and the values are either string,
         /// number, true, false, null, empty object, or empty array. 
         /// </summary>
@@ -46,6 +46,9 @@ namespace JsonCons.Utilities
 
         /// <summary>
         /// Recovers the orginal JSON value from a JSON object in flattened form, to the extent possible. 
+        /// There may not be a unique solution, an integer token in a JSON Pointer could be an array index or 
+        /// it could be an object name. The default is to attempt to preserve arrays. The <paramref name="options"/>
+        /// provides additonal options.
         /// </summary>
         /// <param name="flattenedValue">The flattened value, which must be a JSON object of name-value pairs, such that 
         /// the names are JSON Pointer strings, and the values are either string,

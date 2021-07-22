@@ -73,7 +73,7 @@
   
   <h1 id="JsonCons_Utilities_JsonFlattener" data-uid="JsonCons.Utilities.JsonFlattener" class="text-break">Class JsonFlattener
   </h1>
-  <div class="markdown level0 summary"><p>Provides functionality to flatten a JSON object or array to a JSON object of JSON Pointer-value pairs,
+  <div class="markdown level0 summary"><p>Provides functionality to flatten a JSON object or array to a single depth JSON object of JSON Pointer-value pairs,
 and to unflatten a flattened JSON object.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -123,7 +123,7 @@ and to unflatten a flattened JSON object.</p>
   </span>
   <a id="JsonCons_Utilities_JsonFlattener_Flatten_" data-uid="JsonCons.Utilities.JsonFlattener.Flatten*"></a>
   <h4 id="JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement_" data-uid="JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)">Flatten(JsonElement)</h4>
-  <div class="markdown level1 summary"><p>Converts a JSON object or array into a flattened JSON object of name-value pairs,
+  <div class="markdown level1 summary"><p>Converts a JSON object or array into a single depth JSON object of name-value pairs,
 such that the names are JSON Pointer strings, and the values are either string,
 number, true, false, null, empty object, or empty array.</p>
 </div>
@@ -169,11 +169,14 @@ number, true, false, null, empty object, or empty array.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenHandling_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement%2CJsonCons.Utilities.IntegerTokenHandling)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L58">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L61">View Source</a>
   </span>
   <a id="JsonCons_Utilities_JsonFlattener_Unflatten_" data-uid="JsonCons.Utilities.JsonFlattener.Unflatten*"></a>
   <h4 id="JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenHandling_" data-uid="JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenHandling)">Unflatten(JsonElement, IntegerTokenHandling)</h4>
-  <div class="markdown level1 summary"><p>Recovers the orginal JSON value from a JSON object in flattened form, to the extent possible.</p>
+  <div class="markdown level1 summary"><p>Recovers the orginal JSON value from a JSON object in flattened form, to the extent possible.
+There may not be a unique solution, an integer token in a JSON Pointer could be an array index or
+it could be an object name. The default is to attempt to preserve arrays. The <code data-dev-comment-type="paramref" class="paramref">options</code>
+provides additonal options.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
