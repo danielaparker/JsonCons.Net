@@ -778,6 +778,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.Utilities.JsonPointer.GetHashCode
   nameWithType: JsonPointer.GetHashCode
+- uid: JsonCons.Utilities.JsonPointer.Parse(System.String)
+  name: Parse(String)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Parse_System_String_
+  commentId: M:JsonCons.Utilities.JsonPointer.Parse(System.String)
+  fullName: JsonCons.Utilities.JsonPointer.Parse(System.String)
+  nameWithType: JsonPointer.Parse(String)
+- uid: JsonCons.Utilities.JsonPointer.Parse*
+  name: Parse
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Parse_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.Parse
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonPointer.Parse
+  nameWithType: JsonPointer.Parse
 - uid: JsonCons.Utilities.JsonPointer.System#Collections#IEnumerable#GetEnumerator
   name: IEnumerable.GetEnumerator()
   href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_System_Collections_IEnumerable_GetEnumerator

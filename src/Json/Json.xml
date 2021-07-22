@@ -270,16 +270,59 @@
             <summary>
             Constructs a JSON Pointer from a list of tokens 
             </summary>
+            <param name="tokens">A list of (unescaped) JSON Pointer tokens.</param>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.Parse(System.String)">
+            <summary>
+            Parses a JSON Pointer represented as a string value or a 
+            fragment identifier (starts with <code>#</code>) into a JsonPointer.
+            </summary>
+            <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
+            <returns>A JsonPointer.</returns>
+            <exception cref="T:System.ArgumentNullException">
+              The <paramref name="input"/> is <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+              The <paramref name="input"/> is invalid.
+            </exception>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.TryParse(System.String,JsonCons.Utilities.JsonPointer@)">
+            <summary>
+            Parses a JSON Pointer represented as a string value or a 
+            fragment identifier (starts with <code>#</code>) into a JsonPointer.
+            </summary>
+            <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
+            <param name="pointer">The JSONPointer.</param>
+            <returns><code>true</code> if the input string can be parsed into a list of tokens, <code>false</code> otherwise.</returns>
+            <exception cref="T:System.ArgumentNullException">
+              The <paramref name="input"/> is <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a list of tokens.
+            </summary>
+            <returns>An <code>IEnumerator&lt;string></code> for a list of tokens.</returns>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.ToString">
             <summary>
-            Returns a string representing the JSON Pointer as a string value
+            Returns a JSON Pointer represented as a string value.
             </summary>
+            <returns>A JSON Pointer represented as a string value.</returns>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.ToUriFragment">
             <summary>
             Returns a string representing the JSON Pointer as a URI fragment identifier
             </summary>
+            <returns>A JSON Pointer represented as a fragment identifier.</returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.Equals(JsonCons.Utilities.JsonPointer)">
+            <summary>
+            Determines whether two JSONPointer objects have the same value.
+            </summary>
+            <param name="other"></param>
+            <returns><code>true</code> if other is a <code>JsonPointer</code> and has exactly the same tokens as this instance; otherwise, <code>false</code>. 
+            If other is <code>null</code>, the method returns <code>false</code>.</returns>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)">
             <summary>
@@ -294,9 +337,17 @@
             Returns the value at the referenced location in the specified target.
             </summary>
             <param name="target"></param>
-            <param name="jsonPointer"></param>
+            <param name="pointer"></param>
             <param name="value"></param>
             <returns></returns>
+            <exception cref="T:System.ArgumentNullException">
+              The <paramref name="pointer"/> is <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.Escape(System.String)">
+            <exception cref="T:System.ArgumentNullException">
+              The <paramref name="token"/> is <see langword="null"/>.
+            </exception>
         </member>
     </members>
 </doc>

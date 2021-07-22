@@ -21,18 +21,50 @@ namespace JsonCons.Utilities
         /// <summary>
         /// Constructs a JSON Pointer from a list of tokens 
         /// </summary>
+        /// <param name="tokens">A list of (unescaped) JSON Pointer tokens.</param>
 
         public JsonPointer(IReadOnlyList<string> tokens)
         {
             Tokens = tokens;
         }
 
-
-        public static bool TryParse(string source, out JsonPointer jsonPointer)
+        /// <summary>
+        /// Parses a JSON Pointer represented as a string value or a 
+        /// fragment identifier (starts with <code>#</code>) into a JsonPointer.
+        /// </summary>
+        /// <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
+        /// <returns>A JsonPointer.</returns>
+        /// <exception cref="ArgumentNullException">
+        ///   The <paramref name="input"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///   The <paramref name="input"/> is invalid.
+        /// </exception>
+        public static JsonPointer Parse(string input)
         {
-            if (source == null)
+            JsonPointer pointer;
+            if (!TryParse(input, out pointer))
             {
-                throw new ArgumentNullException(nameof(source));
+                throw new ArgumentException("The provided JSON Pointer is invalid.");
+            }
+            return pointer;
+        }
+
+        /// <summary>
+        /// Parses a JSON Pointer represented as a string value or a 
+        /// fragment identifier (starts with <code>#</code>) into a JsonPointer.
+        /// </summary>
+        /// <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
+        /// <param name="pointer">The JSONPointer.</param>
+        /// <returns><code>true</code> if the input string can be parsed into a list of tokens, <code>false</code> otherwise.</returns>
+        /// <exception cref="ArgumentNullException">
+        ///   The <paramref name="input"/> is <see langword="null"/>.
+        /// </exception>
+        public static bool TryParse(string input, out JsonPointer pointer)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
             }
 
             var tokens = new List<string>();
@@ -41,32 +73,32 @@ namespace JsonCons.Utilities
             int index = 0;
             var buffer = new StringBuilder();
 
-            if (source.Length > 0 && source[0] == '#') 
+            if (input.Length > 0 && input[0] == '#') 
             {
-                source = Uri.UnescapeDataString(source);
+                input = Uri.UnescapeDataString(input);
                 index = 1;
             }
 
-            while (index < source.Length)
+            while (index < input.Length)
             {
                 bool done = false;
-                while (index < source.Length && !done)
+                while (index < input.Length && !done)
                 {
                     switch (state)
                     {
                         case JsonPointerState.Start: 
-                            switch (source[index])
+                            switch (input[index])
                             {
                                 case '/':
                                     state = JsonPointerState.Delim;
                                     break;
                                 default:
-                                    jsonPointer = null;
+                                    pointer = null;
                                     return false;
                             };
                             break;
                         case JsonPointerState.Delim: 
-                            switch (source[index])
+                            switch (input[index])
                             {
                                 case '/':
                                     done = true;
@@ -75,12 +107,12 @@ namespace JsonCons.Utilities
                                     state = JsonPointerState.Escaped;
                                     break;
                                 default:
-                                    buffer.Append(source[index]);
+                                    buffer.Append(input[index]);
                                     break;
                             };
                             break;
                         case JsonPointerState.Escaped: 
-                            switch (source[index])
+                            switch (input[index])
                             {
                                 case '0':
                                     buffer.Append('~');
@@ -91,12 +123,12 @@ namespace JsonCons.Utilities
                                     state = JsonPointerState.Delim;
                                     break;
                                 default:
-                                    jsonPointer = null;
+                                    pointer = null;
                                     return false;
                             };
                             break;
                         default:
-                            jsonPointer = null;
+                            pointer = null;
                             return false;
                     }
                     ++index;
@@ -108,10 +140,14 @@ namespace JsonCons.Utilities
             {
                 tokens.Add(buffer.ToString());
             }
-            jsonPointer = new JsonPointer(tokens);
+            pointer = new JsonPointer(tokens);
             return true;
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through a list of tokens.
+        /// </summary>
+        /// <returns>An <code>IEnumerator&lt;string></code> for a list of tokens.</returns>
         public IEnumerator<string> GetEnumerator()
         {
             return Tokens.GetEnumerator();
@@ -123,8 +159,9 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Returns a string representing the JSON Pointer as a string value
+        /// Returns a JSON Pointer represented as a string value.
         /// </summary>
+        /// <returns>A JSON Pointer represented as a string value.</returns>
 
         public override string ToString()
         {
@@ -156,6 +193,7 @@ namespace JsonCons.Utilities
         /// <summary>
         /// Returns a string representing the JSON Pointer as a URI fragment identifier
         /// </summary>
+        /// <returns>A JSON Pointer represented as a fragment identifier.</returns>
 
         public string ToUriFragment()
         {
@@ -189,6 +227,12 @@ namespace JsonCons.Utilities
             return buffer.ToString();
         }
 
+        /// <summary>
+        /// Determines whether two JSONPointer objects have the same value.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns><code>true</code> if other is a <code>JsonPointer</code> and has exactly the same tokens as this instance; otherwise, <code>false</code>. 
+        /// If other is <code>null</code>, the method returns <code>false</code>.</returns>
         public bool Equals(JsonPointer other)
         {
             if (other == null)
@@ -278,17 +322,20 @@ namespace JsonCons.Utilities
         /// Returns the value at the referenced location in the specified target.
         /// </summary>
         /// <param name="target"></param>
-        /// <param name="jsonPointer"></param>
+        /// <param name="pointer"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool TryGet(JsonElement target, string jsonPointer, out JsonElement value)
+        /// <exception cref="ArgumentNullException">
+        ///   The <paramref name="pointer"/> is <see langword="null"/>.
+        /// </exception>
+        public static bool TryGet(JsonElement target, string pointer, out JsonElement value)
         {
-            if (jsonPointer == null)
+            if (pointer == null)
             {
-                throw new ArgumentNullException(nameof(jsonPointer));
+                throw new ArgumentNullException(nameof(pointer));
             }
             JsonPointer location;
-            if (!TryParse(jsonPointer, out location))
+            if (!TryParse(pointer, out location))
             {
                 value = target;
                 return false;
@@ -297,6 +344,12 @@ namespace JsonCons.Utilities
             return location.TryGet(target, out value);
         }
 
+        /// <summary>
+        /// Escapes a JSON Pointer token
+        //// </summary>
+        /// <exception cref="ArgumentNullException">
+        ///   The <paramref name="token"/> is <see langword="null"/>.
+        /// </exception>
         public static string Escape(string token)
         {
             if (token == null)
