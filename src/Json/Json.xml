@@ -235,7 +235,6 @@
             <summary>
             Applies a JSON Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see> 
             to a source JSON value.
-            <returns>The patched Json document.</returns>
             </summary>
             <remarks>
             It is the users responsibilty to properly Dispose the returned JSONDocument value
