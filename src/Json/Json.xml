@@ -14,7 +14,7 @@
             Defines how the unflatten operation handles integer tokens in a JSON Pointer 
             </summary>
         </member>
-        <member name="F:JsonCons.Utilities.IntegerTokenHandling.IndexOrName">
+        <member name="F:JsonCons.Utilities.IntegerTokenHandling.IndexFirst">
             <summary>
             The unflatten operation first tries to unflatten into a JSON array
             using the integer tokens as sequential indices, and if that fails, unflattens into

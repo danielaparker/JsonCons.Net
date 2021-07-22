@@ -545,12 +545,12 @@ references:
   commentId: T:JsonCons.Utilities.IntegerTokenHandling
   fullName: JsonCons.Utilities.IntegerTokenHandling
   nameWithType: IntegerTokenHandling
-- uid: JsonCons.Utilities.IntegerTokenHandling.IndexOrName
-  name: IndexOrName
-  href: ref/JsonCons.Utilities.IntegerTokenHandling.html#JsonCons_Utilities_IntegerTokenHandling_IndexOrName
-  commentId: F:JsonCons.Utilities.IntegerTokenHandling.IndexOrName
-  fullName: JsonCons.Utilities.IntegerTokenHandling.IndexOrName
-  nameWithType: IntegerTokenHandling.IndexOrName
+- uid: JsonCons.Utilities.IntegerTokenHandling.IndexFirst
+  name: IndexFirst
+  href: ref/JsonCons.Utilities.IntegerTokenHandling.html#JsonCons_Utilities_IntegerTokenHandling_IndexFirst
+  commentId: F:JsonCons.Utilities.IntegerTokenHandling.IndexFirst
+  fullName: JsonCons.Utilities.IntegerTokenHandling.IndexFirst
+  nameWithType: IntegerTokenHandling.IndexFirst
 - uid: JsonCons.Utilities.IntegerTokenHandling.NameOnly
   name: NameOnly
   href: ref/JsonCons.Utilities.IntegerTokenHandling.html#JsonCons_Utilities_IntegerTokenHandling_NameOnly

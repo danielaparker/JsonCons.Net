@@ -17,7 +17,7 @@ namespace JsonCons.Utilities
         /// using the integer tokens as sequential indices, and if that fails, unflattens into
         /// a JSON object using the integer tokens as names.
         /// </summary>
-        IndexOrName, 
+        IndexFirst, 
         /// <summary>
         /// The unflatten operation always unflattens into a JSON object
         /// using the integer tokens as names.
@@ -128,9 +128,9 @@ namespace JsonCons.Utilities
         ///   The <paramref name="flattenedValue"/> is not a JSON object, or has a name that contains an invalid JSON pointer.
         /// </exception>
         public static JsonDocument Unflatten(JsonElement flattenedValue, 
-                                             IntegerTokenHandling options = IntegerTokenHandling.IndexOrName)
+                                             IntegerTokenHandling options = IntegerTokenHandling.IndexFirst)
         {
-            if (options == IntegerTokenHandling.IndexOrName)
+            if (options == IntegerTokenHandling.IndexFirst)
             {
                  JsonDocumentBuilder val;
                  if (TryUnflattenArray(flattenedValue, out val))
@@ -361,7 +361,7 @@ namespace JsonCons.Utilities
             return true;
         }
 
-        static JsonDocumentBuilder UnflattenToObject(JsonElement value, IntegerTokenHandling options = IntegerTokenHandling.IndexOrName)
+        static JsonDocumentBuilder UnflattenToObject(JsonElement value, IntegerTokenHandling options = IntegerTokenHandling.IndexFirst)
         {
             if (value.ValueKind != JsonValueKind.Object)
             {
@@ -415,7 +415,7 @@ namespace JsonCons.Utilities
                 }
             }
 
-            return options == IntegerTokenHandling.IndexOrName ? SafeUnflatten (result) : result;
+            return options == IntegerTokenHandling.IndexFirst ? SafeUnflatten (result) : result;
         }
     }
 
