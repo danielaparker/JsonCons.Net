@@ -275,7 +275,7 @@
         <member name="M:JsonCons.Utilities.JsonPointer.Parse(System.String)">
             <summary>
             Parses a JSON Pointer represented as a string value or a 
-            fragment identifier (starts with <code>#</code>) into a JsonPointer.
+            fragment identifier (starts with <c>#</c>) into a JsonPointer.
             </summary>
             <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
             <returns>A JsonPointer.</returns>
@@ -289,11 +289,11 @@
         <member name="M:JsonCons.Utilities.JsonPointer.TryParse(System.String,JsonCons.Utilities.JsonPointer@)">
             <summary>
             Parses a JSON Pointer represented as a string value or a 
-            fragment identifier (starts with <code>#</code>) into a JsonPointer.
+            fragment identifier (starts with <c>#</c>) into a JsonPointer.
             </summary>
             <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
             <param name="pointer">The JSONPointer.</param>
-            <returns><code>true</code> if the input string can be parsed into a list of tokens, <code>false</code> otherwise.</returns>
+            <returns><c>true</c> if the input string can be parsed into a list of tokens, <c>false</c> otherwise.</returns>
             <exception cref="T:System.ArgumentNullException">
               The <paramref name="input"/> is <see langword="null"/>.
             </exception>
@@ -302,7 +302,7 @@
             <summary>
             Returns an enumerator that iterates through a list of tokens.
             </summary>
-            <returns>An <code>IEnumerator&lt;string></code> for a list of tokens.</returns>
+            <returns>An <c>IEnumerator&lt;string></c> for a list of tokens.</returns>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.ToString">
             <summary>
@@ -321,8 +321,8 @@
             Determines whether two JSONPointer objects have the same value.
             </summary>
             <param name="other"></param>
-            <returns><code>true</code> if other is a <code>JsonPointer</code> and has exactly the same tokens as this instance; otherwise, <code>false</code>. 
-            If other is <code>null</code>, the method returns <code>false</code>.</returns>
+            <returns><c>true</c> if other is a <c>JsonPointer</c> and has exactly the same tokens as this instance; otherwise, <c>false</c>. 
+            If other is <c>null</c>, the method returns <c>false</c>.</returns>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.TryGet(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)">
             <summary>
