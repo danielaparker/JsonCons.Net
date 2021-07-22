@@ -9,6 +9,24 @@
             Compares two <see cref="T:System.Text.Json.JsonElement"/> instances for equality by using value-based comparison.
             </summary>
         </member>
+        <member name="T:JsonCons.Utilities.IntegerTokenHandling">
+            <summary>
+            Defines how the unflatten operation handles integer tokens in the JSON Pointer key
+            </summary>
+        </member>
+        <member name="F:JsonCons.Utilities.IntegerTokenHandling.IndexOrName">
+            <summary>
+            The unflatten operation first tries to unflatten into a JSON array
+            using the integer tokens as sequential indices, and if that fails, unflattens into
+            a JSON object using the integer tokens as names.
+            </summary>
+        </member>
+        <member name="F:JsonCons.Utilities.IntegerTokenHandling.NameOnly">
+            <summary>
+            The unflatten operation always unflattens into a JSON object
+            using the integer tokens as names.
+            </summary>
+        </member>
         <member name="T:JsonCons.Utilities.JsonPatchException">
             <summary>
             Captures error message and the operation that caused it.

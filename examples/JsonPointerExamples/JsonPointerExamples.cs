@@ -141,7 +141,7 @@ namespace JsonCons.Utilities.Examples
             Console.WriteLine($"(2) {JsonSerializer.Serialize(unflattened1, options)}\n");
 
             JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
-                                                                IntTokenHandling.AssumeObject);
+                                                                IntegerTokenHandling.NameOnly);
             Console.WriteLine($"(3) {JsonSerializer.Serialize(unflattened2, options)}\n");
         }
 

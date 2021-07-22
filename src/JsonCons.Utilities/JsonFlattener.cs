@@ -8,7 +8,22 @@ using System.Text.Json;
         
 namespace JsonCons.Utilities
 {
-    public enum IntTokenHandling { AttemptArray, AssumeObject }
+    /// <summary>
+    /// Defines how the unflatten operation handles integer tokens in the JSON Pointer key
+    /// </summary>
+    public enum IntegerTokenHandling { 
+        /// <summary>
+        /// The unflatten operation first tries to unflatten into a JSON array
+        /// using the integer tokens as sequential indices, and if that fails, unflattens into
+        /// a JSON object using the integer tokens as names.
+        /// </summary>
+        IndexOrName, 
+        /// <summary>
+        /// The unflatten operation always unflattens into a JSON object
+        /// using the integer tokens as names.
+        /// </summary>
+        NameOnly 
+    }
 
     public static class JsonFlattener
     {
@@ -233,7 +248,7 @@ namespace JsonCons.Utilities
             return true;
         }
 
-        static JsonDocumentBuilder UnflattenToObject(JsonElement value, IntTokenHandling options = IntTokenHandling.AttemptArray)
+        static JsonDocumentBuilder UnflattenToObject(JsonElement value, IntegerTokenHandling options = IntegerTokenHandling.IndexOrName)
         {
             if (value.ValueKind != JsonValueKind.Object)
             {
@@ -287,12 +302,12 @@ namespace JsonCons.Utilities
                 }
             }
 
-            return options == IntTokenHandling.AttemptArray ? SafeUnflatten (result) : result;
+            return options == IntegerTokenHandling.IndexOrName ? SafeUnflatten (result) : result;
         }
 
-        public static JsonDocument Unflatten(JsonElement value, IntTokenHandling options = IntTokenHandling.AttemptArray)
+        public static JsonDocument Unflatten(JsonElement value, IntegerTokenHandling options = IntegerTokenHandling.IndexOrName)
         {
-            if (options == IntTokenHandling.AttemptArray)
+            if (options == IntegerTokenHandling.IndexOrName)
             {
                  JsonDocumentBuilder val;
                  if (TryUnflattenArray(value, out val))

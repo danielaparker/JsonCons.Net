@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="JsonSchemaError.cs" />
+    <Compile Remove="JsonSchemaVersion.cs" />
+    <Compile Remove="SchemaDraft7.cs" />
+    <Compile Remove="SchemaKeywords.cs" />
+    <Compile Remove="SchemaLoader.cs" />
+    <Compile Remove="SchemaVersion.cs" />
+    <Compile Remove="SubSchema.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="JsonSchemaError.cs" />
+    <None Include="JsonSchemaVersion.cs" />
+    <None Include="SchemaDraft7.cs" />
+    <None Include="SchemaKeywords.cs" />
+    <None Include="SchemaLoader.cs" />
+    <None Include="SchemaVersion.cs" />
+    <None Include="SubSchema.cs" />
+  </ItemGroup>
+
+</Project>

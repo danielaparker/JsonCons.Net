@@ -539,24 +539,24 @@ references:
   commentId: N:JsonCons.Utilities
   fullName: JsonCons.Utilities
   nameWithType: JsonCons.Utilities
-- uid: JsonCons.Utilities.IntTokenHandling
-  name: IntTokenHandling
-  href: ref/JsonCons.Utilities.IntTokenHandling.html
-  commentId: T:JsonCons.Utilities.IntTokenHandling
-  fullName: JsonCons.Utilities.IntTokenHandling
-  nameWithType: IntTokenHandling
-- uid: JsonCons.Utilities.IntTokenHandling.AssumeObject
-  name: AssumeObject
-  href: ref/JsonCons.Utilities.IntTokenHandling.html#JsonCons_Utilities_IntTokenHandling_AssumeObject
-  commentId: F:JsonCons.Utilities.IntTokenHandling.AssumeObject
-  fullName: JsonCons.Utilities.IntTokenHandling.AssumeObject
-  nameWithType: IntTokenHandling.AssumeObject
-- uid: JsonCons.Utilities.IntTokenHandling.AttemptArray
-  name: AttemptArray
-  href: ref/JsonCons.Utilities.IntTokenHandling.html#JsonCons_Utilities_IntTokenHandling_AttemptArray
-  commentId: F:JsonCons.Utilities.IntTokenHandling.AttemptArray
-  fullName: JsonCons.Utilities.IntTokenHandling.AttemptArray
-  nameWithType: IntTokenHandling.AttemptArray
+- uid: JsonCons.Utilities.IntegerTokenHandling
+  name: IntegerTokenHandling
+  href: ref/JsonCons.Utilities.IntegerTokenHandling.html
+  commentId: T:JsonCons.Utilities.IntegerTokenHandling
+  fullName: JsonCons.Utilities.IntegerTokenHandling
+  nameWithType: IntegerTokenHandling
+- uid: JsonCons.Utilities.IntegerTokenHandling.IndexOrName
+  name: IndexOrName
+  href: ref/JsonCons.Utilities.IntegerTokenHandling.html#JsonCons_Utilities_IntegerTokenHandling_IndexOrName
+  commentId: F:JsonCons.Utilities.IntegerTokenHandling.IndexOrName
+  fullName: JsonCons.Utilities.IntegerTokenHandling.IndexOrName
+  nameWithType: IntegerTokenHandling.IndexOrName
+- uid: JsonCons.Utilities.IntegerTokenHandling.NameOnly
+  name: NameOnly
+  href: ref/JsonCons.Utilities.IntegerTokenHandling.html#JsonCons_Utilities_IntegerTokenHandling_NameOnly
+  commentId: F:JsonCons.Utilities.IntegerTokenHandling.NameOnly
+  fullName: JsonCons.Utilities.IntegerTokenHandling.NameOnly
+  nameWithType: IntegerTokenHandling.NameOnly
 - uid: JsonCons.Utilities.JsonElementEqualityComparer
   name: JsonElementEqualityComparer
   href: ref/JsonCons.Utilities.JsonElementEqualityComparer.html
@@ -621,12 +621,12 @@ references:
   isSpec: "True"
   fullName: JsonCons.Utilities.JsonFlattener.Flatten
   nameWithType: JsonFlattener.Flatten
-- uid: JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntTokenHandling)
-  name: Unflatten(JsonElement, IntTokenHandling)
-  href: ref/JsonCons.Utilities.JsonFlattener.html#JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntTokenHandling_
-  commentId: M:JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntTokenHandling)
-  fullName: JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement, JsonCons.Utilities.IntTokenHandling)
-  nameWithType: JsonFlattener.Unflatten(JsonElement, IntTokenHandling)
+- uid: JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenHandling)
+  name: Unflatten(JsonElement, IntegerTokenHandling)
+  href: ref/JsonCons.Utilities.JsonFlattener.html#JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenHandling_
+  commentId: M:JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenHandling)
+  fullName: JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement, JsonCons.Utilities.IntegerTokenHandling)
+  nameWithType: JsonFlattener.Unflatten(JsonElement, IntegerTokenHandling)
 - uid: JsonCons.Utilities.JsonFlattener.Unflatten*
   name: Unflatten
   href: ref/JsonCons.Utilities.JsonFlattener.html#JsonCons_Utilities_JsonFlattener_Unflatten_
