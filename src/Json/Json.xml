@@ -28,22 +28,12 @@
             </summary>
         </member>
         <member name="T:JsonCons.Utilities.JsonFlattener">
-            <summary>
-            Provides functionality to flatten a JSON object or array to a single depth JSON object of JSON Pointer-value pairs,
-            and to unflatten a flattened JSON object.
-            </summary>
-        </member>
-        <member name="M:JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)">
              <summary>
-             Converts a JSON object or array into a single depth JSON object of name-value pairs,
-             such that the names are JSON Pointer strings, and the values are either string,
-             number, true, false, null, empty object, or empty array. 
+             Provides functionality to flatten a JSON object or array to a single depth JSON object of JSON Pointer-value pairs,
+             and to unflatten a flattened JSON object.
              </summary>
-             <remarks>
-             It is the users responsibilty to properly Dispose the returned JSONDocument value
-             </remarks>
              <example>
-                         
+             This example show how to flatten and unflatten a JSON value
              <code>
                 using var doc = JsonDocument.Parse(@"
                 {
@@ -91,8 +81,18 @@
                 }
              </code>
              </example>
-             <param name="value">The value to be flattened.</param>
-             <returns>The flattened value</returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)">
+            <summary>
+            Converts a JSON object or array into a single depth JSON object of name-value pairs,
+            such that the names are JSON Pointer strings, and the values are either string,
+            number, true, false, null, empty object, or empty array. 
+            </summary>
+            <remarks>
+            It is the users responsibilty to properly Dispose the returned JSONDocument value
+            </remarks>
+            <param name="value">The value to be flattened.</param>
+            <returns>The flattened value</returns>
         </member>
         <member name="M:JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenHandling)">
             <summary>
