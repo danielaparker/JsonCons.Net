@@ -25,11 +25,60 @@ namespace JsonCons.Utilities
         NameOnly 
     }
 
+    /// <summary>
+    /// Provides functionality to flatten a JSON object or array to a JSON object of JSON Pointer-value pairs,
+    /// and to unflatten a flattened JSON object.
+    /// </summary>
     public static class JsonFlattener
     {
+        /// <summary>
+        /// Converts a JSON object or array into a flattened JSON object of name-value pairs,
+        /// such that the names are JSON Pointer strings, and the values are either string,
+        /// number, true, false, null, empty object, or empty array. 
+        /// </summary>
+        public static JsonDocument Flatten(JsonElement value)
+        {
+            var result = new JsonDocumentBuilder(JsonValueKind.Object);
+            string parentKey = "";
+            _Flatten(parentKey, value, result);
+            return result.ToJsonDocument();
+        }
+
+        /// <summary>
+        /// Recovers the orginal JSON value from a JSON object in flattened form, to the extent possible. 
+        /// </summary>
+        /// <param name="flattenedValue">The flattened value, which must be a JSON object of name-value pairs, such that 
+        /// the names are JSON Pointer strings, and the values are either string,
+        /// number, true, false, null, empty object, or empty array.</param>
+        /// <param name="options">Options for handling integer tokens in the JSON Pointer.</param>
+        /// <returns>The unflattened value</returns>
+        /// <exception cref="ArgumentException">
+        ///   The <paramref name="flattenedValue"/> is not a JSON object, or has a name that contains an invalid JSON pointer.
+        /// </exception>
+        public static JsonDocument Unflatten(JsonElement flattenedValue, 
+                                             IntegerTokenHandling options = IntegerTokenHandling.IndexOrName)
+        {
+            if (options == IntegerTokenHandling.IndexOrName)
+            {
+                 JsonDocumentBuilder val;
+                 if (TryUnflattenArray(flattenedValue, out val))
+                 {
+                     return val.ToJsonDocument();
+                 }
+                 else
+                 {
+                     return UnflattenToObject(flattenedValue, options).ToJsonDocument();
+                 }
+            }
+            else
+            {
+                return UnflattenToObject(flattenedValue, options).ToJsonDocument();
+            }
+        }
+
         static void _Flatten(string parentKey,
-                            JsonElement parentValue,
-                            JsonDocumentBuilder result)
+                             JsonElement parentValue,
+                             JsonDocumentBuilder result)
         {
             switch (parentValue.ValueKind)
             {
@@ -77,14 +126,6 @@ namespace JsonCons.Utilities
                     break;
                 }
             }
-        }
-
-        public static JsonDocument Flatten(JsonElement value)
-        {
-            var result = new JsonDocumentBuilder(JsonValueKind.Object);
-            string parentKey = "";
-            _Flatten(parentKey, value, result);
-            return result.ToJsonDocument();
         }
 
         // unflatten
@@ -136,7 +177,7 @@ namespace JsonCons.Utilities
         {
             if (value.ValueKind != JsonValueKind.Object)
             {
-                throw new ArgumentException("Not an object");
+                throw new ArgumentException("The value to unflatten is not a JSON object");
             }
 
             result = new JsonDocumentBuilder(JsonValueKind.Object);
@@ -151,7 +192,7 @@ namespace JsonCons.Utilities
                 JsonPointer ptr;
                 if (!JsonPointer.TryParse(item.Name, out ptr))
                 {
-                    throw new InvalidOperationException("Name contains invalid JSON Pointer");
+                    throw new ArgumentException("Name contains invalid JSON Pointer");
                 }
                 int index = 0;
 
@@ -252,7 +293,7 @@ namespace JsonCons.Utilities
         {
             if (value.ValueKind != JsonValueKind.Object)
             {
-                throw new ArgumentException("Not an object");
+                throw new ArgumentException("The value to unflatten is not a JSON object");
             }
 
             var result = new JsonDocumentBuilder(JsonValueKind.Object);
@@ -263,7 +304,7 @@ namespace JsonCons.Utilities
                 JsonPointer ptr;
                 if (!JsonPointer.TryParse(item.Name, out ptr))
                 {
-                    throw new InvalidOperationException("Name contains invalid JSON Pointer");
+                    throw new ArgumentException("Name contains invalid JSON Pointer");
                 }
                 var it = ptr.GetEnumerator();
                 bool more = it.MoveNext();
@@ -303,26 +344,6 @@ namespace JsonCons.Utilities
             }
 
             return options == IntegerTokenHandling.IndexOrName ? SafeUnflatten (result) : result;
-        }
-
-        public static JsonDocument Unflatten(JsonElement value, IntegerTokenHandling options = IntegerTokenHandling.IndexOrName)
-        {
-            if (options == IntegerTokenHandling.IndexOrName)
-            {
-                 JsonDocumentBuilder val;
-                 if (TryUnflattenArray(value, out val))
-                 {
-                     return val.ToJsonDocument();
-                 }
-                 else
-                 {
-                     return UnflattenToObject(value, options).ToJsonDocument();
-                 }
-            }
-            else
-            {
-                return UnflattenToObject(value, options).ToJsonDocument();
-            }
         }
     }
 

@@ -27,6 +27,32 @@
             using the integer tokens as names.
             </summary>
         </member>
+        <member name="T:JsonCons.Utilities.JsonFlattener">
+            <summary>
+            Provides functionality to flatten a JSON object or array to a JSON object of JSON Pointer-value pairs,
+            and to unflatten a flattened JSON object.
+            </summary>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)">
+            <summary>
+            Converts a JSON object or array into a flattened JSON object of name-value pairs,
+            such that the names are JSON Pointer strings, and the values are either string,
+            number, true, false, null, empty object, or empty array. 
+            </summary>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenHandling)">
+            <summary>
+            Recovers the orginal JSON value from a JSON object in flattened form, to the extent possible. 
+            </summary>
+            <param name="flattenedValue">The flattened value, which must be a JSON object of name-value pairs, such that 
+            the names are JSON Pointer strings, and the values are either string,
+            number, true, false, null, empty object, or empty array.</param>
+            <param name="options">Options for handling integer tokens in the JSON Pointer.</param>
+            <returns>The unflattened value</returns>
+            <exception cref="T:System.ArgumentException">
+              The <paramref name="flattenedValue"/> is not a JSON object, or has a name that contains an invalid JSON pointer.
+            </exception>
+        </member>
         <member name="T:JsonCons.Utilities.JsonPatchException">
             <summary>
             Captures error message and the operation that caused it.

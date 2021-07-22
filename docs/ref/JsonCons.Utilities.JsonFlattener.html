@@ -73,7 +73,9 @@
   
   <h1 id="JsonCons_Utilities_JsonFlattener" data-uid="JsonCons.Utilities.JsonFlattener" class="text-break">Class JsonFlattener
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Provides functionality to flatten a JSON object or array to a JSON object of JSON Pointer-value pairs,
+and to unflatten a flattened JSON object.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -114,14 +116,17 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/danielaparker/JsonCons.Net/new/develop/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/src/JsonCons.Utilities/JsonFlattener.cs/#L82">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L39">View Source</a>
   </span>
   <a id="JsonCons_Utilities_JsonFlattener_Flatten_" data-uid="JsonCons.Utilities.JsonFlattener.Flatten*"></a>
   <h4 id="JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement_" data-uid="JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)">Flatten(JsonElement)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Converts a JSON object or array into a flattened JSON object of name-value pairs,
+such that the names are JSON Pointer strings, and the values are either string,
+number, true, false, null, empty object, or empty array.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -161,18 +166,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/danielaparker/JsonCons.Net/new/develop/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenHandling_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement%2CJsonCons.Utilities.IntegerTokenHandling)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenHandling_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement%2CJsonCons.Utilities.IntegerTokenHandling)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/src/JsonCons.Utilities/JsonFlattener.cs/#L308">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L58">View Source</a>
   </span>
   <a id="JsonCons_Utilities_JsonFlattener_Unflatten_" data-uid="JsonCons.Utilities.JsonFlattener.Unflatten*"></a>
   <h4 id="JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenHandling_" data-uid="JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenHandling)">Unflatten(JsonElement, IntegerTokenHandling)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Recovers the orginal JSON value from a JSON object in flattened form, to the extent possible.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static JsonDocument Unflatten(JsonElement value, IntegerTokenHandling options = IntegerTokenHandling.IndexOrName)</code></pre>
+    <pre><code class="lang-csharp hljs">public static JsonDocument Unflatten(JsonElement flattenedValue, IntegerTokenHandling options = IntegerTokenHandling.IndexOrName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -186,13 +192,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Text.Json.JsonElement</span></td>
-        <td><span class="parametername">value</span></td>
-        <td></td>
+        <td><span class="parametername">flattenedValue</span></td>
+        <td><p>The flattened value, which must be a JSON object of name-value pairs, such that
+the names are JSON Pointer strings, and the values are either string,
+number, true, false, null, empty object, or empty array.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="JsonCons.Utilities.IntegerTokenHandling.html">IntegerTokenHandling</a></td>
         <td><span class="parametername">options</span></td>
-        <td></td>
+        <td><p>Options for handling integer tokens in the JSON Pointer.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -207,7 +217,24 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Text.Json.JsonDocument</span></td>
-        <td></td>
+        <td><p>The unflattened value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">flattenedValue</code> is not a JSON object, or has a name that contains an invalid JSON pointer.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -219,10 +246,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/new/develop/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/src/JsonCons.Utilities/JsonFlattener.cs/#L28" class="contribution-link">View Source</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L32" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
