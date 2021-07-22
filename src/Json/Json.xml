@@ -148,7 +148,7 @@
             to a JSON value.
             </summary>
             <example>
-            This example shows how to apply a JSON Patch to a JSON value
+            The following example borrowed from [jsonpatch.com](http://jsonpatch.com/) shows how to apply a JSON Patch to a JSON value
             <code>
             using System;
             using System.Diagnostics;
@@ -237,8 +237,14 @@
             to a source JSON value.
             <returns>The patched Json document.</returns>
             </summary>
-            <exception cref="T:System.InvalidOperationException">
-            The <paramref name="patch"/> is invalid 
+            <remarks>
+            It is the users responsibilty to properly Dispose the returned JSONDocument value
+            </remarks>
+            <param name="source">The source JSON value.</param>
+            <param name="patch">The patch to be applied to the source JSON value.</param>
+            <returns>The patched JSON value</returns>
+            <exception cref="T:System.ArgumentException">
+            The provided <paramref name="patch"/> is invalid 
             </exception>
             <exception cref="T:JsonCons.Utilities.JsonPatchException">
               A JSON Patch operation failed
@@ -249,6 +255,12 @@
             Builds a JSON Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see> 
             given two JSON values, a source and a target.
             </summary>
+            <remarks>
+            It is the users responsibilty to properly Dispose the returned JSONDocument value
+            </remarks>
+            <param name="source">The source JSON value.</param>
+            <param name="target">The target JSON value.</param>
+            <returns>A patch to convert the source JSON value to the target JSON value</returns>
         </member>
         <member name="T:JsonCons.Utilities.JsonPointer">
             <summary>

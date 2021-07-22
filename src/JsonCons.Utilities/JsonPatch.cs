@@ -43,7 +43,7 @@ namespace JsonCons.Utilities
     /// to a JSON value.
     /// </summary>
     /// <example>
-    /// This example shows how to apply a JSON Patch to a JSON value
+    /// The following example borrowed from [jsonpatch.com](http://jsonpatch.com/) shows how to apply a JSON Patch to a JSON value
     /// <code>
     /// using System;
     /// using System.Diagnostics;
@@ -132,20 +132,28 @@ namespace JsonCons.Utilities
         /// to a source JSON value.
         /// <returns>The patched Json document.</returns>
         /// </summary>
-        /// <exception cref="InvalidOperationException">
-        /// The <paramref name="patch"/> is invalid 
+        /// <remarks>
+        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// </remarks>
+        /// <param name="source">The source JSON value.</param>
+        /// <param name="patch">The patch to be applied to the source JSON value.</param>
+        /// <returns>The patched JSON value</returns>
+        /// <exception cref="ArgumentException">
+        /// The provided <paramref name="patch"/> is invalid 
         /// </exception>
         /// <exception cref="JsonPatchException">
         ///   A JSON Patch operation failed
         /// </exception>
-        public static JsonDocument ApplyPatch(JsonElement source, JsonElement patch)
+        public static JsonDocument ApplyPatch(JsonElement source, 
+                                              JsonElement patch)
         {
             var documentBuilder = new JsonDocumentBuilder(source);
             ApplyPatch(ref documentBuilder, patch);
             return documentBuilder.ToJsonDocument();
         }
 
-        static void ApplyPatch(ref JsonDocumentBuilder target, JsonElement patch)
+        static void ApplyPatch(ref JsonDocumentBuilder target, 
+                               JsonElement patch)
         {
             JsonElementEqualityComparer comparer = JsonElementEqualityComparer.Instance;
 
@@ -153,7 +161,7 @@ namespace JsonCons.Utilities
 
             if (patch.ValueKind != JsonValueKind.Array)
             {
-                throw new InvalidOperationException("Invalid patch");
+                throw new ArgumentException("Patch must be an array");
             }
             
             foreach (var operation in patch.EnumerateArray())
@@ -161,21 +169,21 @@ namespace JsonCons.Utilities
                 JsonElement opElement;
                 if (!operation.TryGetProperty("op", out opElement))
                 {
-                    throw new InvalidOperationException("Invalid patch");
+                    throw new ArgumentException("Invalid patch");
                 }
                 string op = opElement.GetString();
 
                 JsonElement pathElement;
                 if (!operation.TryGetProperty("path", out pathElement))
                 {
-                    throw new JsonPatchException(op, "Invalid patch");
+                    throw new ArgumentException(op, "Invalid patch");
                 }
                 string path = pathElement.GetString();
 
                 JsonPointer location;
                 if (!JsonPointer.TryParse(path, out location))
                 {
-                    throw new JsonPatchException(op, "Invalid patch");
+                    throw new ArgumentException(op, "Invalid patch");
                 }
 
                 if (op =="test")
@@ -183,13 +191,13 @@ namespace JsonCons.Utilities
                     JsonElement value;
                     if (!operation.TryGetProperty("value", out value))
                     {
-                        throw new JsonPatchException(op, "Invalid patch");
+                        throw new ArgumentException(op, "Invalid patch");
                     }
 
                     JsonDocumentBuilder tested;
                     if (!location.TryGet(target, out tested))
                     {
-                        throw new JsonPatchException(op, "Invalid patch");
+                        throw new ArgumentException(op, "Invalid patch");
                     }
 
                     using (var doc = tested.ToJsonDocument())
@@ -205,7 +213,7 @@ namespace JsonCons.Utilities
                     JsonElement value;
                     if (!operation.TryGetProperty("value", out value))
                     {
-                        throw new JsonPatchException(op, "Invalid patch");
+                        throw new ArgumentException(op, "Invalid patch");
                     }
                     var valueBuilder = new JsonDocumentBuilder(value);
                     if (!location.TryAddIfAbsent(ref target, valueBuilder)) // try insert without replace
@@ -228,7 +236,7 @@ namespace JsonCons.Utilities
                     JsonElement value;
                     if (!operation.TryGetProperty("value", out value))
                     {
-                        throw new JsonPatchException(op, "Invalid patch");
+                        throw new ArgumentException(op, "Invalid patch");
                     }
                     var valueBuilder = new JsonDocumentBuilder(value);
                     if (!location.TryReplace(ref target, valueBuilder))
@@ -241,14 +249,14 @@ namespace JsonCons.Utilities
                     JsonElement fromElement;
                     if (!operation.TryGetProperty("from", out fromElement))
                     {
-                        throw new JsonPatchException(op, "Invalid patch");
+                        throw new ArgumentException(op, "Invalid patch");
                     }
                     string from = fromElement.GetString();
 
                     JsonPointer fromPointer;
                     if (!JsonPointer.TryParse(from, out fromPointer))
                     {
-                        throw new JsonPatchException(op, "Invalid patch");
+                        throw new ArgumentException(op, "Invalid patch");
                     }
 
                     JsonDocumentBuilder value;
@@ -274,13 +282,13 @@ namespace JsonCons.Utilities
                     JsonElement fromElement;
                     if (!operation.TryGetProperty("from", out fromElement))
                     {
-                        throw new JsonPatchException(op, "Invalid patch");
+                        throw new ArgumentException(op, "Invalid patch");
                     }
                     string from = fromElement.GetString();
                     JsonPointer fromPointer;
                     if (!JsonPointer.TryParse(from, out fromPointer))
                     {
-                        throw new JsonPatchException(op, "Invalid patch");
+                        throw new ArgumentException(op, "Invalid patch");
                     }
 
                     JsonDocumentBuilder value;
@@ -303,7 +311,14 @@ namespace JsonCons.Utilities
         /// Builds a JSON Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see> 
         /// given two JSON values, a source and a target.
         /// </summary>
-        public static JsonDocument FromDiff(JsonElement source, JsonElement target)
+        /// <remarks>
+        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// </remarks>
+        /// <param name="source">The source JSON value.</param>
+        /// <param name="target">The target JSON value.</param>
+        /// <returns>A patch to convert the source JSON value to the target JSON value</returns>
+        public static JsonDocument FromDiff(JsonElement source, 
+                                            JsonElement target)
         {
             return FromDiff(source, target, "").ToJsonDocument();
         }
