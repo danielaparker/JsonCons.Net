@@ -36,6 +36,11 @@ namespace JsonCons.Utilities
         /// such that the names are JSON Pointer strings, and the values are either string,
         /// number, true, false, null, empty object, or empty array. 
         /// </summary>
+        /// <remarks>
+        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// </remarks>
+        /// <param name="value">The value to be flattened.</param>
+        /// <returns>The flattened value</returns>
         public static JsonDocument Flatten(JsonElement value)
         {
             var result = new JsonDocumentBuilder(JsonValueKind.Object);
@@ -50,6 +55,9 @@ namespace JsonCons.Utilities
         /// it could be an object name. The default is to attempt to preserve arrays. The <paramref name="options"/>
         /// provides additonal options.
         /// </summary>
+        /// <remarks>
+        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// </remarks>
         /// <param name="flattenedValue">The flattened value, which must be a JSON object of name-value pairs, such that 
         /// the names are JSON Pointer strings, and the values are either string,
         /// number, true, false, null, empty object, or empty array.</param>
