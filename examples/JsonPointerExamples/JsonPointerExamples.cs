@@ -103,13 +103,13 @@ namespace JsonCons.Utilities.Examples
 }
             ");
 
-            JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+            using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
 
             var options = new JsonSerializerOptions() { WriteIndented = true };
 
             Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
 
-            JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
+            using JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
 
             var comparer = JsonElementEqualityComparer.Instance;
             Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
@@ -134,13 +134,13 @@ namespace JsonCons.Utilities.Examples
 
             var options = new JsonSerializerOptions() { WriteIndented = true };
 
-            JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+            using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
             Console.WriteLine($"(1) {JsonSerializer.Serialize(flattened, options)}\n");
 
-            JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement);
+            using JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement);
             Console.WriteLine($"(2) {JsonSerializer.Serialize(unflattened1, options)}\n");
 
-            JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
+            using JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
                                                                 IntegerTokenHandling.NameOnly);
             Console.WriteLine($"(3) {JsonSerializer.Serialize(unflattened2, options)}\n");
         }

@@ -26,7 +26,7 @@ namespace JsonCons.Utilities.Examples
 ]
             ");
 
-            JsonDocument result = JsonPatch.ApplyPatch(doc.RootElement, patch.RootElement);
+            using JsonDocument result = JsonPatch.ApplyPatch(doc.RootElement, patch.RootElement);
 
             var options = new JsonSerializerOptions() { WriteIndented = true };
 
@@ -56,7 +56,7 @@ namespace JsonCons.Utilities.Examples
 }
             ");
 
-            JsonDocument patch = JsonPatch.FromDiff(sourceDoc.RootElement, targetDoc.RootElement);
+            using JsonDocument patch = JsonPatch.FromDiff(sourceDoc.RootElement, targetDoc.RootElement);
 
             var options = new JsonSerializerOptions() { WriteIndented = true };
 

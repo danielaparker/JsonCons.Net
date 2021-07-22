@@ -39,6 +39,55 @@ namespace JsonCons.Utilities
         /// <remarks>
         /// It is the users responsibilty to properly Dispose the returned JSONDocument value
         /// </remarks>
+        /// <example>
+        ///             
+  	     /// ```c#
+        ///    using var doc = JsonDocument.Parse(@"
+        ///    {
+        ///       ""application"": ""hiking"",
+        ///       ""reputons"": [
+        ///           {
+        ///               ""rater"": ""HikingAsylum"",
+        ///               ""assertion"": ""advanced"",
+        ///               ""rated"": ""Marilyn C"",
+        ///               ""rating"": 0.90
+        ///            },
+        ///            {
+        ///               ""rater"": ""HikingAsylum"",
+        ///               ""assertion"": ""intermediate"",
+        ///               ""rated"": ""Hongmin"",
+        ///               ""rating"": 0.75
+        ///            }    
+        ///        ]
+        ///    }
+        ///    ");
+        ///
+        ///    using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+        ///
+        ///    var options = new JsonSerializerOptions() { WriteIndented = true };
+        ///
+        ///    Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
+        ///
+        ///    using JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
+        ///
+        ///    var comparer = JsonElementEqualityComparer.Instance;
+        ///    Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
+        /// ```
+        /// Output:
+        /// ```json
+        ///    {
+        ///      "/application": "hiking",
+        ///      "/reputons/0/rater": "HikingAsylum",
+        ///      "/reputons/0/assertion": "advanced",
+        ///      "/reputons/0/rated": "Marilyn C",
+        ///      "/reputons/0/rating": 0.90,
+        ///      "/reputons/1/rater": "HikingAsylum",
+        ///      "/reputons/1/assertion": "intermediate",
+        ///      "/reputons/1/rated": "Hongmin",
+        ///      "/reputons/1/rating": 0.75
+        ///    }
+        /// ```
+        /// </example>
         /// <param name="value">The value to be flattened.</param>
         /// <returns>The flattened value</returns>
         public static JsonDocument Flatten(JsonElement value)

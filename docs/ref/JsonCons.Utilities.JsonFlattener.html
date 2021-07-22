@@ -119,7 +119,7 @@ and to unflatten a flattened JSON object.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L44">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L93">View Source</a>
   </span>
   <a id="JsonCons_Utilities_JsonFlattener_Flatten_" data-uid="JsonCons.Utilities.JsonFlattener.Flatten*"></a>
   <h4 id="JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement_" data-uid="JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)">Flatten(JsonElement)</h4>
@@ -169,12 +169,58 @@ number, true, false, null, empty object, or empty array.</p>
   <h5 id="JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It is the users responsibilty to properly Dispose the returned JSONDocument value</p>
 </div>
+  <h5 id="JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement__examples">Examples</h5>
+  <pre><code class="lang-c#">using var doc = JsonDocument.Parse(@&amp;quot;
+{
+ &amp;quot;&amp;quot;application&amp;quot;&amp;quot;: &amp;quot;&amp;quot;hiking&amp;quot;&amp;quot;,
+ &amp;quot;&amp;quot;reputons&amp;quot;&amp;quot;: [
+     {
+         &amp;quot;&amp;quot;rater&amp;quot;&amp;quot;: &amp;quot;&amp;quot;HikingAsylum&amp;quot;&amp;quot;,
+         &amp;quot;&amp;quot;assertion&amp;quot;&amp;quot;: &amp;quot;&amp;quot;advanced&amp;quot;&amp;quot;,
+         &amp;quot;&amp;quot;rated&amp;quot;&amp;quot;: &amp;quot;&amp;quot;Marilyn C&amp;quot;&amp;quot;,
+         &amp;quot;&amp;quot;rating&amp;quot;&amp;quot;: 0.90
+      },
+      {
+         &amp;quot;&amp;quot;rater&amp;quot;&amp;quot;: &amp;quot;&amp;quot;HikingAsylum&amp;quot;&amp;quot;,
+         &amp;quot;&amp;quot;assertion&amp;quot;&amp;quot;: &amp;quot;&amp;quot;intermediate&amp;quot;&amp;quot;,
+         &amp;quot;&amp;quot;rated&amp;quot;&amp;quot;: &amp;quot;&amp;quot;Hongmin&amp;quot;&amp;quot;,
+         &amp;quot;&amp;quot;rating&amp;quot;&amp;quot;: 0.75
+      }    
+  ]
+}
+&amp;quot;);
+
+using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+
+var options = new JsonSerializerOptions() { WriteIndented = true };
+
+Console.WriteLine($&amp;quot;{JsonSerializer.Serialize(flattened, options)}\n&amp;quot;);
+
+using JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
+
+var comparer = JsonElementEqualityComparer.Instance;
+Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
+</code></pre>
+<p>Output:</p>
+<pre><code class="lang-json">{
+&amp;quot;/application&amp;quot;: &amp;quot;hiking&amp;quot;,
+&amp;quot;/reputons/0/rater&amp;quot;: &amp;quot;HikingAsylum&amp;quot;,
+&amp;quot;/reputons/0/assertion&amp;quot;: &amp;quot;advanced&amp;quot;,
+&amp;quot;/reputons/0/rated&amp;quot;: &amp;quot;Marilyn C&amp;quot;,
+&amp;quot;/reputons/0/rating&amp;quot;: 0.90,
+&amp;quot;/reputons/1/rater&amp;quot;: &amp;quot;HikingAsylum&amp;quot;,
+&amp;quot;/reputons/1/assertion&amp;quot;: &amp;quot;intermediate&amp;quot;,
+&amp;quot;/reputons/1/rated&amp;quot;: &amp;quot;Hongmin&amp;quot;,
+&amp;quot;/reputons/1/rating&amp;quot;: 0.75
+}
+</code></pre>
+
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenHandling_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement%2CJsonCons.Utilities.IntegerTokenHandling)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L69">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L118">View Source</a>
   </span>
   <a id="JsonCons_Utilities_JsonFlattener_Unflatten_" data-uid="JsonCons.Utilities.JsonFlattener.Unflatten*"></a>
   <h4 id="JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenHandling_" data-uid="JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenHandling)">Unflatten(JsonElement, IntegerTokenHandling)</h4>
