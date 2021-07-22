@@ -170,50 +170,48 @@ number, true, false, null, empty object, or empty array.</p>
   <div class="markdown level1 remarks"><p>It is the users responsibilty to properly Dispose the returned JSONDocument value</p>
 </div>
   <h5 id="JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement__examples">Examples</h5>
-  <pre><code class="lang-c#">using var doc = JsonDocument.Parse(@&amp;quot;
-{
- &amp;quot;&amp;quot;application&amp;quot;&amp;quot;: &amp;quot;&amp;quot;hiking&amp;quot;&amp;quot;,
- &amp;quot;&amp;quot;reputons&amp;quot;&amp;quot;: [
-     {
-         &amp;quot;&amp;quot;rater&amp;quot;&amp;quot;: &amp;quot;&amp;quot;HikingAsylum&amp;quot;&amp;quot;,
-         &amp;quot;&amp;quot;assertion&amp;quot;&amp;quot;: &amp;quot;&amp;quot;advanced&amp;quot;&amp;quot;,
-         &amp;quot;&amp;quot;rated&amp;quot;&amp;quot;: &amp;quot;&amp;quot;Marilyn C&amp;quot;&amp;quot;,
-         &amp;quot;&amp;quot;rating&amp;quot;&amp;quot;: 0.90
-      },
-      {
-         &amp;quot;&amp;quot;rater&amp;quot;&amp;quot;: &amp;quot;&amp;quot;HikingAsylum&amp;quot;&amp;quot;,
-         &amp;quot;&amp;quot;assertion&amp;quot;&amp;quot;: &amp;quot;&amp;quot;intermediate&amp;quot;&amp;quot;,
-         &amp;quot;&amp;quot;rated&amp;quot;&amp;quot;: &amp;quot;&amp;quot;Hongmin&amp;quot;&amp;quot;,
-         &amp;quot;&amp;quot;rating&amp;quot;&amp;quot;: 0.75
-      }    
-  ]
-}
-&amp;quot;);
+  <pre><code>   using var doc = JsonDocument.Parse(@&quot;
+   {
+      &quot;&quot;application&quot;&quot;: &quot;&quot;hiking&quot;&quot;,
+      &quot;&quot;reputons&quot;&quot;: [
+          {
+              &quot;&quot;rater&quot;&quot;: &quot;&quot;HikingAsylum&quot;&quot;,
+              &quot;&quot;assertion&quot;&quot;: &quot;&quot;advanced&quot;&quot;,
+              &quot;&quot;rated&quot;&quot;: &quot;&quot;Marilyn C&quot;&quot;,
+              &quot;&quot;rating&quot;&quot;: 0.90
+           },
+           {
+              &quot;&quot;rater&quot;&quot;: &quot;&quot;HikingAsylum&quot;&quot;,
+              &quot;&quot;assertion&quot;&quot;: &quot;&quot;intermediate&quot;&quot;,
+              &quot;&quot;rated&quot;&quot;: &quot;&quot;Hongmin&quot;&quot;,
+              &quot;&quot;rating&quot;&quot;: 0.75
+           }    
+       ]
+   }
+   &quot;);
 
-using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+   using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
 
-var options = new JsonSerializerOptions() { WriteIndented = true };
+   var options = new JsonSerializerOptions() { WriteIndented = true };
 
-Console.WriteLine($&amp;quot;{JsonSerializer.Serialize(flattened, options)}\n&amp;quot;);
+   Console.WriteLine($&quot;{JsonSerializer.Serialize(flattened, options)}\n&quot;);
 
-using JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
+   using JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
 
-var comparer = JsonElementEqualityComparer.Instance;
-Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
-</code></pre>
+   var comparer = JsonElementEqualityComparer.Instance;
+   Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));</code></pre>
 <p>Output:</p>
-<pre><code class="lang-json">{
-&amp;quot;/application&amp;quot;: &amp;quot;hiking&amp;quot;,
-&amp;quot;/reputons/0/rater&amp;quot;: &amp;quot;HikingAsylum&amp;quot;,
-&amp;quot;/reputons/0/assertion&amp;quot;: &amp;quot;advanced&amp;quot;,
-&amp;quot;/reputons/0/rated&amp;quot;: &amp;quot;Marilyn C&amp;quot;,
-&amp;quot;/reputons/0/rating&amp;quot;: 0.90,
-&amp;quot;/reputons/1/rater&amp;quot;: &amp;quot;HikingAsylum&amp;quot;,
-&amp;quot;/reputons/1/assertion&amp;quot;: &amp;quot;intermediate&amp;quot;,
-&amp;quot;/reputons/1/rated&amp;quot;: &amp;quot;Hongmin&amp;quot;,
-&amp;quot;/reputons/1/rating&amp;quot;: 0.75
-}
-</code></pre>
+<pre><code>   {
+     &quot;/application&quot;: &quot;hiking&quot;,
+     &quot;/reputons/0/rater&quot;: &quot;HikingAsylum&quot;,
+     &quot;/reputons/0/assertion&quot;: &quot;advanced&quot;,
+     &quot;/reputons/0/rated&quot;: &quot;Marilyn C&quot;,
+     &quot;/reputons/0/rating&quot;: 0.90,
+     &quot;/reputons/1/rater&quot;: &quot;HikingAsylum&quot;,
+     &quot;/reputons/1/assertion&quot;: &quot;intermediate&quot;,
+     &quot;/reputons/1/rated&quot;: &quot;Hongmin&quot;,
+     &quot;/reputons/1/rating&quot;: 0.75
+   }</code></pre>
 
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>

@@ -41,7 +41,7 @@ namespace JsonCons.Utilities
         /// </remarks>
         /// <example>
         ///             
-  	     /// ```c#
+  	     /// <code>
         ///    using var doc = JsonDocument.Parse(@"
         ///    {
         ///       ""application"": ""hiking"",
@@ -72,9 +72,9 @@ namespace JsonCons.Utilities
         ///
         ///    var comparer = JsonElementEqualityComparer.Instance;
         ///    Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
-        /// ```
+        /// </code>
         /// Output:
-        /// ```json
+        /// <code>
         ///    {
         ///      "/application": "hiking",
         ///      "/reputons/0/rater": "HikingAsylum",
@@ -86,7 +86,7 @@ namespace JsonCons.Utilities
         ///      "/reputons/1/rated": "Hongmin",
         ///      "/reputons/1/rating": 0.75
         ///    }
-        /// ```
+        /// </code>
         /// </example>
         /// <param name="value">The value to be flattened.</param>
         /// <returns>The flattened value</returns>
