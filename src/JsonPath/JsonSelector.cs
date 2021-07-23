@@ -156,7 +156,7 @@ namespace JsonCons.JsonPath
     ///                                                     new JsonSelectorOptions{NoDuplicates=true});
     ///         foreach (var node in uniqueNodes)
     ///         {
-    ///             Console.WriteLine($"{node.Path} > {JsonSerializer.Serialize(node.Value, options)}");
+    ///             Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
     ///         }
     ///         Console.WriteLine();
     ///     }

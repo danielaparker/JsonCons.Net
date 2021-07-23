@@ -191,7 +191,7 @@ public class Example
                                                     new JsonSelectorOptions{NoDuplicates=true});
         foreach (var node in uniqueNodes)
         {
-            Console.WriteLine($&quot;{node.Path} > {JsonSerializer.Serialize(node.Value, options)}&quot;);
+            Console.WriteLine($&quot;{node.Path} => {JsonSerializer.Serialize(node.Value, options)}&quot;);
         }
         Console.WriteLine();
     }
