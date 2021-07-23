@@ -351,7 +351,7 @@ public static class JsonPathExamples
         var options = new JsonSerializerOptions() {WriteIndented = true};
 
         Console.WriteLine("Retrieve selected nodes");
-        IList<JsonElement> results = JsonSelector.Select(doc.RootElement, "$[*].reviews[?(@.rating == 5)]^");
+        IList<JsonElement> results = JsonSelector.Select(doc.RootElement, "$[*].reviews[?(@.rating == 5)]");
         foreach (var value in results)
         {
             Console.WriteLine(JsonSerializer.Serialize(value, options));
