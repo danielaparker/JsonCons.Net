@@ -10,7 +10,7 @@
           "src": "../src"
         }
       ],
-      "dest": "obj/temp/ref2",
+      "dest": "obj/temp/ref",
       "disableGitFeatures": false,
       "disableDefaultFilter": false
     }
@@ -21,7 +21,7 @@
         "files": [
           "*.yml"
         ],
-        "src": "obj/temp/ref2",
+        "src": "obj/temp/ref",
       },
       {
         "files": [

@@ -254,11 +254,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.JsonPath.JsonPathNode.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.JsonPath.JsonPathNode.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.JsonPath.JsonPathNode.html",
-          "hash": "0RVYFqf+Xvnoq7cO1rB54U3c+CLT3SoI01N/7oDmEvo="
+          "hash": "nC/H2wJpuvLNkj52VKtaJmZUNdvWKMJjY3RLJlkhEI0="
         }
       },
       "is_incremental": false,
@@ -266,11 +266,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.JsonPath.JsonPathParseException.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.JsonPath.JsonPathParseException.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.JsonPath.JsonPathParseException.html",
-          "hash": "C1y+UchftwptWNrUbou+Xix8u/PUbPPOka5HAr5JFgg="
+          "hash": "s3Q2KtaFJwI5r4YL+9P6xrH0VhnRgazeju+4D13ewFY="
         }
       },
       "is_incremental": false,
@@ -278,11 +278,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.JsonPath.JsonSelector.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.JsonPath.JsonSelector.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.JsonPath.JsonSelector.html",
-          "hash": "/dso6FNvF3Le7e/H+VrXoUKtxJzT6UHfCszggr3vjS8="
+          "hash": "6vABH17hrNkoovVJ0CPr/jP6rJ+dFZ/rW7lqgRDnv0U="
         }
       },
       "is_incremental": false,
@@ -290,11 +290,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.JsonPath.JsonSelectorOptions.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.JsonPath.JsonSelectorOptions.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.JsonPath.JsonSelectorOptions.html",
-          "hash": "2nFLQHC5NdfV2M3VKvPSriMiDRco2I7gUclxMiDzKxA="
+          "hash": "52DEnYQyCw4mtBSMUxINs8Zli965WYWhM1fRdCHZFF4="
         }
       },
       "is_incremental": false,
@@ -302,11 +302,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.JsonPath.NormalizedPath.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.JsonPath.NormalizedPath.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.JsonPath.NormalizedPath.html",
-          "hash": "sUw7mV1NAzvQ+fZ+nZ2iuIm/EKgYDxxrZAm7clhETKw="
+          "hash": "eXBkb2lLKSjrnRFd1ErBqmHUeAds9mZ2tN3KsHvnl+o="
         }
       },
       "is_incremental": false,
@@ -314,11 +314,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.JsonPath.PathNode.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.JsonPath.PathNode.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.JsonPath.PathNode.html",
-          "hash": "d6M0eovhn1uw0I+QhMrg3hQJ2F5FRF/2k69Tiz2S+2A="
+          "hash": "pAtBfTLWp28QZeUu/bBWN58ZtE2s2o90X8w45n4iI6w="
         }
       },
       "is_incremental": false,
@@ -326,11 +326,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.JsonPath.PathNodeKind.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.JsonPath.PathNodeKind.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.JsonPath.PathNodeKind.html",
-          "hash": "Qs6xqJ67O0iOPxIrEk16IBK00vUDSUs+U/wvCm1l0FM="
+          "hash": "l2EdTSZJ2cgx9lHBKSzwQb/EfJt9sSHR19MDxCCUqzI="
         }
       },
       "is_incremental": false,
@@ -338,11 +338,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.JsonPath.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.JsonPath.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.JsonPath.html",
-          "hash": "nk4RLIKCr4ELcl/Hwli2RMWjH1PoHeKNejKQWv4OiZU="
+          "hash": "AJqtgoHZknBTtqiNrQNjqd5bSgk4mfYs8DFzPUdn5II="
         }
       },
       "is_incremental": false,
@@ -350,11 +350,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.Utilities.IntegerTokenHandling.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.Utilities.IntegerTokenHandling.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.Utilities.IntegerTokenHandling.html",
-          "hash": "CXeV+hAr+FJT3MHiXbPpBbeyqDB3yCDBabhivPCrE5M="
+          "hash": "pIQiknS8bzqqz9Fj1VTY1zkm9ff3L+iIA6TLqkr0dT0="
         }
       },
       "is_incremental": false,
@@ -362,11 +362,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.Utilities.JsonElementEqualityComparer.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.Utilities.JsonElementEqualityComparer.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.Utilities.JsonElementEqualityComparer.html",
-          "hash": "YKLUXQHGWkU419mnCT2/jjBwNcbe4ki+vuLYqawYFh0="
+          "hash": "v4wofbfg9bnPnhBQjW+amkjHqqsTCgyjRUOwi447VGw="
         }
       },
       "is_incremental": false,
@@ -374,11 +374,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.Utilities.JsonFlattener.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.Utilities.JsonFlattener.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.Utilities.JsonFlattener.html",
-          "hash": "qohtuvRqDyZhFaW1pwNYR++YK6JXcRekNxfjmt3irbk="
+          "hash": "hlFXvKZNERkv6fagH9Yxvz9venoMPn991p/METBbxEc="
         }
       },
       "is_incremental": false,
@@ -386,11 +386,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.Utilities.JsonPatch.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.Utilities.JsonPatch.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.Utilities.JsonPatch.html",
-          "hash": "4BUDjLNT4JoKZGOA12jvsLxZRl7T7U8k4T4RuHMT7Q8="
+          "hash": "QleVDik63mX4JO544ShWtzGwAPt6aw/f47/jepKRshc="
         }
       },
       "is_incremental": false,
@@ -398,11 +398,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.Utilities.JsonPatchException.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.Utilities.JsonPatchException.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.Utilities.JsonPatchException.html",
-          "hash": "iq+ws9Yw2d66+l0tVIgineezQ3+SjI6h2FS0VMp8+1w="
+          "hash": "Yu1EjXLCbv8B1nTAiVHCMqiGlDE2z2OP2r+Kgu2FhA8="
         }
       },
       "is_incremental": false,
@@ -410,11 +410,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.Utilities.JsonPointer.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.Utilities.JsonPointer.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.Utilities.JsonPointer.html",
-          "hash": "5sGjZ8BTP/zKfWXe/c4RYB99mBhckYCW8PqEO1NZKAM="
+          "hash": "rumHyFFHrk3m1OR6AuotGXcOKelNAXY7n0aJsmHvywI="
         }
       },
       "is_incremental": false,
@@ -422,11 +422,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/temp/ref2/JsonCons.Utilities.yml",
+      "source_relative_path": "obj/temp/ref/JsonCons.Utilities.yml",
       "output": {
         ".html": {
           "relative_path": "JsonCons.Utilities.html",
-          "hash": "MqpkpB/56r88k1edto1D//9lUKZsvJbQioK0eDcx43I="
+          "hash": "CZaitrAZUDmtT6TxKnapNigPxdnDL442m8Ms69HGtZY="
         }
       },
       "is_incremental": false,
@@ -434,7 +434,7 @@
     },
     {
       "type": "Toc",
-      "source_relative_path": "obj/temp/ref2/toc.yml",
+      "source_relative_path": "obj/temp/ref/toc.yml",
       "output": {
         ".html": {
           "relative_path": "toc.html",
