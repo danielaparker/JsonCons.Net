@@ -120,9 +120,9 @@ using JsonCons.Utilities;
 
 public class Example
 {
-   public static void Main()
-   {
-    var doc = JsonDocument.Parse(@&quot;
+    public static void Main()
+    {
+        string jsonString = @&quot;
 {
     &quot;&quot;books&quot;&quot;:
     [
@@ -152,46 +152,48 @@ public class Example
         }
     ]
 }
-    &quot;);
+        &quot;);
 
-    var options = new JsonSerializerOptions() {WriteIndented = true};
+        using JsonDocument doc = JsonDocument.Parse(jsonString);
 
-    // Selector of titles from union of all books with category &apos;memoir&apos; 
-    // and all books with price > 23
-    var selector = JsonSelector.Parse(&quot;$.books[?@.category==&apos;memoir&apos;,?@.price > 23].title&quot;);
+        var options = new JsonSerializerOptions() {WriteIndented = true};
 
-    Console.WriteLine(&quot;Select values&quot;);
-    IList&lt;JsonElement> values = selector.Select(doc.RootElement);
-    foreach (var value in values)
-    {
-        Console.WriteLine(JsonSerializer.Serialize(value, options));
-    }
-    Console.WriteLine();
+        // Selector of titles from union of all books with category &apos;memoir&apos; 
+        // and all books with price > 23
+        var selector = JsonSelector.Parse(&quot;$.books[?@.category==&apos;memoir&apos;,?@.price > 23].title&quot;);
 
-    Console.WriteLine(&quot;Select paths&quot;);
-    IList&lt;NormalizedPath> paths = selector.SelectPaths(doc.RootElement);
-    foreach (var path in paths)
-    {
-        Console.WriteLine(path);
-    }
-    Console.WriteLine();
+        Console.WriteLine(&quot;Select values&quot;);
+        IList&lt;JsonElement> values = selector.Select(doc.RootElement);
+        foreach (var value in values)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
+        }
+        Console.WriteLine();
 
-    Console.WriteLine(&quot;Select nodes&quot;);
-    IList&lt;JsonPathNode> nodes = selector.SelectNodes(doc.RootElement);
-    foreach (var node in nodes)
-    {
-        Console.WriteLine($&quot;{node.Path} => {JsonSerializer.Serialize(node.Value, options)}&quot;);
-    }
-    Console.WriteLine();
+        Console.WriteLine(&quot;Select paths&quot;);
+        IList&lt;NormalizedPath> paths = selector.SelectPaths(doc.RootElement);
+        foreach (var path in paths)
+        {
+            Console.WriteLine(path);
+        }
+        Console.WriteLine();
 
-    Console.WriteLine(&quot;Remove duplicate nodes&quot;);
-    IList&lt;JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
-                                                new JsonSelectorOptions{NoDuplicates=true});
-    foreach (var node in uniqueNodes)
-    {
-        Console.WriteLine($&quot;{node.Path} > {JsonSerializer.Serialize(node.Value, options)}&quot;);
-    }
-    Console.WriteLine();
+        Console.WriteLine(&quot;Select nodes&quot;);
+        IList&lt;JsonPathNode> nodes = selector.SelectNodes(doc.RootElement);
+        foreach (var node in nodes)
+        {
+            Console.WriteLine($&quot;{node.Path} => {JsonSerializer.Serialize(node.Value, options)}&quot;);
+        }
+        Console.WriteLine();
+
+        Console.WriteLine(&quot;Remove duplicate nodes&quot;);
+        IList&lt;JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
+                                                    new JsonSelectorOptions{NoDuplicates=true});
+        foreach (var node in uniqueNodes)
+        {
+            Console.WriteLine($&quot;{node.Path} > {JsonSerializer.Serialize(node.Value, options)}&quot;);
+        }
+        Console.WriteLine();
     }
 }</code></pre>
 <p>Output:</p>
@@ -221,7 +223,7 @@ $[&apos;books&apos;][1][&apos;title&apos;] => &quot;The Night Watch&quot;</code>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_Parse_System_String_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.Parse(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L204">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L206">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_Parse_" data-uid="JsonCons.JsonPath.JsonSelector.Parse*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_Parse_System_String_" data-uid="JsonCons.JsonPath.JsonSelector.Parse(System.String)">Parse(String)</h4>
@@ -293,7 +295,7 @@ A JsonSelector instance is thread safe and has no mutable state.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L231">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L233">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_Select_" data-uid="JsonCons.JsonPath.JsonSelector.Select*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">Select(JsonElement, JsonSelectorOptions)</h4>
@@ -349,7 +351,7 @@ A JsonSelector instance is thread safe and has no mutable state.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L449">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L451">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_Select_" data-uid="JsonCons.JsonPath.JsonSelector.Select*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">Select(JsonElement, String, JsonSelectorOptions)</h4>
@@ -433,7 +435,7 @@ This method parses and applies the expression in one operation.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L379">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L381">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_SelectNodes_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">SelectNodes(JsonElement, JsonSelectorOptions)</h4>
@@ -490,7 +492,7 @@ within the root value that match this JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L503">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L505">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_SelectNodes_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">SelectNodes(JsonElement, String, JsonSelectorOptions)</h4>
@@ -575,7 +577,7 @@ within the root value that match the provided JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L316">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L318">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_SelectPaths_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">SelectPaths(JsonElement, JsonSelectorOptions)</h4>
@@ -631,7 +633,7 @@ within the root value that match the provided JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L475">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L477">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_SelectPaths_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">SelectPaths(JsonElement, String, JsonSelectorOptions)</h4>
@@ -721,7 +723,7 @@ This method parses and applies the expression in one operation.</p>
                     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L187" class="contribution-link">View Source</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonPath/JsonSelector.cs/#L189" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

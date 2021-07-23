@@ -8,7 +8,7 @@ public static class JsonPathExamples
 
     public static void SelectValuesPathsAndNodes()
     {
-        var doc = JsonDocument.Parse(@"
+        string jsonString = @"
 {
     ""books"":
     [
@@ -38,7 +38,9 @@ public static class JsonPathExamples
         }
     ]
 }
-        ");
+        ";
+
+        using JsonDocument doc = JsonDocument.Parse(jsonString);
 
         var options = new JsonSerializerOptions() {WriteIndented = true};
 

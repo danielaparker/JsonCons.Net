@@ -85,9 +85,9 @@ namespace JsonCons.JsonPath
     /// 
     /// public class Example
     /// {
-    ///    public static void Main()
-    ///    {
-    ///     var doc = JsonDocument.Parse(@"
+    ///     public static void Main()
+    ///     {
+    ///         string jsonString = @"
     /// {
     ///     ""books"":
     ///     [
@@ -117,46 +117,48 @@ namespace JsonCons.JsonPath
     ///         }
     ///     ]
     /// }
-    ///     ");
-    /// 
-    ///     var options = new JsonSerializerOptions() {WriteIndented = true};
-    /// 
-    ///     // Selector of titles from union of all books with category 'memoir' 
-    ///     // and all books with price > 23
-    ///     var selector = JsonSelector.Parse("$.books[?@.category=='memoir',?@.price > 23].title");
-    /// 
-    ///     Console.WriteLine("Select values");
-    ///     IList&lt;JsonElement> values = selector.Select(doc.RootElement);
-    ///     foreach (var value in values)
-    ///     {
-    ///         Console.WriteLine(JsonSerializer.Serialize(value, options));
-    ///     }
-    ///     Console.WriteLine();
-    /// 
-    ///     Console.WriteLine("Select paths");
-    ///     IList&lt;NormalizedPath> paths = selector.SelectPaths(doc.RootElement);
-    ///     foreach (var path in paths)
-    ///     {
-    ///         Console.WriteLine(path);
-    ///     }
-    ///     Console.WriteLine();
-    /// 
-    ///     Console.WriteLine("Select nodes");
-    ///     IList&lt;JsonPathNode> nodes = selector.SelectNodes(doc.RootElement);
-    ///     foreach (var node in nodes)
-    ///     {
-    ///         Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
-    ///     }
-    ///     Console.WriteLine();
-    /// 
-    ///     Console.WriteLine("Remove duplicate nodes");
-    ///     IList&lt;JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
-    ///                                                 new JsonSelectorOptions{NoDuplicates=true});
-    ///     foreach (var node in uniqueNodes)
-    ///     {
-    ///         Console.WriteLine($"{node.Path} > {JsonSerializer.Serialize(node.Value, options)}");
-    ///     }
-    ///     Console.WriteLine();
+    ///         ");
+    ///         
+    ///         using JsonDocument doc = JsonDocument.Parse(jsonString);
+    ///         
+    ///         var options = new JsonSerializerOptions() {WriteIndented = true};
+    ///         
+    ///         // Selector of titles from union of all books with category 'memoir' 
+    ///         // and all books with price > 23
+    ///         var selector = JsonSelector.Parse("$.books[?@.category=='memoir',?@.price > 23].title");
+    ///         
+    ///         Console.WriteLine("Select values");
+    ///         IList&lt;JsonElement> values = selector.Select(doc.RootElement);
+    ///         foreach (var value in values)
+    ///         {
+    ///             Console.WriteLine(JsonSerializer.Serialize(value, options));
+    ///         }
+    ///         Console.WriteLine();
+    ///         
+    ///         Console.WriteLine("Select paths");
+    ///         IList&lt;NormalizedPath> paths = selector.SelectPaths(doc.RootElement);
+    ///         foreach (var path in paths)
+    ///         {
+    ///             Console.WriteLine(path);
+    ///         }
+    ///         Console.WriteLine();
+    ///         
+    ///         Console.WriteLine("Select nodes");
+    ///         IList&lt;JsonPathNode> nodes = selector.SelectNodes(doc.RootElement);
+    ///         foreach (var node in nodes)
+    ///         {
+    ///             Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
+    ///         }
+    ///         Console.WriteLine();
+    ///         
+    ///         Console.WriteLine("Remove duplicate nodes");
+    ///         IList&lt;JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
+    ///                                                     new JsonSelectorOptions{NoDuplicates=true});
+    ///         foreach (var node in uniqueNodes)
+    ///         {
+    ///             Console.WriteLine($"{node.Path} > {JsonSerializer.Serialize(node.Value, options)}");
+    ///         }
+    ///         Console.WriteLine();
     ///     }
     /// }
     /// </code>
