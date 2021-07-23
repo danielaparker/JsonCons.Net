@@ -42,12 +42,14 @@ public static class JsonPathExamples
         ";
 
         using JsonDocument doc = JsonDocument.Parse(jsonString);
+
+        var options = new JsonSerializerOptions() {WriteIndented = true};
         
         Console.WriteLine(@"(1) The authors of all books in the store");
         IList<JsonElement> results1 = JsonSelector.Select(doc.RootElement, "$.store.book[*].author");
         foreach (var value in results1)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
@@ -55,15 +57,15 @@ public static class JsonPathExamples
         IList<JsonElement> results2 = JsonSelector.Select(doc.RootElement, "$..author");
         foreach (var value in results2)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
-        Console.WriteLine(@"(3) All things in store, which are some books and a red bicycle");
+        Console.WriteLine(@"(3) All things in store - some books and a red bicycle");
         IList<JsonElement> results3 = JsonSelector.Select(doc.RootElement, "$.store.*");
         foreach (var value in results3)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
@@ -71,7 +73,7 @@ public static class JsonPathExamples
         IList<JsonElement> results4 = JsonSelector.Select(doc.RootElement, "$.store..price");
         foreach (var value in results4)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
@@ -79,7 +81,7 @@ public static class JsonPathExamples
         IList<JsonElement> results5 = JsonSelector.Select(doc.RootElement, "$..book[2]");
         foreach (var value in results5)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
@@ -87,7 +89,7 @@ public static class JsonPathExamples
         IList<JsonElement> results6 = JsonSelector.Select(doc.RootElement, "$..book[-1]");
         foreach (var value in results6)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
@@ -95,7 +97,7 @@ public static class JsonPathExamples
         IList<JsonElement> results7 = JsonSelector.Select(doc.RootElement, "$..book[:2]");
         foreach (var value in results7)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
@@ -103,7 +105,7 @@ public static class JsonPathExamples
         IList<JsonElement> results8 = JsonSelector.Select(doc.RootElement, "$..book[?(@.isbn)]");
         foreach (var value in results8)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
@@ -111,7 +113,7 @@ public static class JsonPathExamples
         IList<JsonElement> results9 = JsonSelector.Select(doc.RootElement, "$..book[?(@.price<10)]");
         foreach (var value in results9)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
@@ -119,7 +121,7 @@ public static class JsonPathExamples
         IList<JsonElement> results10 = JsonSelector.Select(doc.RootElement, "$..book[?(@.author =~ /evelyn.*?/i)]");
         foreach (var value in results10)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();            
     }
@@ -158,28 +160,30 @@ public static class JsonPathExamples
         ";
 
         using JsonDocument doc = JsonDocument.Parse(jsonString);
+
+        var options = new JsonSerializerOptions() {WriteIndented = true};
         
         Console.WriteLine("(1) All books whose author's last name is 'Tolkien'");
         IList<JsonElement> results1 = JsonSelector.Select(doc.RootElement, @"$.books[?(tokenize(@.author,'\\s+')[-1] == 'Tolkien')]");
         foreach (var value in results1)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
-        Console.WriteLine("(2) All titles whose price is greater than the average price (one way)");
+        Console.WriteLine("(2) All titles whose price is greater than the average price");
         IList<JsonElement> results2 = JsonSelector.Select(doc.RootElement, @"$.books[?(@.price > avg($.books[*].price))].title");
         foreach (var value in results2)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
-        Console.WriteLine("(3) All titles whose price is greater than the average price (another way)");
+        Console.WriteLine("(3) All titles whose price is greater than the average price (alternative)");
         IList<JsonElement> results3 = JsonSelector.Select(doc.RootElement, @"$.books[?(@.price > sum($.books[*].price)/length($.books[*].price))].title");
         foreach (var value in results3)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
@@ -187,7 +191,7 @@ public static class JsonPathExamples
         IList<JsonElement> results4 = JsonSelector.Select(doc.RootElement, @"$.books[?(!contains(keys(@),'price'))]");
         foreach (var value in results4)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
@@ -195,7 +199,7 @@ public static class JsonPathExamples
         IList<JsonElement> results5 = JsonSelector.Select(doc.RootElement, @"$.books[?(ceil(@.price*10) == 236)]");
         foreach (var value in results5)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
 
@@ -203,7 +207,7 @@ public static class JsonPathExamples
         IList<JsonElement> results6 = JsonSelector.Select(doc.RootElement, @"$.books[?(floor(@.price*10) == 227)]");
         foreach (var value in results6)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();            
     }
@@ -234,12 +238,14 @@ public static class JsonPathExamples
         ";
 
         using JsonDocument doc = JsonDocument.Parse(jsonString);
+
+        var options = new JsonSerializerOptions() {WriteIndented = true};
         
         Console.WriteLine("Union of separate JSONPath expressions");
         IList<JsonElement> results1 = JsonSelector.Select(doc.RootElement, @"$..[@.firstName,@.address.city]");
         foreach (var value in results1)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
     }
@@ -281,20 +287,22 @@ public static class JsonPathExamples
         
         var selector = JsonSelector.Parse("$.books[3,1,1].title");
 
+        var options = new JsonSerializerOptions() {WriteIndented = true};
+
         Console.WriteLine("Allow duplicate nodes");
         IList<JsonPathNode> nodes = selector.SelectNodes(doc.RootElement);
         foreach (var node in nodes)
         {
-            Console.WriteLine($"{node.Path} => {node.Value}");
+            Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
         }
         Console.WriteLine();
 
-        Console.WriteLine("Allow duplicate nodes and sort by selector");
+        Console.WriteLine("Allow duplicate nodes and sort by paths");
         IList<JsonPathNode> nodesSort = selector.SelectNodes(doc.RootElement, 
                                                              new JsonSelectorOptions{SortByPath=true});
         foreach (var node in nodesSort)
         {
-            Console.WriteLine($"{node.Path} => {node.Value}");
+            Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
         }
         Console.WriteLine();
 
@@ -303,7 +311,7 @@ public static class JsonPathExamples
                                                            new JsonSelectorOptions{NoDuplicates=true});
         foreach (var node in nodesNoDups)
         {
-            Console.WriteLine($"{node.Path} => {node.Value}");
+            Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
         }
         Console.WriteLine();
 
@@ -312,7 +320,7 @@ public static class JsonPathExamples
                                                                new JsonSelectorOptions{NoDuplicates=true, SortByPath=true});
         foreach (var node in nodesNoDupsSort)
         {
-            Console.WriteLine($"{node.Path} => {node.Value}");
+            Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
         }
         Console.WriteLine();
     }
@@ -322,18 +330,15 @@ public static class JsonPathExamples
         string jsonString = @"
 [
     {
-      ""author"" : ""Haruki Murakami"",
       ""title"": ""A Wild Sheep Chase"",
       ""reviews"": [{""rating"": 4, ""reviewer"": ""Nan""}]
     },
     {
-      ""author"" : ""Sergei Lukyanenko"",
       ""title"": ""The Night Watch"",
       ""reviews"": [{""rating"": 5, ""reviewer"": ""Alan""},
                   {""rating"": 3,""reviewer"": ""Anne""}]
     },
     {
-      ""author"" : ""Graham Greene"",
       ""title"": ""The Comedians"",
       ""reviews"": [{""rating"": 4, ""reviewer"": ""Lisa""},
                   {""rating"": 5, ""reviewer"": ""Robert""}]
@@ -342,14 +347,30 @@ public static class JsonPathExamples
         ";
 
         using JsonDocument doc = JsonDocument.Parse(jsonString);
-        
-        var selector = JsonSelector.Parse("$[*].reviews[?(@.rating == 5)]^^");
 
-        Console.WriteLine("Select grandparent nodes");
-        IList<JsonElement> results = selector.Select(doc.RootElement);
+        var options = new JsonSerializerOptions() {WriteIndented = true};
+
+        Console.WriteLine("Retrieve selected nodes");
+        IList<JsonElement> results = JsonSelector.Select(doc.RootElement, "$[*].reviews[?(@.rating == 5)]^");
         foreach (var value in results)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
+        }
+        Console.WriteLine();
+
+        Console.WriteLine("Retrieve parents of selected nodes");
+        IList<JsonElement> results1 = JsonSelector.Select(doc.RootElement, "$[*].reviews[?(@.rating == 5)]^");
+        foreach (var value in results1)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
+        }
+        Console.WriteLine();
+
+        Console.WriteLine("Retrieve grandparents of selected nodes");
+        IList<JsonElement> results2 = JsonSelector.Select(doc.RootElement, "$[*].reviews[?(@.rating == 5)]^^");
+        foreach (var value in results2)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
         }
         Console.WriteLine();
     }
