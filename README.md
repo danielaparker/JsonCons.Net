@@ -13,7 +13,7 @@ The libraries target .Net Standard 2.1.
 
 - [JsonCons JsonPath](https://danielaparker.github.io/JsonCons.Net/articles/JsonPath/JsonConsJsonPath.html)
 
-- [Reference](https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.Utilities.html)
+- [Reference](https://danielaparker.github.io/JsonCons.Net/ref/)
 
 ## Examples
 
