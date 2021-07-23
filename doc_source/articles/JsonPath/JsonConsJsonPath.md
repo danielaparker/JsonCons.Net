@@ -3,6 +3,9 @@
 [JSONPath](http://goessner.net/articles/JsonPath/) is a loosely standardized syntax for querying JSON. 
 There are many implementations that differ significantly, see Christoph Burgmer's [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
 
+The JsonCons implementation is described in an [ABNF grammar](Specification.md) with a complete specification
+(in progress.)
+
 The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:
 
 - Stefan Goessner's implemention returns `false` in case of no match, but in a note he suggests an alternative is to return an empty array. 
