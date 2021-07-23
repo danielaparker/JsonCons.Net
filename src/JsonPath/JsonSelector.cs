@@ -121,7 +121,7 @@ namespace JsonCons.JsonPath
     /// 
     ///     var options = new JsonSerializerOptions() {WriteIndented = true};
     /// 
-    ///     // Retrieve titles from union of all books with category 'memoir' 
+    ///     // Selector of titles from union of all books with category 'memoir' 
     ///     // and all books with price > 23
     ///     var selector = JsonSelector.Parse("$.books[?@.category=='memoir',?@.price > 23].title");
     /// 

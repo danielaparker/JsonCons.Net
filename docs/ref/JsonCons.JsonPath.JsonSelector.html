@@ -156,7 +156,7 @@ public class Example
 
     var options = new JsonSerializerOptions() {WriteIndented = true};
 
-    // Retrieve titles from union of all books with category &apos;memoir&apos; 
+    // Selector of titles from union of all books with category &apos;memoir&apos; 
     // and all books with price > 23
     var selector = JsonSelector.Parse(&quot;$.books[?@.category==&apos;memoir&apos;,?@.price > 23].title&quot;);
 
