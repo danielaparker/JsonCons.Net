@@ -121,7 +121,8 @@ namespace JsonCons.JsonPath
     /// 
     ///     var options = new JsonSerializerOptions() {WriteIndented = true};
     /// 
-    ///     // Retrieve titles from union of all books with category 'memoir' and all books with price > 23
+    ///     // Retrieve titles from union of all books with category 'memoir' 
+    ///     // and all books with price > 23
     ///     var selector = JsonSelector.Parse("$.books[?@.category=='memoir',?@.price > 23].title");
     /// 
     ///     Console.WriteLine("Select values");
@@ -150,7 +151,7 @@ namespace JsonCons.JsonPath
     /// 
     ///     Console.WriteLine("Remove duplicate nodes");
     ///     IList&lt;JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
-    ///                                                      new JsonSelectorOptions{NoDuplicates=true});
+    ///                                                 new JsonSelectorOptions{NoDuplicates=true});
     ///     foreach (var node in uniqueNodes)
     ///     {
     ///         Console.WriteLine($"{node.Path} > {JsonSerializer.Serialize(node.Value, options)}");
