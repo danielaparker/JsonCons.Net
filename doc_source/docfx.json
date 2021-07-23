@@ -6,30 +6,27 @@
           "files": [
             "**.csproj"
           ],
-          "exclude": [ "**/bin/**", "**/obj/**" ],
           "src": "../src"
         }
       ],
       "dest": "ref",
       "disableGitFeatures": false,
-      "disableDefaultFilter": false,
-      "properties": {
-        "TargetFramework": "netstandard2.1"
-      }
+      "disableDefaultFilter": false
     }
   ],
   "build": {
     "content": [
       {
         "files": [
-          "*.yml"
-        ],
-        "src": "ref",
+          "ref/**.yml",
+          "ref/index.md"
+        ]
       },
       {
         "files": [
           "articles/**.md",
           "articles/**/toc.yml",
+          "toc.yml",
           "*.md"
         ]
       }
@@ -38,14 +35,13 @@
       {
         "files": [
           "images/**"
-        ],
-        "exclude": ["**/obj/**", "**.meta" ]
+        ]
       }
     ],
     "overwrite": [
       {
         "files": [
-          "ref/**.md"
+          "apidoc/**.md"
         ],
         "exclude": [
           "obj/**",
@@ -59,7 +55,7 @@
     "template": [
       "default"
     ],
-    "postProcessors": ["ExtractSearchIndex"],
+    "postProcessors": [],
     "markdownEngineName": "markdig",
     "noLangKeyword": false,
     "keepFileLink": false,
