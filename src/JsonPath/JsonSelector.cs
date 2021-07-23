@@ -75,6 +75,112 @@ namespace JsonCons.JsonPath
     /// <summary>
     ///   Provides functionality for retrieving selected values from a root <see href="https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement?view=net-5.0">JsonElement</see>.
     /// </summary>
+    /// <example>
+    /// The following example shows how to select values, paths, and nodes given a root value
+    /// <code>
+    /// using System;
+    /// using System.Diagnostics;
+    /// using System.Text.Json;
+    /// using JsonCons.Utilities;
+    /// 
+    /// public class Example
+    /// {
+    ///    public static void Main()
+    ///    {
+    ///     var doc = JsonDocument.Parse(@"
+    /// {
+    ///     ""books"":
+    ///     [
+    ///         {
+    ///             ""category"": ""fiction"",
+    ///             ""title"" : ""A Wild Sheep Chase"",
+    ///             ""author"" : ""Haruki Murakami"",
+    ///             ""price"" : 22.72
+    ///         },
+    ///         {
+    ///             ""category"": ""fiction"",
+    ///             ""title"" : ""The Night Watch"",
+    ///             ""author"" : ""Sergei Lukyanenko"",
+    ///             ""price"" : 23.58
+    ///         },
+    ///         {
+    ///             ""category"": ""fiction"",
+    ///             ""title"" : ""The Comedians"",
+    ///             ""author"" : ""Graham Greene"",
+    ///             ""price"" : 21.99
+    ///         },
+    ///         {
+    ///             ""category"": ""memoir"",
+    ///             ""title"" : ""The Night Watch"",
+    ///             ""author"" : ""David Atlee Phillips"",
+    ///             ""price"" : 260.90
+    ///         }
+    ///     ]
+    /// }
+    ///     ");
+    /// 
+    ///     var options = new JsonSerializerOptions() {WriteIndented = true};
+    /// 
+    ///     var selector = JsonSelector.Parse("$.books[?@.category=='memoir',?@.price > 23].title");
+    /// 
+    ///     Console.WriteLine("Select values");
+    ///     IList&lt;JsonElement> values = selector.Select(doc.RootElement);
+    ///     foreach (var value in values)
+    ///     {
+    ///         Console.WriteLine(JsonSerializer.Serialize(value, options));
+    ///     }
+    ///     Console.WriteLine();
+    /// 
+    ///     Console.WriteLine("Select paths");
+    ///     IList&lt;NormalizedPath> paths = selector.SelectPaths(doc.RootElement);
+    ///     foreach (var path in paths)
+    ///     {
+    ///         Console.WriteLine(path);
+    ///     }
+    ///     Console.WriteLine();
+    /// 
+    ///     Console.WriteLine("Select nodes");
+    ///     IList&lt;JsonPathNode> nodes = selector.SelectNodes(doc.RootElement);
+    ///     foreach (var node in nodes)
+    ///     {
+    ///         Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
+    ///     }
+    ///     Console.WriteLine();
+    /// 
+    ///     Console.WriteLine("Remove duplicate nodes");
+    ///     IList&lt;JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
+    ///                                                      new JsonSelectorOptions{NoDuplicates=true});
+    ///     foreach (var node in uniqueNodes)
+    ///     {
+    ///         Console.WriteLine($"{node.Path} > {JsonSerializer.Serialize(node.Value, options)}");
+    ///     }
+    ///     Console.WriteLine();
+    ///     }
+    /// }
+    /// </code>
+    /// Output:
+    /// 
+    /// <code>
+    /// Select values
+    /// "The Night Watch"
+    /// "The Night Watch"
+    /// "The Night Watch"
+    /// 
+    /// Select paths
+    /// $['books'][3]['title']
+    /// $['books'][1]['title']
+    /// $['books'][3]['title']
+    /// 
+    /// Select nodes
+    /// $['books'][3]['title'] => "The Night Watch"
+    /// $['books'][1]['title'] => "The Night Watch"
+    /// $['books'][3]['title'] => "The Night Watch"
+    /// 
+    /// Remove duplicate nodes
+    /// $['books'][3]['title'] => "The Night Watch"
+    /// $['books'][1]['title'] => "The Night Watch"
+    /// </code>
+    /// </example>
 
     public sealed class JsonSelector
     {
