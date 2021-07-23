@@ -35,7 +35,8 @@
       {
         "files": [
           "images/**"
-        ]
+        ],
+        "exclude": ["**/obj/**", "**.meta" ]
       }
     ],
     "overwrite": [
@@ -55,7 +56,7 @@
     "template": [
       "default"
     ],
-    "postProcessors": [],
+    "postProcessors": ["ExtractSearchIndex"],
     "markdownEngineName": "markdig",
     "noLangKeyword": false,
     "keepFileLink": false,
