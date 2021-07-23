@@ -9,6 +9,14 @@
             Compares two <see cref="T:System.Text.Json.JsonElement"/> instances for equality by using value-based comparison.
             </summary>
         </member>
+        <member name="M:JsonCons.Utilities.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
+            <summary>
+            Determines whether the provided <see cref="T:System.Text.Json.JsonElement"/> objects are equal.
+            </summary>
+            <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
+            <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>
+            <returns></returns>
+        </member>
         <member name="T:JsonCons.Utilities.IntegerTokenHandling">
             <summary>
             Defines how the unflatten operation handles integer tokens in a JSON Pointer 
@@ -275,10 +283,10 @@
         <member name="M:JsonCons.Utilities.JsonPointer.Parse(System.String)">
             <summary>
             Parses a JSON Pointer represented as a string value or a 
-            fragment identifier (starts with <c>#</c>) into a JsonPointer.
+            fragment identifier (starts with <c>#</c>) into a <see cref="T:JsonCons.Utilities.JsonPointer"/>.
             </summary>
             <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
-            <returns>A JsonPointer.</returns>
+            <returns>A <see cref="T:JsonCons.Utilities.JsonPointer"/>.</returns>
             <exception cref="T:System.ArgumentNullException">
               The <paramref name="input"/> is <see langword="null"/>.
             </exception>
@@ -289,7 +297,7 @@
         <member name="M:JsonCons.Utilities.JsonPointer.TryParse(System.String,JsonCons.Utilities.JsonPointer@)">
             <summary>
             Parses a JSON Pointer represented as a string value or a 
-            fragment identifier (starts with <c>#</c>) into a JsonPointer.
+            fragment identifier (starts with <c>#</c>) into a <see cref="T:JsonCons.Utilities.JsonPointer"/>.
             </summary>
             <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
             <param name="pointer">The JSONPointer.</param>
@@ -321,8 +329,22 @@
             Determines whether two JSONPointer objects have the same value.
             </summary>
             <param name="other"></param>
-            <returns><c>true</c> if other is a <c>JsonPointer</c> and has exactly the same tokens as this instance; otherwise, <c>false</c>. 
+            <returns><c>true</c> if other is a <see cref="T:JsonCons.Utilities.JsonPointer"/> and has exactly the same tokens as this instance; otherwise, <c>false</c>. 
             If other is <c>null</c>, the method returns <c>false</c>.</returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.Equals(System.Object)">
+            <summary>
+            Determines whether this instance and a specified object, which must also be a JSONPointer object, have the same value.
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.GetHashCode">
+            <summary>
+            Returns the hash code for this <see cref="T:JsonCons.Utilities.JsonPointer"/>
+            </summary>
+            <returns>A 32-bit signed integer hash code.</returns>
+            <returns></returns>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement)">
             <summary>

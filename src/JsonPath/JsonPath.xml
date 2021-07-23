@@ -39,7 +39,7 @@
         </member>
         <member name="T:JsonCons.JsonPath.JsonSelectorOptions">
             <summary>
-            Defines the various ways a JsonSelector can handle duplicate
+            Defines the various ways a <see cref="T:JsonCons.JsonPath.JsonSelector"/> can handle duplicate
             paths and order of results.
             </summary>
         </member>
@@ -55,7 +55,7 @@
         </member>
         <member name="T:JsonCons.JsonPath.ProcessingFlags">
              <summary>
-             Defines the various ways a JsonSelector query can deal with duplicate
+             Defines the various ways a <see cref="T:JsonCons.JsonPath.JsonSelector"/> query can deal with duplicate
              paths and order of results.
             
              This enumeration has a FlagsAttribute attribute that allows a bitwise combination of its member values.
@@ -194,11 +194,11 @@
         </member>
         <member name="M:JsonCons.JsonPath.JsonSelector.Parse(System.String)">
             <summary>
-            Parses a JSONPath string into a JsonSelector, for "parse once, use many times".
-            A JsonSelector instance is thread safe and has no mutable state.
+            Parses a JSONPath string into a <see cref="T:JsonCons.JsonPath.JsonSelector"/>, for "parse once, use many times".
+            A <see cref="T:JsonCons.JsonPath.JsonSelector"/> instance is thread safe and has no mutable state.
             </summary>
             <param name="jsonPath">A JSONPath string.</param>
-            <returns>A JsonSelector.</returns>
+            <returns>A <see cref="T:JsonCons.JsonPath.JsonSelector"/>.</returns>
             <exception cref="T:JsonCons.JsonPath.JsonPathParseException">
               The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.
             </exception>

@@ -239,6 +239,10 @@ namespace JsonCons.Utilities
                 var o = new JsonDocumentBuilder(JsonValueKind.Object);
                 foreach (var item in value.EnumerateObject())
                 {
+                    //if (!o.ContainsPropertyName(item.Key))
+                    //{
+                    //    o.AddProperty(item.Key, SafeUnflatten (item.Value));
+                    //}
                     o.TryAddProperty(item.Key, SafeUnflatten (item.Value));
                 }
                 return o;

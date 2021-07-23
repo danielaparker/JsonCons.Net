@@ -30,10 +30,10 @@ namespace JsonCons.Utilities
 
         /// <summary>
         /// Parses a JSON Pointer represented as a string value or a 
-        /// fragment identifier (starts with <c>#</c>) into a JsonPointer.
+        /// fragment identifier (starts with <c>#</c>) into a <see cref="JsonPointer"/>.
         /// </summary>
         /// <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
-        /// <returns>A JsonPointer.</returns>
+        /// <returns>A <see cref="JsonPointer"/>.</returns>
         /// <exception cref="ArgumentNullException">
         ///   The <paramref name="input"/> is <see langword="null"/>.
         /// </exception>
@@ -52,7 +52,7 @@ namespace JsonCons.Utilities
 
         /// <summary>
         /// Parses a JSON Pointer represented as a string value or a 
-        /// fragment identifier (starts with <c>#</c>) into a JsonPointer.
+        /// fragment identifier (starts with <c>#</c>) into a <see cref="JsonPointer"/>.
         /// </summary>
         /// <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
         /// <param name="pointer">The JSONPointer.</param>
@@ -220,7 +220,7 @@ namespace JsonCons.Utilities
         /// Determines whether two JSONPointer objects have the same value.
         /// </summary>
         /// <param name="other"></param>
-        /// <returns><c>true</c> if other is a <c>JsonPointer</c> and has exactly the same tokens as this instance; otherwise, <c>false</c>. 
+        /// <returns><c>true</c> if other is a <see cref="JsonPointer"/> and has exactly the same tokens as this instance; otherwise, <c>false</c>. 
         /// If other is <c>null</c>, the method returns <c>false</c>.</returns>
         public bool Equals(JsonPointer other)
         {
@@ -241,7 +241,11 @@ namespace JsonCons.Utilities
             }
             return true;
         }
-
+        /// <summary>
+        /// Determines whether this instance and a specified object, which must also be a JSONPointer object, have the same value.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public override bool Equals(Object other)
         {
             if (other == null)
@@ -252,6 +256,11 @@ namespace JsonCons.Utilities
             return Equals(other as JsonPointer);
         }
 
+        /// <summary>
+        /// Returns the hash code for this <see cref="JsonPointer"/>
+        /// </summary>
+        /// <returns>A 32-bit signed integer hash code.</returns>
+        /// <returns></returns>
         public override int GetHashCode()
         {
             int hashCode = Tokens.GetHashCode();

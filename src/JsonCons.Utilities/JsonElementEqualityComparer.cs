@@ -18,7 +18,13 @@ namespace JsonCons.Utilities
         private int _maxHashDepth { get; } = 100;
     
         JsonElementEqualityComparer() {}
-    
+
+        /// <summary>
+        /// Determines whether the provided <see cref="JsonElement"/> objects are equal.
+        /// </summary>
+        /// <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
+        /// <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>
+        /// <returns></returns>
         public bool Equals(JsonElement lhs, JsonElement rhs)
         {
             if (lhs.ValueKind != rhs.ValueKind)

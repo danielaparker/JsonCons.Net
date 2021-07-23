@@ -32,7 +32,7 @@ namespace JsonCons.JsonPath
 
 
     /// <summary>
-    /// Defines the various ways a JsonSelector can handle duplicate
+    /// Defines the various ways a <see cref="JsonSelector"/> can handle duplicate
     /// paths and order of results.
     /// </summary>
     public sealed class JsonSelectorOptions 
@@ -49,7 +49,7 @@ namespace JsonCons.JsonPath
     };
 
     /// <summary>
-    /// Defines the various ways a JsonSelector query can deal with duplicate
+    /// Defines the various ways a <see cref="JsonSelector"/> query can deal with duplicate
 	 /// paths and order of results.
     ///
     /// This enumeration has a FlagsAttribute attribute that allows a bitwise combination of its member values.
@@ -192,11 +192,11 @@ namespace JsonCons.JsonPath
         readonly ProcessingFlags _requiredFlags;
 
         /// <summary>
-        /// Parses a JSONPath string into a JsonSelector, for "parse once, use many times".
-        /// A JsonSelector instance is thread safe and has no mutable state.
+        /// Parses a JSONPath string into a <see cref="JsonSelector"/>, for "parse once, use many times".
+        /// A <see cref="JsonSelector"/> instance is thread safe and has no mutable state.
         /// </summary>
         /// <param name="jsonPath">A JSONPath string.</param>
-        /// <returns>A JsonSelector.</returns>
+        /// <returns>A <see cref="JsonSelector"/>.</returns>
         /// <exception cref="JsonPathParseException">
         ///   The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.
         /// </exception>
