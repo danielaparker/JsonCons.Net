@@ -6,11 +6,10 @@
           "files": [
             "**.csproj"
           ],
-          "exclude": [ "**/bin/**", "**/obj/**" ],
           "src": "../src"
         }
       ],
-      "dest": "obj/temp/ref",
+      "dest": "ref",
       "disableGitFeatures": false,
       "disableDefaultFilter": false
     }
@@ -19,14 +18,15 @@
     "content": [
       {
         "files": [
-          "*.yml"
-        ],
-        "src": "obj/temp/ref",
+          "ref/**.yml",
+          "ref/index.md"
+        ]
       },
       {
         "files": [
           "articles/**.md",
           "articles/**/toc.yml",
+          "toc.yml",
           "*.md"
         ]
       }
@@ -35,14 +35,13 @@
       {
         "files": [
           "images/**"
-        ],
-        "exclude": ["**/obj/**", "**.meta" ]
+        ]
       }
     ],
     "overwrite": [
       {
         "files": [
-          "ref/**.md"
+          "apidoc/**.md"
         ],
         "exclude": [
           "obj/**",
