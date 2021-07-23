@@ -76,7 +76,7 @@ namespace JsonCons.JsonPath
     ///   Provides functionality for retrieving selected values from a root <see href="https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement?view=net-5.0">JsonElement</see>.
     /// </summary>
     /// <example>
-    /// The following example shows how to select values, paths, and nodes given a root value
+    /// The following example shows how to select values, paths, and nodes from a JSON document
     /// <code>
     /// using System;
     /// using System.Diagnostics;
@@ -121,6 +121,7 @@ namespace JsonCons.JsonPath
     /// 
     ///     var options = new JsonSerializerOptions() {WriteIndented = true};
     /// 
+    ///     // Retrieve titles from union of all books with category 'memoir' and all books with price > 23
     ///     var selector = JsonSelector.Parse("$.books[?@.category=='memoir',?@.price > 23].title");
     /// 
     ///     Console.WriteLine("Select values");
