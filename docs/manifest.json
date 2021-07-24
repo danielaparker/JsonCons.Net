@@ -21,7 +21,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/Specification.html",
-          "hash": "xZF8npZNELP49vtimJh4t4DOg576Lw77U8nZ+zxd6nM="
+          "hash": "S1JNCHtp0Fyy5V8MoRykPb555kVL/iWHFXY+wnW0G6c="
         }
       },
       "is_incremental": false,
@@ -202,18 +202,6 @@
         ".html": {
           "relative_path": "articles/JsonPath/functions/tokenize.html",
           "hash": "xwR+zrs4sAfxlOHZA3GfUdJsXr+H3x1bJwrsW2rO/vw="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "articles/JsonPath/grammer.md",
-      "output": {
-        ".html": {
-          "relative_path": "articles/JsonPath/grammer.html",
-          "hash": "BSa9MwQQPdj8IPeJ6cVv43uwaVDQ7o+VERpGi7x3WMY="
         }
       },
       "is_incremental": false,
@@ -486,7 +474,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 21,
+          "total_file_count": 20,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
