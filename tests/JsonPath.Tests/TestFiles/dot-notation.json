@@ -17,7 +17,7 @@
          },
         "cases" : [
             {
-                "comment" : "dot notation",
+                "comment" : "dot notation with another",
                 "expression" : "$.two.some",
                 "result" : ["more"]
             }

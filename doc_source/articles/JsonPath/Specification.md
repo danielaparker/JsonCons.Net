@@ -8,6 +8,7 @@ JsonPath = "@" [RelativeLocation]
 RelativeLocation = "." Identifier [RelativeLocation]
 RelativeLocation =/ "." Index [RelativeLocation]
 RelativeLocation =/ "." Wildcard [RelativeLocation]
+RelativeLocation =/ "^" [RelativeLocation]
 RelativeLocation =/ BracketExpression [RelativeLocation]
 RelativeLocation =/ ".." Identifier [RelativeLocation]
 RelativeLocation =/ ".." Index [RelativeLocation]
@@ -16,7 +17,9 @@ RelativeLocation =/ ".." BracketExpression [RelativeLocation]
 BracketExpression = "[" BracketedElement *("," BracketedElement) "]"
 
 BracketedElement = Index / SliceExpression / SingleQuotedString / DoubleQuotedString
-BracketedElement =/ Wildcard / FilterExpression 
+BracketedElement =/ Wildcard / FilterExpression / JsonPath
+
+FilterExpression = "?" Expression
 
 SliceExpression  = [Number] ":" [Number] [ ":" [Number] ]
 

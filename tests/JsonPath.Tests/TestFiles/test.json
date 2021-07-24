@@ -1,41 +1,13 @@
 [
-  {
-     "given": {
-             "books":
-             [
-                 {
-                     "title" : "A Wild Sheep Chase",
-                     "author" : "Haruki Murakami",
-                     "price" : 22.72
-                 },
-                 {
-                     "title" : "The Comedians",
-                     "author" : "Graham Greene",
-                     "price" : 21.99
-                 },
-                 {
-                     "price1" : 21.99,
-                     "title" : "The Night Watch",
-                     "author" : "Phillips, David Atlee"
-                 }
-             ]
-           },
-     "cases": [
-       /*{
-         "comment" : "All titles that don't have a price",
-         "expression": "$.books[?(!contains(keys(@),'price'))].title",
-         "result": ["The Night Watch"]
-       },
-       {
-         "comment" : "All titles that don't have a price",
-         "expression": "$.books[?(!(@.author != 'Phillips, David Atlee'))].title",
-         "result": ["The Night Watch"]
-       }*/
-       {
-         "comment" : "All titles that don't have a price",
-         "expression": "$.books[?(!contains(keys(@),'price'))].title",
-         "result": ["The Night Watch"]
-       }
-     ]
-  }
+   {
+        "given" : [{"key": 0}, {"key": 42}, {"key": -1}, {"key": 41}, {"key": 43}, {"key": 42.0001}, {"key": 41.9999}, {"key": 100}, {"some": "value"}],
+        "cases" : [
+            {
+                "source" : "https://github.com/cburgmer/json-path-comparison",
+                "comment" : "Filter less than",
+                "expression" : "$[?(@.key<42)]",
+                "result" : [{"key": 0}, {"key": -1}, {"key": 41}, {"key": 41.9999}]
+            }
+        ]
+    }
 ]
