@@ -33,8 +33,6 @@ The JsonCons implementation differs from Stefan Goessner's original JavaScript i
 
 [Filter expressions](#S6)  
 
-[Functions](#S7)  
-
 <div id="S1"/> 
 
 ### Paths
@@ -330,7 +328,7 @@ Operator|       Description
 `+`     |Left plus right
 `-`     |Left minus right
 `&&`    |Left is true and right is true
-<code>&#124;&#124;</code>|Left is true or right is true
+[<code>&#124;&#124;</code>](operators/OrExpression.md)|Left is true or right is true
 `==`    |Left is equal to right 
 `!=`    |Left is not equal to right
 `<`     |Left is less than right
@@ -364,9 +362,7 @@ Precedence|Operator|Associativity
 
 The precedence rules may be overriden with explicit parentheses, e.g. (a || b) && c.
 
-<div id="S7"/> 
-
-### Functions
+#### Functions
 
 Support for function in filter expressions is a JsonCons extension.
 

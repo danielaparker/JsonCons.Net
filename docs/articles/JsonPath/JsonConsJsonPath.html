@@ -93,7 +93,6 @@ The <code>JsonCons</code> implementation returns an empty array in case of no ma
 <p><a href="#S4">Unions</a></p>
 <p><a href="#S5">Parent operator</a></p>
 <p><a href="#S6">Filter expressions</a></p>
-<p><a href="#S7">Functions</a></p>
 <div id="S1"></div> 
 <h3 id="paths">Paths</h3>
 <p>JSONPath uses paths to select values. It is a feature of JSONPath that it selects values in the original JSON document,
@@ -510,7 +509,7 @@ and arithmetic operators.</p>
 <td>Left is true and right is true</td>
 </tr>
 <tr>
-<td><code>||</code></td>
+<td><a href="operators/OrExpression.html"><code>||</code></a></td>
 <td>Left is true or right is true</td>
 </tr>
 <tr>
@@ -617,8 +616,7 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 </tbody>
 </table>
 <p>The precedence rules may be overriden with explicit parentheses, e.g. (a || b) &amp;&amp; c.</p>
-<div id="S7"></div> 
-<h3 id="functions">Functions</h3>
+<h4 id="functions">Functions</h4>
 <p>Support for function in filter expressions is a JsonCons extension.</p>
 <p>Functions can be passed JSONPath paths, single quoted strings, literal JSON values
 such as <code>1.5</code>, <code>true</code>, or <code>{&quot;foo&quot; : &quot;bar&quot;}</code>, or expressions such as <code>@.price*10</code>.
