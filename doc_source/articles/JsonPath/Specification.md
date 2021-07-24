@@ -2,6 +2,7 @@
 
 ## Grammar
 
+```
 JsonPath = "$" [RelativeLocation]
 JsonPath = "@" [RelativeLocation]
 
@@ -52,4 +53,4 @@ EscapedDoubleQuote      = Escape %x22          ; "    double quote  U+0022
 EscapedSingleQuote      = Escape %x2c          ; '    single quote  U+002c
 
 SingleQuotedString     = " 1*(UnescapedChar / DoubleQuote / EscapedChar / EscapedSingleQuote) "
-
+```
