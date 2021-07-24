@@ -87,5 +87,15 @@
         "error": "syntax"
       }
     ]
-  }
+  },
+    {
+        "given" : {"a": "first", "2": "second", "b": "third"},
+        "cases" : [
+            {
+                "comment" : "Dot notation with number on object",
+                "expression" : "$.2",
+                "error": "syntax"
+            }
+        ]
+    }
 ]

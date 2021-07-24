@@ -76,10 +76,10 @@ namespace JsonCons.JsonPath
         BracketExpression,
         BracketedWildcard,
         IndexOrSlice,
+        Index,
         WildcardOrUnion,
         UnionElement,
         IndexOrSliceOrUnion,
-        Index,
         Integer,
         Digit,
         SliceExpressionStop,
@@ -294,6 +294,7 @@ namespace JsonCons.JsonPath
                                 SkipWhiteSpace();
                                 break;
                             case '\'':
+                                // Single quoted string
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.Identifier);
                                 _stateStack.Push(JsonPathState.SingleQuotedString);
@@ -301,13 +302,21 @@ namespace JsonCons.JsonPath
                                 ++_column;
                                 break;
                             case '\"':
+                                // Double quoted string
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.Identifier);
                                 _stateStack.Push(JsonPathState.DoubleQuotedString);
                                 ++_index;
                                 ++_column;
                                 break;
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                                // Index 
+                                _stateStack.Pop(); 
+                                _stateStack.Push(JsonPathState.Index);
+                                _stateStack.Push(JsonPathState.Integer);
+                                break;
                             case '*':
+                                // Wildcard
                                 PushToken(new Token(new WildcardSelector()));
                                 _stateStack.Pop();
                                 ++_index;
@@ -317,6 +326,7 @@ namespace JsonCons.JsonPath
                             case '.':
                                 throw new JsonPathParseException("Expected unquoted string, or single or double quoted string, or index or '*'", _line, _column);
                             default:
+                                // Unquoted string or function expression
                                 buffer.Clear();
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.IdentifierOrFunctionExpr);
@@ -965,30 +975,6 @@ namespace JsonCons.JsonPath
                                 throw new JsonPathParseException("Expected right bracket", _line, _column);
                         }
                         break;
-                    case JsonPathState.Index:
-                        switch (_span[_index])
-                        {
-                            case ' ':case '\t':case '\r':case '\n':
-                                SkipWhiteSpace();
-                                break;
-                            case ']':
-                            case '.':
-                            case ',':
-                            {
-                                Int32 n;
-                                if (!Int32.TryParse(buffer.ToString(), out n))
-                                {
-                                    throw new JsonPathParseException("Invalid index", _line, _column);
-                                }
-                                PushToken(new Token(new IndexSelector(n)));
-                                buffer.Clear();
-                                _stateStack.Pop(); // index
-                                break;
-                            }
-                            default:
-                                throw new JsonPathParseException("Expected right bracket", _line, _column);
-                        }
-                        break;
                     case JsonPathState.SliceExpressionStop:
                     {
                         if (!(buffer.Length == 0))
@@ -1106,10 +1092,22 @@ namespace JsonCons.JsonPath
                                 throw new JsonPathParseException("Expected right bracket", _line, _column);
                         }
                         break;
+                    case JsonPathState.Index:
+                    {
+                        Int32 n;
+                        if (!Int32.TryParse(buffer.ToString(), out n))
+                        {
+                            throw new JsonPathParseException("Invalid index", _line, _column);
+                        }
+                        PushToken(new Token(new IndexSelector(n)));
+                        buffer.Clear();
+                        _stateStack.Pop(); 
+                        break;
+                    }
                     case JsonPathState.Integer:
                         switch (_span[_index])
                         {
-                            case '-':
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
                                 buffer.Append (_span[_index]);
                                 _stateStack.Pop(); _stateStack.Push(JsonPathState.Digit);
                                 ++_index;
@@ -1842,6 +1840,18 @@ namespace JsonCons.JsonPath
                             PushToken(new Token(new IdentifierSelector(buffer.ToString())));
                         }
                         _stateStack.Pop(); 
+                        break;
+                    case JsonPathState.Index:
+                        Int32 n;
+                        if (!Int32.TryParse(buffer.ToString(), out n))
+                        {
+                            throw new JsonPathParseException("Invalid index", _line, _column);
+                        }
+                        PushToken(new Token(new IndexSelector(n)));
+                        _stateStack.Pop(); 
+                        break;
+                    case JsonPathState.Digit:
+                        _stateStack.Pop(); // digit
                         break;
                     case JsonPathState.ParentOperator: 
                     {

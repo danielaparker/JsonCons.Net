@@ -1,12 +1,11 @@
 [
-   {
-        "given" : [{"key": 0}, {"key": 42}, {"key": -1}, {"key": 41}, {"key": 43}, {"key": 42.0001}, {"key": 41.9999}, {"key": 100}, {"some": "value"}],
+    {
+        "given" : {"foo": ["zero","one","two"]},
         "cases" : [
             {
-                "source" : "https://github.com/cburgmer/json-path-comparison",
-                "comment" : "Filter less than",
-                "expression" : "$[?(@.key<42)]",
-                "result" : [{"key": 0}, {"key": -1}, {"key": 41}, {"key": 41.9999}]
+                "comment" : "Dot followed by index",
+                "expression" : "$.foo.1",
+                "result" : ["one"] 
             }
         ]
     }

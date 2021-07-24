@@ -72,16 +72,6 @@
         ]
     },
     {
-        "given" : {"a": "first", "2": "second", "b": "third"},
-        "cases" : [
-            {
-                "comment" : "Dot notation with number on object",
-                "expression" : "$.2",
-                "result" : ["second"]
-            }
-        ]
-    },
-    {
         "source:" : "https://cburgmer.github.io/json-path-comparison/",
         "given": {"key-dash": "value"},
         "cases": [

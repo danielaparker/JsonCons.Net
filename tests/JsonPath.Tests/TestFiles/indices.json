@@ -5,7 +5,7 @@
             {
                 "comment" : "Dot followed by index",
                 "expression" : "$.foo.1",
-                "result" : [] 
+                "result" : ["one"] 
             }
         ]
     },
