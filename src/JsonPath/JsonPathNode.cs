@@ -31,17 +31,31 @@ namespace JsonCons.JsonPath
             Path = path;
             Value = value;
         }
-
+        /// <summary>
+        /// Determines whether this instance and another specified JsonPathNode object have the same value.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public bool Equals(JsonPathNode other)
         {
             return Path.Equals(other.Path);
         }
-
+        /// <summary>
+        /// Compares this instance with a specified JsonPathNode object and indicates 
+        /// whether this instance precedes, follows, or appears in the same position 
+        /// in the sort order as the specified JsonPathNode.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>true if the value of the other JsonPathNode object is the same as the value of 
+        /// this instance; otherwise, false. If other is null, the method returns false.</returns>
         public int CompareTo(JsonPathNode other)
         {
             return Path.CompareTo(other.Path);
         }
-
+        /// <summary>
+        /// Returns the hash code for this JsonPathNode.
+        /// </summary>
+        /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
         {
             return Path.GetHashCode();

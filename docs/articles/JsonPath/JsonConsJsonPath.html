@@ -154,13 +154,13 @@ and does not create JSON elements that are not in the original.</p>
 </table>
 <p>Paths can use the dot-notation or the bracket-notation.</p>
 <p>Select the first (indexed 0) book in <a href="https://goessner.net/articles/JsonPath/index.html#e3">Stefan Goessner's store</a> using the dot notation:</p>
-<pre><code>$.store.book[0]
+<pre><code>$.store.book.0
 </code></pre>
 <p>or</p>
-<pre><code>$.'store'.'book'[0]
+<pre><code>$.'store'.'book'.0
 </code></pre>
 <p>or</p>
-<pre><code>$.&quot;store&quot;.&quot;book&quot;[0]
+<pre><code>$.&quot;store&quot;.&quot;book&quot;.0
 </code></pre>
 <p>The leading <code>$</code> represents the root JSON value.
 Unquoted names in the dot notation are restricted to digits 0-9, letters A-Z and a-z,

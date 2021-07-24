@@ -13,6 +13,7 @@ namespace JsonCons.Utilities
 
     public sealed class JsonElementEqualityComparer : IEqualityComparer<JsonElement>
     {
+        /// <summary>Gets a singleton instance of JsonElementEqualityComparer. This property is read-only.</summary>
         public static JsonElementEqualityComparer Instance { get; } = new JsonElementEqualityComparer();
     
         private int _maxHashDepth { get; } = 100;
@@ -93,10 +94,15 @@ namespace JsonCons.Utilities
                     throw new JsonException(string.Format("Unknown JsonValueKind {0}", lhs.ValueKind));
             }
         }
-    
-        public int GetHashCode(JsonElement obj)
+
+        /// <summary>
+        /// Returns a hash code for the specified JsonElement value.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>An Int32 value representing the hash code of the value.</returns>
+        public int GetHashCode(JsonElement value)
         {
-            return ComputeHashCode(obj, 0);
+            return ComputeHashCode(value, 0);
         }
     
         int ComputeHashCode(JsonElement element, int depth)

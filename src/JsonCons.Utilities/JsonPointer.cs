@@ -16,12 +16,15 @@ namespace JsonCons.Utilities
     {
         enum JsonPointerState {Start, Escaped, Delim}
 
+        /// <summary>
+        /// Returns a list of (unescaped) reference tokens
+        /// </summary>
         public IReadOnlyList<string> Tokens {get;}
 
         /// <summary>
-        /// Constructs a JSON Pointer from a list of tokens 
+        /// Constructs a JSON Pointer from a list of (unescaped) reference tokens 
         /// </summary>
-        /// <param name="tokens">A list of (unescaped) JSON Pointer tokens.</param>
+        /// <param name="tokens">A list of (unescaped) reference tokens.</param>
 
         public JsonPointer(IReadOnlyList<string> tokens)
         {
@@ -56,7 +59,7 @@ namespace JsonCons.Utilities
         /// </summary>
         /// <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
         /// <param name="pointer">The JSONPointer.</param>
-        /// <returns><c>true</c> if the input string can be parsed into a list of tokens, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if the input string can be parsed into a list of reference tokens, <c>false</c> otherwise.</returns>
         /// <exception cref="ArgumentNullException">
         ///   The <paramref name="input"/> is <see langword="null"/>.
         /// </exception>
@@ -150,9 +153,9 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through a list of tokens.
+        /// Returns an enumerator that iterates through a list of reference tokens.
         /// </summary>
-        /// <returns>An <c>IEnumerator&lt;string></c> for a list of tokens.</returns>
+        /// <returns>An <c>IEnumerator&lt;string></c> for a list of reference tokens.</returns>
         public IEnumerator<string> GetEnumerator()
         {
             return Tokens.GetEnumerator();
@@ -220,7 +223,7 @@ namespace JsonCons.Utilities
         /// Determines whether two JSONPointer objects have the same value.
         /// </summary>
         /// <param name="other"></param>
-        /// <returns><c>true</c> if other is a <see cref="JsonPointer"/> and has exactly the same tokens as this instance; otherwise, <c>false</c>. 
+        /// <returns><c>true</c> if other is a <see cref="JsonPointer"/> and has exactly the same reference tokens as this instance; otherwise, <c>false</c>. 
         /// If other is <c>null</c>, the method returns <c>false</c>.</returns>
         public bool Equals(JsonPointer other)
         {

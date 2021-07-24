@@ -22,6 +22,29 @@
             
              </summary>
         </member>
+        <member name="M:JsonCons.JsonPath.JsonPathNode.Equals(JsonCons.JsonPath.JsonPathNode)">
+            <summary>
+            Determines whether this instance and another specified JsonPathNode object have the same value.
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JsonCons.JsonPath.JsonPathNode.CompareTo(JsonCons.JsonPath.JsonPathNode)">
+            <summary>
+            Compares this instance with a specified JsonPathNode object and indicates 
+            whether this instance precedes, follows, or appears in the same position 
+            in the sort order as the specified JsonPathNode.
+            </summary>
+            <param name="other"></param>
+            <returns>true if the value of the other JsonPathNode object is the same as the value of 
+            this instance; otherwise, false. If other is null, the method returns false.</returns>
+        </member>
+        <member name="M:JsonCons.JsonPath.JsonPathNode.GetHashCode">
+            <summary>
+            Returns the hash code for this JsonPathNode.
+            </summary>
+            <returns>A 32-bit signed integer hash code.</returns>
+        </member>
         <member name="T:JsonCons.JsonPath.JsonPathParseException">
             <summary>
             Defines a custom exception object that is thrown when JSONPath parsing fails.
