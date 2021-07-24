@@ -314,12 +314,8 @@ namespace JsonCons.JsonPath
                                 ++_column;
                                 break;
                             case '[':
-                                _stateStack.Push(JsonPathState.BracketExpression);
-                                ++_index;
-                                ++_column;
-                                break;
                             case '.':
-                                throw new JsonPathParseException("Expected identifier", _line, _column);
+                                throw new JsonPathParseException("Expected unquoted string, or single or double quoted string, or index or '*'", _line, _column);
                             default:
                                 buffer.Clear();
                                 _stateStack.Pop(); 
