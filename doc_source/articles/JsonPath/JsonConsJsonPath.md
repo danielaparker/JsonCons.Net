@@ -60,15 +60,15 @@ Paths can use the dot-notation or the bracket-notation.
 
 Select the first (indexed 0) book in [Stefan Goessner's store](https://goessner.net/articles/JsonPath/index.html#e3) using the dot notation:
 
-    $.store.book[0]
+    $.store.book.0
 
 or
 
-    $.'store'.'book'[0]
+    $.'store'.'book'.0
 
 or
 
-    $."store"."book"[0]
+    $."store"."book".0
 
 The leading `$` represents the root JSON value. 
 Unquoted names in the dot notation are restricted to digits 0-9, letters A-Z and a-z, 
