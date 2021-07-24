@@ -6,14 +6,14 @@
 JsonPath = "$" [RelativeLocation]
 JsonPath = "@" [RelativeLocation]
 
-RelativeLocation = "." Identifier [RelativeLocation]
-RelativeLocation =/ "." Index [RelativeLocation]
-RelativeLocation =/ "." Wildcard [RelativeLocation]
-RelativeLocation =/ "^" [RelativeLocation]
-RelativeLocation =/ BracketExpression [RelativeLocation]
-RelativeLocation =/ ".." Identifier [RelativeLocation]
-RelativeLocation =/ ".." Index [RelativeLocation]
+RelativeLocation = "." RelativePath
+RelativeLocation =/ ".." RelativePath
 RelativeLocation =/ ".." BracketExpression [RelativeLocation]
+RelativeLocation =/ "^" [RelativeLocation]
+
+RelativePath = Identifier [RelativeLocation]
+RelativePath =/ Index [RelativeLocation]
+RelativePath =/ Wildcard [RelativeLocation]
 
 BracketExpression = "[" BracketedElement *("," BracketedElement) "]"
 
@@ -22,9 +22,9 @@ BracketedElement =/ Wildcard / FilterExpression / JsonPath
 
 FilterExpression = "?" Expression
 
-SliceExpression  = [Number] ":" [Number] [ ":" [Number] ]
+SliceExpression  = [Integer] ":" [Integer] [ ":" [Integer] ]
 
-Number            = ["-"]1*digit
+Integer            = ["-"]1*Digit
 
 Identifier = UnquotedString / SingleQuotedString / DoubleQuotedString
 
@@ -53,4 +53,31 @@ EscapedDoubleQuote      = Escape %x22          ; "    double quote  U+0022
 EscapedSingleQuote      = Escape %x2c          ; '    single quote  U+002c
 
 SingleQuotedString     = SingleQuote 1*(UnescapedChar / DoubleQuote / EscapedChar / EscapedSingleQuote) SingleQuote
+
+
+
+Expression = SingleQuotedString 
+Expression =/ JsonLiteral
+Expression =/ JsonPath 
+Expression =/ UnaryExpression / BinaryExpression / RegexBinaryExpression / ParenExpression 
+ParenExpression  = "(" Expression ")"
+UnaryExpression=UnaryOperator Expression
+BinaryExpression = Expression BinaryOperator Expression
+RegexBinaryExpression = Expression RegexOperator RegexExpression
+RegexExpression = "/" RegexCharacters "/" [i]   
+UnaryOperator = "!" / "-"
+BinaryOperator  = "*" / "/" / "%" / "+" / "-" / "&&" / "||" / <" / "<=" / "==" / ">=" / ">" / "!=" 
+RegexOperator = "=~"
+
+; The "JsonLiteral" is any valid JSON value.  
+;
+; The "RegexCharacters" represents regular Expression characters
+
+FunctionExpression = UnquotedString  (
+                        NoArgs  /
+                        OneOrMoreArgs )
+NoArgs             = "(" ")"
+OneOrMoreArgs    = "(" ( FunctionArg *( "," FunctionArg ) ) ")"
+FunctionArg        = Expression
+
 ```

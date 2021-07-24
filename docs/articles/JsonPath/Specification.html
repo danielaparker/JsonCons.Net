@@ -73,14 +73,14 @@
 <pre><code>JsonPath = &quot;$&quot; [RelativeLocation]
 JsonPath = &quot;@&quot; [RelativeLocation]
 
-RelativeLocation = &quot;.&quot; Identifier [RelativeLocation]
-RelativeLocation =/ &quot;.&quot; Index [RelativeLocation]
-RelativeLocation =/ &quot;.&quot; Wildcard [RelativeLocation]
-RelativeLocation =/ &quot;^&quot; [RelativeLocation]
-RelativeLocation =/ BracketExpression [RelativeLocation]
-RelativeLocation =/ &quot;..&quot; Identifier [RelativeLocation]
-RelativeLocation =/ &quot;..&quot; Index [RelativeLocation]
+RelativeLocation = &quot;.&quot; RelativePath
+RelativeLocation =/ &quot;..&quot; RelativePath
 RelativeLocation =/ &quot;..&quot; BracketExpression [RelativeLocation]
+RelativeLocation =/ &quot;^&quot; [RelativeLocation]
+
+RelativePath = Identifier [RelativeLocation]
+RelativePath =/ Index [RelativeLocation]
+RelativePath =/ Wildcard [RelativeLocation]
 
 BracketExpression = &quot;[&quot; BracketedElement *(&quot;,&quot; BracketedElement) &quot;]&quot;
 
@@ -89,9 +89,9 @@ BracketedElement =/ Wildcard / FilterExpression / JsonPath
 
 FilterExpression = &quot;?&quot; Expression
 
-SliceExpression  = [Number] &quot;:&quot; [Number] [ &quot;:&quot; [Number] ]
+SliceExpression  = [Integer] &quot;:&quot; [Integer] [ &quot;:&quot; [Integer] ]
 
-Number            = [&quot;-&quot;]1*digit
+Integer            = [&quot;-&quot;]1*Digit
 
 Identifier = UnquotedString / SingleQuotedString / DoubleQuotedString
 
@@ -120,6 +120,33 @@ EscapedDoubleQuote      = Escape %x22          ; &quot;    double quote  U+0022
 EscapedSingleQuote      = Escape %x2c          ; '    single quote  U+002c
 
 SingleQuotedString     = SingleQuote 1*(UnescapedChar / DoubleQuote / EscapedChar / EscapedSingleQuote) SingleQuote
+
+
+
+Expression = SingleQuotedString 
+Expression =/ JsonLiteral
+Expression =/ JsonPath 
+Expression =/ UnaryExpression / BinaryExpression / RegexBinaryExpression / ParenExpression 
+ParenExpression  = &quot;(&quot; Expression &quot;)&quot;
+UnaryExpression=UnaryOperator Expression
+BinaryExpression = Expression BinaryOperator Expression
+RegexBinaryExpression = Expression RegexOperator RegexExpression
+RegexExpression = &quot;/&quot; RegexCharacters &quot;/&quot; [i]   
+UnaryOperator = &quot;!&quot; / &quot;-&quot;
+BinaryOperator  = &quot;*&quot; / &quot;/&quot; / &quot;%&quot; / &quot;+&quot; / &quot;-&quot; / &quot;&amp;&amp;&quot; / &quot;||&quot; / &lt;&quot; / &quot;&lt;=&quot; / &quot;==&quot; / &quot;&gt;=&quot; / &quot;&gt;&quot; / &quot;!=&quot; 
+RegexOperator = &quot;=~&quot;
+
+; The &quot;JsonLiteral&quot; is any valid JSON value.  
+;
+; The &quot;RegexCharacters&quot; represents regular Expression characters
+
+FunctionExpression = UnquotedString  (
+                        NoArgs  /
+                        OneOrMoreArgs )
+NoArgs             = &quot;(&quot; &quot;)&quot;
+OneOrMoreArgs    = &quot;(&quot; ( FunctionArg *( &quot;,&quot; FunctionArg ) ) &quot;)&quot;
+FunctionArg        = Expression
+
 </code></pre>
 </article>
           </div>
@@ -129,7 +156,7 @@ SingleQuotedString     = SingleQuote 1*(UnescapedChar / DoubleQuote / EscapedCha
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/articles/JsonPath/Specification.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/doc_source/articles/JsonPath/Specification.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
