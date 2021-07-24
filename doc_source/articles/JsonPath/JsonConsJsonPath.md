@@ -328,7 +328,7 @@ Operator|       Description
 `+`     |Left plus right
 `-`     |Left minus right
 `&&`    |Left is true and right is true
-[<code>&#124;&#124;</code>](operators/OrExpression.md)|Left is true or right is true
+[&nbsp;<code>&#124;&#124;</code>&nbsp;](operators/OrExpression.md)|Left is true or right is true
 `==`    |Left is equal to right 
 `!=`    |Left is not equal to right
 `<`     |Left is less than right
