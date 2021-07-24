@@ -34,7 +34,7 @@ UnquotedString   = (%x41-5A / %x61-7A / %x5F) *(  ; A-Za-z_
                         %x5F    /  ; _
                         %x61-7A)   ; a-z
 
-DoubleQuotedString     = " 1*(UnescapedChar / SingleQuote / EscapedChar / EscapedDoubleQuote) "
+DoubleQuotedString     = DoubleQuote 1*(UnescapedChar / SingleQuote / EscapedChar / EscapedDoubleQuote) DoubleQuote
 UnescapedChar    = %x20-21 / %x23-2b / %x2d-5B / %x5D-10FFFF
 Escape            = %x5C   ; Back slash: \
 EscapedChar      = Escape (
@@ -52,5 +52,5 @@ DoubleQuote             = %x22   ; Double quote: '"'
 EscapedDoubleQuote      = Escape %x22          ; "    double quote  U+0022
 EscapedSingleQuote      = Escape %x2c          ; '    single quote  U+002c
 
-SingleQuotedString     = " 1*(UnescapedChar / DoubleQuote / EscapedChar / EscapedSingleQuote) "
+SingleQuotedString     = SingleQuote 1*(UnescapedChar / DoubleQuote / EscapedChar / EscapedSingleQuote) SingleQuote
 ```
