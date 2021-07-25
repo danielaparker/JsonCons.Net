@@ -320,22 +320,22 @@ and arithmetic operators.
 
 #### Binary operators
 
-Operator|       Description
+Operator| Expression |      Description
 --------|--------------------------------
-`*`     |Left times right
-`/`     |Left divided by right
-`%`     |Remainder
-`+`     |Left plus right
-`-`     |Left minus right
-`&&`    |Left is true and right is true
-[&nbsp;<code>&#124;&#124;</code>&nbsp;](operators/OrExpression.md)|Left is true or right is true
-`==`    |Left is equal to right 
-`!=`    |Left is not equal to right
-`<`     |Left is less than right
-`<=`    |Left is less than or equal to right
-`>`     |Left is greater than right
-`>=`    |Left is greater than or equal to right
-`=~`    |Left matches regular expression, e.g. [?(@.author =~ /Evelyn.*?/)]
+`*`     | Expression * Expression | Left times right
+`/`     | Expression / Expression | Left divided by right
+`%`     | Expression % Expression | Remainder
+`+`     | Expression + Expression | Left plus right
+`-`     | Expression - Expression | Left minus right
+`&&`    | Expression && Expression | Left is true and right is true
+<code>&#124;&#124;</code>| [Expression <code>&#124;&#124;</code> Expression](operators/OrExpression.md) | Left is true or right is true
+`==`    |Expression == Expression| Left is equal to right 
+`!=`    | Expression != Expression | Left is not equal to right
+`<`     | Expression < Expression | Left is less than right
+`<=`    | Expression <= Expression | Left is less than or equal to right
+`>`     | Expression > Expression | Left is greater than right
+`>=`    | Expression >= Expression | Left is greater than or equal to right
+`=~`    | Expression `=~` "/" RegularExpression "/" [i] | Left matches regular expression, e.g. [?(@.author =~ /Evelyn.*?/)]
 
 The ordering operators `>`, `>=`, `<`, `<=` are only valid if both left and right are numbers,
 or if both left and right are strings. Otherwise the item will be excluded from the result set.
