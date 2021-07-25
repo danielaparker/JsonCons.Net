@@ -1182,6 +1182,13 @@ namespace JsonCons.JsonPath
                                 PushToken(new Token(NotOperator.Instance));
                                 break;
                             }
+                            case '-':
+                            {
+                                ++_index;
+                                ++_column;
+                                PushToken(new Token(UnaryMinusOperator.Instance));
+                                break;
+                            }
                             case 't':
                             {
                                 if (_index+4 <= _span.Length && _span[_index+1] == 'r' && _span[_index+2] == 'u' && _span[_index+3] == 'e')
@@ -1233,7 +1240,7 @@ namespace JsonCons.JsonPath
                                 }
                                 break;
                             }
-                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                            case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
                             {
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.JsonLiteral);

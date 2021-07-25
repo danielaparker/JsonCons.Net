@@ -119,7 +119,7 @@ namespace JsonCons.JsonPath.Tests
         {
             try
             {
-                /*RunJsonPathTests(@".\TestFiles\dot-notation.json");
+                RunJsonPathTests(@".\TestFiles\dot-notation.json");
                 RunJsonPathTests(@".\TestFiles\filters.json");
                 RunJsonPathTests(@".\TestFiles\functions.json");              
                 RunJsonPathTests(@".\TestFiles\identifiers.json");
@@ -130,7 +130,7 @@ namespace JsonCons.JsonPath.Tests
                 RunJsonPathTests(@".\TestFiles\union.json");
                 RunJsonPathTests(@".\TestFiles\wildcard.json");
                 RunJsonPathTests(@".\TestFiles\parent-operator.json");
-                */
+                
                 RunJsonPathTests(@".\TestFiles\test.json");              
             }
             catch (Exception e)
