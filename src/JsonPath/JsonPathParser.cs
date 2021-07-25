@@ -52,7 +52,7 @@ namespace JsonCons.JsonPath
         AncestorDepth,
         FilterExpression,
         ExpressionRhs,
-        PathOrValueOrFunction,
+        UnaryOperatorOrPathOrValueOrFunction,
         JsonText,
         JsonTextString,
         JsonStringValue,
@@ -693,7 +693,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); _stateStack.Push(JsonPathState.UnionExpression); // union
                                 _stateStack.Push(JsonPathState.FilterExpression);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -801,7 +801,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.FilterExpression);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1137,7 +1137,7 @@ namespace JsonCons.JsonPath
                         _stateStack.Pop(); 
                         break;
                     }
-                    case JsonPathState.PathOrValueOrFunction: 
+                    case JsonPathState.UnaryOperatorOrPathOrValueOrFunction: 
                     {
                         switch (_span[_index])
                         {
@@ -1158,7 +1158,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop();
                                 _stateStack.Push(JsonPathState.ExpectRightParen);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 break;
                             }
                             case '\'':
@@ -1302,7 +1302,7 @@ namespace JsonCons.JsonPath
                                 PushToken(new Token(JsonPathTokenKind.BeginArgument));
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1335,7 +1335,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Push(JsonPathState.OneOrMoreArguments);
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 break;
                         }
                         break;
@@ -1354,7 +1354,7 @@ namespace JsonCons.JsonPath
                                 PushToken(new Token(JsonPathTokenKind.BeginArgument));
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1522,13 +1522,13 @@ namespace JsonCons.JsonPath
                             case '|':
                                 ++_index;
                                 ++_column;
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 _stateStack.Push(JsonPathState.ExpectOr);
                                 break;
                             case '&':
                                 ++_index;
                                 ++_column;
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 _stateStack.Push(JsonPathState.ExpectAnd);
                                 break;
                             case '<':
@@ -1548,36 +1548,36 @@ namespace JsonCons.JsonPath
                             {
                                 ++_index;
                                 ++_column;
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 _stateStack.Push(JsonPathState.CmpNe);
                                 break;
                             }
                             case '+':
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 PushToken(new Token(PlusOperator.Instance));
                                 ++_index;
                                 ++_column;
                                 break;
                             case '-':
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 PushToken(new Token(MinusOperator.Instance));
                                 ++_index;
                                 ++_column;
                                 break;
                             case '*':
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 PushToken(new Token(MultOperator.Instance));
                                 ++_index;
                                 ++_column;
                                 break;
                             case '/':
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 PushToken(new Token(DivOperator.Instance));
                                 ++_index;
                                 ++_column;
                                 break;
                             case '%':
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 PushToken(new Token(ModulusOperator.Instance));
                                 ++_index;
                                 ++_column;
@@ -1600,7 +1600,7 @@ namespace JsonCons.JsonPath
                             {
                                 PushToken(new Token(EqOperator.Instance));
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1664,14 +1664,14 @@ namespace JsonCons.JsonPath
                                 ++_index;
                                 ++_column;
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 _stateStack.Push(JsonPathState.CmpLtOrLte);
                                 break;
                             case '>':
                                 ++_index;
                                 ++_column;
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.PathOrValueOrFunction);
+                                _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 _stateStack.Push(JsonPathState.CmpGtOrGte);
                                 break;
                             default:
