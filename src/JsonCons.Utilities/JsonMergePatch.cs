@@ -64,6 +64,7 @@ namespace JsonCons.Utilities
     /// }
     /// </code>
     /// The original document:
+    /// <code>
     /// 
     /// {
     ///   "title": "Goodbye!",
@@ -77,9 +78,11 @@ namespace JsonCons.Utilities
     ///   ],
     ///   "content": "This will be unchanged"
     /// }
+    /// </code>
     /// 
     /// The patch:
     /// 
+    /// <code>
     /// {
     ///   "title": "Hello!",
     ///   "phoneNumber": "\u002B01-123-456-7890",
@@ -90,9 +93,11 @@ namespace JsonCons.Utilities
     ///     "example"
     ///   ]
     /// }
+    /// </code>
     /// 
     /// The result:
     /// 
+    /// <code>
     /// {
     ///   "title": "Hello!",
     ///   "author": {
@@ -104,6 +109,7 @@ namespace JsonCons.Utilities
     ///   "content": "This will be unchanged",
     ///   "phoneNumber": "\u002B01-123-456-7890"
     /// }    
+    /// </code>
     /// </example>
 
     public static class JsonMergePatch

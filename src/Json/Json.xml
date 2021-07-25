@@ -198,6 +198,7 @@
             }
             </code>
             The original document:
+            <code>
             
             {
               "title": "Goodbye!",
@@ -211,9 +212,11 @@
               ],
               "content": "This will be unchanged"
             }
+            </code>
             
             The patch:
             
+            <code>
             {
               "title": "Hello!",
               "phoneNumber": "\u002B01-123-456-7890",
@@ -224,9 +227,11 @@
                 "example"
               ]
             }
+            </code>
             
             The result:
             
+            <code>
             {
               "title": "Hello!",
               "author": {
@@ -238,6 +243,7 @@
               "content": "This will be unchanged",
               "phoneNumber": "\u002B01-123-456-7890"
             }    
+            </code>
             </example>
         </member>
         <member name="M:JsonCons.Utilities.JsonMergePatch.ApplyMergePatch(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
