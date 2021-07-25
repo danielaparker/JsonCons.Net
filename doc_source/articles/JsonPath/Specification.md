@@ -3,41 +3,41 @@
 ## Grammar
 
 ```
-JsonPath = "$" [RelativeLocation]
-JsonPath = "@" [RelativeLocation]
+jsonpath = "$" [relative-location]
+jsonpath = "@" [relative-location]
 
-RelativeLocation = "." RelativePath
-RelativeLocation =/ ".." RelativePath
-RelativeLocation =/ ".." BracketExpression [RelativeLocation]
-RelativeLocation =/ "^" [RelativeLocation]
+relative-location = "." relative-path
+relative-location =/ ".." relative-path
+relative-location =/ ".." bracket-expression [relative-location]
+relative-location =/ "^" [relative-location]
 
-RelativePath = Identifier [RelativeLocation]
-RelativePath =/ Index [RelativeLocation]
-RelativePath =/ Wildcard [RelativeLocation]
+relative-path = identifier [relative-location]
+relative-path =/ index [relative-location]
+relative-path =/ wildcard [relative-location]
 
-BracketExpression = "[" BracketedElement *("," BracketedElement) "]"
+bracket-expression = "[" bracketed-element *("," bracketed-element) "]"
 
-BracketedElement = Index / SliceExpression / SingleQuotedString / DoubleQuotedString
-BracketedElement =/ Wildcard / FilterExpression / JsonPath
+bracketed-element = index / slice-expression / single-quoted-string / double-quoted-string
+bracketed-element =/ wildcard / filter-expression / jsonpath
 
-FilterExpression = "?" Expression
+filter-expression = "?" expression
 
-SliceExpression  = [Integer] ":" [Integer] [ ":" [Integer] ]
+slice-expression  = [integer] ":" [integer] [ ":" [integer] ]
 
-Integer            = ["-"]1*Digit
+integer            = ["-"]1*digit
 
-Identifier = UnquotedString / SingleQuotedString / DoubleQuotedString
+identifier = unquoted-string / single-quoted-string / double-quoted-string
 
-UnquotedString   = (%x41-5A / %x61-7A / %x5F) *(  ; A-Za-z_
+unquoted-string   = (%x41-5A / %x61-7A / %x5F) *(  ; A-Za-z_
                         %x30-39  /  ; 0-9
                         %x41-5A /  ; A-Z
                         %x5F    /  ; _
                         %x61-7A)   ; a-z
 
-DoubleQuotedString     = DoubleQuote 1*(UnescapedChar / SingleQuote / EscapedChar / EscapedDoubleQuote) DoubleQuote
-UnescapedChar    = %x20-21 / %x23-2b / %x2d-5B / %x5D-10FFFF
+double-quoted-string     = double-quote 1*(unescaped-char / single-quote / escaped-char / escaped-double-quote) double-quote
+unescaped-char    = %x20-21 / %x23-2b / %x2d-5B / %x5D-10FFFF
 Escape            = %x5C   ; Back slash: \
-EscapedChar      = Escape (
+escaped-char      = Escape (
                         %x5C /          ; \    reverse solidus U+005C
                         %x2F /          ; /    solidus         U+002F
                         %x62 /          ; b    backspace       U+0008
@@ -47,38 +47,37 @@ EscapedChar      = Escape (
                         %x74 /          ; t    tab             U+0009
                         %x75 4HEXDIG )  ; uXXXX                U+XXXX
 
-SingleQuote             = %x2c   ; Single quote: "'"
-DoubleQuote             = %x22   ; Double quote: '"'
-EscapedDoubleQuote      = Escape %x22          ; "    double quote  U+0022
-EscapedSingleQuote      = Escape %x2c          ; '    single quote  U+002c
+single-quote             = %x2c   ; Single quote: "'"
+double-quote             = %x22   ; Double quote: '"'
+escaped-double-quote      = Escape %x22          ; "    double quote  U+0022
+escaped-single-quote      = Escape %x2c          ; '    single quote  U+002c
 
-SingleQuotedString     = SingleQuote 1*(UnescapedChar / DoubleQuote / EscapedChar / EscapedSingleQuote) SingleQuote
+single-quoted-string     = single-quote 1*(unescaped-char / double-quote / escaped-char / escaped-single-quote) single-quote
 
 
 
-Expression = SingleQuotedString 
-Expression =/ JsonLiteral
-Expression =/ JsonPath 
-Expression =/ UnaryExpression / BinaryExpression / RegexBinaryExpression / ParenExpression 
-ParenExpression  = "(" Expression ")"
-UnaryExpression=UnaryOperator Expression
-BinaryExpression = Expression BinaryOperator Expression
-RegexBinaryExpression = Expression RegexOperator RegexExpression
-RegexExpression = "/" RegexCharacters "/" [i]   
-UnaryOperator = "!" / "-"
-BinaryOperator  = "*" / "/" / "%" / "+" / "-" / "&&" / "||" / <" / "<=" / "==" / ">=" / ">" / "!=" 
-RegexOperator = "=~"
+expression = single-quoted-string 
+expression =/ json-literal
+expression =/ jsonpath 
+expression =/ unary-expression / binary-expression / regex-binary-expression / paren-expression 
+paren-expression  = "(" expression ")"
+unary-expression=unary-operator expression
+binary-expression = expression binary-operator expression
+regex-binary-expression = expression regex-operator "/" regex-expression "/" [i]
+unary-operator = "!" / "-"
+binary-operator  = "*" / "/" / "%" / "+" / "-" / "&&" / "||" / <" / "<=" / "==" / ">=" / ">" / "!=" 
+regex-operator = "=~"
 
-; The "JsonLiteral" is any valid JSON value.  
+; The "json-literal" is any valid JSON value.  
 ;
-; The "RegexCharacters" represents regular Expression characters
+; The "regex-characters" represents regular expression characters
 
-FunctionExpression = UnquotedString  (
-                        NoArgs  /
-                        OneOrMoreArgs )
-NoArgs             = "(" ")"
-OneOrMoreArgs    = "(" ( FunctionArg *( "," FunctionArg ) ) ")"
-FunctionArg        = Expression
+function-expression = unquoted-string  (
+                        no-args  /
+                        one-or-more-args )
+no-args             = "(" ")"
+one-or-more-args    = "(" ( function-arg *( "," function-arg ) ) ")"
+function-arg        = expression
 
 ```
 

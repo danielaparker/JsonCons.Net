@@ -1,11 +1,12 @@
 ### Or Expression
 
 ```
-OrExpression = Expression "||" Expression
+or-expression = expression "||" expression
+
 ```
-If both left and right sides are null, the expression evaluates
+If both left and right sides are null, the or-expression evaluates
 to null. Otherwise, if the left side evaluates to true,
-the expression will evaluate to its left side, and if
+it will evaluate to its left side, and if
 the left side evaluates to false, it will evaluate to its
 right side.
 

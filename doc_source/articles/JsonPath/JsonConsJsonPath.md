@@ -322,30 +322,30 @@ and arithmetic operators.
 
 Operator| Expression |      Description
 --------|--------------------------------
-`*`     | Expression * Expression | Left times right
-`/`     | Expression / Expression | Left divided by right
-`%`     | Expression % Expression | Remainder
-`+`     | Expression + Expression | Left plus right
-`-`     | Expression - Expression | Left minus right
-`&&`    | [Expression && Expression](operators/AndExpression.md) | Left is true and right is true
-<code>&#124;&#124;</code>| [Expression <code>&#124;&#124;</code> Expression](operators/OrExpression.md) | Left is true or right is true
-`==`    |Expression == Expression| Left is equal to right 
-`!=`    | Expression != Expression | Left is not equal to right
-`<`     | Expression < Expression | Left is less than right
-`<=`    | Expression <= Expression | Left is less than or equal to right
-`>`     | Expression > Expression | Left is greater than right
-`>=`    | Expression >= Expression | Left is greater than or equal to right
-`=~`    | Expression `=~` "/" RegularExpression "/" [i] | Left matches regular expression, e.g. [?(@.author =~ /Evelyn.*?/)]
+`*`     | expression * expression | Left times right
+`/`     | expression / expression | Left divided by right
+`%`     | expression % expression | Remainder
+`+`     | expression + expression | Left plus right
+`-`     | expression - expression | Left minus right
+`&&`    | [expression && expression](operators/and-expression.md) | Left is true and right is true
+<code>&#124;&#124;</code>| [expression <code>&#124;&#124;</code> expression](operators/or-expression.md) | Left is true or right is true
+`==`    |expression == expression| Left is equal to right 
+`!=`    | expression != expression | Left is not equal to right
+`<`     | expression < expression | Left is less than right
+`<=`    | expression <= expression | Left is less than or equal to right
+`>`     | expression > expression | Left is greater than right
+`>=`    | expression >= expression | Left is greater than or equal to right
+`=~`    | expression `=~` "/" regular-expression "/" [i] | Left matches regular expression, e.g. [?(@.author =~ /Evelyn.*?/)]
 
 The ordering operators `>`, `>=`, `<`, `<=` are only valid if both left and right are numbers,
 or if both left and right are strings. Otherwise the item will be excluded from the result set.
 
 #### Unary operators
 
-Operator|       Description
+Operator| Expression |      Description
 --------|--------------------------------
-`!`     |Negate right
-`-`     |Unary minus
+`!`     | [!expression](operators/not-expression.md) | Negate right
+`-`     | -expression | Unary minus
 
 #### Operator precedence
 

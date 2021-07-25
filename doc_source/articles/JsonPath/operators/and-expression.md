@@ -1,10 +1,10 @@
 ### And Expression
 
 ```
-AndExpression = Expression "&&" Expression
+and-expression = expression "&&" expression
 ```
 
-If the left side evaluates to true, then the expression evaluates
+If the left side evaluates to true, then the and-expression evaluates
 to the right side, otherwise it evaluates to the left side.
 
 A false value is any value on this list:
