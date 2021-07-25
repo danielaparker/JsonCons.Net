@@ -332,7 +332,11 @@ namespace JsonCons.JsonPath
             }
             return buffer.ToString();
         }
-
+        /// <summary>
+        /// Determines whether this instance and another specified NormalizedPath object have the same value.
+        /// </summary>
+        /// <param name="other">The NormalizedPath to compare to this instance.</param>
+        /// <returns>true if the value of other is the same as the value of this instance; otherwise, false. If other is null, the method returns false.</returns>
         public bool Equals(NormalizedPath other)
         {
             if (other == null)
@@ -342,7 +346,11 @@ namespace JsonCons.JsonPath
 
             return CompareTo(other) == 0;
         }
-
+        /// <summary>
+        /// Determines whether this instance and a specified object, which must also be a NormalizedPath object, have the same value.
+        /// </summary>
+        /// <param name="other">The NormalizedPath to compare to this instance.</param>
+        /// <returns>true if other is a NormalizedPath and its value is the same as this instance; otherwise, false. If other is null, the method returns false.</returns>
         public override bool Equals(Object other)
         {
             if (other == null)
@@ -352,7 +360,14 @@ namespace JsonCons.JsonPath
 
             return Equals(other as PathNode);
         }
-
+        /// <summary>
+        /// Compares this instance with a specified NormalizedPath object and indicates 
+        /// whether this instance precedes, follows, or appears in the same 
+        /// position in the sort order as the specified NormalizedPath.
+        /// </summary>
+        /// <param name="other">The NormalizedPath to compare with this instance.</param>
+        /// <returns>A 32-bit signed integer that indicates whether this instance precedes, 
+        /// follows, or appears in the same position in the sort order as other.</returns>
         public int CompareTo(NormalizedPath other)
         {
             int i = 0;
@@ -368,7 +383,10 @@ namespace JsonCons.JsonPath
             }
             return _components.Count - other._components.Count;
         }
-
+        /// <summary>
+        /// Returns the hash code for this NormalizedPath.
+        /// </summary>
+        /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
         {
             int hash = _components[0].GetHashCode();

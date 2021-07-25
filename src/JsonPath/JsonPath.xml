@@ -448,6 +448,36 @@
             
              </summary>
         </member>
+        <member name="M:JsonCons.JsonPath.NormalizedPath.Equals(JsonCons.JsonPath.NormalizedPath)">
+            <summary>
+            Determines whether this instance and another specified NormalizedPath object have the same value.
+            </summary>
+            <param name="other">The NormalizedPath to compare to this instance.</param>
+            <returns>true if the value of other is the same as the value of this instance; otherwise, false. If other is null, the method returns false.</returns>
+        </member>
+        <member name="M:JsonCons.JsonPath.NormalizedPath.Equals(System.Object)">
+            <summary>
+            Determines whether this instance and a specified object, which must also be a NormalizedPath object, have the same value.
+            </summary>
+            <param name="other">The NormalizedPath to compare to this instance.</param>
+            <returns>true if other is a NormalizedPath and its value is the same as this instance; otherwise, false. If other is null, the method returns false.</returns>
+        </member>
+        <member name="M:JsonCons.JsonPath.NormalizedPath.CompareTo(JsonCons.JsonPath.NormalizedPath)">
+            <summary>
+            Compares this instance with a specified NormalizedPath object and indicates 
+            whether this instance precedes, follows, or appears in the same 
+            position in the sort order as the specified NormalizedPath.
+            </summary>
+            <param name="other">The NormalizedPath to compare with this instance.</param>
+            <returns>A 32-bit signed integer that indicates whether this instance precedes, 
+            follows, or appears in the same position in the sort order as other.</returns>
+        </member>
+        <member name="M:JsonCons.JsonPath.NormalizedPath.GetHashCode">
+            <summary>
+            Returns the hash code for this NormalizedPath.
+            </summary>
+            <returns>A 32-bit signed integer hash code.</returns>
+        </member>
         <member name="M:JsonCons.JsonPath.NormalizedPath.TryGetValue(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)">
             <summary>
               Looks for a value within the root value that matches this normalized path, returning
