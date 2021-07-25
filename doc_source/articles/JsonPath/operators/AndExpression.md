@@ -1,7 +1,7 @@
 ### And Expression
 
 ```
-OrExpression = Expression "&&" Expression
+AndExpression = Expression "&&" Expression
 ```
 
 If the left side evaluates to true, then the expression evaluates

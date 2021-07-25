@@ -50,7 +50,7 @@ namespace JsonCons.Utilities.Tests
             JsonDocument flattenedDoc = JsonFlattener.Flatten(doc.RootElement);
             Assert.IsTrue(JsonElementEqualityComparer.Instance.Equals(flattenedDoc.RootElement,expected.RootElement));
 
-            JsonDocument unflattenedDoc = JsonFlattener.Unflatten(flattenedDoc.RootElement);
+            using JsonDocument unflattenedDoc = JsonFlattener.Unflatten(flattenedDoc.RootElement);
 
             var options = new JsonSerializerOptions() { WriteIndented = true };
 

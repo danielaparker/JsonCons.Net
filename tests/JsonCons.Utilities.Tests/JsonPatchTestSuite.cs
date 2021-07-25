@@ -51,7 +51,7 @@ namespace JsonCons.Utilities.Tests
                         }
                         else if (testCase.TryGetProperty("result", out expected))
                         {
-                            JsonDocument result = JsonPatch.ApplyPatch(given, patch);
+                            using JsonDocument result = JsonPatch.ApplyPatch(given, patch);
                             Assert.IsTrue(comparer.Equals(result.RootElement,expected));
                         }
                     }

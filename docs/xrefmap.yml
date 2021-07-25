@@ -647,6 +647,25 @@ references:
   isSpec: "True"
   fullName: JsonCons.Utilities.JsonFlattener.Unflatten
   nameWithType: JsonFlattener.Unflatten
+- uid: JsonCons.Utilities.JsonMergePatch
+  name: JsonMergePatch
+  href: ref/JsonCons.Utilities.JsonMergePatch.html
+  commentId: T:JsonCons.Utilities.JsonMergePatch
+  fullName: JsonCons.Utilities.JsonMergePatch
+  nameWithType: JsonMergePatch
+- uid: JsonCons.Utilities.JsonMergePatch.ApplyMergePatch(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  name: ApplyMergePatch(JsonElement, JsonElement)
+  href: ref/JsonCons.Utilities.JsonMergePatch.html#JsonCons_Utilities_JsonMergePatch_ApplyMergePatch_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.Utilities.JsonMergePatch.ApplyMergePatch(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonMergePatch.ApplyMergePatch(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
+  nameWithType: JsonMergePatch.ApplyMergePatch(JsonElement, JsonElement)
+- uid: JsonCons.Utilities.JsonMergePatch.ApplyMergePatch*
+  name: ApplyMergePatch
+  href: ref/JsonCons.Utilities.JsonMergePatch.html#JsonCons_Utilities_JsonMergePatch_ApplyMergePatch_
+  commentId: Overload:JsonCons.Utilities.JsonMergePatch.ApplyMergePatch
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonMergePatch.ApplyMergePatch
+  nameWithType: JsonMergePatch.ApplyMergePatch
 - uid: JsonCons.Utilities.JsonPatch
   name: JsonPatch
   href: ref/JsonCons.Utilities.JsonPatch.html

@@ -213,7 +213,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/operators/AndExpression.html",
-          "hash": "kHOXGK/oWqdMdPCau/wIxB5G3/mEcwCbxiy099X2Rj4="
+          "hash": "leMJ9SNiQKFf2UCaOyJWREkoSCpgPdrhtJy9JKU7dcU="
         }
       },
       "is_incremental": false,
@@ -401,6 +401,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "ref/JsonCons.Utilities.JsonMergePatch.yml",
+      "output": {
+        ".html": {
+          "relative_path": "ref/JsonCons.Utilities.JsonMergePatch.html",
+          "hash": "kz/GTEfqt9wA5hhEQotMzM2eY/H9CF7NpAdEYkUBQJI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "ref/JsonCons.Utilities.JsonPatch.yml",
       "output": {
         ".html": {
@@ -441,7 +453,7 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.html",
-          "hash": "uvxTPZ6lc7oa78lJInP8kvmoKrmjEkK5u/rxm3h8N90="
+          "hash": "ak4JG3joRvU8rRjcZWT5/5QT9N2zOfVVDXFYaygEdh4="
         }
       },
       "is_incremental": false,
@@ -465,7 +477,7 @@
       "output": {
         ".html": {
           "relative_path": "ref/toc.html",
-          "hash": "sGOFULqsTD6mkM4WlIz2UV9x2R2P+AJcVAHSw1zBY+g="
+          "hash": "JyMBlgTNXLtPGK4pvRiW1JM5pW/UsEB6xsJZxn+ZAKc="
         }
       },
       "is_incremental": false,
@@ -504,7 +516,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 15,
+          "total_file_count": 16,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
