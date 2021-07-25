@@ -27,6 +27,9 @@
     <None Update="TestFiles\rfc6902-examples.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestFiles\rfc7396-test-cases.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestFiles\test.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -1,28 +1,16 @@
 [
     {
-        "given": {
-               "baz": ["boo"],
-               "foo": [ "bar", "qux", "baz" ]
-           },
+        "source" : "https://datatracker.ietf.org/doc/html/rfc7396 Appendix A. Example Test Cases",       
+        "given": {},
         "cases": [
              {
-                "comment" : "add -> add -> fail",
-                "patch": [
-                     { "op": "add", "path": "/baz/-", "value": "xyz" },
-                     { "op": "add", "path": "/baz/3", "value": "wxy" }
-                 ],
-                "error" : "fail"
-             },
-             {
-                "comment" : "add -> move -> copy -> replace -> remove -> fail",
-                "patch": [
-                     { "op": "add", "path": "/baz/-", "value": "xyz" },
-                     { "op": "move", "from": "/foo/1", "path" : "/baz/-" },
-                     { "op": "copy", "from": "/baz/0", "path" : "/foo/-" },
-                     { "op": "replace", "path": "/foo/2", "value" : "qux" },
-                     { "op": "remove", "path": "/foo/3" } // nonexistent target
-                 ],
-                "error" : "fail"
+                "patch": {"a":        
+                            {"bb":    
+                             {"ccc":  
+                              null}}},
+                "result": {"a":    
+                             {"bb":
+                              {}}} 
              }
          ]
     }

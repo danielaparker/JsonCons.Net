@@ -144,8 +144,9 @@ namespace JsonCons.Utilities
                             target.AddProperty(property.Name, ApplyMergePatch(ref item, property.Value));
                         }
                     }
-                    else
+                    else if (property.Value.ValueKind != JsonValueKind.Null)
                     {
+                        item = new JsonDocumentBuilder(JsonValueKind.Object);
                         target.AddProperty(property.Name, ApplyMergePatch(ref item, property.Value));
                     }
                 }
