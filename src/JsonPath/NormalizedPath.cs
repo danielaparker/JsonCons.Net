@@ -123,7 +123,7 @@ namespace JsonCons.JsonPath
         }
 
         /// <summary>
-        /// Gets the value of this path node as a name.
+        /// Gets the value of this PathNode as a name.
         ///
         /// </summary>
         public string GetName()
@@ -132,14 +132,20 @@ namespace JsonCons.JsonPath
         }
 
         /// <summary>
-        /// Gets the value of this path node as an index.
+        /// Gets the value of this PathNode as an index.
         ///
         /// </summary>
         public Int32 GetIndex()
         {
             return _index;
         }
-
+        /// <summary>
+        /// Compares this instance with a specified PathNode object and indicates 
+        /// whether this instance precedes, follows, or appears in the same 
+        /// position in the sort order as the specified PathNode.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public int CompareTo(PathNode other)
         {
             if (other == null)
@@ -168,7 +174,10 @@ namespace JsonCons.JsonPath
             }
             return diff;
         }
-
+        /// <summary>
+        /// Returns the hash code for this PathNode.
+        /// </summary>
+        /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
         {
             int hashCode = ComponentKind == PathNodeKind.Index ? _index.GetHashCode() : _name.GetHashCode();

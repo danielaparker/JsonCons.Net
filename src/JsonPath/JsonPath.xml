@@ -60,6 +60,12 @@
             The column in the JSONPath string where a parse error was detected.
             </summary>
         </member>
+        <member name="M:JsonCons.JsonPath.JsonPathParseException.ToString">
+            <summary>
+            Returns an error message that describes the current exception.
+            </summary>
+            <returns>A string representation of the current exception.</returns>
+        </member>
         <member name="T:JsonCons.JsonPath.JsonSelectorOptions">
             <summary>
             Defines the various ways a <see cref="T:JsonCons.JsonPath.JsonSelector"/> can handle duplicate
@@ -377,15 +383,30 @@
         </member>
         <member name="M:JsonCons.JsonPath.PathNode.GetName">
              <summary>
-             Gets the value of this path node as a name.
+             Gets the value of this PathNode as a name.
             
              </summary>
         </member>
         <member name="M:JsonCons.JsonPath.PathNode.GetIndex">
              <summary>
-             Gets the value of this path node as an index.
+             Gets the value of this PathNode as an index.
             
              </summary>
+        </member>
+        <member name="M:JsonCons.JsonPath.PathNode.CompareTo(JsonCons.JsonPath.PathNode)">
+            <summary>
+            Compares this instance with a specified PathNode object and indicates 
+            whether this instance precedes, follows, or appears in the same 
+            position in the sort order as the specified PathNode.
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JsonCons.JsonPath.PathNode.GetHashCode">
+            <summary>
+            Returns the hash code for this PathNode.
+            </summary>
+            <returns>A 32-bit signed integer hash code.</returns>
         </member>
         <member name="T:JsonCons.JsonPath.NormalizedPath">
              <summary>

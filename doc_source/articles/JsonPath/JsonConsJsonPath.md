@@ -327,7 +327,7 @@ Operator| Expression |      Description
 `%`     | Expression % Expression | Remainder
 `+`     | Expression + Expression | Left plus right
 `-`     | Expression - Expression | Left minus right
-`&&`    | Expression && Expression | Left is true and right is true
+`&&`    | [Expression && Expression](operators/AndExpression.md) | Left is true and right is true
 <code>&#124;&#124;</code>| [Expression <code>&#124;&#124;</code> Expression](operators/OrExpression.md) | Left is true or right is true
 `==`    |Expression == Expression| Left is equal to right 
 `!=`    | Expression != Expression | Left is not equal to right

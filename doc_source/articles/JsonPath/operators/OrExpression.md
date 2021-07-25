@@ -3,12 +3,13 @@
 ```
 OrExpression = Expression "||" Expression
 ```
-An or expression will evaluate to its left side if its left side
-evaluates to not false, it will evaluate to its right side if its
-right side evaluates to not false. 
+If both left and right sides are null, the expression evaluates
+to null. Otherwise, if the left side evaluates to true,
+the expression will evaluate to its left side, and if
+the left side evaluates to false, it will evaluate to its
+right side.
 
-That an expression evaluates to false means that it evaluates to
-any of:
+A false value is any value on this list:
 
 - empty array: [],
 - empty object: {},
@@ -17,6 +18,4 @@ any of:
 - null,
 - zero.
 
-If both the left and right sides evaluate to false, then the expression evaluates to 
-its left side. 
-
+A true value is any value that is not false

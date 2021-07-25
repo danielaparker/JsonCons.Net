@@ -32,6 +32,10 @@ namespace JsonCons.JsonPath
             ColumnNumber = column;
         }
 
+        /// <summary>
+        /// Returns an error message that describes the current exception.
+        /// </summary>
+        /// <returns>A string representation of the current exception.</returns>
         public override string ToString ()
         {
             return $"{base.Message} at line {LineNumber} and column {ColumnNumber}";
@@ -186,7 +190,6 @@ namespace JsonCons.JsonPath
                     case JsonPathState.ExpectedDotOrLeftBracketOrCaret: 
                     {
                         throw new JsonPathParseException("Expected '.' or '[' or '^'", _line, _column);
-                        break;
                     }
                     case JsonPathState.RelativeLocation: 
                     {

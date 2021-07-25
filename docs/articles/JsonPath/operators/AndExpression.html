@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Or Expression </title>
+    <title>And Expression </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Or Expression ">
+    <meta name="title" content="And Expression ">
     <meta name="generator" content="docfx 2.58.0.0">
     
     <link rel="shortcut icon" href="../../../favicon.ico">
@@ -67,15 +67,12 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h3 id="or-expression">Or Expression</h3>
+<h3 id="and-expression">And Expression</h3>
 
-<pre><code>OrExpression = Expression &quot;||&quot; Expression
+<pre><code>OrExpression = Expression &quot;&amp;&amp;&quot; Expression
 </code></pre>
-<p>If both left and right sides are null, the expression evaluates
-to null. Otherwise, if the left side evaluates to true,
-the expression will evaluate to its left side, and if
-the left side evaluates to false, it will evaluate to its
-right side.</p>
+<p>If the left side evaluates to true, then the expression evaluates
+to the right side, otherwise it evaluates to the left side.</p>
 <p>A false value is any value on this list:</p>
 <ul>
 <li>empty array: [],</li>
@@ -85,7 +82,7 @@ right side.</p>
 <li>null,</li>
 <li>zero.</li>
 </ul>
-<p>A true value is any value that is not false</p>
+<p>A true value is any value that is not false.</p>
 </article>
           </div>
           
@@ -94,7 +91,7 @@ right side.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/articles/JsonPath/operators/OrExpression.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/articles/JsonPath/operators/AndExpression.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
