@@ -4,7 +4,7 @@ using JsonCons.Utilities;
 
 class JsonMergePatchExamples
 {
-    // Source: http://jsonpatch.com/
+    // Source: https://datatracker.ietf.org/doc/html/rfc7396
     static void JsonMergePatchExample()
     {
         using var doc = JsonDocument.Parse(@"

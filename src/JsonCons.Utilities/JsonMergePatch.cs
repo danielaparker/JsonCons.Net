@@ -9,22 +9,115 @@ using JsonCons.Utilities;
 
 namespace JsonCons.Utilities
 {
+    /// <summary>
+    /// Provides functionality for applying a JSON Merge Patch as 
+    /// defined in <see href="https://datatracker.ietf.org/doc/html/rfc7396">RFC 7396</see>
+    /// to a JSON value.
+    /// </summary>
+    /// <example>
+    /// The following example borrowed from [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) shows how to apply a JSON Merge Patch to a JSON value
+    /// <code>
+    /// using System;
+    /// using System.Diagnostics;
+    /// using System.Text.Json;
+    /// using JsonCons.Utilities;
+    /// 
+    /// public class Example
+    /// {
+    ///    public static void Main()
+    ///    {
+    ///     using var doc = JsonDocument.Parse(@"
+    /// {
+    ///      ""title"": ""Goodbye!"",
+    ///      ""author"" : {
+    ///    ""givenName"" : ""John"",
+    ///    ""familyName"" : ""Doe""
+    ///      },
+    ///      ""tags"":[ ""example"", ""sample"" ],
+    ///      ""content"": ""This will be unchanged""
+    /// }
+    ///     ");
+    /// 
+    ///     using var patch = JsonDocument.Parse(@"
+    /// {
+    ///      ""title"": ""Hello!"",
+    ///      ""phoneNumber"": ""+01-123-456-7890"",
+    ///      ""author"": {
+    ///    ""familyName"": null
+    ///      },
+    ///      ""tags"": [ ""example"" ]
+    /// }
+    ///         ");
+    /// 
+    ///     using JsonDocument result = JsonMergePatch.ApplyMergePatch(doc.RootElement, patch.RootElement);
+    /// 
+    ///     var options = new JsonSerializerOptions() { WriteIndented = true };
+    /// 
+    ///     Console.WriteLine("The original document:\n");
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(doc.RootElement, options)}\n");
+    ///     Console.WriteLine("The patch:\n");
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(patch.RootElement, options)}\n");
+    ///     Console.WriteLine("The result:\n");
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(result, options)}\n");
+    ///        ");
+    ///     }
+    /// }
+    /// </code>
+    /// The original document:
+    /// 
+    /// {
+    ///   "title": "Goodbye!",
+    ///   "author": {
+    ///     "givenName": "John",
+    ///     "familyName": "Doe"
+    ///   },
+    ///   "tags": [
+    ///     "example",
+    ///     "sample"
+    ///   ],
+    ///   "content": "This will be unchanged"
+    /// }
+    /// 
+    /// The patch:
+    /// 
+    /// {
+    ///   "title": "Hello!",
+    ///   "phoneNumber": "\u002B01-123-456-7890",
+    ///   "author": {
+    ///     "familyName": null
+    ///   },
+    ///   "tags": [
+    ///     "example"
+    ///   ]
+    /// }
+    /// 
+    /// The result:
+    /// 
+    /// {
+    ///   "title": "Hello!",
+    ///   "author": {
+    ///     "givenName": "John"
+    ///   },
+    ///   "tags": [
+    ///     "example"
+    ///   ],
+    ///   "content": "This will be unchanged",
+    ///   "phoneNumber": "\u002B01-123-456-7890"
+    /// }    
+    /// </example>
+
     public static class JsonMergePatch
     {
-        /* define ApplyMergePatch(Target, Patch):
-     if Patch is an Object:
-       if Target is not an Object:
-         Target = {} # Ignore the contents and set it to an empty Object
-       for each Name/Value pair in Patch:
-         if Value is null:
-           if Name exists in Target:
-             remove the Name/Value pair from Target
-         else:
-           Target[Name] = ApplyMergePatch(Target[Name], Value)
-       return Target
-     else:
-       return Patch*/
-
+        /// <summary>
+        /// Applies a JSON Merge Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc7396">RFC 7396</see> 
+        /// to a source JSON value.
+        /// </summary>
+        /// <remarks>
+        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// </remarks>
+        /// <param name="source">The source JSON value.</param>
+        /// <param name="patch">The JSON merge patch to be applied to the source JSON value.</param>
+        /// <returns>The patched JSON value</returns>
         public static JsonDocument ApplyMergePatch(JsonElement source, JsonElement patch)
         {
             var documentBuilder = new JsonDocumentBuilder(source);
