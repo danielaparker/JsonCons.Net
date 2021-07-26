@@ -17,25 +17,21 @@ string jsonString = @"
     ""books"":
     [
         {
-            ""category"": ""fiction"",
             ""title"" : ""A Wild Sheep Chase"",
             ""author"" : ""Haruki Murakami"",
             ""price"" : 22.72
         },
         {
-            ""category"": ""fiction"",
             ""title"" : ""The Night Watch"",
             ""author"" : ""Sergei Lukyanenko"",
             ""price"" : 23.58
         },
         {
-            ""category"": ""fiction"",
             ""title"" : ""The Comedians"",
             ""author"" : ""Graham Greene"",
             ""price"" : 21.99
         },
         {
-            ""category"": ""memoir"",
             ""title"" : ""The Night Watch"",
             ""author"" : ""David Atlee Phillips"",
             ""price"" : 260.90
