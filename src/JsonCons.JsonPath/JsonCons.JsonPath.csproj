@@ -5,10 +5,20 @@
     <Version>1.0.0-preview.1</Version>
     <Authors>Daniel Parker</Authors>
     <PackageId>JsonCons.JsonPath</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>The JsonCons.JsonPath library includes classes that complement the functionality of the 
+System.Text.Json namespace with support for JsonPath.</Description>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/danielaparker/JsonCons.Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/danielaparker/JsonCons.Net</RepositoryUrl>
+    <PackageTags>jsonpath json-path</PackageTags>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <Copyright>Daniel Parker</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\danie\source\repos\JsonCons.Net\src\JsonPath\JsonPath.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\danie\source\repos\JsonCons.Net\src\JsonCons.JsonPath\JsonCons.JsonPath.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +27,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JsonCons.Utilities\JsonCons.Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

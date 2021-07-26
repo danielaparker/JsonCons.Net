@@ -1,0 +1,518 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JsonCons.Utilities</name>
+    </assembly>
+    <members>
+        <member name="T:JsonCons.Utilities.JsonElementEqualityComparer">
+            <summary>
+            Compares two <see cref="T:System.Text.Json.JsonElement"/> instances for equality by using value-based comparison.
+            </summary>
+        </member>
+        <member name="P:JsonCons.Utilities.JsonElementEqualityComparer.Instance">
+            <summary>Gets a singleton instance of JsonElementEqualityComparer. This property is read-only.</summary>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
+            <summary>
+            Determines whether the provided <see cref="T:System.Text.Json.JsonElement"/> objects are equal.
+            </summary>
+            <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
+            <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)">
+            <summary>
+            Returns a hash code for the specified JsonElement value.
+            </summary>
+            <param name="value"></param>
+            <returns>An Int32 value representing the hash code of the value.</returns>
+        </member>
+        <member name="T:JsonCons.Utilities.IntegerTokenHandling">
+            <summary>
+            Defines how the unflatten operation handles integer tokens in a JSON Pointer 
+            </summary>
+        </member>
+        <member name="F:JsonCons.Utilities.IntegerTokenHandling.IndexFirst">
+            <summary>
+            The unflatten operation first tries to unflatten into a JSON array
+            using the integer tokens as sequential indices, and if that fails, unflattens into
+            a JSON object using the integer tokens as names.
+            </summary>
+        </member>
+        <member name="F:JsonCons.Utilities.IntegerTokenHandling.NameOnly">
+            <summary>
+            The unflatten operation always unflattens into a JSON object
+            using the integer tokens as names.
+            </summary>
+        </member>
+        <member name="T:JsonCons.Utilities.JsonFlattener">
+            <summary>
+            Provides functionality to flatten a JSON object or array to a single depth JSON object of JSON Pointer-value pairs,
+            and to unflatten a flattened JSON object.
+            </summary>
+            <example>
+            This example shows how to flatten and unflatten a JSON value
+            <code>
+            using System;
+            using System.Diagnostics;
+            using System.Text.Json;
+            using JsonCons.Utilities;
+            
+            public class Example
+            {
+               public static void Main()
+               {
+                   using var doc = JsonDocument.Parse(@"
+                   {
+                      ""application"": ""hiking"",
+                      ""reputons"": [
+                          {
+                              ""rater"": ""HikingAsylum"",
+                              ""assertion"": ""advanced"",
+                              ""rated"": ""Marilyn C"",
+                              ""rating"": 0.90
+                           },
+                           {
+                              ""rater"": ""HikingAsylum"",
+                              ""assertion"": ""intermediate"",
+                              ""rated"": ""Hongmin"",
+                              ""rating"": 0.75
+                           }    
+                       ]
+                   }
+                   ");
+               
+                   using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+               
+                   var options = new JsonSerializerOptions() { WriteIndented = true };
+               
+                   Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
+               
+                   using JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
+               
+                   var comparer = JsonElementEqualityComparer.Instance;
+                   Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
+                }
+            }
+            </code>
+            Output:
+            <code>
+            {
+              "/application": "hiking",
+              "/reputons/0/rater": "HikingAsylum",
+              "/reputons/0/assertion": "advanced",
+              "/reputons/0/rated": "Marilyn C",
+              "/reputons/0/rating": 0.90,
+              "/reputons/1/rater": "HikingAsylum",
+              "/reputons/1/assertion": "intermediate",
+              "/reputons/1/rated": "Hongmin",
+              "/reputons/1/rating": 0.75
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)">
+            <summary>
+            Converts a JSON object or array into a single depth JSON object of name-value pairs,
+            such that the names are JSON Pointer strings, and the values are either string,
+            number, true, false, null, empty object, or empty array. 
+            </summary>
+            <remarks>
+            It is the users responsibilty to properly Dispose the returned JSONDocument value
+            </remarks>
+            <param name="value">The value to be flattened.</param>
+            <returns>The flattened value</returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenHandling)">
+            <summary>
+            Recovers the orginal JSON value from a JSON object in flattened form, to the extent possible. 
+            There may not be a unique solution, an integer token in a JSON Pointer could be an array index or 
+            it could be an object name. The default behavior is to attempt to recover arrays. The <paramref name="options"/>
+            parameter can be used to recover objects with integer names instead.
+            </summary>
+            <remarks>
+            It is the users responsibilty to properly Dispose the returned JSONDocument value
+            </remarks>
+            <param name="flattenedValue">The flattened value, which must be a JSON object of name-value pairs, such that 
+            the names are JSON Pointer strings, and the values are either string,
+            number, true, false, null, empty object, or empty array.</param>
+            <param name="options">Options for handling integer tokens in the JSON Pointer.</param>
+            <returns>The unflattened value</returns>
+            <exception cref="T:System.ArgumentException">
+              The <paramref name="flattenedValue"/> is not a JSON object, or has a name that contains an invalid JSON pointer.
+            </exception>
+        </member>
+        <member name="T:JsonCons.Utilities.JsonMergePatch">
+            <summary>
+            Provides functionality for applying a JSON Merge Patch as 
+            defined in <see href="https://datatracker.ietf.org/doc/html/rfc7396">RFC 7396</see>
+            to a JSON value.
+            </summary>
+            <example>
+            The following example borrowed from [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) shows how to apply a JSON Merge Patch to a JSON value
+            <code>
+            using System;
+            using System.Diagnostics;
+            using System.Text.Json;
+            using JsonCons.Utilities;
+            
+            public class Example
+            {
+               public static void Main()
+               {
+                using var doc = JsonDocument.Parse(@"
+            {
+                 ""title"": ""Goodbye!"",
+                 ""author"" : {
+               ""givenName"" : ""John"",
+               ""familyName"" : ""Doe""
+                 },
+                 ""tags"":[ ""example"", ""sample"" ],
+                 ""content"": ""This will be unchanged""
+            }
+                ");
+            
+                using var patch = JsonDocument.Parse(@"
+            {
+                 ""title"": ""Hello!"",
+                 ""phoneNumber"": ""+01-123-456-7890"",
+                 ""author"": {
+               ""familyName"": null
+                 },
+                 ""tags"": [ ""example"" ]
+            }
+                    ");
+            
+                using JsonDocument result = JsonMergePatch.ApplyMergePatch(doc.RootElement, patch.RootElement);
+            
+                var options = new JsonSerializerOptions() { WriteIndented = true };
+            
+                Console.WriteLine("The original document:\n");
+                Console.WriteLine($"{JsonSerializer.Serialize(doc.RootElement, options)}\n");
+                Console.WriteLine("The patch:\n");
+                Console.WriteLine($"{JsonSerializer.Serialize(patch.RootElement, options)}\n");
+                Console.WriteLine("The result:\n");
+                Console.WriteLine($"{JsonSerializer.Serialize(result, options)}\n");
+                   ");
+                }
+            }
+            </code>
+            The original document:
+            <code>
+            
+            {
+              "title": "Goodbye!",
+              "author": {
+                "givenName": "John",
+                "familyName": "Doe"
+              },
+              "tags": [
+                "example",
+                "sample"
+              ],
+              "content": "This will be unchanged"
+            }
+            </code>
+            
+            The patch:
+            
+            <code>
+            {
+              "title": "Hello!",
+              "phoneNumber": "\u002B01-123-456-7890",
+              "author": {
+                "familyName": null
+              },
+              "tags": [
+                "example"
+              ]
+            }
+            </code>
+            
+            The result:
+            
+            <code>
+            {
+              "title": "Hello!",
+              "author": {
+                "givenName": "John"
+              },
+              "tags": [
+                "example"
+              ],
+              "content": "This will be unchanged",
+              "phoneNumber": "\u002B01-123-456-7890"
+            }    
+            </code>
+            </example>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonMergePatch.ApplyMergePatch(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
+            <summary>
+            Applies a JSON Merge Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc7396">RFC 7396</see> 
+            to a source JSON value.
+            </summary>
+            <remarks>
+            It is the users responsibilty to properly Dispose the returned JSONDocument value
+            </remarks>
+            <param name="source">The source JSON value.</param>
+            <param name="patch">The JSON merge patch to be applied to the source JSON value.</param>
+            <returns>The patched JSON value</returns>
+        </member>
+        <member name="T:JsonCons.Utilities.JsonPatchException">
+            <summary>
+            Captures error message and the operation that caused it.
+            </summary>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPatchException.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a <see cref="T:JsonCons.Utilities.JsonPatchException"/>.
+            </summary>
+            <param name="operation">The operation that caused the error.</param>
+            <param name="message">The error message.</param>
+        </member>
+        <member name="P:JsonCons.Utilities.JsonPatchException.Operation">
+            <summary>
+            Gets the <see cref="T:System.String"/> that caused the error.
+            </summary>
+        </member>
+        <member name="T:JsonCons.Utilities.JsonPatch">
+            <summary>
+            Provides functionality for applying a JSON Patch as 
+            defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see>
+            to a JSON value.
+            </summary>
+            <example>
+            The following example borrowed from [jsonpatch.com](http://jsonpatch.com/) shows how to apply a JSON Patch to a JSON value
+            <code>
+            using System;
+            using System.Diagnostics;
+            using System.Text.Json;
+            using JsonCons.Utilities;
+            
+            public class Example
+            {
+               public static void Main()
+               {
+                using var doc = JsonDocument.Parse(@"
+            {
+            ""baz"": ""qux"",
+            ""foo"": ""bar""
+            }
+                ");
+            
+                using var patch = JsonDocument.Parse(@"
+            [
+            { ""op"": ""replace"", ""path"": ""/baz"", ""value"": ""boo"" },
+            { ""op"": ""add"", ""path"": ""/hello"", ""value"": [""world""] },
+            { ""op"": ""remove"", ""path"": ""/foo"" }
+            ]
+                ");
+            
+                using JsonDocument result = JsonPatch.ApplyPatch(doc.RootElement, patch.RootElement);
+            
+                var options = new JsonSerializerOptions() { WriteIndented = true };
+            
+                Console.WriteLine("The original document:\n");
+                Console.WriteLine($"{JsonSerializer.Serialize(doc.RootElement, options)}\n");
+                Console.WriteLine("The patch:\n");
+                Console.WriteLine($"{JsonSerializer.Serialize(patch.RootElement, options)}\n");
+                Console.WriteLine("The result:\n");
+                Console.WriteLine($"{JsonSerializer.Serialize(result, options)}\n");
+                   ");
+                }
+            }
+            </code>
+            The original document:
+            
+            <code>
+            {
+              "baz": "qux",
+              "foo": "bar"
+            }
+            </code>
+            
+            The patch:
+            <code>
+            
+            [
+              {
+                "op": "replace",
+                "path": "/baz",
+                "value": "boo"
+              },
+              {
+                "op": "add",
+                "path": "/hello",
+                "value": [
+                  "world"
+                ]
+              },
+              {
+                "op": "remove",
+                "path": "/foo"
+              }
+            ]
+            </code>
+            
+            The result:
+            <code>
+            {
+              "baz": "boo",
+              "hello": [
+                "world"
+              ]
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPatch.ApplyPatch(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
+            <summary>
+            Applies a JSON Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see> 
+            to a source JSON value.
+            </summary>
+            <remarks>
+            It is the users responsibilty to properly Dispose the returned JSONDocument value
+            </remarks>
+            <param name="source">The source JSON value.</param>
+            <param name="patch">The patch to be applied to the source JSON value.</param>
+            <returns>The patched JSON value</returns>
+            <exception cref="T:System.ArgumentException">
+            The provided <paramref name="patch"/> is invalid 
+            </exception>
+            <exception cref="T:JsonCons.Utilities.JsonPatchException">
+              A JSON Patch operation failed
+            </exception>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPatch.FromDiff(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
+            <summary>
+            Builds a JSON Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc6902">RFC 6902</see> 
+            given two JSON values, a source and a target.
+            </summary>
+            <remarks>
+            It is the users responsibilty to properly Dispose the returned JSONDocument value
+            </remarks>
+            <param name="source">The source JSON value.</param>
+            <param name="target">The target JSON value.</param>
+            <returns>A patch to convert the source JSON value to the target JSON value</returns>
+        </member>
+        <member name="T:JsonCons.Utilities.JsonPointer">
+            <summary>
+            Represents a JSON Pointer as defined by <see href="https://datatracker.ietf.org/doc/html/rfc6901">RFC 6901</see>
+            </summary>
+        </member>
+        <member name="P:JsonCons.Utilities.JsonPointer.Tokens">
+            <summary>
+            Returns a list of (unescaped) reference tokens
+            </summary>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.#ctor(System.Collections.Generic.IReadOnlyList{System.String})">
+            <summary>
+            Constructs a JSON Pointer from a list of (unescaped) reference tokens 
+            </summary>
+            <param name="tokens">A list of (unescaped) reference tokens.</param>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.Parse(System.String)">
+            <summary>
+            Parses a JSON Pointer represented as a string value or a 
+            fragment identifier (starts with <c>#</c>) into a <see cref="T:JsonCons.Utilities.JsonPointer"/>.
+            </summary>
+            <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
+            <returns>A <see cref="T:JsonCons.Utilities.JsonPointer"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+              The <paramref name="input"/> is <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+              The <paramref name="input"/> is invalid.
+            </exception>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.TryParse(System.String,JsonCons.Utilities.JsonPointer@)">
+            <summary>
+            Parses a JSON Pointer represented as a string value or a 
+            fragment identifier (starts with <c>#</c>) into a <see cref="T:JsonCons.Utilities.JsonPointer"/>.
+            </summary>
+            <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
+            <param name="pointer">The JSONPointer.</param>
+            <returns><c>true</c> if the input string can be parsed into a list of reference tokens, <c>false</c> otherwise.</returns>
+            <exception cref="T:System.ArgumentNullException">
+              The <paramref name="input"/> is <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a list of reference tokens.
+            </summary>
+            <returns>An <c>IEnumerator&lt;string></c> for a list of reference tokens.</returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.ToString">
+            <summary>
+            Returns a JSON Pointer represented as a string value.
+            </summary>
+            <returns>A JSON Pointer represented as a string value.</returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.ToUriFragment">
+            <summary>
+            Returns a string representing the JSON Pointer as a URI fragment identifier
+            </summary>
+            <returns>A JSON Pointer represented as a fragment identifier.</returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.Equals(JsonCons.Utilities.JsonPointer)">
+            <summary>
+            Determines whether two JSONPointer objects have the same value.
+            </summary>
+            <param name="other"></param>
+            <returns><c>true</c> if other is a <see cref="T:JsonCons.Utilities.JsonPointer"/> and has exactly the same reference tokens as this instance; otherwise, <c>false</c>. 
+            If other is <c>null</c>, the method returns <c>false</c>.</returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.Equals(System.Object)">
+            <summary>
+            Determines whether this instance and a specified object, which must also be a JSONPointer object, have the same value.
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.GetHashCode">
+            <summary>
+            Returns the hash code for this <see cref="T:JsonCons.Utilities.JsonPointer"/>
+            </summary>
+            <returns>A 32-bit signed integer hash code.</returns>
+            <returns></returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement)">
+            <summary>
+            Evaluates this JSON Pointer on the provided target.
+            </summary>
+            <param name="target"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)">
+            <summary>
+            Evaluates this JSON Pointer on the provided target.
+            </summary>
+            <param name="target"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)">
+            <summary>
+            Returns the value at the referenced location in the specified target.
+            </summary>
+            <param name="target"></param>
+            <param name="pointer"></param>
+            <param name="value"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">
+              The <paramref name="pointer"/> is <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.Escape(System.String)">
+            <summary>
+            Escapes a JSON Pointer token
+            </summary>
+            <returns>
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+              The <paramref name="token"/> is <see langword="null"/>.
+            </exception>
+        </member>
+    </members>
+</doc>

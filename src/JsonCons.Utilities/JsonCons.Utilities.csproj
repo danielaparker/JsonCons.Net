@@ -4,14 +4,31 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Version>1.0.0-preview.1</Version>
     <Authors>Daniel Parker</Authors>
+    <Description>The JsonCons.Utilities library includes classes that complement the functionality of the 
+System.Text.Json namespace with support for JSON Pointer, JSON Patch, and JSON Merge Patch.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Copyright>Daniel Parker</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/danielaparker/JsonCons.Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/danielaparker/JsonCons.Net</RepositoryUrl>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageTags>jsonpointer json-pointer jsonpatch json-patch json-merge-patch</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\danie\source\repos\JsonCons.Net\src\Json\Json.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\danie\source\repos\JsonCons.Net\src\JsonCons.Utilities\JsonCons.Utilities.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

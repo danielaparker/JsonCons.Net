@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,8 +10,21 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
+	
+	<!-- Clean up DocFX output -->
+	<Target Name="CleanDocFX" AfterTargets="DocClean">
+		<Message Text="Cleaning up DocFX generated documentation." Importance="high" />
+		<RemoveDir Directories="$(SolutionDir)docs" />
+		<ItemGroup Label="DocFX Artifacts to Clean">
+			<FilesToDelete Include="$(SolutionDir)doc_source\ref\*.yml" />
+			<FilesToDelete Include="$(SolutionDir)doc_source\ref\.manifest" />
+			<FilesToDelete Include="$(SolutionDir)doc_source\log.txt" />
+		</ItemGroup>
+		<Delete Files="@(FilesToDelete)" />
+	</Target>
+	
   <ItemGroup>
+    <ProjectReference Include="..\src\JsonCons.JsonPath\JsonCons.JsonPath.csproj" />
     <ProjectReference Include="..\src\JsonCons.Utilities\JsonCons.Utilities.csproj" />
   </ItemGroup>
 
