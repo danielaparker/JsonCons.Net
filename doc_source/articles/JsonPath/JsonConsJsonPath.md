@@ -21,7 +21,7 @@ The JsonCons implementation differs from Stefan Goessner's original JavaScript i
 - A parent operator `^` provides access to the parent node.
 - Options are provided to exclude results corresponding to duplicate paths, and to sort results according to paths.
 
-[Root and current node](#S1)
+[Root and current node](#S1)  
 
 [Paths](#S2)  
 
@@ -36,7 +36,7 @@ The JsonCons implementation differs from Stefan Goessner's original JavaScript i
 [Filter expressions](#S7)  
 
 <div id="S1"/> 
- 
+
 ### Root and current node
 
 The symbol '$' represents the root JSON value, the JSON document to be evaluated.
