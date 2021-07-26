@@ -41,11 +41,10 @@ obtained as
             ""price"" : 260.90
         }
     ]
-}
-        ";
+}";
 
         using JsonDocument doc = JsonDocument.Parse(jsonString);
-```,
+```
 the [JsonCons.JsonPath.JsonSelector](https://github.com/danielaparker/JsonCons.Net/blob/main/docs/ref/JsonCons.JsonPath.JsonSelector.html) class 
 provides functionality for retrieving selected values,
 
