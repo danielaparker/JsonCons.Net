@@ -1,7 +1,7 @@
 # JsonCons JSONPath
 
 [JSONPath](http://goessner.net/articles/JsonPath/) is a loosely standardized syntax for querying JSON. 
-There are many implementations that differ significantly, see Christoph Burgmer's [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
+There are many implementations and they differ in significant ways, see Christoph Burgmer's [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
 
 The JsonCons implementation is described in an [ABNF grammar](Grammar.md).
 It explicitly implements a state machine that corresponds to this grammar. 
@@ -21,19 +21,30 @@ The JsonCons implementation differs from Stefan Goessner's original JavaScript i
 - A parent operator `^` provides access to the parent node.
 - Options are provided to exclude results corresponding to duplicate paths, and to sort results according to paths.
 
-[Paths](#S1)  
+[Root and current node](#S1)
 
-[Duplicates and ordering](#S2)  
+[Paths](#S2)  
 
-[Slices](#S3)  
+[Duplicates and ordering](#S3)  
 
-[Unions](#S4)  
+[Slices](#S4)  
 
-[Parent operator](#S5)  
+[Unions](#S5)  
 
-[Filter expressions](#S6)  
+[Parent operator](#S6)  
 
-<div id="S1"/> 
+[Filter expressions](#S7)  
+
+<div id="S1"/>
+ 
+### Root and current node
+
+The symbol '$' represents the root value, the JSON document to be evaluated.
+The symbol '@' represents the "current node". At the start of an expression, 
+the current node is the document to be evaluated, and as the expression 
+is evaluated, it changes to reflect the node currently being processed.   
+
+<div id="S2"/> 
 
 ### Paths
 
@@ -93,7 +104,7 @@ Union of the fourth book and all books with price > 10:
 
     $.store[@.book[3],@.book[?(@.price > 10)]]
 
-<div id="S2"/> 
+<div id="S3"/> 
 
 ### Duplicates and ordering
 
@@ -150,7 +161,7 @@ By default, the ordering of results is unspecified, although the user may
 expect array ordering at least to be preserved.  The `JsonPath.Select` functions 
 provide an option for sorting results by paths.
 
-<div id="S3"/> 
+<div id="S4"/> 
 
 ### Slices
 
@@ -190,7 +201,7 @@ $[1::-1]   | First two items, reversed
 $[:-3:-1]  | Last two items, reversed
 $[-3::-1]  | All items except the last two, reversed
 
-<div id="S4"/> 
+<div id="S5"/> 
 
 ### Unions
 
@@ -211,7 +222,7 @@ the last, and the third from [Stefan Goessner's store](https://goessner.net/arti
 "$.store.book[0:2,-1,?(@.author=='Herman Melville')].title"
 ```
 
-<div id="S5"/> 
+<div id="S6"/> 
 
 ### Parent operator 
 
@@ -290,7 +301,7 @@ selects all the book objects that have ratings of 5:
 ]
 ```
 
-<div id="S6"/> 
+<div id="S7"/> 
 
 ### Filter expressions
 
