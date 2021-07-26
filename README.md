@@ -12,7 +12,7 @@ offering support for:
 For example, given a [system.text.json.JsonDocument](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsondocument?view=net-5.0)
 obtained as
 ```
-        string jsonString = @"
+string jsonString = @"
 {
     ""books"":
     [
@@ -43,7 +43,7 @@ obtained as
     ]
 }";
 
-        using JsonDocument doc = JsonDocument.Parse(jsonString);
+using JsonDocument doc = JsonDocument.Parse(jsonString);
 ```
 the [JsonCons.JsonPath.JsonSelector](https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.JsonPath.JsonSelector.html) 
 class provides functionality for selecting a set of elements that meet some criteria,
