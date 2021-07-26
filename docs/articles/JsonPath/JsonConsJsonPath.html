@@ -94,10 +94,10 @@ The <code>JsonCons</code> implementation returns an empty array in case of no ma
 <p><a href="#S5">Unions</a></p>
 <p><a href="#S6">Parent operator</a></p>
 <p><a href="#S7">Filter expressions</a></p>
-<div id="S1"></div>
+<div id="S1"></div> 
  
 ### Root and current node
-<p>The symbol '$' represents the root value, the JSON document to be evaluated.
+<p>The symbol '$' represents the root JSON value, the JSON document to be evaluated.
 The symbol '@' represents the &quot;current node&quot;. At the start of an expression,
 the current node is the document to be evaluated, and as the expression
 is evaluated, it changes to reflect the node currently being processed.</p>
@@ -169,8 +169,7 @@ and does not create JSON elements that are not in the original.</p>
 <p>or</p>
 <pre><code>$.&quot;store&quot;.&quot;book&quot;.0
 </code></pre>
-<p>The leading <code>$</code> represents the root JSON value.
-Unquoted names in the dot notation are restricted to digits 0-9, letters A-Z and a-z,
+<p>Unquoted names in the dot notation are restricted to digits 0-9, letters A-Z and a-z,
 the underscore character _, and unicode coded characters that are non-ascii. Note
 that names with hyphens must be quoted.</p>
 <p>Select the first (indexed 0) book using the bracket-notation:</p>

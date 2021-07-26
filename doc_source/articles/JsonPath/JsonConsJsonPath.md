@@ -39,7 +39,7 @@ The JsonCons implementation differs from Stefan Goessner's original JavaScript i
  
 ### Root and current node
 
-The symbol '$' represents the root value, the JSON document to be evaluated.
+The symbol '$' represents the root JSON value, the JSON document to be evaluated.
 The symbol '@' represents the "current node". At the start of an expression, 
 the current node is the document to be evaluated, and as the expression 
 is evaluated, it changes to reflect the node currently being processed.   
@@ -79,7 +79,6 @@ or
 
     $."store"."book".0
 
-The leading `$` represents the root JSON value. 
 Unquoted names in the dot notation are restricted to digits 0-9, letters A-Z and a-z, 
 the underscore character _, and unicode coded characters that are non-ascii. Note 
 that names with hyphens must be quoted.
