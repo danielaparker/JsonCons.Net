@@ -11,7 +11,7 @@ namespace JsonCons.JsonPath
    {
        internal static ValueEqualityComparer Instance { get; } = new ValueEqualityComparer();
 
-       private int _maxHashDepth { get; } = 100;
+       private int _maxHashDepth = 100;
 
        ValueEqualityComparer() {}
 
