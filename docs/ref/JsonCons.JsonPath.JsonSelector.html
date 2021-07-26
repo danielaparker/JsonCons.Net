@@ -367,7 +367,7 @@ A <a class="xref" href="JsonCons.JsonPath.JsonSelector.html">JsonSelector</a> in
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L489">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L492">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_Select_" data-uid="JsonCons.JsonPath.JsonSelector.Select*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">Select(JsonElement, String, JsonSelectorOptions)</h4>
@@ -444,6 +444,11 @@ This method parses and applies the expression in one operation.</p>
         <td><p><code data-dev-comment-type="paramref" class="paramref">jsonPath</code> is <span class="xref">null</span>.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Maximum depth level exceeded in recursive descent selector.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
@@ -508,7 +513,7 @@ within the root value that match this JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L543">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L552">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_SelectNodes_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">SelectNodes(JsonElement, String, JsonSelectorOptions)</h4>
@@ -586,6 +591,11 @@ within the root value that match the provided JSONPath expression</p>
         <td><p><code data-dev-comment-type="paramref" class="paramref">jsonPath</code> is <span class="xref">null</span>.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Maximum depth level exceeded in recursive descent selector.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
@@ -649,7 +659,7 @@ within the root value that match the provided JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L515">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L521">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_SelectPaths_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">SelectPaths(JsonElement, String, JsonSelectorOptions)</h4>
@@ -724,6 +734,11 @@ This method parses and applies the expression in one operation.</p>
       <tr>
         <td><span class="xref">System.ArgumentNullException</span></td>
         <td><p><code data-dev-comment-type="paramref" class="paramref">jsonPath</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Maximum depth level exceeded in recursive descent selector.</p>
 </td>
       </tr>
     </tbody>

@@ -485,6 +485,9 @@ namespace JsonCons.JsonPath
         /// <exception cref="ArgumentNullException">
         ///   <paramref name="jsonPath"/> is <see langword="null"/>.
         /// </exception>
+        /// <exception cref="InvalidOperationException">
+        ///   Maximum depth level exceeded in recursive descent selector.
+        /// </exception>
 
         public static IList<JsonElement> Select(JsonElement root, string jsonPath, 
                                                 JsonSelectorOptions? options = null)
@@ -510,6 +513,9 @@ namespace JsonCons.JsonPath
         /// </exception>
         /// <exception cref="ArgumentNullException">
         ///   <paramref name="jsonPath"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        ///   Maximum depth level exceeded in recursive descent selector.
         /// </exception>
 
         public static IList<NormalizedPath> SelectPaths(JsonElement root, 
@@ -538,6 +544,9 @@ namespace JsonCons.JsonPath
         /// </exception>
         /// <exception cref="ArgumentNullException">
         ///   <paramref name="jsonPath"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        ///   Maximum depth level exceeded in recursive descent selector.
         /// </exception>
 
         public static IList<JsonPathNode> SelectNodes(JsonElement root, 
