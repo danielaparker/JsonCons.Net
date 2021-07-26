@@ -49,16 +49,9 @@ the [JsonCons.JsonPath.JsonSelector](https://danielaparker.github.io/JsonCons.Ne
 class provides functionality for selecting a set of elements that meet some criteria,
 
 ```
-        var selector = JsonSelector.Parse("$.books[?(@.price >= 22 && @.price < 30)]");
+var selector = JsonSelector.Parse("$.books[?(@.price >= 22 && @.price < 30)]");
 
-        IList<JsonElement> elements = selector.Select(doc.RootElement);
-
-        var options = new JsonSerializerOptions() {WriteIndented = true};
-        foreach (var node in nodes)
-        {
-            Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
-        }
-        Console.WriteLine();
+IList<JsonElement> elements = selector.Select(doc.RootElement);
 ```
 
 The JsonCons.Net libraries target .Net Standard 2.1. Reference documentation is available [here](https://danielaparker.github.io/JsonCons.Net/ref/)
