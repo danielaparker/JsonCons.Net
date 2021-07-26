@@ -17,7 +17,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.Json;
-using JsonCons.JsonPathLib;
+using JsonCons.JsonPath;
 
 namespace JsonCons.Examples
 {
