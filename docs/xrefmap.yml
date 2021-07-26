@@ -205,6 +205,25 @@ references:
   commentId: T:JsonCons.JsonPath.JsonSelectorOptions
   fullName: JsonCons.JsonPath.JsonSelectorOptions
   nameWithType: JsonSelectorOptions
+- uid: JsonCons.JsonPath.JsonSelectorOptions.Default
+  name: Default
+  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_Default
+  commentId: F:JsonCons.JsonPath.JsonSelectorOptions.Default
+  fullName: JsonCons.JsonPath.JsonSelectorOptions.Default
+  nameWithType: JsonSelectorOptions.Default
+- uid: JsonCons.JsonPath.JsonSelectorOptions.MaxDepth
+  name: MaxDepth
+  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_MaxDepth
+  commentId: P:JsonCons.JsonPath.JsonSelectorOptions.MaxDepth
+  fullName: JsonCons.JsonPath.JsonSelectorOptions.MaxDepth
+  nameWithType: JsonSelectorOptions.MaxDepth
+- uid: JsonCons.JsonPath.JsonSelectorOptions.MaxDepth*
+  name: MaxDepth
+  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_MaxDepth_
+  commentId: Overload:JsonCons.JsonPath.JsonSelectorOptions.MaxDepth
+  isSpec: "True"
+  fullName: JsonCons.JsonPath.JsonSelectorOptions.MaxDepth
+  nameWithType: JsonSelectorOptions.MaxDepth
 - uid: JsonCons.JsonPath.JsonSelectorOptions.NoDuplicates
   name: NoDuplicates
   href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_NoDuplicates

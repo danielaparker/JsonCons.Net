@@ -72,6 +72,11 @@
             paths and order of results.
             </summary>
         </member>
+        <member name="F:JsonCons.JsonPath.JsonSelectorOptions.Default">
+            <summary>
+            Gets a singleton instance of JsonSelectorOptions. NoDuplicates and SortByPath are both false, and MaximumDepth is 64.
+            </summary>
+        </member>
         <member name="P:JsonCons.JsonPath.JsonSelectorOptions.NoDuplicates">
             <summary>
             Remove items from results that correspond to the same path.
@@ -81,6 +86,12 @@
             <summary>
             Sort results by path.
             </summary>
+        </member>
+        <member name="P:JsonCons.JsonPath.JsonSelectorOptions.MaxDepth">
+            <summary>
+            Gets or sets the depth limit for recursive descent, with the default value a maximum depth of 64.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:JsonCons.JsonPath.ProcessingFlags">
              <summary>
@@ -242,6 +253,9 @@
             <param name="root">The root value.</param>
             <param name="options">Options for handling duplicate paths and order of results.</param>
             <returns>A list of values within the root value that match this JSONPath expression</returns>
+            <exception cref="T:System.InvalidOperationException">
+              Maximum depth level exceeded in recursive descent selector.
+            </exception>
         </member>
         <member name="M:JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">
             <summary>

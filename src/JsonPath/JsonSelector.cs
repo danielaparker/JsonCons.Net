@@ -12,7 +12,14 @@ namespace JsonCons.JsonPath
 {
     sealed class DynamicResources 
     {
+        internal JsonSelectorOptions Options {get;}
+
         Dictionary<Int32,IValue> _cache = new Dictionary<Int32,IValue>();
+
+        internal DynamicResources(JsonSelectorOptions options)
+        {
+            Options = options;
+        }
 
         internal bool IsCached(Int32 id)
         {
@@ -38,6 +45,11 @@ namespace JsonCons.JsonPath
     public sealed class JsonSelectorOptions 
     {
         /// <summary>
+        /// Gets a singleton instance of JsonSelectorOptions. NoDuplicates and SortByPath are both false, and MaximumDepth is 64.
+        /// </summary>
+        public static readonly JsonSelectorOptions Default = new JsonSelectorOptions();
+
+        /// <summary>
         /// Remove items from results that correspond to the same path.
         /// </summary>
         public bool NoDuplicates {get;set;} = false;
@@ -46,6 +58,12 @@ namespace JsonCons.JsonPath
         /// Sort results by path.
         /// </summary>
         public bool SortByPath {get;set;} = false;
+
+        /// <summary>
+        /// Gets or sets the depth limit for recursive descent, with the default value a maximum depth of 64.
+        /// </summary>
+        /// <returns></returns>
+        public int MaxDepth { get; set; } = 64;
     };
 
     /// <summary>
@@ -229,10 +247,14 @@ namespace JsonCons.JsonPath
         /// <param name="root">The root value.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of values within the root value that match this JSONPath expression</returns>
+        /// <exception cref="InvalidOperationException">
+        ///   Maximum depth level exceeded in recursive descent selector.
+        /// </exception>
 
         public IList<JsonElement> Select(JsonElement root, 
-                                         JsonSelectorOptions? options = default)
+                                         JsonSelectorOptions? options = null)
         {
+            DynamicResources resources;
             ProcessingFlags flags = _requiredFlags;
             if (options != null)
             {
@@ -244,9 +266,13 @@ namespace JsonCons.JsonPath
                 {
                     flags |= ProcessingFlags.Sort;
                 }
+                resources = new DynamicResources(options);
+            }
+            else
+            {
+                resources = new DynamicResources(JsonSelectorOptions.Default);
             }
 
-            var resources = new DynamicResources();
             var values = new List<JsonElement>();
 
             if ((flags & ProcessingFlags.Sort | flags & ProcessingFlags.NoDups) != 0)
@@ -258,7 +284,8 @@ namespace JsonCons.JsonPath
                                  PathNode.Root, 
                                  new JsonElementValue(root), 
                                  accumulator, 
-                                 flags);
+                                 flags,
+                                 0);
 
                 if (nodes.Count > 1)
                 {
@@ -302,7 +329,8 @@ namespace JsonCons.JsonPath
                                  PathNode.Root, 
                                  new JsonElementValue(root), 
                                  accumulator, 
-                                 flags);
+                                 flags,
+                                 0);
             }
 
             return values;
@@ -316,8 +344,9 @@ namespace JsonCons.JsonPath
         /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value that match this JSONPath expression</returns>
 
         public IList<NormalizedPath> SelectPaths(JsonElement root, 
-                                                 JsonSelectorOptions? options = default)
+                                                 JsonSelectorOptions? options = null)
         {
+            DynamicResources resources;
             ProcessingFlags flags = _requiredFlags;
             if (options != null)
             {
@@ -329,9 +358,12 @@ namespace JsonCons.JsonPath
                 {
                     flags |= ProcessingFlags.Sort;
                 }
+                resources = new DynamicResources(options);
             }
-
-            var resources = new DynamicResources();
+            else
+            {
+                resources = new DynamicResources(JsonSelectorOptions.Default);
+            }
 
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
@@ -340,7 +372,8 @@ namespace JsonCons.JsonPath
                              PathNode.Root, 
                              new JsonElementValue(root), 
                              accumulator, 
-                             flags | ProcessingFlags.Path);
+                             flags | ProcessingFlags.Path,
+                             0);
 
             if ((flags & ProcessingFlags.Sort | flags & ProcessingFlags.NoDups) != 0)
             {
@@ -379,8 +412,9 @@ namespace JsonCons.JsonPath
         /// within the root value that match this JSONPath expression</returns>
 
         public IList<JsonPathNode> SelectNodes(JsonElement root, 
-                                               JsonSelectorOptions? options = default)
+                                               JsonSelectorOptions? options = null)
         {
+            DynamicResources resources;
             ProcessingFlags flags = _requiredFlags;
             if (options != null)
             {
@@ -392,9 +426,12 @@ namespace JsonCons.JsonPath
                 {
                     flags |= ProcessingFlags.Sort;
                 }
+                resources = new DynamicResources(options);
             }
-
-            var resources = new DynamicResources();
+            else
+            {
+                resources = new DynamicResources(JsonSelectorOptions.Default);
+            }
 
             var nodes = new List<JsonPathNode>();
             var accumulator = new NodeAccumulator(nodes);
@@ -403,7 +440,8 @@ namespace JsonCons.JsonPath
                              PathNode.Root, 
                              new JsonElementValue(root), 
                              accumulator, 
-                             flags | ProcessingFlags.Path);
+                             flags | ProcessingFlags.Path,
+                             0);
 
             if ((flags & ProcessingFlags.Sort | flags & ProcessingFlags.NoDups) != 0)
             {
@@ -449,7 +487,7 @@ namespace JsonCons.JsonPath
         /// </exception>
 
         public static IList<JsonElement> Select(JsonElement root, string jsonPath, 
-                                                JsonSelectorOptions? options = default)
+                                                JsonSelectorOptions? options = null)
         {
             if (jsonPath == null)
             {
@@ -476,7 +514,7 @@ namespace JsonCons.JsonPath
 
         public static IList<NormalizedPath> SelectPaths(JsonElement root, 
                                                         string jsonPath, 
-                                                        JsonSelectorOptions? options = default)
+                                                        JsonSelectorOptions? options = null)
         {
             if (jsonPath == null)
             {
@@ -504,7 +542,7 @@ namespace JsonCons.JsonPath
 
         public static IList<JsonPathNode> SelectNodes(JsonElement root, 
                                                       string jsonPath, 
-                                                      JsonSelectorOptions? options = default)
+                                                      JsonSelectorOptions? options = null)
         {
             if (jsonPath == null)
             {

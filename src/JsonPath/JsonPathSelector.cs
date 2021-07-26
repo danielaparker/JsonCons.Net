@@ -45,7 +45,8 @@ namespace JsonCons.JsonPath
                     PathNode last,
                     IValue current, 
                     INodeAccumulator accumulator,
-                    ProcessingFlags options);
+                    ProcessingFlags options,
+                    int depth);
 
         bool TryEvaluate(DynamicResources resources, 
                          IValue root,
@@ -68,7 +69,8 @@ namespace JsonCons.JsonPath
                                     PathNode last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ProcessingFlags options);
+                                    ProcessingFlags options,
+                                    int depth);
 
         public abstract bool TryEvaluate(DynamicResources resources, 
                                          IValue root, 
@@ -94,7 +96,8 @@ namespace JsonCons.JsonPath
                                   PathNode last,
                                   IValue current,
                                   INodeAccumulator accumulator,
-                                  ProcessingFlags options)
+                                  ProcessingFlags options,
+                                  int depth)
         {
             if (Tail == null)
             {
@@ -102,7 +105,7 @@ namespace JsonCons.JsonPath
             }
             else
             {
-                Tail.Select(resources, root, last, current, accumulator, options);
+                Tail.Select(resources, root, last, current, accumulator, options, depth);
             }
         }
 
@@ -144,9 +147,10 @@ namespace JsonCons.JsonPath
                                     PathNode last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ProcessingFlags options)
+                                    ProcessingFlags options,
+                                    int depth)
         {
-            this.TailSelect(resources, root, last, root, accumulator, options);        
+            this.TailSelect(resources, root, last, root, accumulator, options, depth);        
         }
         public override bool TryEvaluate(DynamicResources resources, 
                                          IValue root, 
@@ -189,9 +193,10 @@ namespace JsonCons.JsonPath
                                     PathNode last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ProcessingFlags options)
+                                    ProcessingFlags options,
+                                    int depth)
         {
-            this.TailSelect(resources, root, last, current, accumulator, options);        
+            this.TailSelect(resources, root, last, current, accumulator, options, depth);        
         }
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          PathNode last, 
@@ -227,7 +232,8 @@ namespace JsonCons.JsonPath
                                     PathNode last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ProcessingFlags options)
+                                    ProcessingFlags options,
+                                    int depth)
         {
             PathNode ancestor = last;
             int index = 0;
@@ -243,7 +249,7 @@ namespace JsonCons.JsonPath
                 IValue value;
                 if (TryGetValue(root, path, out value))
                 {
-                    this.TailSelect(resources, root, path.Last, value, accumulator, options);        
+                    this.TailSelect(resources, root, path.Last, value, accumulator, options, depth);        
                 }
             }
         }
@@ -327,7 +333,8 @@ namespace JsonCons.JsonPath
                                     PathNode last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ProcessingFlags options)
+                                    ProcessingFlags options,
+                                    int depth)
         {
             if (current.ValueKind == JsonValueKind.Object)
             { 
@@ -336,7 +343,7 @@ namespace JsonCons.JsonPath
                 {
                     this.TailSelect(resources, root, 
                                       PathGenerator.Generate(last, _identifier, options), 
-                                      value, accumulator, options);
+                                      value, accumulator, options, depth);
                 }
             }
         }
@@ -400,7 +407,8 @@ namespace JsonCons.JsonPath
                                     PathNode last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ProcessingFlags options)
+                                    ProcessingFlags options,
+                                    int depth)
         {
             if (current.ValueKind == JsonValueKind.Array)
             { 
@@ -408,7 +416,7 @@ namespace JsonCons.JsonPath
                 {
                     this.TailSelect(resources, root, 
                                       PathGenerator.Generate(last, _index, options), 
-                                      current[_index], accumulator, options);
+                                      current[_index], accumulator, options, depth);
                 }
                 else
                 {
@@ -417,7 +425,7 @@ namespace JsonCons.JsonPath
                     {
                         this.TailSelect(resources, root, 
                                           PathGenerator.Generate(last, _index, options), 
-                                          current[index], accumulator, options);
+                                          current[index], accumulator, options, depth);
                     }
                 }
             }
@@ -480,7 +488,8 @@ namespace JsonCons.JsonPath
                                     PathNode last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ProcessingFlags options) 
+                                    ProcessingFlags options,
+                                    int depth) 
         {
             if (current.ValueKind == JsonValueKind.Array)
             {
@@ -502,7 +511,7 @@ namespace JsonCons.JsonPath
                     {
                         this.TailSelect(resources, root, 
                                           PathGenerator.Generate(last, i, options), 
-                                          current[i], accumulator, options);
+                                          current[i], accumulator, options, depth);
                     }
                 }
                 else if (step < 0)
@@ -521,7 +530,7 @@ namespace JsonCons.JsonPath
                         {
                             this.TailSelect(resources, root, 
                                               PathGenerator.Generate(last, i, options), 
-                                              current[i], accumulator, options);
+                                              current[i], accumulator, options, depth);
                         }
                     }
                 }
@@ -542,7 +551,8 @@ namespace JsonCons.JsonPath
                    last, 
                    current,
                    accumulator,
-                   options);   
+                   options,
+                   0);   
             results = new ArrayJsonValue(elements);
             return true;
         }
@@ -560,28 +570,34 @@ namespace JsonCons.JsonPath
                                     PathNode last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ProcessingFlags options)
+                                    ProcessingFlags options,
+                                    int depth)
         {
+            if (depth >= resources.Options.MaxDepth)
+            {
+                throw new InvalidOperationException($"Maximum depth level exceeded in recursive descent selector.");
+            }
+
             if (current.ValueKind == JsonValueKind.Array)
             {
-                this.TailSelect(resources, root, last, current, accumulator, options);
+                this.TailSelect(resources, root, last, current, accumulator, options, depth+1);
                 Int32 index = 0;
                 foreach (var item in current.EnumerateArray())
                 {
                     Select(resources, root, 
                            PathGenerator.Generate(last, index, options), 
-                           item, accumulator, options);
+                           item, accumulator, options, depth+1);
                     ++index;
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
-                this.TailSelect(resources, root, last, current, accumulator, options);
+                this.TailSelect(resources, root, last, current, accumulator, options, depth+1);
                 foreach (var prop in current.EnumerateObject())
                 {
                     Select(resources, root, 
                            PathGenerator.Generate(last, prop.Name, options), 
-                           prop.Value, accumulator, options);
+                           prop.Value, accumulator, options, depth+1);
                 }
             }
         }
@@ -598,7 +614,8 @@ namespace JsonCons.JsonPath
                    last, 
                    current,
                    accumulator,
-                   options);   
+                   options,
+                   0);   
             results = new ArrayJsonValue(elements);
             return true;
         }
@@ -616,7 +633,8 @@ namespace JsonCons.JsonPath
                                     PathNode last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ProcessingFlags options)
+                                    ProcessingFlags options,
+                                    int depth)
         {
             if (current.ValueKind == JsonValueKind.Array)
             {
@@ -625,7 +643,7 @@ namespace JsonCons.JsonPath
                 {
                     this.TailSelect(resources, root, 
                                     PathGenerator.Generate(last, index, options), 
-                                    item, accumulator, options);
+                                    item, accumulator, options, depth);
                     ++index;
                 }
             }
@@ -635,7 +653,7 @@ namespace JsonCons.JsonPath
                 {
                     this.TailSelect(resources, root, 
                                     PathGenerator.Generate(last, prop.Name, options), 
-                                    prop.Value, accumulator, options);
+                                    prop.Value, accumulator, options, depth);
                 }
             }
         }
@@ -652,7 +670,8 @@ namespace JsonCons.JsonPath
                    last, 
                    current,
                    accumulator,
-                   options);   
+                   options,
+                   0);   
             results = new ArrayJsonValue(elements);
             return true;
         }
@@ -695,11 +714,12 @@ namespace JsonCons.JsonPath
                            PathNode last,
                            IValue current,
                            INodeAccumulator accumulator,
-                           ProcessingFlags options)
+                           ProcessingFlags options,
+                           int depth)
         {
             foreach (var selector in _selectors)
             {
-                selector.Select(resources, root, last, current, accumulator, options);
+                selector.Select(resources, root, last, current, accumulator, options, depth);
             }
         }
 
@@ -716,7 +736,8 @@ namespace JsonCons.JsonPath
                    last, 
                    current,
                    accumulator,
-                   options);   
+                   options,
+                   0);   
             results = new ArrayJsonValue(elements);
             return true;
         }
@@ -746,7 +767,8 @@ namespace JsonCons.JsonPath
                                     PathNode last,
                                     IValue current,
                                     INodeAccumulator accumulator,
-                                    ProcessingFlags options)
+                                    ProcessingFlags options,
+                                    int depth)
         {
             if (current.ValueKind == JsonValueKind.Array)
             {
@@ -759,7 +781,7 @@ namespace JsonCons.JsonPath
                     {
                         this.TailSelect(resources, root, 
                                         PathGenerator.Generate(last, index, options), 
-                                        item, accumulator, options);
+                                        item, accumulator, options, depth);
                     }
                     ++index;
                 }
@@ -774,7 +796,7 @@ namespace JsonCons.JsonPath
                     {
                         this.TailSelect(resources, root, 
                                           PathGenerator.Generate(last, property.Name, options), 
-                                          property.Value, accumulator, options);
+                                          property.Value, accumulator, options, depth);
                     }
                 }
             }
@@ -793,7 +815,8 @@ namespace JsonCons.JsonPath
                    last, 
                    current,
                    accumulator,
-                   options);   
+                   options,
+                   0);   
             results = new ArrayJsonValue(elements);
             return true;
         }
