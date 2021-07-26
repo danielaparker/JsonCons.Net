@@ -35,7 +35,7 @@ The JsonCons implementation differs from Stefan Goessner's original JavaScript i
 
 [Filter expressions](#S7)  
 
-<div id="S1"/>
+<div id="S1"/> 
  
 ### Root and current node
 
