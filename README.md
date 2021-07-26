@@ -45,8 +45,8 @@ obtained as
 
         using JsonDocument doc = JsonDocument.Parse(jsonString);
 ```
-the <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/docs/ref/JsonCons.JsonPath.JsonSelector.html">JsonCons.JsonPath.JsonSelector`</a> class 
-provides functionality for retrieving selected values,
+the [JsonCons.JsonPath.JsonSelector[(https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.JsonPath.JsonSelector.html) 
+class provides functionality for retrieving selected values,
 
 ```
         var selector = JsonSelector.Parse("$.books[?(@.price >= 22 && @.price < 30)]");
@@ -61,7 +61,7 @@ provides functionality for retrieving selected values,
         Console.WriteLine();
 ```
 
-The libraries target .Net Standard 2.1. Reference documentation is available [here](https://danielaparker.github.io/JsonCons.Net/ref/)
+The JsonCons.Net libraries target .Net Standard 2.1. Reference documentation is available [here](https://danielaparker.github.io/JsonCons.Net/ref/)
 
 Code examples may be found at:
 
