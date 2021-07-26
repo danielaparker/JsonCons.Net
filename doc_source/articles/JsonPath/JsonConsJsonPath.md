@@ -3,8 +3,8 @@
 [JSONPath](http://goessner.net/articles/JsonPath/) is a loosely standardized syntax for querying JSON. 
 There are many implementations that differ significantly, see Christoph Burgmer's [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
 
-The JsonCons implementation is described in an [ABNF grammar](Specification.md) with a complete specification
-(in progress.)
+The JsonCons implementation is described in an [ABNF grammar](Grammar.md).
+It explicitly implements a state machine that corresponds to this grammar. 
 
 The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:
 
