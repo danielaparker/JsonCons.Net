@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>JsonCons.JsonPath</name>
+        <name>JsonPath</name>
     </assembly>
     <members>
         <member name="T:JsonCons.JsonPath.JsonPathNode">

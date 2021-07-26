@@ -7,11 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{D9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocFX", "doc_source\DocFX.csproj", "{7E14E931-589E-4AD6-9892-7634312B9F84}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPath.Tests", "tests\JsonPath.Tests\JsonPath.Tests.csproj", "{EB127317-C89F-4972-BE96-1D0B62C6A888}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPath", "src\JsonPath\JsonPath.csproj", "{58C6727F-4DA0-4278-AC26-84D3E48EFEEF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPath.Examples", "examples\JsonPath.Examples\JsonPath.Examples.csproj", "{7BC6CFD2-3A9C-4444-8E94-E389A3B4EA0B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CEFBC0C2-2443-4CF0-A8F7-1753DBE7B690} = {CEFBC0C2-2443-4CF0-A8F7-1753DBE7B690}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonCons.Utilities", "src\JsonCons.Utilities\JsonCons.Utilities.csproj", "{EAB9A96B-0899-4C33-A2B7-7E68E77FD0EA}"
 EndProject
@@ -26,6 +25,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPatch.Examples", "examp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPointer.Examples", "examples\JsonPointer.Examples\JsonPointer.Examples.csproj", "{C6B7DCEB-559C-4242-A565-68CD277C8742}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonCons.JsonPath", "src\JsonCons.JsonPath\JsonCons.JsonPath.csproj", "{CEFBC0C2-2443-4CF0-A8F7-1753DBE7B690}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonCons.JsonPath.Tests", "tests\JsonPath.Tests\JsonCons.JsonPath.Tests.csproj", "{45604CC3-65A8-41C2-AAAD-1A002617BF34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,14 +39,6 @@ Global
 		{7E14E931-589E-4AD6-9892-7634312B9F84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E14E931-589E-4AD6-9892-7634312B9F84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E14E931-589E-4AD6-9892-7634312B9F84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB127317-C89F-4972-BE96-1D0B62C6A888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB127317-C89F-4972-BE96-1D0B62C6A888}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB127317-C89F-4972-BE96-1D0B62C6A888}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB127317-C89F-4972-BE96-1D0B62C6A888}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58C6727F-4DA0-4278-AC26-84D3E48EFEEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58C6727F-4DA0-4278-AC26-84D3E48EFEEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58C6727F-4DA0-4278-AC26-84D3E48EFEEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58C6727F-4DA0-4278-AC26-84D3E48EFEEF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BC6CFD2-3A9C-4444-8E94-E389A3B4EA0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BC6CFD2-3A9C-4444-8E94-E389A3B4EA0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BC6CFD2-3A9C-4444-8E94-E389A3B4EA0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -68,6 +63,14 @@ Global
 		{C6B7DCEB-559C-4242-A565-68CD277C8742}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6B7DCEB-559C-4242-A565-68CD277C8742}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6B7DCEB-559C-4242-A565-68CD277C8742}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEFBC0C2-2443-4CF0-A8F7-1753DBE7B690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEFBC0C2-2443-4CF0-A8F7-1753DBE7B690}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEFBC0C2-2443-4CF0-A8F7-1753DBE7B690}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEFBC0C2-2443-4CF0-A8F7-1753DBE7B690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45604CC3-65A8-41C2-AAAD-1A002617BF34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45604CC3-65A8-41C2-AAAD-1A002617BF34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45604CC3-65A8-41C2-AAAD-1A002617BF34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45604CC3-65A8-41C2-AAAD-1A002617BF34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
