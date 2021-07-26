@@ -63,7 +63,7 @@
 <h1 id="jsoncons-jsonpath">JsonCons JSONPath</h1>
 
 <p><a href="http://goessner.net/articles/JsonPath/">JSONPath</a> is a loosely standardized syntax for querying JSON.
-There are many implementations that differ significantly, see Christoph Burgmer's <a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.</p>
+There are many implementations and they differ in significant ways, see Christoph Burgmer's <a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.</p>
 <p>The JsonCons implementation is described in an <a href="Grammar.html">ABNF grammar</a>.
 It explicitly implements a state machine that corresponds to this grammar.</p>
 <p>The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:</p>
@@ -87,13 +87,21 @@ The <code>JsonCons</code> implementation returns an empty array in case of no ma
 <li><p>Options are provided to exclude results corresponding to duplicate paths, and to sort results according to paths.</p>
 </li>
 </ul>
-<p><a href="#S1">Paths</a></p>
-<p><a href="#S2">Duplicates and ordering</a></p>
-<p><a href="#S3">Slices</a></p>
-<p><a href="#S4">Unions</a></p>
-<p><a href="#S5">Parent operator</a></p>
-<p><a href="#S6">Filter expressions</a></p>
-<div id="S1"></div> 
+<p><a href="#S1">Root and current node</a></p>
+<p><a href="#S2">Paths</a></p>
+<p><a href="#S3">Duplicates and ordering</a></p>
+<p><a href="#S4">Slices</a></p>
+<p><a href="#S5">Unions</a></p>
+<p><a href="#S6">Parent operator</a></p>
+<p><a href="#S7">Filter expressions</a></p>
+<div id="S1"></div>
+ 
+### Root and current node
+<p>The symbol '$' represents the root value, the JSON document to be evaluated.
+The symbol '@' represents the &quot;current node&quot;. At the start of an expression,
+the current node is the document to be evaluated, and as the expression
+is evaluated, it changes to reflect the node currently being processed.</p>
+<div id="S2"></div> 
 <h3 id="paths">Paths</h3>
 <p>JSONPath uses paths to select values. It is a feature of JSONPath that it selects values in the original JSON document,
 and does not create JSON elements that are not in the original.</p>
@@ -180,7 +188,7 @@ that names with hyphens must be quoted.</p>
 <p>Union of the fourth book and all books with price &gt; 10:</p>
 <pre><code>$.store[@.book[3],@.book[?(@.price &gt; 10)]]
 </code></pre>
-<div id="S2"></div> 
+<div id="S3"></div> 
 <h3 id="duplicates-and-ordering">Duplicates and ordering</h3>
 <p>Consider the JSON document</p>
 <pre><code class="lang-json">{
@@ -256,7 +264,7 @@ duplicates, but have an option for no duplicates.</p>
 <p>By default, the ordering of results is unspecified, although the user may
 expect array ordering at least to be preserved.  The <code>JsonPath.Select</code> functions
 provide an option for sorting results by paths.</p>
-<div id="S3"></div> 
+<div id="S4"></div> 
 <h3 id="slices">Slices</h3>
 <p>JsonCons jsonpath slices have the same semantics as Python slices</p>
 <p>The syntax for a slice is</p>
@@ -342,7 +350,7 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 </tr>
 </tbody>
 </table>
-<div id="S4"></div> 
+<div id="S5"></div> 
 <h3 id="unions">Unions</h3>
 <p>In JsonCons, a JSONPath union element can be</p>
 <ul>
@@ -358,7 +366,7 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 the last, and the third from <a href="https://goessner.net/articles/JsonPath/index.html#e3">Stefan Goessner's store</a>:</p>
 <pre><code>&quot;$.store.book[0:2,-1,?(@.author=='Herman Melville')].title&quot;
 </code></pre>
-<div id="S5"></div> 
+<div id="S6"></div> 
 <h3 id="parent-operator">Parent operator</h3>
 <p>Consider the JSON document</p>
 <pre><code>[
@@ -452,7 +460,7 @@ that allows you to select book objects based on criteria applied to descendent v
     }
 ]
 </code></pre>
-<div id="S6"></div> 
+<div id="S7"></div> 
 <h3 id="filter-expressions">Filter expressions</h3>
 <p>JSONPath uses filter expressions <code>[?&lt;expr&gt;]</code> to restrict the set of nodes
 returned by a path, e.g. <code>$..book[?(@.price&lt;10)]</code> returns the books with
