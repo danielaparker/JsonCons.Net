@@ -271,7 +271,7 @@
             </summary>
             <param name="root">The root value.</param>
             <param name="options">Options for handling duplicate paths and order of results.</param>
-            <returns>A list of <see cref="T:JsonCons.JsonPath.JsonPathNode"/> representing locations-value pairs 
+            <returns>A list of <see cref="T:JsonCons.JsonPath.JsonPathNode"/> representing location-value pairs 
             within the root value that match this JSONPath expression</returns>
         </member>
         <member name="M:JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">
@@ -320,7 +320,7 @@
             <param name="root">The root value.</param>
             <param name="jsonPath">A JSONPath string.</param>
             <param name="options">Options for handling duplicate paths and order of results.</param>
-            <returns>A list of <see cref="T:JsonCons.JsonPath.JsonPathNode"/> representing locations-value pairs 
+            <returns>A list of <see cref="T:JsonCons.JsonPath.JsonPathNode"/> representing location-value pairs 
             within the root value that match the provided JSONPath expression</returns>
             <exception cref="T:JsonCons.JsonPath.JsonPathParseException">
               The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.

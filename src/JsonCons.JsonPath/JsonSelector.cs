@@ -408,7 +408,7 @@ namespace JsonCons.JsonPath
         /// </summary>
         /// <param name="root">The root value.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
-        /// <returns>A list of <see cref="JsonPathNode"/> representing locations-value pairs 
+        /// <returns>A list of <see cref="JsonPathNode"/> representing location-value pairs 
         /// within the root value that match this JSONPath expression</returns>
 
         public IList<JsonPathNode> SelectNodes(JsonElement root, 
@@ -537,7 +537,7 @@ namespace JsonCons.JsonPath
         /// <param name="root">The root value.</param>
         /// <param name="jsonPath">A JSONPath string.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
-        /// <returns>A list of <see cref="JsonPathNode"/> representing locations-value pairs 
+        /// <returns>A list of <see cref="JsonPathNode"/> representing location-value pairs 
         /// within the root value that match the provided JSONPath expression</returns>
         /// <exception cref="JsonPathParseException">
         ///   The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.

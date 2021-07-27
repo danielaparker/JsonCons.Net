@@ -1,5 +1,5 @@
 [
-   {
+    {
      "comment": "Empty string",
      "given": {"type": "object"},
      "cases": [

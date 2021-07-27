@@ -1,11 +1,11 @@
 [
-    {
+   {
         "given" : {"foo": ["zero","one","two"]},
         "cases" : [
             {
-                "comment" : "Dot followed by index",
+                "comment" : "Dot followed by index on array",
                 "expression" : "$.foo.1",
-                "result" : ["one"] 
+                "result" : [] 
             }
         ]
     },

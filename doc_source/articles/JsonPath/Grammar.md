@@ -12,7 +12,6 @@ relative-location =/ ".." bracket-expression [relative-location]
 relative-location =/ "^" [relative-location]
 
 relative-path = identifier [relative-location]
-relative-path =/ index [relative-location]
 relative-path =/ wildcard [relative-location]
 
 bracket-expression = "[" bracketed-element *("," bracketed-element) "]"
@@ -28,11 +27,11 @@ integer            = ["-"]1*digit
 
 identifier = unquoted-string / single-quoted-string / double-quoted-string
 
-unquoted-string   = (%x41-5A / %x61-7A / %x5F) *(  ; A-Za-z_
-                        %x30-39  /  ; 0-9
-                        %x41-5A /  ; A-Z
-                        %x5F    /  ; _
-                        %x61-7A)   ; a-z
+unquoted-string   =     %x30-39  /  ; 0-9
+                        %x41-5A  /  ; A-Z
+                        %x5F     /  ; _
+                        %x61-7A  /  ; a-z
+                        %x80-10FFFF ;    
 
 double-quoted-string     = double-quote 1*(unescaped-char / single-quote / escaped-char / escaped-double-quote) double-quote
 unescaped-char    = %x20-21 / %x23-2b / %x2d-5B / %x5D-10FFFF
@@ -53,8 +52,6 @@ escaped-double-quote      = Escape %x22          ; "    double quote  U+0022
 escaped-single-quote      = Escape %x2c          ; '    single quote  U+002c
 
 single-quoted-string     = single-quote 1*(unescaped-char / double-quote / escaped-char / escaped-single-quote) single-quote
-
-
 
 expression = single-quoted-string 
 expression =/ json-literal

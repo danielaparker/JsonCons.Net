@@ -312,12 +312,6 @@ namespace JsonCons.JsonPath
                                 ++_index;
                                 ++_column;
                                 break;
-                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
-                                // Index 
-                                _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.Index);
-                                _stateStack.Push(JsonPathState.Integer);
-                                break;
                             case '*':
                                 // Wildcard
                                 PushToken(new Token(new WildcardSelector()));
@@ -325,15 +319,23 @@ namespace JsonCons.JsonPath
                                 ++_index;
                                 ++_column;
                                 break;
-                            case '[':
-                            case '.':
-                                throw new JsonPathParseException("Expected unquoted string, or single or double quoted string, or index or '*'", _line, _column);
                             default:
-                                // Unquoted string or function expression
-                                buffer.Clear();
-                                _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.IdentifierOrFunctionExpr);
-                                _stateStack.Push(JsonPathState.UnquotedString);
+                                Char ch = _span[_index];
+                                if (Char.IsLetterOrDigit(ch) || ch == '_')
+                                {
+                                    // Unquoted string or function expression
+                                    buffer.Clear();
+                                    _stateStack.Pop(); 
+                                    _stateStack.Push(JsonPathState.IdentifierOrFunctionExpr);
+                                    _stateStack.Push(JsonPathState.UnquotedString);
+                                    buffer.Append(ch);
+                                    ++_index;
+                                    ++_column;
+                                }
+                                else
+                                {
+                                    throw new JsonPathParseException("Expected unquoted string, or single or double quoted string, or index or '*'", _line, _column);
+                                }
                                 break;
                         }
                         break;

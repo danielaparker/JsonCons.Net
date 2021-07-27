@@ -1,7 +1,8 @@
 # JsonCons JSONPath
 
 [JSONPath](http://goessner.net/articles/JsonPath/) is a loosely standardized syntax for querying JSON. 
-There are many implementations and they differ in significant ways, see Christoph Burgmer's [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
+There are many implementations and they differ in significant ways, see Christoph Burgmer's 
+[JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
 
 The JsonCons implementation is described in an [ABNF grammar](Grammar.md).
 It explicitly implements a state machine that corresponds to this grammar. 
@@ -69,15 +70,15 @@ Paths can use the dot-notation or the bracket-notation.
 
 Select the first (indexed 0) book in [Stefan Goessner's store](https://goessner.net/articles/JsonPath/index.html#e3) using the dot notation:
 
-    $.store.book.0
+    $.store.book[0]
 
 or
 
-    $.'store'.'book'.0
+    $.'store'.'book'[0]
 
 or
 
-    $."store"."book".0
+    $."store"."book"[0]
 
 Unquoted names in the dot notation are restricted to digits 0-9, letters A-Z and a-z, 
 the underscore character _, and unicode coded characters that are non-ascii. Note 

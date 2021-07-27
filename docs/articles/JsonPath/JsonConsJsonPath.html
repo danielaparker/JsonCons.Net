@@ -63,7 +63,8 @@
 <h1 id="jsoncons-jsonpath">JsonCons JSONPath</h1>
 
 <p><a href="http://goessner.net/articles/JsonPath/">JSONPath</a> is a loosely standardized syntax for querying JSON.
-There are many implementations and they differ in significant ways, see Christoph Burgmer's <a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.</p>
+There are many implementations and they differ in significant ways, see Christoph Burgmer's
+<a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.</p>
 <p>The JsonCons implementation is described in an <a href="Grammar.html">ABNF grammar</a>.
 It explicitly implements a state machine that corresponds to this grammar.</p>
 <p>The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:</p>
@@ -160,13 +161,13 @@ and does not create JSON elements that are not in the original.</p>
 </table>
 <p>Paths can use the dot-notation or the bracket-notation.</p>
 <p>Select the first (indexed 0) book in <a href="https://goessner.net/articles/JsonPath/index.html#e3">Stefan Goessner's store</a> using the dot notation:</p>
-<pre><code>$.store.book.0
+<pre><code>$.store.book[0]
 </code></pre>
 <p>or</p>
-<pre><code>$.'store'.'book'.0
+<pre><code>$.'store'.'book'[0]
 </code></pre>
 <p>or</p>
-<pre><code>$.&quot;store&quot;.&quot;book&quot;.0
+<pre><code>$.&quot;store&quot;.&quot;book&quot;[0]
 </code></pre>
 <p>Unquoted names in the dot notation are restricted to digits 0-9, letters A-Z and a-z,
 the underscore character _, and unicode coded characters that are non-ascii. Note
