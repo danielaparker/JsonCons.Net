@@ -78,5 +78,5 @@ function-arg        = expression
 
 ```
 
-[!include(./operators/and-expression.md)]
+[!include[And Expression](./operators/and-expression.md)]
 

@@ -144,7 +144,21 @@ one-or-more-args    = &quot;(&quot; ( function-arg *( &quot;,&quot; function-arg
 function-arg        = expression
 
 </code></pre>
-<p>[!include(./operators/and-expression.md)]</p>
+<h3 id="and-expression">And Expression</h3>
+<pre><code>and-expression = expression &quot;&amp;&amp;&quot; expression
+</code></pre>
+<p>If the left side evaluates to true, then the and-expression evaluates
+to the right side, otherwise it evaluates to the left side.</p>
+<p>A false value is any value on this list:</p>
+<ul>
+<li>empty array: [],</li>
+<li>empty object: {},</li>
+<li>empty string: &quot;&quot;,</li>
+<li>false,</li>
+<li>null,</li>
+<li>zero.</li>
+</ul>
+<p>A true value is any value that is not false.</p>
 </article>
           </div>
           
