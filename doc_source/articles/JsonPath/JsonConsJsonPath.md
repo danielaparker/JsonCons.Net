@@ -4,7 +4,7 @@
 There are many implementations and they differ in significant ways, see Christoph Burgmer's 
 [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
 
-The JsonCons implementation is described in an [ABNF grammar](Grammar.md).
+The JsonCons implementation is described in an [ABNF grammar](Specification.md).
 It explicitly implements a state machine that corresponds to this grammar. 
 
 The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:
