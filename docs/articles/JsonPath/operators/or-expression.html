@@ -69,24 +69,13 @@
             <article class="content wrap" id="_content" data-uid="">
 <h3 id="or-expression">Or Expression</h3>
 
-<pre><code>or-expression = expression &quot;||&quot; expression
-
+<pre><code class="lang-json">or-expression = expression &quot;||&quot; expression
 </code></pre>
 <p>If both left and right sides are null, the or-expression evaluates
 to null. Otherwise, if the left side evaluates to true,
 it will evaluate to its left side, and if
 the left side evaluates to false, it will evaluate to its
 right side.</p>
-<p>A false value is any value on this list:</p>
-<ul>
-<li>empty array: [],</li>
-<li>empty object: {},</li>
-<li>empty string: &quot;&quot;,</li>
-<li>false,</li>
-<li>null,</li>
-<li>zero.</li>
-</ul>
-<p>A true value is any value that is not false</p>
 </article>
           </div>
           

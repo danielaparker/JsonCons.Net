@@ -144,21 +144,31 @@ one-or-more-args    = &quot;(&quot; ( function-arg *( &quot;,&quot; function-arg
 function-arg        = expression
 
 </code></pre>
+<h3 id="true-and-false-values">True and False Values</h3>
+<pre><code>A false value is any value on this list:
+
+- empty array: [],
+- empty object: {},
+- empty string: &quot;&quot;,
+- false,
+- null,
+- zero.
+
+A true value is any value that is not false
+</code></pre>
+<h3 id="or-expression">Or Expression</h3>
+<pre><code class="lang-json">or-expression = expression &quot;||&quot; expression
+</code></pre>
+<p>If both left and right sides are null, the or-expression evaluates
+to null. Otherwise, if the left side evaluates to true,
+it will evaluate to its left side, and if
+the left side evaluates to false, it will evaluate to its
+right side.</p>
 <h3 id="and-expression">And Expression</h3>
-<pre><code>and-expression = expression &quot;&amp;&amp;&quot; expression
+<pre><code class="lang-text">and-expression = expression &quot;&amp;&amp;&quot; expression
 </code></pre>
 <p>If the left side evaluates to true, then the and-expression evaluates
 to the right side, otherwise it evaluates to the left side.</p>
-<p>A false value is any value on this list:</p>
-<ul>
-<li>empty array: [],</li>
-<li>empty object: {},</li>
-<li>empty string: &quot;&quot;,</li>
-<li>false,</li>
-<li>null,</li>
-<li>zero.</li>
-</ul>
-<p>A true value is any value that is not false.</p>
 </article>
           </div>
           
