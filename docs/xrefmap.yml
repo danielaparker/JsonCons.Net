@@ -577,18 +577,18 @@ references:
   commentId: T:JsonCons.Utilities.IntegerTokenUnflattening
   fullName: JsonCons.Utilities.IntegerTokenUnflattening
   nameWithType: IntegerTokenUnflattening
-- uid: JsonCons.Utilities.IntegerTokenUnflattening.IndexFirst
-  name: IndexFirst
-  href: ref/JsonCons.Utilities.IntegerTokenUnflattening.html#JsonCons_Utilities_IntegerTokenUnflattening_IndexFirst
-  commentId: F:JsonCons.Utilities.IntegerTokenUnflattening.IndexFirst
-  fullName: JsonCons.Utilities.IntegerTokenUnflattening.IndexFirst
-  nameWithType: IntegerTokenUnflattening.IndexFirst
-- uid: JsonCons.Utilities.IntegerTokenUnflattening.NameOnly
-  name: NameOnly
-  href: ref/JsonCons.Utilities.IntegerTokenUnflattening.html#JsonCons_Utilities_IntegerTokenUnflattening_NameOnly
-  commentId: F:JsonCons.Utilities.IntegerTokenUnflattening.NameOnly
-  fullName: JsonCons.Utilities.IntegerTokenUnflattening.NameOnly
-  nameWithType: IntegerTokenUnflattening.NameOnly
+- uid: JsonCons.Utilities.IntegerTokenUnflattening.AssumeName
+  name: AssumeName
+  href: ref/JsonCons.Utilities.IntegerTokenUnflattening.html#JsonCons_Utilities_IntegerTokenUnflattening_AssumeName
+  commentId: F:JsonCons.Utilities.IntegerTokenUnflattening.AssumeName
+  fullName: JsonCons.Utilities.IntegerTokenUnflattening.AssumeName
+  nameWithType: IntegerTokenUnflattening.AssumeName
+- uid: JsonCons.Utilities.IntegerTokenUnflattening.TryIndex
+  name: TryIndex
+  href: ref/JsonCons.Utilities.IntegerTokenUnflattening.html#JsonCons_Utilities_IntegerTokenUnflattening_TryIndex
+  commentId: F:JsonCons.Utilities.IntegerTokenUnflattening.TryIndex
+  fullName: JsonCons.Utilities.IntegerTokenUnflattening.TryIndex
+  nameWithType: IntegerTokenUnflattening.TryIndex
 - uid: JsonCons.Utilities.JsonElementEqualityComparer
   name: JsonElementEqualityComparer
   href: ref/JsonCons.Utilities.JsonElementEqualityComparer.html

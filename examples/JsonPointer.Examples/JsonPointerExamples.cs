@@ -131,14 +131,18 @@ static class JsonPointerExamples
         var options = new JsonSerializerOptions() { WriteIndented = true };
 
         using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
-        Console.WriteLine($"(1) {JsonSerializer.Serialize(flattened, options)}\n");
+        Console.WriteLine("The flattened document:\n");
+        Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
 
-        using JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement);
-        Console.WriteLine($"(2) {JsonSerializer.Serialize(unflattened1, options)}\n");
+        Console.WriteLine("Unflatten integer tokens as array indices if possible:\n");
+        using JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement,
+                                                            IntegerTokenUnflattening.TryIndex);
+        Console.WriteLine($"{JsonSerializer.Serialize(unflattened1, options)}\n");
 
+        Console.WriteLine("Unflatten integer tokens as object names:\n");
         using JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
-                                                            IntegerTokenUnflattening.NameOnly);
-        Console.WriteLine($"(3) {JsonSerializer.Serialize(unflattened2, options)}\n");
+                                                            IntegerTokenUnflattening.AssumeName);
+        Console.WriteLine($"{JsonSerializer.Serialize(unflattened2, options)}\n");
     }
 
     static void Main(string[] args)

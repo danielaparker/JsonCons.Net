@@ -11,18 +11,107 @@ namespace JsonCons.Utilities
     /// <summary>
     /// Defines how the unflatten operation handles integer tokens in a JSON Pointer 
     /// </summary>
+    /// <example>
+    /// This example illustrates the use of IntegerTokenUnflattening
+    /// <code>
+    /// using System;
+    /// using System.Diagnostics;
+    /// using System.Text.Json;
+    /// using JsonCons.Utilities;
+    /// 
+    /// public class Example
+    /// {
+    ///    public static void Main()
+    ///    {
+    ///        using var doc = JsonDocument.Parse(@"
+    /// {
+    ///     ""discards"": {
+    ///         ""1000"": ""Record does not exist"",
+    ///         ""1004"": ""Queue limit exceeded"",
+    ///         ""1010"": ""Discarding timed-out partial msg""
+    ///     },
+    ///     ""warnings"": {
+    ///         ""0"": ""Phone number missing country code"",
+    ///         ""1"": ""State code missing"",
+    ///         ""2"": ""Zip code missing""
+    ///     }
+    /// }
+    ///        ");
+    ///    
+    ///     var options = new JsonSerializerOptions() { WriteIndented = true };
+    /// 
+    ///     using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+    ///     Console.WriteLine("The flattened document:\n");
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
+    /// 
+    ///     Console.WriteLine("Unflatten integer tokens as array indices if possible:\n");
+    ///     using JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement,
+    ///                                                         IntegerTokenUnflattening.TryIndex);
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(unflattened1, options)}\n");
+    /// 
+    ///     Console.WriteLine("Unflatten integer tokens as object names:\n");
+    ///     using JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
+    ///                                                         IntegerTokenUnflattening.AssumeName);
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(unflattened2, options)}\n");
+    /// ///     }
+    /// }
+    /// </code>
+    /// Output:
+    /// <code>
+    /// The flattened document:
+    /// 
+    /// {
+    ///   "/discards/1000": "Record does not exist",
+    ///   "/discards/1004": "Queue limit exceeded",
+    ///   "/discards/1010": "Discarding timed-out partial msg",
+    ///   "/warnings/0": "Phone number missing country code",
+    ///   "/warnings/1": "State code missing",
+    ///   "/warnings/2": "Zip code missing"
+    /// }
+    /// 
+    /// Unflatten integer tokens as array indices if possible:
+    /// 
+    /// {
+    ///   "discards": {
+    ///     "1000": "Record does not exist",
+    ///     "1004": "Queue limit exceeded",
+    ///     "1010": "Discarding timed-out partial msg"
+    ///   },
+    ///   "warnings": [
+    ///     "Phone number missing country code",
+    ///     "State code missing",
+    ///     "Zip code missing"
+    ///   ]
+    /// }
+    /// 
+    /// Unflatten integer tokens as object names:
+    /// 
+    /// {
+    ///   "discards": {
+    ///     "1000": "Record does not exist",
+    ///     "1004": "Queue limit exceeded",
+    ///     "1010": "Discarding timed-out partial msg"
+    ///   },
+    ///   "warnings": {
+    ///     "0": "Phone number missing country code",
+    ///     "1": "State code missing",
+    ///     "2": "Zip code missing"
+    ///   }
+    /// }
+    /// </code>
+    /// </example>
     public enum IntegerTokenUnflattening { 
         /// <summary>
         /// The unflatten operation first tries to unflatten into a JSON array
         /// using the integer tokens as sequential indices, and if that fails, unflattens into
         /// a JSON object using the integer tokens as names.
         /// </summary>
-        IndexFirst, 
+        TryIndex, 
         /// <summary>
         /// The unflatten operation always unflattens into a JSON object
         /// using the integer tokens as names.
         /// </summary>
-        NameOnly 
+        AssumeName 
     }
 
     /// <summary>
@@ -128,9 +217,9 @@ namespace JsonCons.Utilities
         ///   The <paramref name="flattenedValue"/> is not a JSON object, or has a name that contains an invalid JSON pointer.
         /// </exception>
         public static JsonDocument Unflatten(JsonElement flattenedValue, 
-                                             IntegerTokenUnflattening options = IntegerTokenUnflattening.IndexFirst)
+                                             IntegerTokenUnflattening options = IntegerTokenUnflattening.TryIndex)
         {
-            if (options == IntegerTokenUnflattening.IndexFirst)
+            if (options == IntegerTokenUnflattening.TryIndex)
             {
                  JsonDocumentBuilder val;
                  if (TryUnflattenArray(flattenedValue, out val))
@@ -365,7 +454,7 @@ namespace JsonCons.Utilities
             return true;
         }
 
-        static JsonDocumentBuilder UnflattenToObject(JsonElement value, IntegerTokenUnflattening options = IntegerTokenUnflattening.IndexFirst)
+        static JsonDocumentBuilder UnflattenToObject(JsonElement value, IntegerTokenUnflattening options = IntegerTokenUnflattening.TryIndex)
         {
             if (value.ValueKind != JsonValueKind.Object)
             {
@@ -419,7 +508,7 @@ namespace JsonCons.Utilities
                 }
             }
 
-            return options == IntegerTokenUnflattening.IndexFirst ? SafeUnflatten (result) : result;
+            return options == IntegerTokenUnflattening.TryIndex ? SafeUnflatten (result) : result;
         }
     }
 

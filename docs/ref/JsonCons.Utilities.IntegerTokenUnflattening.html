@@ -82,6 +82,91 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public enum IntegerTokenUnflattening</code></pre>
   </div>
+  <h5 id="JsonCons_Utilities_IntegerTokenUnflattening_examples"><strong>Examples</strong></h5>
+  <p>This example illustrates the use of IntegerTokenUnflattening</p>
+<pre><code>using System;
+using System.Diagnostics;
+using System.Text.Json;
+using JsonCons.Utilities;
+
+public class Example
+{
+   public static void Main()
+   {
+       using var doc = JsonDocument.Parse(@&quot;
+{
+    &quot;&quot;discards&quot;&quot;: {
+        &quot;&quot;1000&quot;&quot;: &quot;&quot;Record does not exist&quot;&quot;,
+        &quot;&quot;1004&quot;&quot;: &quot;&quot;Queue limit exceeded&quot;&quot;,
+        &quot;&quot;1010&quot;&quot;: &quot;&quot;Discarding timed-out partial msg&quot;&quot;
+    },
+    &quot;&quot;warnings&quot;&quot;: {
+        &quot;&quot;0&quot;&quot;: &quot;&quot;Phone number missing country code&quot;&quot;,
+        &quot;&quot;1&quot;&quot;: &quot;&quot;State code missing&quot;&quot;,
+        &quot;&quot;2&quot;&quot;: &quot;&quot;Zip code missing&quot;&quot;
+    }
+}
+       &quot;);
+
+    var options = new JsonSerializerOptions() { WriteIndented = true };
+
+    using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+    Console.WriteLine(&quot;The flattened document:\n&quot;);
+    Console.WriteLine($&quot;{JsonSerializer.Serialize(flattened, options)}\n&quot;);
+
+    Console.WriteLine(&quot;Unflatten integer tokens as array indices if possible:\n&quot;);
+    using JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement,
+                                                        IntegerTokenUnflattening.TryIndex);
+    Console.WriteLine($&quot;{JsonSerializer.Serialize(unflattened1, options)}\n&quot;);
+
+    Console.WriteLine(&quot;Unflatten integer tokens as object names:\n&quot;);
+    using JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
+                                                        IntegerTokenUnflattening.AssumeName);
+    Console.WriteLine($&quot;{JsonSerializer.Serialize(unflattened2, options)}\n&quot;);
+///     }
+}</code></pre>
+<p>Output:</p>
+<pre><code>The flattened document:
+
+{
+  &quot;/discards/1000&quot;: &quot;Record does not exist&quot;,
+  &quot;/discards/1004&quot;: &quot;Queue limit exceeded&quot;,
+  &quot;/discards/1010&quot;: &quot;Discarding timed-out partial msg&quot;,
+  &quot;/warnings/0&quot;: &quot;Phone number missing country code&quot;,
+  &quot;/warnings/1&quot;: &quot;State code missing&quot;,
+  &quot;/warnings/2&quot;: &quot;Zip code missing&quot;
+}
+
+Unflatten integer tokens as array indices if possible:
+
+{
+  &quot;discards&quot;: {
+    &quot;1000&quot;: &quot;Record does not exist&quot;,
+    &quot;1004&quot;: &quot;Queue limit exceeded&quot;,
+    &quot;1010&quot;: &quot;Discarding timed-out partial msg&quot;
+  },
+  &quot;warnings&quot;: [
+    &quot;Phone number missing country code&quot;,
+    &quot;State code missing&quot;,
+    &quot;Zip code missing&quot;
+  ]
+}
+
+Unflatten integer tokens as object names:
+
+{
+  &quot;discards&quot;: {
+    &quot;1000&quot;: &quot;Record does not exist&quot;,
+    &quot;1004&quot;: &quot;Queue limit exceeded&quot;,
+    &quot;1010&quot;: &quot;Discarding timed-out partial msg&quot;
+  },
+  &quot;warnings&quot;: {
+    &quot;0&quot;: &quot;Phone number missing country code&quot;,
+    &quot;1&quot;: &quot;State code missing&quot;,
+    &quot;2&quot;: &quot;Zip code missing&quot;
+  }
+}</code></pre>
+
   <h3 id="fields">Fields
   </h3>
   <table class="table table-bordered table-striped table-condensed">
@@ -93,16 +178,16 @@
     <thead>
     <tbody>
       <tr>
-        <td id="JsonCons_Utilities_IntegerTokenUnflattening_IndexFirst">IndexFirst</td>
-        <td><p>The unflatten operation first tries to unflatten into a JSON array
-using the integer tokens as sequential indices, and if that fails, unflattens into
-a JSON object using the integer tokens as names.</p>
+        <td id="JsonCons_Utilities_IntegerTokenUnflattening_AssumeName">AssumeName</td>
+        <td><p>The unflatten operation always unflattens into a JSON object
+using the integer tokens as names.</p>
 </td>
       </tr>
       <tr>
-        <td id="JsonCons_Utilities_IntegerTokenUnflattening_NameOnly">NameOnly</td>
-        <td><p>The unflatten operation always unflattens into a JSON object
-using the integer tokens as names.</p>
+        <td id="JsonCons_Utilities_IntegerTokenUnflattening_TryIndex">TryIndex</td>
+        <td><p>The unflatten operation first tries to unflatten into a JSON array
+using the integer tokens as sequential indices, and if that fails, unflattens into
+a JSON object using the integer tokens as names.</p>
 </td>
       </tr>
     </tbody>
@@ -118,7 +203,7 @@ using the integer tokens as names.</p>
                     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_IntegerTokenUnflattening.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.IntegerTokenUnflattening%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L14" class="contribution-link">View Source</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L103" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
