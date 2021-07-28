@@ -57,6 +57,7 @@ namespace JsonCons.Utilities
     /// }
     /// </code>
     /// Output:
+    /// <code>
     /// The flattened document:
     /// 
     /// {
@@ -97,6 +98,7 @@ namespace JsonCons.Utilities
     ///     "2": "Zip code missing"
     ///   }
     /// }
+    /// </code>
     /// </example>
     public enum IntegerTokenUnflattening { 
         /// <summary>
