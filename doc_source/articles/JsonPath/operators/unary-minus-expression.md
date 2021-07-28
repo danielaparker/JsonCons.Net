@@ -1,4 +1,4 @@
-### UnaryMinusExpression
+### Unary Minus Expression
 
 ```text
 unary-minus-expression = -expression
