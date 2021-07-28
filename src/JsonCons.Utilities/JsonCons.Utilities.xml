@@ -27,19 +27,19 @@
             <param name="value"></param>
             <returns>An Int32 value representing the hash code of the value.</returns>
         </member>
-        <member name="T:JsonCons.Utilities.IntegerTokenHandling">
+        <member name="T:JsonCons.Utilities.IntegerTokenUnflattening">
             <summary>
             Defines how the unflatten operation handles integer tokens in a JSON Pointer 
             </summary>
         </member>
-        <member name="F:JsonCons.Utilities.IntegerTokenHandling.IndexFirst">
+        <member name="F:JsonCons.Utilities.IntegerTokenUnflattening.IndexFirst">
             <summary>
             The unflatten operation first tries to unflatten into a JSON array
             using the integer tokens as sequential indices, and if that fails, unflattens into
             a JSON object using the integer tokens as names.
             </summary>
         </member>
-        <member name="F:JsonCons.Utilities.IntegerTokenHandling.NameOnly">
+        <member name="F:JsonCons.Utilities.IntegerTokenUnflattening.NameOnly">
             <summary>
             The unflatten operation always unflattens into a JSON object
             using the integer tokens as names.
@@ -123,7 +123,7 @@
             <param name="value">The value to be flattened.</param>
             <returns>The flattened value</returns>
         </member>
-        <member name="M:JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenHandling)">
+        <member name="M:JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenUnflattening)">
             <summary>
             Recovers the orginal JSON value from a JSON object in flattened form, to the extent possible. 
             There may not be a unique solution, an integer token in a JSON Pointer could be an array index or 

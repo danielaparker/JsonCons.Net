@@ -12,7 +12,7 @@
           "hash": "ZupfYfbM+pJ0GniiypESEPhLIxbjOC/9QFT4BobcM+E="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -36,7 +36,7 @@
           "hash": "0J64wTVD9zr2/eUYh5vAtwWcGXGvULJjayWP98REeSI="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -425,11 +425,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "ref/JsonCons.Utilities.IntegerTokenHandling.yml",
+      "source_relative_path": "ref/JsonCons.Utilities.IntegerTokenUnflattening.yml",
       "output": {
         ".html": {
-          "relative_path": "ref/JsonCons.Utilities.IntegerTokenHandling.html",
-          "hash": "j9cxMFAiBfOtWYgDOyWGq8t+C6O/dxNoBmUWve0DA3Q="
+          "relative_path": "ref/JsonCons.Utilities.IntegerTokenUnflattening.html",
+          "hash": "0iRvqjDd5Nd7aK7i28bQKe2Hw6GN7dPkl58A2vKvpC0="
         }
       },
       "is_incremental": true,
@@ -453,7 +453,7 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.JsonFlattener.html",
-          "hash": "SrjlHsbeCcQSsy063ZIgnad+4dUcySYtkg+V2wGMb+Y="
+          "hash": "gDZ50HQgN5RlhVaPnwGAvzA+asqi0Kr35IEZdvlkiHQ="
         }
       },
       "is_incremental": true,
@@ -513,7 +513,7 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.html",
-          "hash": "fSiR6ZEMeS+9Hf10wVFZgAtpsAq6EkMj1KTkFOjTi+w="
+          "hash": "qhnGkABHQnaMHQDavfzt5GhOcUyzgBt9pPKUVSsIwOo="
         }
       },
       "is_incremental": true,
@@ -537,7 +537,7 @@
       "output": {
         ".html": {
           "relative_path": "ref/toc.html",
-          "hash": "JyMBlgTNXLtPGK4pvRiW1JM5pW/UsEB6xsJZxn+ZAKc="
+          "hash": "pMeCq7gMYPEiQyr6kkhZV/dzfq/uLa8aNyOeLe2xwn8="
         }
       },
       "is_incremental": false,
@@ -569,7 +569,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 27,
-          "skipped_file_count": 25
+          "skipped_file_count": 27
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,

@@ -137,7 +137,7 @@ static class JsonPointerExamples
         Console.WriteLine($"(2) {JsonSerializer.Serialize(unflattened1, options)}\n");
 
         using JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
-                                                            IntegerTokenHandling.NameOnly);
+                                                            IntegerTokenUnflattening.NameOnly);
         Console.WriteLine($"(3) {JsonSerializer.Serialize(unflattened2, options)}\n");
     }
 
