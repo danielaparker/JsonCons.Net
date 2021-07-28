@@ -100,7 +100,10 @@ unquoted-string   =     %x30-39  /  ; 0-9
                         %x61-7A  /  ; a-z
                         %x80-10FFFF ;    
 
-double-quoted-string     = double-quote 1*(unescaped-char / single-quote / escaped-char / escaped-double-quote) double-quote
+double-quoted-string     = double-quote 
+                           1*(unescaped-char / single-quote / escaped-char / escaped-double-quote) 
+                           double-quote
+
 unescaped-char    = %x20-21 / %x23-2b / %x2d-5B / %x5D-10FFFF
 Escape            = %x5C   ; Back slash: \
 escaped-char      = Escape (
@@ -118,7 +121,9 @@ double-quote             = %x22   ; Double quote: '&quot;'
 escaped-double-quote      = Escape %x22          ; &quot;    double quote  U+0022
 escaped-single-quote      = Escape %x2c          ; '    single quote  U+002c
 
-single-quoted-string     = single-quote 1*(unescaped-char / double-quote / escaped-char / escaped-single-quote) single-quote
+single-quoted-string     = single-quote 
+                           1*(unescaped-char / double-quote / escaped-char / escaped-single-quote) 
+                           single-quote
 
 expression = single-quoted-string 
 expression =/ json-literal
@@ -184,7 +189,7 @@ It is only valid if the expression evaluates to a number.</p>
 <pre><code class="lang-json">[{&quot;key&quot;: 0}, {&quot;key&quot;: 42}, {&quot;key&quot;: -1}, {&quot;key&quot;: 41}, {&quot;key&quot;: 43}, {&quot;key&quot;: 42.0001}, {&quot;key&quot;: 41.9999}, {&quot;key&quot;: 100}, {&quot;some&quot;: &quot;value&quot;}]
 </code></pre>
 <p>JSONPath:</p>
-<pre><code>&quot;$[?-@.key &gt; -42]&quot;
+<pre><code class="lang-text">&quot;$[?-@.key &gt; -42]&quot;
 </code></pre>
 <p>Result:</p>
 <pre><code class="lang-json">[{&quot;key&quot;: 0}, {&quot;key&quot;: -1}, {&quot;key&quot;: 41}, {&quot;key&quot;: 41.9999}]

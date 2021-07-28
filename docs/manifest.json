@@ -9,10 +9,10 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/Grammar.html",
-          "hash": "E/WCqZrkfHh7BTX3YBKRKqZ1uDpDT6XUPY21JGMkdhI="
+          "hash": "ZupfYfbM+pJ0GniiypESEPhLIxbjOC/9QFT4BobcM+E="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -21,10 +21,10 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/JsonConsJsonPath.html",
-          "hash": "fmcinrmPGllzKM41jYSXGIa1lX6dq1fUlfpZOG00Mmo="
+          "hash": "xje8C3pPxLuAomkW0Z2JXpJvLxFERBZ72a5KnxngfiI="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -33,7 +33,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/Specification.html",
-          "hash": "0N9tikJsFxJCr72cg8B8cY8sY5gt4Au2dOpetkjZVMs="
+          "hash": "0J64wTVD9zr2/eUYh5vAtwWcGXGvULJjayWP98REeSI="
         }
       },
       "is_incremental": false,
@@ -249,7 +249,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/operators/equality-expression.html",
-          "hash": "f68l1ylxyWYen5KiYP2zm92ZZGUdqVHB8atyyiW3glU="
+          "hash": "Ip8F9D8X5h4q0RHX9qNSIRQrpd6oGKQPrZPUel4dAqA="
         }
       },
       "is_incremental": true,
@@ -285,10 +285,10 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/operators/unary-minus-expression.html",
-          "hash": "BAhMuHQqh8INt8MtGagM+TKvna0oXySg8KrpvvO9wJ0="
+          "hash": "1K+r7pOHkgIHdzxgPGd5hSN3yhT99ahuebY5ATd69jQ="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {

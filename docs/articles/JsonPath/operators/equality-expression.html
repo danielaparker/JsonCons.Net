@@ -69,20 +69,12 @@
             <article class="content wrap" id="_content" data-uid="">
 <h3 id="equality-expression">Equality Expression</h3>
 
-<pre><code>and-expression = expression &quot;&amp;&amp;&quot; expression
+<pre><code class="lang-text">equality-expression = expression &quot;==&quot; expression
 </code></pre>
-<p>If the left side evaluates to true, then the and-expression evaluates
-to the right side, otherwise it evaluates to the left side.</p>
-<p>A false value is any value on this list:</p>
-<ul>
-<li>empty array: [],</li>
-<li>empty object: {},</li>
-<li>empty string: &quot;&quot;,</li>
-<li>false,</li>
-<li>null,</li>
-<li>zero.</li>
-</ul>
-<p>A true value is any value that is not false.</p>
+<p>Two strings are equal if they have the same sequence of codepoints.
+The literal values true, false, and null are equal if left and right have the same literal value.
+Two JSON objects are equal if they have the same name-value pairs, possibly in different order.
+Two JSON arrays are equal if they have the same elements in the same order.</p>
 </article>
           </div>
           
