@@ -777,6 +777,12 @@ references:
   commentId: M:JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement)
   fullName: JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement)
   nameWithType: JsonPointer.ContainsValue(JsonElement)
+- uid: JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement,System.String)
+  name: ContainsValue(JsonElement, String)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_ContainsValue_System_Text_Json_JsonElement_System_String_
+  commentId: M:JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement,System.String)
+  fullName: JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement, System.String)
+  nameWithType: JsonPointer.ContainsValue(JsonElement, String)
 - uid: JsonCons.Utilities.JsonPointer.ContainsValue*
   name: ContainsValue
   href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_ContainsValue_

@@ -109,7 +109,7 @@
     <pre><code class="lang-csharp hljs">public sealed class JsonPointer : IEnumerable&lt;string&gt;, IEnumerable, IEquatable&lt;JsonPointer&gt;</code></pre>
   </div>
   <h5 id="JsonCons_Utilities_JsonPointer_examples"><strong>Examples</strong></h5>
-  <p>The following example shows how to get a values at a referenced location in a JSON document.</p>
+  <p>The following example shows how to get a value at a referenced location in a JSON document.</p>
 <pre><code>using System;
 using System.Diagnostics;
 using System.Text.Json;
@@ -229,7 +229,7 @@ public class Example
   </span>
   <a id="JsonCons_Utilities_JsonPointer_ContainsValue_" data-uid="JsonCons.Utilities.JsonPointer.ContainsValue*"></a>
   <h4 id="JsonCons_Utilities_JsonPointer_ContainsValue_System_Text_Json_JsonElement_" data-uid="JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement)">ContainsValue(JsonElement)</h4>
-  <div class="markdown level1 summary"><p>Evaluates this JSON Pointer on the provided target.</p>
+  <div class="markdown level1 summary"><p>Returns <code>true</code> if the provided JsonElement contains a value at the referenced location.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -264,7 +264,78 @@ public class Example
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the provided JsonElement contains a value at the referenced location, otherwise <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonPointer_ContainsValue_System_Text_Json_JsonElement_System_String_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonPointer.cs/#L376">View Source</a>
+  </span>
+  <a id="JsonCons_Utilities_JsonPointer_ContainsValue_" data-uid="JsonCons.Utilities.JsonPointer.ContainsValue*"></a>
+  <h4 id="JsonCons_Utilities_JsonPointer_ContainsValue_System_Text_Json_JsonElement_System_String_" data-uid="JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement,System.String)">ContainsValue(JsonElement, String)</h4>
+  <div class="markdown level1 summary"><p>Returns <code>true</code> if the provided JsonElement contains a value at the referenced location.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool ContainsValue(JsonElement target, string pointer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Json.JsonElement</span></td>
+        <td><span class="parametername">target</span></td>
         <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">pointer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the provided JsonElement contains a value at the referenced location, otherwise <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">pointer</code> is <span class="xref">null</span>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -373,7 +444,7 @@ If other is <code>null</code>, the method returns <code>false</code>.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonPointer_Escape_System_String_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonPointer.Escape(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonPointer.cs/#L446">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonPointer.cs/#L503">View Source</a>
   </span>
   <a id="JsonCons_Utilities_JsonPointer_Escape_" data-uid="JsonCons.Utilities.JsonPointer.Escape*"></a>
   <h4 id="JsonCons_Utilities_JsonPointer_Escape_System_String_" data-uid="JsonCons.Utilities.JsonPointer.Escape(System.String)">Escape(String)</h4>
@@ -641,11 +712,11 @@ fragment identifier (starts with <code>#</code>) into a <a class="xref" href="Js
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonPointer_TryGetValue_System_Text_Json_JsonElement_System_String_System_Text_Json_JsonElement__.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement%2CSystem.String%2CSystem.Text.Json.JsonElement%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonPointer.cs/#L422">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonPointer.cs/#L479">View Source</a>
   </span>
   <a id="JsonCons_Utilities_JsonPointer_TryGetValue_" data-uid="JsonCons.Utilities.JsonPointer.TryGetValue*"></a>
   <h4 id="JsonCons_Utilities_JsonPointer_TryGetValue_System_Text_Json_JsonElement_System_String_System_Text_Json_JsonElement__" data-uid="JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)">TryGetValue(JsonElement, String, out JsonElement)</h4>
-  <div class="markdown level1 summary"><p>Returns the value at the referenced location in the specified target.</p>
+  <div class="markdown level1 summary"><p>Gets the value at the referenced location in the provided JsonElement.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -690,7 +761,8 @@ fragment identifier (starts with <code>#</code>) into a <a class="xref" href="Js
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td></td>
+        <td><p><code>true</code> if the value was found at the referenced location, otherwise <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -715,11 +787,11 @@ fragment identifier (starts with <code>#</code>) into a <a class="xref" href="Js
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonPointer_TryGetValue_System_Text_Json_JsonElement_System_Text_Json_JsonElement__.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement%2CSystem.Text.Json.JsonElement%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonPointer.cs/#L373">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonPointer.cs/#L430">View Source</a>
   </span>
   <a id="JsonCons_Utilities_JsonPointer_TryGetValue_" data-uid="JsonCons.Utilities.JsonPointer.TryGetValue*"></a>
   <h4 id="JsonCons_Utilities_JsonPointer_TryGetValue_System_Text_Json_JsonElement_System_Text_Json_JsonElement__" data-uid="JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)">TryGetValue(JsonElement, out JsonElement)</h4>
-  <div class="markdown level1 summary"><p>Evaluates this JSON Pointer on the provided target.</p>
+  <div class="markdown level1 summary"><p>Gets the value at the referenced location in the provided JsonElement.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -759,7 +831,8 @@ fragment identifier (starts with <code>#</code>) into a <a class="xref" href="Js
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td></td>
+        <td><p><code>true</code> if the value was found at the referenced location, otherwise <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>

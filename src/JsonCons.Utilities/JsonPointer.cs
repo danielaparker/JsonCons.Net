@@ -12,7 +12,7 @@ namespace JsonCons.Utilities
     /// Represents a JSON Pointer as defined by <see href="https://datatracker.ietf.org/doc/html/rfc6901">RFC 6901</see>
     /// </summary> 
     /// <example>
-    /// The following example shows how to get a values at a referenced location in a JSON document.
+    /// The following example shows how to get a value at a referenced location in a JSON document.
     /// <code>
     /// using System;
     /// using System.Diagnostics;
@@ -321,10 +321,10 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Evaluates this JSON Pointer on the provided target.
+        /// Returns <c>true</c> if the provided JsonElement contains a value at the referenced location.
         /// </summary>
         /// <param name="target"></param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if the provided JsonElement contains a value at the referenced location, otherwise <c>false</c>.</returns>
         public bool ContainsValue(JsonElement target)
         {
             JsonElement value = target;
@@ -365,11 +365,68 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Evaluates this JSON Pointer on the provided target.
+        /// Returns <c>true</c> if the provided JsonElement contains a value at the referenced location.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="pointer"></param>
+        /// <returns><c>true</c> if the provided JsonElement contains a value at the referenced location, otherwise <c>false</c>.</returns>
+        /// <exception cref="ArgumentNullException">
+        ///   The <paramref name="pointer"/> is <see langword="null"/>.
+        /// </exception>
+        public static bool ContainsValue(JsonElement target, string pointer)
+        {
+            if (pointer == null)
+            {
+                throw new ArgumentNullException(nameof(pointer));
+            }
+            JsonPointer location;
+            if (!TryParse(pointer, out location))
+            {
+                return false;
+            }
+            JsonElement value = target;
+
+            foreach (var token in location.Tokens)
+            {
+                if (value.ValueKind == JsonValueKind.Array)
+                {
+                    if (token == "-")
+                    {
+                        return false;
+                    }
+                    int index = 0;
+                    if (!int.TryParse(token, out index))
+                    {
+                        return false;
+                    }
+                    if (index >= value.GetArrayLength())
+                    {
+                        return false;
+                    }
+                    value = value[index];
+                }
+                else if (value.ValueKind == JsonValueKind.Object)
+                {
+                    if (!value.TryGetProperty(token, out value))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the value at the referenced location in the provided JsonElement.
         /// </summary>
         /// <param name="target"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if the value was found at the referenced location, otherwise <c>false</c>.</returns>
         public bool TryGetValue(JsonElement target, out JsonElement value)
         {
             value = target;
@@ -410,12 +467,12 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Returns the value at the referenced location in the specified target.
+        /// Gets the value at the referenced location in the provided JsonElement.
         /// </summary>
         /// <param name="target"></param>
         /// <param name="pointer"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
+        /// <returns><c>true</c> if the value was found at the referenced location, otherwise <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException">
         ///   The <paramref name="pointer"/> is <see langword="null"/>.
         /// </exception>
