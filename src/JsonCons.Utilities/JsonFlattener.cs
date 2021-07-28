@@ -38,22 +38,22 @@ namespace JsonCons.Utilities
     /// }
     ///        ");
     ///    
-    ///     var options = new JsonSerializerOptions() { WriteIndented = true };
-    /// 
-    ///     using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
-    ///     Console.WriteLine("The flattened document:\n");
-    ///     Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
-    /// 
-    ///     Console.WriteLine("Unflatten integer tokens as array indices if possible:\n");
-    ///     using JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement,
-    ///                                                         IntegerTokenUnflattening.TryIndex);
-    ///     Console.WriteLine($"{JsonSerializer.Serialize(unflattened1, options)}\n");
-    /// 
-    ///     Console.WriteLine("Unflatten integer tokens as object names:\n");
-    ///     using JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
-    ///                                                         IntegerTokenUnflattening.AssumeName);
-    ///     Console.WriteLine($"{JsonSerializer.Serialize(unflattened2, options)}\n");
-    /// ///     }
+    ///         var options = new JsonSerializerOptions() { WriteIndented = true };
+    ///         
+    ///         using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+    ///         Console.WriteLine("The flattened document:\n");
+    ///         Console.WriteLine($"{JsonSerializer.Serialize(flattened, options)}\n");
+    ///         
+    ///         Console.WriteLine("Unflatten integer tokens as array indices if possible:\n");
+    ///         using JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement,
+    ///                                                             IntegerTokenUnflattening.TryIndex);
+    ///         Console.WriteLine($"{JsonSerializer.Serialize(unflattened1, options)}\n");
+    ///         
+    ///         Console.WriteLine("Always unflatten integer tokens as object names:\n");
+    ///         using JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
+    ///                                                             IntegerTokenUnflattening.AssumeName);
+    ///         Console.WriteLine($"{JsonSerializer.Serialize(unflattened2, options)}\n");
+    ///     }
     /// }
     /// </code>
     /// Output:
@@ -84,7 +84,7 @@ namespace JsonCons.Utilities
     ///   ]
     /// }
     /// 
-    /// Unflatten integer tokens as object names:
+    /// Always unflatten integer tokens as object names:
     /// 
     /// {
     ///   "discards": {

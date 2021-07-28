@@ -108,22 +108,22 @@ public class Example
 }
        &quot;);
 
-    var options = new JsonSerializerOptions() { WriteIndented = true };
+        var options = new JsonSerializerOptions() { WriteIndented = true };
 
-    using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
-    Console.WriteLine(&quot;The flattened document:\n&quot;);
-    Console.WriteLine($&quot;{JsonSerializer.Serialize(flattened, options)}\n&quot;);
+        using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+        Console.WriteLine(&quot;The flattened document:\n&quot;);
+        Console.WriteLine($&quot;{JsonSerializer.Serialize(flattened, options)}\n&quot;);
 
-    Console.WriteLine(&quot;Unflatten integer tokens as array indices if possible:\n&quot;);
-    using JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement,
-                                                        IntegerTokenUnflattening.TryIndex);
-    Console.WriteLine($&quot;{JsonSerializer.Serialize(unflattened1, options)}\n&quot;);
+        Console.WriteLine(&quot;Unflatten integer tokens as array indices if possible:\n&quot;);
+        using JsonDocument unflattened1 = JsonFlattener.Unflatten(flattened.RootElement,
+                                                            IntegerTokenUnflattening.TryIndex);
+        Console.WriteLine($&quot;{JsonSerializer.Serialize(unflattened1, options)}\n&quot;);
 
-    Console.WriteLine(&quot;Unflatten integer tokens as object names:\n&quot;);
-    using JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
-                                                        IntegerTokenUnflattening.AssumeName);
-    Console.WriteLine($&quot;{JsonSerializer.Serialize(unflattened2, options)}\n&quot;);
-///     }
+        Console.WriteLine(&quot;Always unflatten integer tokens as object names:\n&quot;);
+        using JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
+                                                            IntegerTokenUnflattening.AssumeName);
+        Console.WriteLine($&quot;{JsonSerializer.Serialize(unflattened2, options)}\n&quot;);
+    }
 }</code></pre>
 <p>Output:</p>
 <pre><code>The flattened document:
@@ -152,7 +152,7 @@ Unflatten integer tokens as array indices if possible:
   ]
 }
 
-Unflatten integer tokens as object names:
+Always unflatten integer tokens as object names:
 
 {
   &quot;discards&quot;: {

@@ -139,7 +139,7 @@ static class JsonPointerExamples
                                                             IntegerTokenUnflattening.TryIndex);
         Console.WriteLine($"{JsonSerializer.Serialize(unflattened1, options)}\n");
 
-        Console.WriteLine("Unflatten integer tokens as object names:\n");
+        Console.WriteLine("Always unflatten integer tokens as object names:\n");
         using JsonDocument unflattened2 = JsonFlattener.Unflatten(flattened.RootElement,
                                                             IntegerTokenUnflattening.AssumeName);
         Console.WriteLine($"{JsonSerializer.Serialize(unflattened2, options)}\n");
