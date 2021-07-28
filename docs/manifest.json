@@ -24,7 +24,7 @@
           "hash": "xje8C3pPxLuAomkW0Z2JXpJvLxFERBZ72a5KnxngfiI="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -33,10 +33,10 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/Specification.html",
-          "hash": "D0kR2F8T0iwYpJM1LK0ZObrJytn/S166U6/AK5CRLKM="
+          "hash": "UOPUGtzSG4fnO98ryPEZqOZd68SVSm6vNGGEj6wcpLE="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -229,6 +229,18 @@
         }
       },
       "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/JsonPath/operators/OperatorPrecedence.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/JsonPath/operators/OperatorPrecedence.html",
+          "hash": "RTxubCox9Vlq1ztdGO2ZQo8JBjuhPW48ZDo0KyoxHmY="
+        }
+      },
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -504,7 +516,7 @@
           "hash": "jyhPBmxNH5HOCxEItj0NyZ6WlDbzy1GGvf8dMGcoymA="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -516,7 +528,7 @@
           "hash": "qhnGkABHQnaMHQDavfzt5GhOcUyzgBt9pPKUVSsIwOo="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -568,14 +580,14 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 27,
-          "skipped_file_count": 27
+          "total_file_count": 28,
+          "skipped_file_count": 26
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 16,
-          "skipped_file_count": 15
+          "skipped_file_count": 16
         },
         "TocDocumentProcessor": {
           "can_incremental": false,

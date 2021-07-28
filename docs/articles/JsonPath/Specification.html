@@ -194,6 +194,59 @@ It is only valid if the expression evaluates to a number.</p>
 <p>Result:</p>
 <pre><code class="lang-json">[{&quot;key&quot;: 0}, {&quot;key&quot;: -1}, {&quot;key&quot;: 41}, {&quot;key&quot;: 41.9999}]
 </code></pre>
+<h3 id="operator-precedence">Operator Precedence</h3>
+<table>
+<thead>
+<tr>
+<th>Precedence</th>
+<th>Operator</th>
+<th>Associativity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>!</code> unary <code>-</code></td>
+<td>Right</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>=~</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>*</code> <code>/</code>  <code>%</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>+</code> <code>-</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>==</code> <code>!=</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>&amp;&amp;</code></td>
+<td>Left</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>||</code></td>
+<td>Left</td>
+</tr>
+</tbody>
+</table>
+<p>The precedence rules may be overriden with explicit parentheses, e.g. (a || b) &amp;&amp; c.</p>
 </article>
           </div>
           
