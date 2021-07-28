@@ -11,6 +11,52 @@ namespace JsonCons.Utilities
     /// <summary>
     /// Represents a JSON Pointer as defined by <see href="https://datatracker.ietf.org/doc/html/rfc6901">RFC 6901</see>
     /// </summary>
+    /// <example>
+    /// The following example shows how to select values, paths, and nodes from a JSON document
+    /// <code>
+    /// using System;
+    /// using System.Diagnostics;
+    /// using System.Text.Json;
+    /// using JsonCons.Utilities;
+    /// 
+    /// public class Example
+    /// {
+    ///     public static void Main()
+    ///     {
+    ///         using var doc = JsonDocument.Parse(@"
+    ///     [
+    ///       { ""category"": ""reference"",
+    ///         ""author"": ""Nigel Rees"",
+    ///         ""title"": ""Sayings of the Century"",
+    ///         ""price"": 8.95
+    ///       },
+    ///       { ""category"": ""fiction"",
+    ///         ""author"": ""Evelyn Waugh"",
+    ///         ""title"": ""Sword of Honour"",
+    ///         ""price"": 12.99
+    ///       }
+    ///     ]
+    ///         ");
+    ///     
+    ///         var options = new JsonSerializerOptions() { WriteIndented = true };
+    ///     
+    ///         JsonPointer pointer = JsonPointer.Parse("/1/author");
+    ///     
+    ///         JsonElement element;
+    ///     
+    ///         if (pointer.TryGetValue(doc.RootElement, out element))
+    ///         {
+    ///             Console.WriteLine($"{JsonSerializer.Serialize(element, options)}\n");
+    ///         }
+    ///     }
+    /// }
+    /// </code>
+    /// Output:
+    /// 
+    /// <code>
+    /// "Evelyn Waugh"
+    /// </code>
+    /// </example>
 
     public sealed class JsonPointer : IEnumerable<string>, IEquatable<JsonPointer>
     {

@@ -5,8 +5,37 @@ using JsonCons.Utilities;
 
 static class JsonPointerExamples
 {
-    // Example from RFC 6901
-    static void GetExamples()
+    static void GetValueExample()
+    {
+        using var doc = JsonDocument.Parse(@"
+[
+      { ""category"": ""reference"",
+        ""author"": ""Nigel Rees"",
+        ""title"": ""Sayings of the Century"",
+        ""price"": 8.95
+      },
+      { ""category"": ""fiction"",
+        ""author"": ""Evelyn Waugh"",
+        ""title"": ""Sword of Honour"",
+        ""price"": 12.99
+      }
+    ]
+        ");
+
+        var options = new JsonSerializerOptions() { WriteIndented = true };
+
+        JsonPointer pointer = JsonPointer.Parse("/1/author");
+
+        JsonElement element;
+
+        if (pointer.TryGetValue(doc.RootElement, out element))
+        {
+            Console.WriteLine($"{JsonSerializer.Serialize(element, options)}\n");
+        }
+    }
+
+    // Examples from RFC 6901
+    static void MoreGetValueExamples()
     {
         using var doc = JsonDocument.Parse(@"
 {
@@ -25,55 +54,55 @@ static class JsonPointerExamples
 
         var options = new JsonSerializerOptions() { WriteIndented = true };
 
-        JsonElement result;
+        JsonElement element;
 
-        if (JsonPointer.TryGetValue(doc.RootElement, "", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "", out element))
         {
-            Console.WriteLine($"(1) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(1)\n{JsonSerializer.Serialize(element, options)}\n");
         }
-        if (JsonPointer.TryGetValue(doc.RootElement, "/foo", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "/foo", out element))
         {
-            Console.WriteLine($"(2) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(2)\n{JsonSerializer.Serialize(element, options)}\n");
         }
-        if (JsonPointer.TryGetValue(doc.RootElement, "/foo/0", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "/foo/0", out element))
         {
-            Console.WriteLine($"(3) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(3)\n{JsonSerializer.Serialize(element, options)}\n");
         }
-        if (JsonPointer.TryGetValue(doc.RootElement, "/", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "/", out element))
         {
-            Console.WriteLine($"(4) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(4)\n{JsonSerializer.Serialize(element, options)}\n");
         }
-        if (JsonPointer.TryGetValue(doc.RootElement, "/a~1b", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "/a~1b", out element))
         {
-            Console.WriteLine($"(5) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(5)\n{JsonSerializer.Serialize(element, options)}\n");
         }
-        if (JsonPointer.TryGetValue(doc.RootElement, "/c%d", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "/c%d", out element))
         {
-            Console.WriteLine($"(6) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(6)\n{JsonSerializer.Serialize(element, options)}\n");
         }
-        if (JsonPointer.TryGetValue(doc.RootElement, "/e^f", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "/e^f", out element))
         {
-            Console.WriteLine($"(7) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(7)\n{JsonSerializer.Serialize(element, options)}\n");
         }
-        if (JsonPointer.TryGetValue(doc.RootElement, "/g|h", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "/g|h", out element))
         {
-            Console.WriteLine($"(8) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(8)\n{JsonSerializer.Serialize(element, options)}\n");
         }
-        if (JsonPointer.TryGetValue(doc.RootElement, "/i\\j", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "/i\\j", out element))
         {
-            Console.WriteLine($"(9) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(9)\n{JsonSerializer.Serialize(element, options)}\n");
         }
-        if (JsonPointer.TryGetValue(doc.RootElement, "/k\"l", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "/k\"l", out element))
         {
-            Console.WriteLine($"(10) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(10)\n{JsonSerializer.Serialize(element, options)}\n");
         }
-        if (JsonPointer.TryGetValue(doc.RootElement, "/ ", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "/ ", out element))
         {
-            Console.WriteLine($"(11) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(11)\n{JsonSerializer.Serialize(element, options)}\n");
         }
-        if (JsonPointer.TryGetValue(doc.RootElement, "/m~0n", out result))
+        if (JsonPointer.TryGetValue(doc.RootElement, "/m~0n", out element))
         {
-            Console.WriteLine($"(12) {JsonSerializer.Serialize(result, options)}\n");
+            Console.WriteLine($"(12)\n{JsonSerializer.Serialize(element, options)}\n");
         }
     }
 
@@ -147,7 +176,8 @@ static class JsonPointerExamples
 
     static void Main(string[] args)
     {
-        JsonPointerExamples.GetExamples();
+        JsonPointerExamples.GetValueExample();
+        JsonPointerExamples.MoreGetValueExamples();
         JsonPointerExamples.FlattenAndUnflatten();
         JsonPointerExamples.UnflattenAssumingObject();
     }
