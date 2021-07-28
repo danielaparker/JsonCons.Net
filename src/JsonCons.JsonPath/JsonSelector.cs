@@ -62,7 +62,6 @@ namespace JsonCons.JsonPath
         /// <summary>
         /// Gets or sets the depth limit for recursive descent, with the default value a maximum depth of 64.
         /// </summary>
-        /// <returns></returns>
         public int MaxDepth { get; set; } = 64;
     };
 
@@ -246,7 +245,8 @@ namespace JsonCons.JsonPath
         /// </summary>
         /// <param name="root">The root value.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
-        /// <returns>A list of values within the root value matched by this JSONPath expression</returns>
+        /// <returns>A list of values within the root value matched by this JSONPath expression,
+        ///  or an empty list if none were matched.</returns>
         /// <exception cref="InvalidOperationException">
         ///   Maximum depth level exceeded in recursive descent selector.
         /// </exception>
@@ -341,7 +341,8 @@ namespace JsonCons.JsonPath
         /// </summary>
         /// <param name="root">The root value.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
-        /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value matched by this JSONPath expression</returns>
+        /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value matched by this JSONPath expression,
+        /// or an empty list if none were matched.</returns>
 
         public IList<NormalizedPath> SelectPaths(JsonElement root, 
                                                  JsonSelectorOptions? options = null)
@@ -409,7 +410,8 @@ namespace JsonCons.JsonPath
         /// <param name="root">The root value.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of <see cref="JsonPathNode"/> representing location-value pairs 
-        /// within the root value matched by this JSONPath expression</returns>
+        /// within the root value matched by this JSONPath expression,
+        /// or an empty list if none were matched.</returns>
 
         public IList<JsonPathNode> SelectNodes(JsonElement root, 
                                                JsonSelectorOptions? options = null)
@@ -478,7 +480,8 @@ namespace JsonCons.JsonPath
         /// <param name="root">The root value.</param>
         /// <param name="jsonPath">A JSONPath string.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
-        /// <returns>A list of values within the root value matched by the provided JSONPath expression</returns>
+        /// <returns>A list of values within the root value matched by the provided JSONPath expression,
+        /// or an empty list if none were matched.</returns>
         /// <exception cref="JsonPathParseException">
         ///   The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.
         /// </exception>
@@ -507,7 +510,8 @@ namespace JsonCons.JsonPath
         /// <param name="root">The root value.</param>
         /// <param name="jsonPath">A JSONPath string.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
-        /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value matched by the provided JSONPath expression</returns>
+        /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value matched by the provided JSONPath expression,
+        /// or an empty list if none were matched.</returns>
         /// <exception cref="JsonPathParseException">
         ///   The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.
         /// </exception>
@@ -538,7 +542,8 @@ namespace JsonCons.JsonPath
         /// <param name="jsonPath">A JSONPath string.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
         /// <returns>A list of <see cref="JsonPathNode"/> representing location-value pairs 
-        /// within the root value matched by the provided JSONPath expression</returns>
+        /// within the root value matched by the provided JSONPath expression,
+        /// or an empty list if none were matched.</returns>
         /// <exception cref="JsonPathParseException">
         ///   The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.
         /// </exception>

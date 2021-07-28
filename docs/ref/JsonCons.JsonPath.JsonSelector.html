@@ -223,7 +223,7 @@ $[&apos;books&apos;][1][&apos;title&apos;] => &quot;The Night Watch&quot;</code>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_Parse_System_String_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.Parse(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L224">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L223">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_Parse_" data-uid="JsonCons.JsonPath.JsonSelector.Parse*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_Parse_System_String_" data-uid="JsonCons.JsonPath.JsonSelector.Parse(System.String)">Parse(String)</h4>
@@ -341,7 +341,8 @@ A <a class="xref" href="JsonCons.JsonPath.JsonSelector.html">JsonSelector</a> in
     <tbody>
       <tr>
         <td><span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.Text.Json.JsonElement</span>&gt;</td>
-        <td><p>A list of values within the root value matched by this JSONPath expression</p>
+        <td><p>A list of values within the root value matched by this JSONPath expression,
+or an empty list if none were matched.</p>
 </td>
       </tr>
     </tbody>
@@ -367,7 +368,7 @@ A <a class="xref" href="JsonCons.JsonPath.JsonSelector.html">JsonSelector</a> in
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L492">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L495">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_Select_" data-uid="JsonCons.JsonPath.JsonSelector.Select*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">Select(JsonElement, String, JsonSelectorOptions)</h4>
@@ -420,7 +421,8 @@ This method parses and applies the expression in one operation.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.Text.Json.JsonElement</span>&gt;</td>
-        <td><p>A list of values within the root value matched by the provided JSONPath expression</p>
+        <td><p>A list of values within the root value matched by the provided JSONPath expression,
+or an empty list if none were matched.</p>
 </td>
       </tr>
     </tbody>
@@ -456,7 +458,7 @@ This method parses and applies the expression in one operation.</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L414">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L416">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_SelectNodes_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">SelectNodes(JsonElement, JsonSelectorOptions)</h4>
@@ -503,7 +505,8 @@ This method parses and applies the expression in one operation.</p>
       <tr>
         <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.JsonPathNode.html">JsonPathNode</a>&gt;</td>
         <td><p>A list of <a class="xref" href="JsonCons.JsonPath.JsonPathNode.html">JsonPathNode</a> representing location-value pairs
-within the root value matched by this JSONPath expression</p>
+within the root value matched by this JSONPath expression,
+or an empty list if none were matched.</p>
 </td>
       </tr>
     </tbody>
@@ -513,7 +516,7 @@ within the root value matched by this JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L552">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L557">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_SelectNodes_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">SelectNodes(JsonElement, String, JsonSelectorOptions)</h4>
@@ -567,7 +570,8 @@ This method parses and applies the expression in one operation.</p>
       <tr>
         <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.JsonPathNode.html">JsonPathNode</a>&gt;</td>
         <td><p>A list of <a class="xref" href="JsonCons.JsonPath.JsonPathNode.html">JsonPathNode</a> representing location-value pairs
-within the root value matched by the provided JSONPath expression</p>
+within the root value matched by the provided JSONPath expression,
+or an empty list if none were matched.</p>
 </td>
       </tr>
     </tbody>
@@ -603,7 +607,7 @@ within the root value matched by the provided JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L346">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L347">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_SelectPaths_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">SelectPaths(JsonElement, JsonSelectorOptions)</h4>
@@ -649,7 +653,8 @@ within the root value matched by the provided JSONPath expression</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a>&gt;</td>
-        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a> identifying the values within the root value matched by this JSONPath expression</p>
+        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a> identifying the values within the root value matched by this JSONPath expression,
+or an empty list if none were matched.</p>
 </td>
       </tr>
     </tbody>
@@ -659,7 +664,7 @@ within the root value matched by the provided JSONPath expression</p>
     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L521">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L525">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_JsonSelector_SelectPaths_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths*"></a>
   <h4 id="JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">SelectPaths(JsonElement, String, JsonSelectorOptions)</h4>
@@ -712,7 +717,8 @@ This method parses and applies the expression in one operation.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a>&gt;</td>
-        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a> identifying the values within the root value matched by the provided JSONPath expression</p>
+        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a> identifying the values within the root value matched by the provided JSONPath expression,
+or an empty list if none were matched.</p>
 </td>
       </tr>
     </tbody>
@@ -754,7 +760,7 @@ This method parses and applies the expression in one operation.</p>
                     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L207" class="contribution-link">View Source</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/JsonSelector.cs/#L206" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

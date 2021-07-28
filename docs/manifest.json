@@ -369,10 +369,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.JsonSelector.html",
-          "hash": "JAbyRqEbbgVf2wqvj71Tb/bvA6ESXQcXGxkvw8wL5P8="
+          "hash": "JfohsuXZ28kixLWDPVIzXjXckj09tbW2B6Ad+3tib2M="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -381,10 +381,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.JsonSelectorOptions.html",
-          "hash": "+q5VPf/q1Q5bYjBf3zy9jemXTUU/Er4tCyvDExwDH4Y="
+          "hash": "7T/4VkjJmE6aze2ACZypt4n7VdmxmAcpHtpDuVFe/y8="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -432,7 +432,7 @@
           "hash": "hpJBiEyvc+dEXLLFtojiV4XOLjLkEBA8qpp1JCVmsH8="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -456,7 +456,7 @@
           "hash": "C6g44j1x/U+MHuVBgcyG9STQpJBvycHjl/k+okcVEzo="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -492,7 +492,7 @@
           "hash": "duL1kzJSI/rkDV4StlJf5d9AGI0SpBhRs35ukMumaJs="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -504,7 +504,7 @@
           "hash": "6ePdRpSMjEwTUkcA/CB0ifCLzSBEd7n8EFLomgqXoaA="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -587,7 +587,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 16,
-          "skipped_file_count": 15
+          "skipped_file_count": 11
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
