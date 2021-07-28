@@ -174,7 +174,22 @@ to the right side, otherwise it evaluates to the left side.</p>
 <p>If an expression evaluates to true, a not-expression will evaluate to
 false. Conversely if an expression evaluates to false, a not-expression
 will evaluate to true;</p>
-[!include[Unary Minus Expression](./operators/unary-minus-expression.md)]</article>
+<h3 id="unaryminusexpression">UnaryMinusExpression</h3>
+<pre><code class="lang-text">unary-minus-expression = -expression
+</code></pre>
+<p>The - (unary minus) operator negates the value of the expression.
+It is only valid if the expression evaluates to a number.</p>
+<h3 id="example">Example</h3>
+<p>JSON Document:</p>
+<pre><code class="lang-json">[{&quot;key&quot;: 0}, {&quot;key&quot;: 42}, {&quot;key&quot;: -1}, {&quot;key&quot;: 41}, {&quot;key&quot;: 43}, {&quot;key&quot;: 42.0001}, {&quot;key&quot;: 41.9999}, {&quot;key&quot;: 100}, {&quot;some&quot;: &quot;value&quot;}]
+</code></pre>
+<p>JSONPath:</p>
+<pre><code>&quot;$[?-@.key &gt; -42]&quot;
+</code></pre>
+<p>Result:</p>
+<pre><code class="lang-json">[{&quot;key&quot;: 0}, {&quot;key&quot;: -1}, {&quot;key&quot;: 41}, {&quot;key&quot;: 41.9999}]
+</code></pre>
+</article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
