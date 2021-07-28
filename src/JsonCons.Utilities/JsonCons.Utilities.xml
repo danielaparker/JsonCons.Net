@@ -77,7 +77,6 @@
             }
             </code>
             Output:
-            <code>
             The flattened document:
             
             {
@@ -118,7 +117,6 @@
                 "2": "Zip code missing"
               }
             }
-            </code>
             </example>
         </member>
         <member name="F:JsonCons.Utilities.IntegerTokenUnflattening.TryIndex">

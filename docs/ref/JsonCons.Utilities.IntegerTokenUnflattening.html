@@ -125,47 +125,42 @@ public class Example
         Console.WriteLine($&quot;{JsonSerializer.Serialize(unflattened2, options)}\n&quot;);
     }
 }</code></pre>
-<p>Output:</p>
-<pre><code>The flattened document:
-
-{
-  &quot;/discards/1000&quot;: &quot;Record does not exist&quot;,
-  &quot;/discards/1004&quot;: &quot;Queue limit exceeded&quot;,
-  &quot;/discards/1010&quot;: &quot;Discarding timed-out partial msg&quot;,
-  &quot;/warnings/0&quot;: &quot;Phone number missing country code&quot;,
-  &quot;/warnings/1&quot;: &quot;State code missing&quot;,
-  &quot;/warnings/2&quot;: &quot;Zip code missing&quot;
+<p>Output:
+The flattened document:</p>
+<p>{
+&quot;/discards/1000&quot;: &quot;Record does not exist&quot;,
+&quot;/discards/1004&quot;: &quot;Queue limit exceeded&quot;,
+&quot;/discards/1010&quot;: &quot;Discarding timed-out partial msg&quot;,
+&quot;/warnings/0&quot;: &quot;Phone number missing country code&quot;,
+&quot;/warnings/1&quot;: &quot;State code missing&quot;,
+&quot;/warnings/2&quot;: &quot;Zip code missing&quot;
+}</p>
+<p>Unflatten integer tokens as array indices if possible:</p>
+<p>{
+&quot;discards&quot;: {
+&quot;1000&quot;: &quot;Record does not exist&quot;,
+&quot;1004&quot;: &quot;Queue limit exceeded&quot;,
+&quot;1010&quot;: &quot;Discarding timed-out partial msg&quot;
+},
+&quot;warnings&quot;: [
+&quot;Phone number missing country code&quot;,
+&quot;State code missing&quot;,
+&quot;Zip code missing&quot;
+]
+}</p>
+<p>Always unflatten integer tokens as object names:</p>
+<p>{
+&quot;discards&quot;: {
+&quot;1000&quot;: &quot;Record does not exist&quot;,
+&quot;1004&quot;: &quot;Queue limit exceeded&quot;,
+&quot;1010&quot;: &quot;Discarding timed-out partial msg&quot;
+},
+&quot;warnings&quot;: {
+&quot;0&quot;: &quot;Phone number missing country code&quot;,
+&quot;1&quot;: &quot;State code missing&quot;,
+&quot;2&quot;: &quot;Zip code missing&quot;
 }
-
-Unflatten integer tokens as array indices if possible:
-
-{
-  &quot;discards&quot;: {
-    &quot;1000&quot;: &quot;Record does not exist&quot;,
-    &quot;1004&quot;: &quot;Queue limit exceeded&quot;,
-    &quot;1010&quot;: &quot;Discarding timed-out partial msg&quot;
-  },
-  &quot;warnings&quot;: [
-    &quot;Phone number missing country code&quot;,
-    &quot;State code missing&quot;,
-    &quot;Zip code missing&quot;
-  ]
-}
-
-Always unflatten integer tokens as object names:
-
-{
-  &quot;discards&quot;: {
-    &quot;1000&quot;: &quot;Record does not exist&quot;,
-    &quot;1004&quot;: &quot;Queue limit exceeded&quot;,
-    &quot;1010&quot;: &quot;Discarding timed-out partial msg&quot;
-  },
-  &quot;warnings&quot;: {
-    &quot;0&quot;: &quot;Phone number missing country code&quot;,
-    &quot;1&quot;: &quot;State code missing&quot;,
-    &quot;2&quot;: &quot;Zip code missing&quot;
-  }
-}</code></pre>
+}</p>
 
   <h3 id="fields">Fields
   </h3>
@@ -203,7 +198,7 @@ a JSON object using the integer tokens as names.</p>
                     <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_IntegerTokenUnflattening.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.IntegerTokenUnflattening%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L103" class="contribution-link">View Source</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonFlattener.cs/#L101" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
