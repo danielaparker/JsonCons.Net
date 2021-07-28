@@ -65,7 +65,7 @@
 <p><a href="http://goessner.net/articles/JsonPath/">JSONPath</a> is a loosely standardized syntax for querying JSON.
 There are many implementations and they differ in significant ways, see Christoph Burgmer's
 <a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.</p>
-<p>The JsonCons implementation is described in an <a href="Specification.html">ABNF grammar</a>.
+<p>The JsonCons implementation is described in an <a href="Specification.html">ABNF grammar</a> (in progress.)
 It explicitly implements a state machine that corresponds to this grammar.</p>
 <p>The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:</p>
 <ul>
@@ -559,7 +559,7 @@ and arithmetic operators.</p>
 </tr>
 <tr>
 <td><code>=~</code></td>
-<td>expression <code>=~</code> &quot;/&quot; regular-expression &quot;/&quot; [i]</td>
+<td>expression <code>=~</code> &quot;/&quot; regex &quot;/&quot; [i]</td>
 <td>Left matches regular expression, e.g. [?(@.author =~ /Evelyn.*?/)]</td>
 </tr>
 </tbody>
@@ -579,7 +579,7 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 <tr>
 <td><code>!</code></td>
 <td><a href="operators/not-expression.html">!expression</a></td>
-<td>Reverses true or false</td>
+<td>Reverses true/false</td>
 </tr>
 <tr>
 <td><code>-</code></td>

@@ -62,3 +62,13 @@ Code examples may be found at:
 
 [JSONPath examples](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPath.Examples/JsonPathExamples.cs)
 
+## Acknowledgements
+
+- The specification of JsonCons JsonPath draws heavily on Christoph Burgmer's 
+[JSONPath Comparison](https://cburgmer.github.io/json-path-comparison/).
+Many of the test cases and some of the examples are borrowed from this resource.
+
+- The specification of JSONPath filter expressions is greatly influenced by
+James Saryerwinnie's [JMESPath](https://jmespath.org/specification.html)
+
+

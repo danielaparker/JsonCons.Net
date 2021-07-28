@@ -98,7 +98,7 @@ unquoted-string   =     %x30-39  /  ; 0-9
                         %x41-5A  /  ; A-Z
                         %x5F     /  ; _
                         %x61-7A  /  ; a-z
-                        %x80-10FFFF ;    
+                        %x80-10FFFF ; U+0080 ...    
 
 double-quoted-string     = double-quote 
                            1*(unescaped-char / single-quote / escaped-char / escaped-double-quote) 
@@ -128,18 +128,18 @@ single-quoted-string     = single-quote
 expression = single-quoted-string 
 expression =/ json-literal
 expression =/ jsonpath 
-expression =/ unary-expression / binary-expression / regex-binary-expression / paren-expression 
+expression =/ unary-expression / binary-expression / regex-expression / paren-expression 
 paren-expression  = &quot;(&quot; expression &quot;)&quot;
 unary-expression=unary-operator expression
 binary-expression = expression binary-operator expression
-regex-binary-expression = expression regex-operator &quot;/&quot; regex-expression &quot;/&quot; [i]
+regex-expression = expression regex-operator &quot;/&quot; regex &quot;/&quot; [i]
 unary-operator = &quot;!&quot; / &quot;-&quot;
 binary-operator  = &quot;*&quot; / &quot;/&quot; / &quot;%&quot; / &quot;+&quot; / &quot;-&quot; / &quot;&amp;&amp;&quot; / &quot;||&quot; / &lt;&quot; / &quot;&lt;=&quot; / &quot;==&quot; / &quot;&gt;=&quot; / &quot;&gt;&quot; / &quot;!=&quot; 
 regex-operator = &quot;=~&quot;
 
-; The &quot;json-literal&quot; is any valid JSON value.  
+; &quot;json-literal&quot; is any valid JSON value.  
 ;
-; The &quot;regex-characters&quot; represents regular expression characters
+; &quot;regex&quot; represents regular expression characters
 
 function-expression = unquoted-string  (
                         no-args  /
@@ -149,6 +149,7 @@ one-or-more-args    = &quot;(&quot; ( function-arg *( &quot;,&quot; function-arg
 function-arg        = expression
 
 </code></pre>
+<h2 id="expression">Expression</h2>
 <h3 id="true-and-false-values">True and False Values</h3>
 <p>A false value is any value on this list:</p>
 <ul>
@@ -160,40 +161,6 @@ function-arg        = expression
 <li>zero.</li>
 </ul>
 <p>A true value is any value that is not false</p>
-<h3 id="or-expression">Or Expression</h3>
-<pre><code class="lang-text">or-expression = expression &quot;||&quot; expression
-</code></pre>
-<p>If both left and right sides are null, the or-expression evaluates
-to null. Otherwise, if the left side evaluates to true,
-it will evaluate to its left side, and if
-the left side evaluates to false, it will evaluate to its
-right side.</p>
-<h3 id="and-expression">And Expression</h3>
-<pre><code class="lang-text">and-expression = expression &quot;&amp;&amp;&quot; expression
-</code></pre>
-<p>If the left side evaluates to true, then the and-expression evaluates
-to the right side, otherwise it evaluates to the left side.</p>
-<h3 id="not-expression">Not Expression</h3>
-<pre><code class="lang-text">not-expression = &quot;!&quot; expression
-</code></pre>
-<p>If an expression evaluates to true, a not-expression will evaluate to
-false. Conversely if an expression evaluates to false, a not-expression
-will evaluate to true;</p>
-<h3 id="unary-minus-expression">Unary Minus Expression</h3>
-<pre><code class="lang-text">unary-minus-expression = -expression
-</code></pre>
-<p>The - (unary minus) operator negates the value of the expression.
-It is only valid if the expression evaluates to a number.</p>
-<h3 id="example">Example</h3>
-<p>JSON Document:</p>
-<pre><code class="lang-json">[{&quot;key&quot;: 0}, {&quot;key&quot;: 42}, {&quot;key&quot;: -1}, {&quot;key&quot;: 41}, {&quot;key&quot;: 43}, {&quot;key&quot;: 42.0001}, {&quot;key&quot;: 41.9999}, {&quot;key&quot;: 100}, {&quot;some&quot;: &quot;value&quot;}]
-</code></pre>
-<p>JSONPath:</p>
-<pre><code class="lang-text">$[?-@.key &gt; -42]
-</code></pre>
-<p>Result:</p>
-<pre><code class="lang-json">[{&quot;key&quot;: 0}, {&quot;key&quot;: -1}, {&quot;key&quot;: 41}, {&quot;key&quot;: 41.9999}]
-</code></pre>
 <h3 id="operator-precedence">Operator Precedence</h3>
 <table>
 <thead>
@@ -247,6 +214,675 @@ It is only valid if the expression evaluates to a number.</p>
 </tbody>
 </table>
 <p>The precedence rules may be overriden with explicit parentheses, e.g. (a || b) &amp;&amp; c.</p>
+<h3 id="or-expression">Or Expression</h3>
+<pre><code class="lang-text">or-expression = expression &quot;||&quot; expression
+</code></pre>
+<p>If both left and right sides are null, the or-expression evaluates
+to null. Otherwise, if the left side evaluates to true,
+it will evaluate to its left side, and if
+the left side evaluates to false, it will evaluate to its
+right side.</p>
+<h3 id="and-expression">And Expression</h3>
+<pre><code class="lang-text">and-expression = expression &quot;&amp;&amp;&quot; expression
+</code></pre>
+<p>If the left side evaluates to true, then the and-expression evaluates
+to the right side, otherwise it evaluates to the left side.</p>
+<h3 id="not-expression">Not Expression</h3>
+<pre><code class="lang-text">not-expression = &quot;!&quot; expression
+</code></pre>
+<p>If an expression evaluates to true, a not-expression will evaluate to
+false. Conversely if an expression evaluates to false, a not-expression
+will evaluate to true;</p>
+<h3 id="unary-minus-expression">Unary Minus Expression</h3>
+<pre><code class="lang-text">unary-minus-expression = -expression
+</code></pre>
+<p>The - (unary minus) operator negates the value of the expression.
+It is only valid if the expression evaluates to a number.</p>
+<h3 id="example">Example</h3>
+<p>JSON Document:</p>
+<pre><code class="lang-json">[{&quot;key&quot;: 0}, {&quot;key&quot;: 42}, {&quot;key&quot;: -1}, {&quot;key&quot;: 41}, {&quot;key&quot;: 43}, {&quot;key&quot;: 42.0001}, {&quot;key&quot;: 41.9999}, {&quot;key&quot;: 100}, {&quot;some&quot;: &quot;value&quot;}]
+</code></pre>
+<p>JSONPath:</p>
+<pre><code class="lang-text">$[?-@.key &gt; -42]
+</code></pre>
+<p>Result:</p>
+<pre><code class="lang-json">[{&quot;key&quot;: 0}, {&quot;key&quot;: -1}, {&quot;key&quot;: 41}, {&quot;key&quot;: 41.9999}]
+</code></pre>
+<h3 id="functions">Functions</h3>
+<h3 id="abs">abs</h3>
+<pre><code>number abs(number value)
+</code></pre>
+<p>Returns the absolute value of a number.</p>
+<p>It is a type error if the provided argument is not a number.</p>
+<h3 id="examples">Examples</h3>
+<h3 id="avg">avg</h3>
+<pre><code>number|null avg(array[number] value)
+</code></pre>
+<p>Returns the average of the items in an array of numbers, or null if the array is empty</p>
+<p>It is a type error if</p>
+<ul>
+<li><p>the provided value is not an array</p>
+</li>
+<li><p>the array contains items that are not numbers</p>
+</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<pre><code class="lang-csharp">using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPath;
+
+namespace JsonCons.Examples
+{
+    public static class JsonPathExamples
+    {
+        public static void Main(string[] args)
+        {
+            string jsonString = @&quot;
+{
+    &quot;&quot;books&quot;&quot;:
+    [
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;A Wild Sheep Chase&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Haruki Murakami&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 22.72
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Night Watch&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Sergei Lukyanenko&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 23.58
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Comedians&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Graham Greene&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 21.99
+        },
+        { 
+          &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+          &quot;&quot;author&quot;&quot;: &quot;&quot;J. R. R. Tolkien&quot;&quot;,
+          &quot;&quot;title&quot;&quot;: &quot;&quot;The Lord of the Rings&quot;&quot;
+        }
+    ]
+}
+            &quot;;
+
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                IList&lt;JsonElement&gt; results = JsonPath.Select(doc.RootElement, @&quot;$.books[?(@.price &gt; avg($.books[*].price))].title&quot;);
+                foreach (var value in results)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>Output:</p>
+<pre><code>&quot;The Night Watch&quot;
+</code></pre>
+<h3 id="ceil">ceil</h3>
+<pre><code>integer ceil(number value)
+</code></pre>
+<p>Returns the smallest integer value not less than the provided number.</p>
+<p>It is a type error if the provided argument is not a number.</p>
+<h3 id="examples">Examples</h3>
+<pre><code class="lang-csharp">using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPath;
+
+namespace JsonCons.Examples
+{
+    public static class JsonPathExamples
+    {
+        public static void Main(string[] args)
+        {
+            string jsonString = @&quot;
+{
+    &quot;&quot;books&quot;&quot;:
+    [
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;A Wild Sheep Chase&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Haruki Murakami&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 22.72
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Night Watch&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Sergei Lukyanenko&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 23.58
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Comedians&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Graham Greene&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 21.99
+        },
+        { 
+          &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+          &quot;&quot;author&quot;&quot;: &quot;&quot;J. R. R. Tolkien&quot;&quot;,
+          &quot;&quot;title&quot;&quot;: &quot;&quot;The Lord of the Rings&quot;&quot;
+        }
+    ]
+}
+            &quot;;
+
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                IList&lt;JsonElement&gt; results = JsonPath.Select(doc.RootElement, @&quot;$.books[?(ceil(@.price*10) == 236)]&quot;);
+                foreach (var value in results)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>Output:</p>
+<pre><code>{
+    &quot;category&quot;: &quot;fiction&quot;,
+    &quot;title&quot; : &quot;The Night Watch&quot;,
+    &quot;author&quot; : &quot;Sergei Lukyanenko&quot;,
+    &quot;price&quot; : 23.58
+}
+</code></pre>
+<h3 id="contains">contains</h3>
+<pre><code>boolean contains(array|string source, any search)
+</code></pre>
+<p>If source is an array, returns true if the array contains an item that is equal to
+the search value, false otherwise.</p>
+<p>If source is a string, returns true if the string contains a substring that is equal to
+the search value, false otherwise.</p>
+<p>It is a type error if</p>
+<ul>
+<li><p>the provided source is not an array or string, or</p>
+</li>
+<li><p>the provided source is a string but the provided search value is not a string.</p>
+</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<pre><code class="lang-csharp">using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPath;
+
+namespace JsonCons.Examples
+{
+    public static class JsonPathExamples
+    {
+        public static void Main(string[] args)
+        {
+            string jsonString = @&quot;
+{
+    &quot;&quot;books&quot;&quot;:
+    [
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;A Wild Sheep Chase&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Haruki Murakami&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 22.72
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Night Watch&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Sergei Lukyanenko&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 23.58
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Comedians&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Graham Greene&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 21.99
+        },
+        { 
+          &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+          &quot;&quot;author&quot;&quot;: &quot;&quot;J. R. R. Tolkien&quot;&quot;,
+          &quot;&quot;title&quot;&quot;: &quot;&quot;The Lord of the Rings&quot;&quot;
+        }
+    ]
+}
+            &quot;;
+
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                IList&lt;JsonElement&gt; results = JsonPath.Select(doc.RootElement, @&quot;$.books[?(!contains(keys(@),'price'))]&quot;);
+                foreach (var value in results)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>Output:</p>
+<pre><code>{
+    &quot;category&quot;: &quot;fiction&quot;,
+    &quot;author&quot;: &quot;J. R. R. Tolkien&quot;,
+    &quot;title&quot;: &quot;The Lord of the Rings&quot;
+}
+</code></pre>
+<h3 id="ends_with">ends_with</h3>
+<pre><code>boolean ends_with(string source, string suffix)
+</code></pre>
+<p>Returns true if the source string ends with the suffix string, otherwise false.</p>
+<p>It is a type error if</p>
+<ul>
+<li><p>the provided source is not a string, or</p>
+</li>
+<li><p>the provided suffix is not a string</p>
+</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<h3 id="floor">floor</h3>
+<pre><code>integer floor(number value)
+</code></pre>
+<p>Returns the largest integer value not greater than the given number.</p>
+<p>It is a type error if the provided argument is not a number.</p>
+<h3 id="examples">Examples</h3>
+<pre><code class="lang-csharp">using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPath;
+
+namespace JsonCons.Examples
+{
+    public static class JsonPathExamples
+    {
+        public static void Main(string[] args)
+        {
+            string jsonString = @&quot;
+{
+    &quot;&quot;books&quot;&quot;:
+    [
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;A Wild Sheep Chase&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Haruki Murakami&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 22.72
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Night Watch&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Sergei Lukyanenko&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 23.58
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Comedians&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Graham Greene&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 21.99
+        },
+        { 
+          &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+          &quot;&quot;author&quot;&quot;: &quot;&quot;J. R. R. Tolkien&quot;&quot;,
+          &quot;&quot;title&quot;&quot;: &quot;&quot;The Lord of the Rings&quot;&quot;
+        }
+    ]
+}
+            &quot;;
+
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                IList&lt;JsonElement&gt; results = JsonPath.Select(doc.RootElement, @&quot;$.books[?(floor(@.price*10) == 235)]&quot;);
+                foreach (var value in results)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>Output:</p>
+<pre><code>{
+    &quot;category&quot;: &quot;fiction&quot;,
+    &quot;title&quot; : &quot;A Wild Sheep Chase&quot;,
+    &quot;author&quot; : &quot;Haruki Murakami&quot;,
+    &quot;price&quot; : 22.72
+}
+</code></pre>
+<h3 id="keys">keys</h3>
+<pre><code>array[string] keys(object value)
+</code></pre>
+<p>Returns an array of keys in the object.</p>
+<p>It is a type error if the provided argument is not an object.</p>
+<h3 id="example">Example</h3>
+<pre><code class="lang-csharp">using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPath;
+
+namespace JsonCons.Examples
+{
+    public static class JsonPathExamples
+    {
+        public static void Main(string[] args)
+        {
+            string jsonString = @&quot;
+{
+    &quot;&quot;books&quot;&quot;:
+    [
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;A Wild Sheep Chase&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Haruki Murakami&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 22.72
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Night Watch&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Sergei Lukyanenko&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 23.58
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Comedians&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Graham Greene&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 21.99
+        },
+        { 
+          &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+          &quot;&quot;author&quot;&quot;: &quot;&quot;J. R. R. Tolkien&quot;&quot;,
+          &quot;&quot;title&quot;&quot;: &quot;&quot;The Lord of the Rings&quot;&quot;
+        }
+    ]
+}
+            &quot;;
+
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                IList&lt;JsonElement&gt; results = JsonPath.Select(doc.RootElement, @&quot;$.books[?(tokenize(@.author,'\\s+')[-1] == 'Tolkien')]&quot;);
+                foreach (var value in results)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>Output:</p>
+<pre><code>{
+    &quot;category&quot;: &quot;fiction&quot;,
+    &quot;author&quot;: &quot;J. R. R. Tolkien&quot;,
+    &quot;title&quot;: &quot;The Lord of the Rings&quot;
+}
+</code></pre>
+<h3 id="length">length</h3>
+<pre><code>integer|null length(array|object|string value)
+</code></pre>
+<p>Returns the length of an array, object or string.</p>
+<p>If array, returns the number of items in the array
+If object, returns the number of key-value pairs in the object
+If string, returns the number of codepoints in the string
+Otherwise, returns null.</p>
+<h3 id="examples">Examples</h3>
+<pre><code class="lang-csharp">using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPath;
+
+namespace JsonCons.Examples
+{
+    public static class JsonPathExamples
+    {
+        public static void Main(string[] args)
+        {
+            string jsonString = @&quot;
+{
+    &quot;&quot;books&quot;&quot;:
+    [
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;A Wild Sheep Chase&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Haruki Murakami&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 22.72
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Night Watch&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Sergei Lukyanenko&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 23.58
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Comedians&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Graham Greene&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 21.99
+        },
+        { 
+          &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+          &quot;&quot;author&quot;&quot;: &quot;&quot;J. R. R. Tolkien&quot;&quot;,
+          &quot;&quot;title&quot;&quot;: &quot;&quot;The Lord of the Rings&quot;&quot;
+        }
+    ]
+}
+            &quot;;
+
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                IList&lt;JsonElement&gt; results3 = JsonPath.Select(doc.RootElement, @&quot;$.books[?(@.price &gt; sum($.books[*].price)/length($.books[*].price))].title&quot;);
+                foreach (var value in results3)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>Output:</p>
+<pre><code>&quot;The Night Watch&quot;
+</code></pre>
+<h3 id="max">max</h3>
+<pre><code>number|string|null max(array[number]|array[string] value)
+</code></pre>
+<p>Returns the highest number found in an array of numbers,
+or the highest string in an array of strings, or null
+if the array is empty.</p>
+<p>It is a type error if</p>
+<ul>
+<li><p>the provided value is not an array</p>
+</li>
+<li><p>the array contains items that are not all numbers or all strings</p>
+</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<h3 id="min">min</h3>
+<pre><code>number|string|null min(array[number]|array[string] value)
+</code></pre>
+<p>Returns the lowest number found in an array of numbers,
+or the lowest string in an array of strings, or null if
+the array is empty</p>
+<p>It is a type error if</p>
+<ul>
+<li><p>the provided value is not an array</p>
+</li>
+<li><p>the array contains items that are not all numbers or all strings</p>
+</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<h3 id="prod">prod</h3>
+<pre><code class="lang-c++">number|null avg(array[number] value)
+</code></pre>
+<p>Returns the product of the items in an array of numbers, or null if the array is empty.</p>
+<p>It is a type error if</p>
+<ul>
+<li><p>the provided value is not an array</p>
+</li>
+<li><p>the array contains items that are not numbers</p>
+</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<h3 id="starts_with">starts_with</h3>
+<pre><code>boolean starts_with(string source, string prefix)
+</code></pre>
+<p>Returns true if the source string starts with the prefix string, otherwise false.</p>
+<p>It is a type error if</p>
+<ul>
+<li>the provided source is not a string, or</li>
+<li>the provided prefix is not a string</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<h3 id="sum">sum</h3>
+<pre><code>number sum(array[number] value)
+</code></pre>
+<p>Returns the sum of the items in an array of numbers.</p>
+<p>Returns 0 if the array is empty.</p>
+<p>It is a type error if any item in the array is not a number.</p>
+<h3 id="examples">Examples</h3>
+<pre><code class="lang-csharp">using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPath;
+
+namespace JsonCons.Examples
+{
+    public static class JsonPathExamples
+    {
+        public static void Main(string[] args)
+        {
+            string jsonString = @&quot;
+{
+    &quot;&quot;books&quot;&quot;:
+    [
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;A Wild Sheep Chase&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Haruki Murakami&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 22.72
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Night Watch&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Sergei Lukyanenko&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 23.58
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Comedians&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Graham Greene&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 21.99
+        },
+        { 
+          &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+          &quot;&quot;author&quot;&quot;: &quot;&quot;J. R. R. Tolkien&quot;&quot;,
+          &quot;&quot;title&quot;&quot;: &quot;&quot;The Lord of the Rings&quot;&quot;
+        }
+    ]
+}
+            &quot;;
+
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                IList&lt;JsonElement&gt; results3 = JsonPath.Select(doc.RootElement, @&quot;$.books[?(@.price &gt; sum($.books[*].price)/length($.books[*].price))].title&quot;);
+                foreach (var value in results3)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>Output:</p>
+<pre><code>&quot;The Night Watch&quot;
+</code></pre>
+<h3 id="to_number">to_number</h3>
+<pre><code>number to_number(string|number value)
+</code></pre>
+<p>If string, returns the parsed number.
+If number, returns the passed in value.</p>
+<p>It is a type error if</p>
+<ul>
+<li><p>the provided value is not a string or number</p>
+</li>
+<li><p>the string cannot be parsed as a number</p>
+</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<h3 id="tokenize">tokenize</h3>
+<pre><code>array[string] tokenize(string source, string pattern)
+</code></pre>
+<p>Returns an array of strings formed by splitting the source string into an array of strings, separated by substrings that match the given regular expression pattern.</p>
+<p>It is a type error if either argument is not a string.</p>
+<h3 id="example">Example</h3>
+<pre><code class="lang-csharp">using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPath;
+
+namespace JsonCons.Examples
+{
+    public static class JsonPathExamples
+    {
+        public static void Main(string[] args)
+        {
+            string jsonString = @&quot;
+{
+    &quot;&quot;books&quot;&quot;:
+    [
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;A Wild Sheep Chase&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Haruki Murakami&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 22.72
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Night Watch&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Sergei Lukyanenko&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 23.58
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Comedians&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Graham Greene&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 21.99
+        },
+        { 
+          &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+          &quot;&quot;author&quot;&quot;: &quot;&quot;J. R. R. Tolkien&quot;&quot;,
+          &quot;&quot;title&quot;&quot;: &quot;&quot;The Lord of the Rings&quot;&quot;
+        }
+    ]
+}
+            &quot;;
+
+            using (JsonDocument doc = JsonDocument.Parse(jsonString))
+            {
+                IList&lt;JsonElement&gt; results = JsonPath.Select(doc.RootElement, @&quot;$.books[?(tokenize(@.author,'\\s+')[-1] == 'Tolkien')]&quot;);
+                foreach (var value in results)
+                {
+                    Console.WriteLine(value);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>Output:</p>
+<pre><code>{
+    &quot;category&quot;: &quot;fiction&quot;,
+    &quot;author&quot;: &quot;J. R. R. Tolkien&quot;,
+    &quot;title&quot;: &quot;The Lord of the Rings&quot;
+}
+</code></pre>
 </article>
           </div>
           

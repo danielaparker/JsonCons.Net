@@ -4,7 +4,7 @@
 There are many implementations and they differ in significant ways, see Christoph Burgmer's 
 [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
 
-The JsonCons implementation is described in an [ABNF grammar](Specification.md).
+The JsonCons implementation is described in an [ABNF grammar](Specification.md) (in progress.)
 It explicitly implements a state machine that corresponds to this grammar. 
 
 The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:
@@ -346,7 +346,7 @@ Operator| Expression |      Description
 `<=`    | expression <= expression | Left is less than or equal to right
 `>`     | expression > expression | Left is greater than right
 `>=`    | expression >= expression | Left is greater than or equal to right
-`=~`    | expression `=~` "/" regular-expression "/" [i] | Left matches regular expression, e.g. [?(@.author =~ /Evelyn.*?/)]
+`=~`    | expression `=~` "/" regex "/" [i] | Left matches regular expression, e.g. [?(@.author =~ /Evelyn.*?/)]
 
 The ordering operators `>`, `>=`, `<`, `<=` are only valid if both left and right are numbers,
 or if both left and right are strings. Otherwise the item will be excluded from the result set.
@@ -355,7 +355,7 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 
 Operator| Expression |      Description
 --------|------------|-------------------
-`!`     | [!expression](operators/not-expression.md) | Reverses true or false
+`!`     | [!expression](operators/not-expression.md) | Reverses true/false
 `-`     | [-expression](operators/unary-minus-expression.md) | Negates right
 
 The unary minus operator is only valid if right is a number.

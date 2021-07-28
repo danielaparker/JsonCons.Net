@@ -10,9 +10,9 @@ namespace JsonCons.Utilities
 {
     /// <summary>
     /// Represents a JSON Pointer as defined by <see href="https://datatracker.ietf.org/doc/html/rfc6901">RFC 6901</see>
-    /// </summary>
+    /// </summary> 
     /// <example>
-    /// The following example shows how to select values, paths, and nodes from a JSON document
+    /// The following example shows how to get a values at a referenced location in a JSON document.
     /// <code>
     /// using System;
     /// using System.Diagnostics;

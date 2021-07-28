@@ -29,7 +29,7 @@ unquoted-string   =     %x30-39  /  ; 0-9
                         %x41-5A  /  ; A-Z
                         %x5F     /  ; _
                         %x61-7A  /  ; a-z
-                        %x80-10FFFF ;    
+                        %x80-10FFFF ; U+0080 ...    
 
 double-quoted-string     = double-quote 
                            1*(unescaped-char / single-quote / escaped-char / escaped-double-quote) 
@@ -59,18 +59,18 @@ single-quoted-string     = single-quote
 expression = single-quoted-string 
 expression =/ json-literal
 expression =/ jsonpath 
-expression =/ unary-expression / binary-expression / regex-binary-expression / paren-expression 
+expression =/ unary-expression / binary-expression / regex-expression / paren-expression 
 paren-expression  = "(" expression ")"
 unary-expression=unary-operator expression
 binary-expression = expression binary-operator expression
-regex-binary-expression = expression regex-operator "/" regex-expression "/" [i]
+regex-expression = expression regex-operator "/" regex "/" [i]
 unary-operator = "!" / "-"
 binary-operator  = "*" / "/" / "%" / "+" / "-" / "&&" / "||" / <" / "<=" / "==" / ">=" / ">" / "!=" 
 regex-operator = "=~"
 
-; The "json-literal" is any valid JSON value.  
+; "json-literal" is any valid JSON value.  
 ;
-; The "regex-characters" represents regular expression characters
+; "regex" represents regular expression characters
 
 function-expression = unquoted-string  (
                         no-args  /

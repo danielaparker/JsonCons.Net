@@ -2,6 +2,8 @@
 
 [!include[Grammar](./Grammar.md)]
 
+## Expression
+
 [!include[True and False Values](./TrueAndFalseValues.md)]
 
 [!include[Operator Precedence](./operators/OperatorPrecedence.md)]
@@ -14,35 +16,35 @@
 
 [!include[Unary Minus Expression](./operators/unary-minus-expression.md)]
 
-## Functions
+### Functions
 
-[!include[abs](./operators/abs.md)]
+[!include[abs](./functions/abs.md)]
 
-[!include[avg](./operators/avg.md)]
+[!include[avg](./functions/avg.md)]
 
-[!include[ceil](./operators/ceil.md)]
+[!include[ceil](./functions/ceil.md)]
 
-[!include[contains](./operators/contains.md)]
+[!include[contains](./functions/contains.md)]
 
-[!include[ends_with](./operators/ends_with.md)]
+[!include[ends_with](./functions/ends_with.md)]
 
-[!include[floor](./operators/floor.md)]
+[!include[floor](./functions/floor.md)]
 
-[!include[keys](./operators/keys.md)]
+[!include[keys](./functions/keys.md)]
 
-[!include[length](./operators/length.md)]
+[!include[length](./functions/length.md)]
 
-[!include[max](./operators/max.md)]
+[!include[max](./functions/max.md)]
 
-[!include[min](./operators/min.md)]
+[!include[min](./functions/min.md)]
 
-[!include[prod](./operators/prod.md)]
+[!include[prod](./functions/prod.md)]
 
-[!include[starts_with](./operators/starts_with.md)]
+[!include[starts_with](./functions/starts_with.md)]
 
-[!include[sum](./operators/sum.md)]
+[!include[sum](./functions/sum.md)]
 
-[!include[to_number](./operators/to_number.md)]
+[!include[to_number](./functions/to_number.md)]
 
-[!include[tokenize](./operators/tokenize.md)]
+[!include[tokenize](./functions/tokenize.md)]
 
