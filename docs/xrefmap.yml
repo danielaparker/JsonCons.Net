@@ -199,6 +199,24 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.JsonSelector.SelectPaths
   nameWithType: JsonSelector.SelectPaths
+- uid: JsonCons.JsonPath.JsonSelectorExecutionMode
+  name: JsonSelectorExecutionMode
+  href: ref/JsonCons.JsonPath.JsonSelectorExecutionMode.html
+  commentId: T:JsonCons.JsonPath.JsonSelectorExecutionMode
+  fullName: JsonCons.JsonPath.JsonSelectorExecutionMode
+  nameWithType: JsonSelectorExecutionMode
+- uid: JsonCons.JsonPath.JsonSelectorExecutionMode.Parallel
+  name: Parallel
+  href: ref/JsonCons.JsonPath.JsonSelectorExecutionMode.html#JsonCons_JsonPath_JsonSelectorExecutionMode_Parallel
+  commentId: F:JsonCons.JsonPath.JsonSelectorExecutionMode.Parallel
+  fullName: JsonCons.JsonPath.JsonSelectorExecutionMode.Parallel
+  nameWithType: JsonSelectorExecutionMode.Parallel
+- uid: JsonCons.JsonPath.JsonSelectorExecutionMode.Sequential
+  name: Sequential
+  href: ref/JsonCons.JsonPath.JsonSelectorExecutionMode.html#JsonCons_JsonPath_JsonSelectorExecutionMode_Sequential
+  commentId: F:JsonCons.JsonPath.JsonSelectorExecutionMode.Sequential
+  fullName: JsonCons.JsonPath.JsonSelectorExecutionMode.Sequential
+  nameWithType: JsonSelectorExecutionMode.Sequential
 - uid: JsonCons.JsonPath.JsonSelectorOptions
   name: JsonSelectorOptions
   href: ref/JsonCons.JsonPath.JsonSelectorOptions.html
@@ -211,6 +229,19 @@ references:
   commentId: F:JsonCons.JsonPath.JsonSelectorOptions.Default
   fullName: JsonCons.JsonPath.JsonSelectorOptions.Default
   nameWithType: JsonSelectorOptions.Default
+- uid: JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode
+  name: ExecutionMode
+  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_ExecutionMode
+  commentId: P:JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode
+  fullName: JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode
+  nameWithType: JsonSelectorOptions.ExecutionMode
+- uid: JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode*
+  name: ExecutionMode
+  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_ExecutionMode_
+  commentId: Overload:JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode
+  isSpec: "True"
+  fullName: JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode
+  nameWithType: JsonSelectorOptions.ExecutionMode
 - uid: JsonCons.JsonPath.JsonSelectorOptions.MaxDepth
   name: MaxDepth
   href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_MaxDepth

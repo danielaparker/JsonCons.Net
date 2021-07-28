@@ -66,6 +66,21 @@
             </summary>
             <returns>A string representation of the current exception.</returns>
         </member>
+        <member name="T:JsonCons.JsonPath.JsonSelectorExecutionMode">
+            <summary>
+            Defines the options for executing selectors
+            </summary>
+        </member>
+        <member name="F:JsonCons.JsonPath.JsonSelectorExecutionMode.Sequential">
+            <summary>
+            Executes selectors sequentially.
+            </summary>
+        </member>
+        <member name="F:JsonCons.JsonPath.JsonSelectorExecutionMode.Parallel">
+            <summary>
+            Parallelizes execution of selectors.
+            </summary>
+        </member>
         <member name="T:JsonCons.JsonPath.JsonSelectorOptions">
             <summary>
             Defines the various ways a <see cref="T:JsonCons.JsonPath.JsonSelector"/> can handle duplicate
@@ -90,6 +105,11 @@
         <member name="P:JsonCons.JsonPath.JsonSelectorOptions.MaxDepth">
             <summary>
             Gets or sets the depth limit for recursive descent, with the default value a maximum depth of 64.
+            </summary>
+        </member>
+        <member name="P:JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode">
+            <summary>
+            Gets or sets the execution mode.
             </summary>
         </member>
         <member name="T:JsonCons.JsonPath.ProcessingFlags">

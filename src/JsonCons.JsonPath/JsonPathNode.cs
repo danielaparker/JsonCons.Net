@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.Runtime.CompilerServices;
 
 namespace JsonCons.JsonPath
 {
@@ -66,6 +67,22 @@ namespace JsonCons.JsonPath
     {
         void AddNode(PathNode last, IValue value);
     };
+
+    sealed class SynchronizedNodeAccumulator : INodeAccumulator
+    {
+        INodeAccumulator _accumulator;
+
+        internal SynchronizedNodeAccumulator(INodeAccumulator accumulator)
+        {
+            _accumulator = accumulator;
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void AddNode(PathNode last, IValue value)
+        {
+            _accumulator.AddNode(last, value);
+        }
+    }
 
     sealed class JsonElementAccumulator : INodeAccumulator
     {

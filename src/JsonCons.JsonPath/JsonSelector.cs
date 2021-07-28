@@ -37,6 +37,20 @@ namespace JsonCons.JsonPath
         }
     };
 
+    /// <summary>
+    /// Defines the options for executing selectors
+    /// </summary>
+    public enum JsonSelectorExecutionMode
+    {
+        /// <summary>
+        /// Executes selectors sequentially.
+        /// </summary>
+        Sequential,
+        /// <summary>
+        /// Parallelizes execution of selectors.
+        /// </summary>
+        Parallel 
+    }
 
     /// <summary>
     /// Defines the various ways a <see cref="JsonSelector"/> can handle duplicate
@@ -63,6 +77,11 @@ namespace JsonCons.JsonPath
         /// Gets or sets the depth limit for recursive descent, with the default value a maximum depth of 64.
         /// </summary>
         public int MaxDepth { get; set; } = 64;
+
+        /// <summary>
+        /// Gets or sets the execution mode.
+        /// </summary>
+        public JsonSelectorExecutionMode ExecutionMode{ get; set; } = JsonSelectorExecutionMode.Sequential;
     };
 
     /// <summary>
@@ -279,6 +298,10 @@ namespace JsonCons.JsonPath
             {
                 var nodes = new List<JsonPathNode>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
+                if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallel)
+                {
+                    accumulator = new SynchronizedNodeAccumulator(accumulator);
+                }
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
                                  PathNode.Root, 
@@ -324,6 +347,10 @@ namespace JsonCons.JsonPath
             else
             {
                 INodeAccumulator accumulator = new JsonElementAccumulator(values);            
+                if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallel)
+                {
+                    accumulator = new SynchronizedNodeAccumulator(accumulator);
+                }
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
                                  PathNode.Root, 
@@ -368,6 +395,10 @@ namespace JsonCons.JsonPath
 
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallel)
+            {
+                accumulator = new SynchronizedNodeAccumulator(accumulator);
+            }
             _selector.Select(resources, 
                              new JsonElementValue(root), 
                              PathNode.Root, 
@@ -436,7 +467,11 @@ namespace JsonCons.JsonPath
             }
 
             var nodes = new List<JsonPathNode>();
-            var accumulator = new NodeAccumulator(nodes);
+            INodeAccumulator accumulator = new NodeAccumulator(nodes);
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallel)
+            {
+                accumulator = new SynchronizedNodeAccumulator(accumulator);
+            }
             _selector.Select(resources, 
                              new JsonElementValue(root), 
                              PathNode.Root, 

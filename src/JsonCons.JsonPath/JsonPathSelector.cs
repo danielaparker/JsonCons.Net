@@ -546,6 +546,10 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallel)
+            {
+                accumulator = new SynchronizedNodeAccumulator(accumulator);
+            }
             Select(resources, 
                    root, 
                    last, 
@@ -609,6 +613,10 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallel)
+            {
+                accumulator = new SynchronizedNodeAccumulator(accumulator);
+            }
             Select(resources, 
                    root, 
                    last, 
@@ -665,6 +673,10 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallel)
+            {
+                accumulator = new SynchronizedNodeAccumulator(accumulator);
+            }
             Select(resources, 
                    root, 
                    last, 
@@ -709,6 +721,18 @@ namespace JsonCons.JsonPath
             }
         }
 
+        void SelectI(DynamicResources resources, 
+                     IValue root, 
+                     PathNode last,
+                     IValue current,
+                     INodeAccumulator accumulator,
+                     ProcessingFlags options,
+                     int depth,
+                     int i)
+        {
+            _selectors[i].Select(resources, root, last, current, accumulator, options, depth);
+        }
+
         public void Select(DynamicResources resources, 
                            IValue root, 
                            PathNode last,
@@ -717,9 +741,20 @@ namespace JsonCons.JsonPath
                            ProcessingFlags options,
                            int depth)
         {
-            foreach (var selector in _selectors)
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Sequential)
             {
-                selector.Select(resources, root, last, current, accumulator, options, depth);
+                foreach (var selector in _selectors)
+                {
+                    selector.Select(resources, root, last, current, accumulator, options, depth);
+                }
+            }
+            else
+            {
+                Action<int> action = delegate(int i)
+                {
+                    _selectors[i].Select(resources, root, last, current, accumulator, options, depth);
+                };
+                Parallel.For(0, _selectors.Count, action);
             }
         }
 
@@ -731,6 +766,10 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallel)
+            {
+                accumulator = new SynchronizedNodeAccumulator(accumulator);
+            }
             Select(resources, 
                    root, 
                    last, 
@@ -810,6 +849,10 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallel)
+            {
+                accumulator = new SynchronizedNodeAccumulator(accumulator);
+            }
             Select(resources, 
                    root, 
                    last, 

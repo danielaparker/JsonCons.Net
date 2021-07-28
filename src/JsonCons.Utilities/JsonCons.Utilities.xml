@@ -4,6 +4,22 @@
         <name>JsonCons.Utilities</name>
     </assembly>
     <members>
+        <member name="T:JsonCons.Utilities.JsonElementComparer">
+            <summary>
+            Compares two <see cref="T:System.Text.Json.JsonElement"/> instances for equality by using value-based comparison.
+            </summary>
+        </member>
+        <member name="P:JsonCons.Utilities.JsonElementComparer.Instance">
+            <summary>Gets a singleton instance of JsonElementEqualityComparer. This property is read-only.</summary>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonElementComparer.Compare(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
+            <summary>
+            Determines whether the provided <see cref="T:System.Text.Json.JsonElement"/> objects are equal.
+            </summary>
+            <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
+            <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>
+            <returns></returns>
+        </member>
         <member name="T:JsonCons.Utilities.JsonElementEqualityComparer">
             <summary>
             Compares two <see cref="T:System.Text.Json.JsonElement"/> instances for equality by using value-based comparison.
