@@ -14,7 +14,7 @@ JSON Document:
 [{"key": 0}, {"key": 42}, {"key": -1}, {"key": 41}, {"key": 43}, {"key": 42.0001}, {"key": 41.9999}, {"key": 100}, {"some": "value"}]
 ```
 JSONPath: 
-```
+```text
 "$[?-@.key > -42]"
 ```
 Result:

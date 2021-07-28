@@ -340,7 +340,7 @@ Operator| Expression |      Description
 `-`     | expression - expression | Left minus right
 `&&`    | [expression && expression](operators/and-expression.md) | Left is true and right is true
 <code>&#124;&#124;</code>| [expression <code>&#124;&#124;</code> expression](operators/or-expression.md) | Left is true or right is true
-`==`    |expression == expression| Left is equal to right 
+`==`    |[expression == expression](operators/equality-expression.md)| Left is equal to right 
 `!=`    | expression != expression | Left is not equal to right
 `<`     | expression < expression | Left is less than right
 `<=`    | expression <= expression | Left is less than or equal to right
@@ -355,8 +355,10 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 
 Operator| Expression |      Description
 --------|------------|-------------------
-`!`     | [!expression](operators/not-expression.md) | Negate right
-`-`     | [-expression](operators/unary-minus-expression.md) | Unary minus
+`!`     | [!expression](operators/not-expression.md) | Reverses true or false
+`-`     | [-expression](operators/unary-minus-expression.md) | Negates right
+
+The unary minus operator is only valid if right is a number.
 
 #### Operator precedence
 

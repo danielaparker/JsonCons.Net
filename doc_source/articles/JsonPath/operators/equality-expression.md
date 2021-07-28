@@ -1,19 +1,11 @@
 ### Equality Expression
 
+```text
+equality-expression = expression "==" expression
 ```
-and-expression = expression "&&" expression
-```
 
-If the left side evaluates to true, then the and-expression evaluates
-to the right side, otherwise it evaluates to the left side.
+Two strings are equal if they have the same sequence of codepoints.
+The literal values true, false, and null are equal if left and right have the same literal value.
+Two JSON objects are equal if they have the same name-value pairs, possibly in different order.
+Two JSON arrays are equal if they have the same elements in the same order.
 
-A false value is any value on this list:
-
-- empty array: [],
-- empty object: {},
-- empty string: "",
-- false,
-- null,
-- zero.
-
-A true value is any value that is not false.
