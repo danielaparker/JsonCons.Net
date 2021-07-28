@@ -15,7 +15,7 @@ JSON Document:
 ```
 JSONPath: 
 ```text
-"$[?-@.key > -42]"
+$[?-@.key > -42]
 ```
 Result:
 ```json

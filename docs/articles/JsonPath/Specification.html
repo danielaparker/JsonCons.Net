@@ -189,7 +189,7 @@ It is only valid if the expression evaluates to a number.</p>
 <pre><code class="lang-json">[{&quot;key&quot;: 0}, {&quot;key&quot;: 42}, {&quot;key&quot;: -1}, {&quot;key&quot;: 41}, {&quot;key&quot;: 43}, {&quot;key&quot;: 42.0001}, {&quot;key&quot;: 41.9999}, {&quot;key&quot;: 100}, {&quot;some&quot;: &quot;value&quot;}]
 </code></pre>
 <p>JSONPath:</p>
-<pre><code class="lang-text">&quot;$[?-@.key &gt; -42]&quot;
+<pre><code class="lang-text">$[?-@.key &gt; -42]
 </code></pre>
 <p>Result:</p>
 <pre><code class="lang-json">[{&quot;key&quot;: 0}, {&quot;key&quot;: -1}, {&quot;key&quot;: 41}, {&quot;key&quot;: 41.9999}]
