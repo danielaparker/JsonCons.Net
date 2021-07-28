@@ -354,9 +354,9 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 #### Unary operators
 
 Operator| Expression |      Description
---------|--------------------------------
+--------|------------|-------------------
 `!`     | [!expression](operators/not-expression.md) | Negate right
-`-`     | -expression | Unary minus
+`-`     | [-expression](operators/unary-minus-expression.md) | Unary minus
 
 #### Operator precedence
 

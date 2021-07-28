@@ -1,6 +1,6 @@
 ### Or Expression
 
-```json
+```text
 or-expression = expression "||" expression
 ```
 

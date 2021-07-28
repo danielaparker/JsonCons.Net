@@ -1,6 +1,6 @@
 ### Not Expression
 
-```
+```text
 not-expression = "!" expression
 ```
 

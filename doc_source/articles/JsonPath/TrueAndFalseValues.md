@@ -1,6 +1,5 @@
 ### True and False Values
 
-```
 A false value is any value on this list:
 
 - empty array: [],
