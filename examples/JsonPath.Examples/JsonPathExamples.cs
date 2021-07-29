@@ -453,6 +453,95 @@ public static class JsonPathExamples
         Console.WriteLine();
     }
 
+    public static void ProcessingUnionsSequentiallyAndInParallel()
+    {
+        string jsonString = @"
+[
+  {
+    ""Title"": ""Title0"",
+    ""Author"": ""Author0"",
+    ""Category"": ""Fiction""
+  },
+  {
+    ""Title"": ""Title1"",
+    ""Author"": ""Author1"",
+    ""Category"": ""Poetry""
+  },
+  {
+    ""Title"": ""Title2"",
+    ""Author"": ""Author2"",
+    ""Category"": ""NonFiction""
+  },
+  {
+    ""Title"": ""Title3"",
+    ""Author"": ""Author3"",
+    ""Category"": ""Drama""
+  },
+  {
+    ""Title"": ""Title4"",
+    ""Author"": ""Author4"",
+    ""Category"": ""Drama""
+  },
+  {
+    ""Title"": ""Title5"",
+    ""Author"": ""Author5"",
+    ""Category"": ""Fiction""
+  },
+  {
+    ""Title"": ""Title6"",
+    ""Author"": ""Author6"",
+    ""Category"": ""Poetry""
+  },
+  {
+    ""Title"": ""Title7"",
+    ""Author"": ""Author7"",
+    ""Category"": ""Poetry""
+  },
+  {
+    ""Title"": ""Title8"",
+    ""Author"": ""Author8"",
+    ""Category"": ""Folktale""
+  },
+  {
+    ""Title"": ""Title9"",
+    ""Author"": ""Author9"",
+    ""Category"": ""Folktale""
+  }
+]
+        ";
+
+        using JsonDocument doc = JsonDocument.Parse(jsonString);
+
+        var serializerOptions = new JsonSerializerOptions() {WriteIndented = true};
+
+        var selector1 = JsonSelector.Parse(@"$[?@.Category=='Fiction' ||
+                                                @.Category=='NonFiction' ||                                                 
+                                                @.Category=='Drama']
+                                           ");
+        IList<JsonElement> results1 = selector1.Select(doc.RootElement);
+
+        Console.WriteLine("Results with sequential processing:");
+        foreach (var element in results1)
+        {
+            Console.WriteLine($"{JsonSerializer.Serialize(element, serializerOptions)}");
+        }
+        Console.WriteLine();
+
+        var selector2 = JsonSelector.Parse(@"$[?@.Category=='Fiction',
+                                               ?@.Category=='NonFiction',                                                 
+                                               ?@.Category=='Drama'
+                                              ]");
+        IList<JsonElement> results2 = selector2.Select(doc.RootElement,
+            new JsonSelectorOptions{ExecutionMode = JsonSelectorExecutionMode.ParallelizeUnions});
+
+        Console.WriteLine("Results with parallel processing:");
+        foreach (var element in results2)
+        {
+            Console.WriteLine($"{JsonSerializer.Serialize(element, serializerOptions)}");
+        }
+        Console.WriteLine();
+    }
+
     public static void Main(string[] args)
     {
         SelectValuesPathsAndNodes();
@@ -461,6 +550,7 @@ public static class JsonPathExamples
         UnionOfSeparateJsonPathExpressions();
         SelectNodesWithVariousOptions();
         UsingTheParentOperator();
+        ProcessingUnionsSequentiallyAndInParallel();
     }
 }
 
