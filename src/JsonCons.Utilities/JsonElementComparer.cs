@@ -39,7 +39,7 @@ namespace JsonCons.Utilities
         /// 
         /// If both JsonElement instances are null, true, or false, they are equal.
         /// 
-        /// If both are strings, they are compared with the string CompareTo method.
+        /// If both are strings, they are compared with the String.CompareTo method.
         /// 
         /// If both are numbers, and both can be represented by a <see cref="Decimal"/>,
         /// they are compared with the Decimal.CompareTo method, otherwise they are
@@ -49,7 +49,7 @@ namespace JsonCons.Utilities
         /// 
         /// <ul>
         /// <li>Order each object's properties by name and compare sequentially.
-        /// The properties are compared first by name with the string CompareTo method, then by value with JsonElementComparer</li>
+        /// The properties are compared first by name with the String.CompareTo method, then by value with JsonElementComparer</li>
         /// <li> The first mismatching property defines which JsonElement instance is less or greater than the other.</li>
         /// <li> If the two sequences have no mismatching properties until one of them ends, and the other is longer, the shorter sequence is less than the other.</li>
         /// <li> If the two sequences have no mismatching properties and have the same length, they are equal.</li>
