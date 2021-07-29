@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="JsonPathTestSuite.cs" />
-    <Compile Remove="NormalizedPathTests.cs" />
     <Compile Remove="TestFiles\JsonPathTestSuite.cs" />
     <Compile Remove="TestFiles\JsonSelectorParallelExecutionTests.cs" />
     <Compile Remove="TestFiles\NormalizedPathTests.cs" />

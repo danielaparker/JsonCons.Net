@@ -48,7 +48,7 @@ namespace JsonCons.JsonPath.Tests
                     }
                     if (testCase.TryGetProperty("sort", out element) && element.ValueKind == JsonValueKind.True)
                     {
-                        options.SortByPath = true;
+                        options.SortBy = NodeSortBy.Path;
                     }
 
                     var exprElement = testCase.GetProperty("expression");
@@ -83,7 +83,7 @@ namespace JsonCons.JsonPath.Tests
                                 {
                                     Debug.WriteLine("nodups");
                                 }
-                                if (options.SortByPath)
+                                if (options.SortBy == NodeSortBy.Path)
                                 {
                                     Debug.WriteLine("sort");
                                 }
