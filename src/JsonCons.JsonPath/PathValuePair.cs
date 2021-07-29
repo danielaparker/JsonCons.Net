@@ -14,7 +14,7 @@ namespace JsonCons.JsonPath
     ///
     /// </summary>
 
-    public readonly struct JsonPathNode : IEquatable<JsonPathNode>, IComparable<JsonPathNode>
+    public readonly struct PathValuePair : IEquatable<PathValuePair>, IComparable<PathValuePair>
     {
         /// <summary>
         /// Gets the location of this value within a root JSON value.
@@ -27,34 +27,34 @@ namespace JsonCons.JsonPath
         /// </summary>
         public JsonElement Value {get;}
 
-        internal JsonPathNode(NormalizedPath path, JsonElement value)
+        internal PathValuePair(NormalizedPath path, JsonElement value)
         {
             Path = path;
             Value = value;
         }
         /// <summary>
-        /// Determines whether this instance and another specified JsonPathNode object have the same value.
+        /// Determines whether this instance and another specified PathValuePair object have the same value.
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public bool Equals(JsonPathNode other)
+        public bool Equals(PathValuePair other)
         {
             return Path.Equals(other.Path);
         }
         /// <summary>
-        /// Compares this instance with a specified JsonPathNode object and indicates 
+        /// Compares this instance with a specified PathValuePair object and indicates 
         /// whether this instance precedes, follows, or appears in the same position 
-        /// in the sort order as the specified JsonPathNode.
+        /// in the sort order as the specified PathValuePair.
         /// </summary>
         /// <param name="other"></param>
-        /// <returns>true if the value of the other JsonPathNode object is the same as the value of 
+        /// <returns>true if the value of the other PathValuePair object is the same as the value of 
         /// this instance; otherwise, false. If other is null, the method returns false.</returns>
-        public int CompareTo(JsonPathNode other)
+        public int CompareTo(PathValuePair other)
         {
             return Path.CompareTo(other.Path);
         }
         /// <summary>
-        /// Returns the hash code for this JsonPathNode.
+        /// Returns the hash code for this PathValuePair.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
@@ -65,7 +65,7 @@ namespace JsonCons.JsonPath
 
     interface INodeAccumulator
     {
-        void AddNode(PathNode last, IValue value);
+        void AddNode(NormalizedPathNode last, IValue value);
     };
 
     sealed class SynchronizedNodeAccumulator : INodeAccumulator
@@ -78,7 +78,7 @@ namespace JsonCons.JsonPath
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void AddNode(PathNode last, IValue value)
+        public void AddNode(NormalizedPathNode last, IValue value)
         {
             _accumulator.AddNode(last, value);
         }
@@ -93,7 +93,7 @@ namespace JsonCons.JsonPath
             _values = values;
         }
 
-        public void AddNode(PathNode last, IValue value)
+        public void AddNode(NormalizedPathNode last, IValue value)
         {
             _values.Add(value.GetJsonElement());
         }
@@ -108,7 +108,7 @@ namespace JsonCons.JsonPath
             _values = values;
         }
 
-        public void AddNode(PathNode last, IValue value)
+        public void AddNode(NormalizedPathNode last, IValue value)
         {
             _values.Add(value);
         }
@@ -123,7 +123,7 @@ namespace JsonCons.JsonPath
             _values = values;
         }
 
-        public void AddNode(PathNode last, IValue value)
+        public void AddNode(NormalizedPathNode last, IValue value)
         {
             _values.Add(new NormalizedPath(last));
         }
@@ -131,16 +131,16 @@ namespace JsonCons.JsonPath
 
     sealed class NodeAccumulator : INodeAccumulator
     {
-        IList<JsonPathNode> _nodes;
+        IList<PathValuePair> _nodes;
 
-        internal NodeAccumulator(IList<JsonPathNode> nodes)
+        internal NodeAccumulator(IList<PathValuePair> nodes)
         {
             _nodes = nodes;
         }
 
-        public void AddNode(PathNode last, IValue value)
+        public void AddNode(NormalizedPathNode last, IValue value)
         {
-            _nodes.Add(new JsonPathNode(new NormalizedPath(last), value.GetJsonElement()));
+            _nodes.Add(new PathValuePair(new NormalizedPath(last), value.GetJsonElement()));
         }
     }
 

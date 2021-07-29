@@ -4,47 +4,6 @@
         <name>JsonCons.JsonPath</name>
     </assembly>
     <members>
-        <member name="T:JsonCons.JsonPath.JsonPathNode">
-             <summary>
-             Represents a specific location-value pair within a root JSON value.
-            
-             </summary>
-        </member>
-        <member name="P:JsonCons.JsonPath.JsonPathNode.Path">
-             <summary>
-             Gets the location of this value within a root JSON value.
-            
-             </summary>
-        </member>
-        <member name="P:JsonCons.JsonPath.JsonPathNode.Value">
-             <summary>
-             Gets the value
-            
-             </summary>
-        </member>
-        <member name="M:JsonCons.JsonPath.JsonPathNode.Equals(JsonCons.JsonPath.JsonPathNode)">
-            <summary>
-            Determines whether this instance and another specified JsonPathNode object have the same value.
-            </summary>
-            <param name="other"></param>
-            <returns></returns>
-        </member>
-        <member name="M:JsonCons.JsonPath.JsonPathNode.CompareTo(JsonCons.JsonPath.JsonPathNode)">
-            <summary>
-            Compares this instance with a specified JsonPathNode object and indicates 
-            whether this instance precedes, follows, or appears in the same position 
-            in the sort order as the specified JsonPathNode.
-            </summary>
-            <param name="other"></param>
-            <returns>true if the value of the other JsonPathNode object is the same as the value of 
-            this instance; otherwise, false. If other is null, the method returns false.</returns>
-        </member>
-        <member name="M:JsonCons.JsonPath.JsonPathNode.GetHashCode">
-            <summary>
-            Returns the hash code for this JsonPathNode.
-            </summary>
-            <returns>A 32-bit signed integer hash code.</returns>
-        </member>
         <member name="T:JsonCons.JsonPath.JsonPathParseException">
             <summary>
             Defines a custom exception object that is thrown when JSONPath parsing fails.
@@ -229,7 +188,7 @@
                     Console.WriteLine();
                     
                     Console.WriteLine("Select nodes");
-                    IList&lt;JsonPathNode> nodes = selector.SelectNodes(doc.RootElement);
+                    IList&lt;PathValuePair> nodes = selector.SelectNodes(doc.RootElement);
                     foreach (var node in nodes)
                     {
                         Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
@@ -237,7 +196,7 @@
                     Console.WriteLine();
                     
                     Console.WriteLine("Remove duplicate nodes");
-                    IList&lt;JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
+                    IList&lt;PathValuePair> uniqueNodes = selector.SelectNodes(doc.RootElement, 
                                                                 new JsonPathOptions{NoDuplicates=true});
                     foreach (var node in uniqueNodes)
                     {
@@ -312,7 +271,7 @@
             </summary>
             <param name="root">The root value.</param>
             <param name="options">Options for handling duplicate paths and order of results.</param>
-            <returns>A list of <see cref="T:JsonCons.JsonPath.JsonPathNode"/> representing location-value pairs 
+            <returns>A list of <see cref="T:JsonCons.JsonPath.PathValuePair"/> representing location-value pairs 
             within the root value matched by this JSONPath expression,
             or an empty list if none were matched.</returns>
         </member>
@@ -364,7 +323,7 @@
             <param name="root">The root value.</param>
             <param name="jsonPath">A JSONPath string.</param>
             <param name="options">Options for handling duplicate paths and order of results.</param>
-            <returns>A list of <see cref="T:JsonCons.JsonPath.JsonPathNode"/> representing location-value pairs 
+            <returns>A list of <see cref="T:JsonCons.JsonPath.PathValuePair"/> representing location-value pairs 
             within the root value matched by the provided JSONPath expression,
             or an empty list if none were matched.</returns>
             <exception cref="T:JsonCons.JsonPath.JsonPathParseException">
@@ -377,58 +336,58 @@
               Maximum depth level exceeded in recursive descent selector.
             </exception>
         </member>
-        <member name="T:JsonCons.JsonPath.PathNodeKind">
+        <member name="T:JsonCons.JsonPath.NormalizedPathNodeKind">
              <summary>
              Specifies the type of a path node.
             
              </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.PathNodeKind.Root">
+        <member name="F:JsonCons.JsonPath.NormalizedPathNodeKind.Root">
             <summary>
             Indicates the root path node
             </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.PathNodeKind.Name">
+        <member name="F:JsonCons.JsonPath.NormalizedPathNodeKind.Name">
             <summary>
             Indicates a path node that matches on property names.
             </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.PathNodeKind.Index">
+        <member name="F:JsonCons.JsonPath.NormalizedPathNodeKind.Index">
             <summary>
             Indicates a path node that matches on array indices.
             </summary>
         </member>
-        <member name="T:JsonCons.JsonPath.PathNode">
+        <member name="T:JsonCons.JsonPath.NormalizedPathNode">
              <summary>
              Represents a node of a <see cref="T:JsonCons.JsonPath.NormalizedPath"/>.
             
              </summary>
         </member>
-        <member name="P:JsonCons.JsonPath.PathNode.Parent">
+        <member name="P:JsonCons.JsonPath.NormalizedPathNode.Parent">
              <summary>
              Gets the parent of this path node.
             
              </summary>
         </member>
-        <member name="P:JsonCons.JsonPath.PathNode.ComponentKind">
+        <member name="P:JsonCons.JsonPath.NormalizedPathNode.ComponentKind">
              <summary>
              Gets the type of this path node.
             
              </summary>
         </member>
-        <member name="P:JsonCons.JsonPath.PathNode.Root">
+        <member name="P:JsonCons.JsonPath.NormalizedPathNode.Root">
              <summary>
              Gets a root node 
             
              </summary>
         </member>
-        <member name="P:JsonCons.JsonPath.PathNode.Current">
+        <member name="P:JsonCons.JsonPath.NormalizedPathNode.Current">
              <summary>
              Gets a current node 
             
              </summary>
         </member>
-        <member name="M:JsonCons.JsonPath.PathNode.#ctor(JsonCons.JsonPath.PathNode,System.String)">
+        <member name="M:JsonCons.JsonPath.NormalizedPathNode.#ctor(JsonCons.JsonPath.NormalizedPathNode,System.String)">
             <summary>
             Constructs a path node from a parent and name
             </summary>
@@ -439,7 +398,7 @@
               <paramref name="name"/> is <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:JsonCons.JsonPath.PathNode.#ctor(JsonCons.JsonPath.PathNode,System.Int32)">
+        <member name="M:JsonCons.JsonPath.NormalizedPathNode.#ctor(JsonCons.JsonPath.NormalizedPathNode,System.Int32)">
             <summary>
             Constructs a path node from a parent and an index
             </summary>
@@ -449,30 +408,30 @@
               <paramref name="parent"/> is <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:JsonCons.JsonPath.PathNode.GetName">
+        <member name="M:JsonCons.JsonPath.NormalizedPathNode.GetName">
              <summary>
-             Gets the value of this PathNode as a name.
+             Gets the value of this NormalizedPathNode as a name.
             
              </summary>
         </member>
-        <member name="M:JsonCons.JsonPath.PathNode.GetIndex">
+        <member name="M:JsonCons.JsonPath.NormalizedPathNode.GetIndex">
              <summary>
-             Gets the value of this PathNode as an index.
+             Gets the value of this NormalizedPathNode as an index.
             
              </summary>
         </member>
-        <member name="M:JsonCons.JsonPath.PathNode.CompareTo(JsonCons.JsonPath.PathNode)">
+        <member name="M:JsonCons.JsonPath.NormalizedPathNode.CompareTo(JsonCons.JsonPath.NormalizedPathNode)">
             <summary>
-            Compares this instance with a specified PathNode object and indicates 
+            Compares this instance with a specified NormalizedPathNode object and indicates 
             whether this instance precedes, follows, or appears in the same 
-            position in the sort order as the specified PathNode.
+            position in the sort order as the specified NormalizedPathNode.
             </summary>
             <param name="other"></param>
             <returns></returns>
         </member>
-        <member name="M:JsonCons.JsonPath.PathNode.GetHashCode">
+        <member name="M:JsonCons.JsonPath.NormalizedPathNode.GetHashCode">
             <summary>
-            Returns the hash code for this PathNode.
+            Returns the hash code for this NormalizedPathNode.
             </summary>
             <returns>A 32-bit signed integer hash code.</returns>
         </member>
@@ -482,7 +441,7 @@
             
              </summary>
         </member>
-        <member name="M:JsonCons.JsonPath.NormalizedPath.#ctor(JsonCons.JsonPath.PathNode)">
+        <member name="M:JsonCons.JsonPath.NormalizedPath.#ctor(JsonCons.JsonPath.NormalizedPathNode)">
              <summary>
              Constructs a normalized path from the last path node.
             
@@ -567,6 +526,47 @@
             <returns>
               <see langword="true"/> if the value was found, <see langword="false"/> otherwise.
             </returns>
+        </member>
+        <member name="T:JsonCons.JsonPath.PathValuePair">
+             <summary>
+             Represents a specific location-value pair within a root JSON value.
+            
+             </summary>
+        </member>
+        <member name="P:JsonCons.JsonPath.PathValuePair.Path">
+             <summary>
+             Gets the location of this value within a root JSON value.
+            
+             </summary>
+        </member>
+        <member name="P:JsonCons.JsonPath.PathValuePair.Value">
+             <summary>
+             Gets the value
+            
+             </summary>
+        </member>
+        <member name="M:JsonCons.JsonPath.PathValuePair.Equals(JsonCons.JsonPath.PathValuePair)">
+            <summary>
+            Determines whether this instance and another specified PathValuePair object have the same value.
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JsonCons.JsonPath.PathValuePair.CompareTo(JsonCons.JsonPath.PathValuePair)">
+            <summary>
+            Compares this instance with a specified PathValuePair object and indicates 
+            whether this instance precedes, follows, or appears in the same position 
+            in the sort order as the specified PathValuePair.
+            </summary>
+            <param name="other"></param>
+            <returns>true if the value of the other PathValuePair object is the same as the value of 
+            this instance; otherwise, false. If other is null, the method returns false.</returns>
+        </member>
+        <member name="M:JsonCons.JsonPath.PathValuePair.GetHashCode">
+            <summary>
+            Returns the hash code for this PathValuePair.
+            </summary>
+            <returns>A 32-bit signed integer hash code.</returns>
         </member>
     </members>
 </doc>

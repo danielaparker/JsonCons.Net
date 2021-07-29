@@ -200,7 +200,7 @@ namespace JsonCons.JsonPath
     ///         Console.WriteLine();
     ///         
     ///         Console.WriteLine("Select nodes");
-    ///         IList&lt;JsonPathNode> nodes = selector.SelectNodes(doc.RootElement);
+    ///         IList&lt;PathValuePair> nodes = selector.SelectNodes(doc.RootElement);
     ///         foreach (var node in nodes)
     ///         {
     ///             Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
@@ -208,7 +208,7 @@ namespace JsonCons.JsonPath
     ///         Console.WriteLine();
     ///         
     ///         Console.WriteLine("Remove duplicate nodes");
-    ///         IList&lt;JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
+    ///         IList&lt;PathValuePair> uniqueNodes = selector.SelectNodes(doc.RootElement, 
     ///                                                     new JsonPathOptions{NoDuplicates=true});
     ///         foreach (var node in uniqueNodes)
     ///         {
@@ -316,7 +316,7 @@ namespace JsonCons.JsonPath
 
             if ((flags & ProcessingFlags.SortByPath | flags & ProcessingFlags.NoDups) != 0)
             {
-                var nodes = new List<JsonPathNode>();
+                var nodes = new List<PathValuePair>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
                 if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
                 {
@@ -324,7 +324,7 @@ namespace JsonCons.JsonPath
                 }
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
-                                 PathNode.Root, 
+                                 NormalizedPathNode.Root, 
                                  new JsonElementValue(root), 
                                  accumulator, 
                                  flags,
@@ -338,7 +338,7 @@ namespace JsonCons.JsonPath
                     }
                     if ((flags & ProcessingFlags.NoDups) != 0)
                     {
-                        var index = new HashSet<JsonPathNode>(nodes);
+                        var index = new HashSet<PathValuePair>(nodes);
                         foreach (var node in nodes)
                         {
                             if (index.Contains(node))
@@ -373,7 +373,7 @@ namespace JsonCons.JsonPath
                 }
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
-                                 PathNode.Root, 
+                                 NormalizedPathNode.Root, 
                                  new JsonElementValue(root), 
                                  accumulator, 
                                  flags,
@@ -428,7 +428,7 @@ namespace JsonCons.JsonPath
             }
             _selector.Select(resources, 
                              new JsonElementValue(root), 
-                             PathNode.Root, 
+                             NormalizedPathNode.Root, 
                              new JsonElementValue(root), 
                              accumulator, 
                              flags | ProcessingFlags.Path,
@@ -467,11 +467,11 @@ namespace JsonCons.JsonPath
         /// </summary>
         /// <param name="root">The root value.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
-        /// <returns>A list of <see cref="JsonPathNode"/> representing location-value pairs 
+        /// <returns>A list of <see cref="PathValuePair"/> representing location-value pairs 
         /// within the root value matched by this JSONPath expression,
         /// or an empty list if none were matched.</returns>
 
-        public IList<JsonPathNode> SelectNodes(JsonElement root, 
+        public IList<PathValuePair> SelectNodes(JsonElement root, 
                                                JsonPathOptions? options = null)
         {
             DynamicResources resources;
@@ -493,7 +493,7 @@ namespace JsonCons.JsonPath
                 resources = new DynamicResources(JsonPathOptions.Default);
             }
 
-            var nodes = new List<JsonPathNode>();
+            var nodes = new List<PathValuePair>();
             INodeAccumulator accumulator = new NodeAccumulator(nodes);
             if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
             {
@@ -501,7 +501,7 @@ namespace JsonCons.JsonPath
             }
             _selector.Select(resources, 
                              new JsonElementValue(root), 
-                             PathNode.Root, 
+                             NormalizedPathNode.Root, 
                              new JsonElementValue(root), 
                              accumulator, 
                              flags | ProcessingFlags.Path,
@@ -517,8 +517,8 @@ namespace JsonCons.JsonPath
                     }
                     if ((flags & ProcessingFlags.NoDups) != 0)
                     {
-                        var temp = new List<JsonPathNode>();
-                        var index = new HashSet<JsonPathNode>(nodes);
+                        var temp = new List<PathValuePair>();
+                        var index = new HashSet<PathValuePair>(nodes);
                         foreach (var path in nodes)
                         {
                             if (index.Contains(path))
@@ -603,7 +603,7 @@ namespace JsonCons.JsonPath
         /// <param name="root">The root value.</param>
         /// <param name="jsonPath">A JSONPath string.</param>
         /// <param name="options">Options for handling duplicate paths and order of results.</param>
-        /// <returns>A list of <see cref="JsonPathNode"/> representing location-value pairs 
+        /// <returns>A list of <see cref="PathValuePair"/> representing location-value pairs 
         /// within the root value matched by the provided JSONPath expression,
         /// or an empty list if none were matched.</returns>
         /// <exception cref="JsonPathParseException">
@@ -616,7 +616,7 @@ namespace JsonCons.JsonPath
         ///   Maximum depth level exceeded in recursive descent selector.
         /// </exception>
 
-        public static IList<JsonPathNode> SelectNodes(JsonElement root, 
+        public static IList<PathValuePair> SelectNodes(JsonElement root, 
                                                       string jsonPath, 
                                                       JsonPathOptions? options = null)
         {

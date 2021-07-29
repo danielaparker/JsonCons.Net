@@ -85,7 +85,7 @@
     <h5>Implements</h5>
     <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a>&gt;</div>
     <div><span class="xref">System.IComparable</span>&lt;<a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a>&gt;</div>
-    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="JsonCons.JsonPath.PathNode.html">PathNode</a>&gt;</div>
+    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="JsonCons.JsonPath.NormalizedPathNode.html">NormalizedPathNode</a>&gt;</div>
     <div><span class="xref">System.Collections.IEnumerable</span></div>
   </div>
   <div class="inheritedMembers">
@@ -107,25 +107,25 @@
   <h6><strong>Assembly</strong>: JsonCons.JsonPath.dll</h6>
   <h5 id="JsonCons_JsonPath_NormalizedPath_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class NormalizedPath : IEquatable&lt;NormalizedPath&gt;, IComparable&lt;NormalizedPath&gt;, IEnumerable&lt;PathNode&gt;, IEnumerable</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class NormalizedPath : IEquatable&lt;NormalizedPath&gt;, IComparable&lt;NormalizedPath&gt;, IEnumerable&lt;NormalizedPathNode&gt;, IEnumerable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_NormalizedPath__ctor_JsonCons_JsonPath_PathNode_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.NormalizedPath.%23ctor(JsonCons.JsonPath.PathNode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_JsonPath_NormalizedPath__ctor_JsonCons_JsonPath_NormalizedPathNode_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.NormalizedPath.%23ctor(JsonCons.JsonPath.NormalizedPathNode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.JsonPath/NormalizedPath.cs/#L202">View Source</a>
   </span>
   <a id="JsonCons_JsonPath_NormalizedPath__ctor_" data-uid="JsonCons.JsonPath.NormalizedPath.#ctor*"></a>
-  <h4 id="JsonCons_JsonPath_NormalizedPath__ctor_JsonCons_JsonPath_PathNode_" data-uid="JsonCons.JsonPath.NormalizedPath.#ctor(JsonCons.JsonPath.PathNode)">NormalizedPath(PathNode)</h4>
+  <h4 id="JsonCons_JsonPath_NormalizedPath__ctor_JsonCons_JsonPath_NormalizedPathNode_" data-uid="JsonCons.JsonPath.NormalizedPath.#ctor(JsonCons.JsonPath.NormalizedPathNode)">NormalizedPath(NormalizedPathNode)</h4>
   <div class="markdown level1 summary"><p>Constructs a normalized path from the last path node.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public NormalizedPath(PathNode last)</code></pre>
+    <pre><code class="lang-csharp hljs">public NormalizedPath(NormalizedPathNode last)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -138,7 +138,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="JsonCons.JsonPath.PathNode.html">PathNode</a></td>
+        <td><a class="xref" href="JsonCons.JsonPath.NormalizedPathNode.html">NormalizedPathNode</a></td>
         <td><span class="parametername">last</span></td>
         <td></td>
       </tr>
@@ -160,7 +160,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PathNode Last { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public NormalizedPathNode Last { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -172,7 +172,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="JsonCons.JsonPath.PathNode.html">PathNode</a></td>
+        <td><a class="xref" href="JsonCons.JsonPath.NormalizedPathNode.html">NormalizedPathNode</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -399,7 +399,7 @@ follows, or appears in the same position in the sort order as other.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator&lt;PathNode&gt; GetEnumerator()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;NormalizedPathNode&gt; GetEnumerator()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -411,7 +411,7 @@ follows, or appears in the same position in the sort order as other.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<a class="xref" href="JsonCons.JsonPath.PathNode.html">PathNode</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<a class="xref" href="JsonCons.JsonPath.NormalizedPathNode.html">NormalizedPathNode</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>

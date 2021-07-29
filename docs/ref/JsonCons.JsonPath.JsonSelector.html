@@ -179,7 +179,7 @@ public class Example
         Console.WriteLine();
 
         Console.WriteLine(&quot;Select nodes&quot;);
-        IList&lt;JsonPathNode> nodes = selector.SelectNodes(doc.RootElement);
+        IList&lt;PathValuePair> nodes = selector.SelectNodes(doc.RootElement);
         foreach (var node in nodes)
         {
             Console.WriteLine($&quot;{node.Path} => {JsonSerializer.Serialize(node.Value, options)}&quot;);
@@ -187,7 +187,7 @@ public class Example
         Console.WriteLine();
 
         Console.WriteLine(&quot;Remove duplicate nodes&quot;);
-        IList&lt;JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
+        IList&lt;PathValuePair> uniqueNodes = selector.SelectNodes(doc.RootElement, 
                                                     new JsonPathOptions{NoDuplicates=true});
         foreach (var node in uniqueNodes)
         {
@@ -467,7 +467,7 @@ or an empty list if none were matched.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IList&lt;JsonPathNode&gt; SelectNodes(JsonElement root, JsonPathOptions options = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public IList&lt;PathValuePair&gt; SelectNodes(JsonElement root, JsonPathOptions options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -503,8 +503,8 @@ or an empty list if none were matched.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.JsonPathNode.html">JsonPathNode</a>&gt;</td>
-        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.JsonPathNode.html">JsonPathNode</a> representing location-value pairs
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.PathValuePair.html">PathValuePair</a>&gt;</td>
+        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.PathValuePair.html">PathValuePair</a> representing location-value pairs
 within the root value matched by this JSONPath expression,
 or an empty list if none were matched.</p>
 </td>
@@ -526,7 +526,7 @@ This method parses and applies the expression in one operation.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IList&lt;JsonPathNode&gt; SelectNodes(JsonElement root, string jsonPath, JsonPathOptions options = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IList&lt;PathValuePair&gt; SelectNodes(JsonElement root, string jsonPath, JsonPathOptions options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -568,8 +568,8 @@ This method parses and applies the expression in one operation.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.JsonPathNode.html">JsonPathNode</a>&gt;</td>
-        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.JsonPathNode.html">JsonPathNode</a> representing location-value pairs
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.PathValuePair.html">PathValuePair</a>&gt;</td>
+        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.PathValuePair.html">PathValuePair</a> representing location-value pairs
 within the root value matched by the provided JSONPath expression,
 or an empty list if none were matched.</p>
 </td>

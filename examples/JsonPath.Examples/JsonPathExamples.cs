@@ -65,7 +65,7 @@ public static class JsonPathExamples
         Console.WriteLine();
 
         Console.WriteLine("Select nodes");
-        IList<JsonPathNode> nodes = selector.SelectNodes(doc.RootElement);
+        IList<PathValuePair> nodes = selector.SelectNodes(doc.RootElement);
         foreach (var node in nodes)
         {
             Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
@@ -73,7 +73,7 @@ public static class JsonPathExamples
         Console.WriteLine();
 
         Console.WriteLine("Remove duplicate nodes");
-        IList<JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
+        IList<PathValuePair> uniqueNodes = selector.SelectNodes(doc.RootElement, 
                                                        new JsonPathOptions{NoDuplicates=true});
         foreach (var node in uniqueNodes)
         {
@@ -368,7 +368,7 @@ public static class JsonPathExamples
         var options = new JsonSerializerOptions() {WriteIndented = true};
 
         Console.WriteLine("Allow duplicate nodes");
-        IList<JsonPathNode> nodes = selector.SelectNodes(doc.RootElement);
+        IList<PathValuePair> nodes = selector.SelectNodes(doc.RootElement);
         foreach (var node in nodes)
         {
             Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
@@ -376,7 +376,7 @@ public static class JsonPathExamples
         Console.WriteLine();
 
         Console.WriteLine("Allow duplicate nodes and sort by paths");
-        IList<JsonPathNode> nodesSort = selector.SelectNodes(doc.RootElement, 
+        IList<PathValuePair> nodesSort = selector.SelectNodes(doc.RootElement, 
                                                              new JsonPathOptions{SortBy=NodeSortBy.Path});
         foreach (var node in nodesSort)
         {
@@ -385,7 +385,7 @@ public static class JsonPathExamples
         Console.WriteLine();
 
         Console.WriteLine("Remove duplicate nodes");
-        IList<JsonPathNode> nodesNoDups = selector.SelectNodes(doc.RootElement, 
+        IList<PathValuePair> nodesNoDups = selector.SelectNodes(doc.RootElement, 
                                                            new JsonPathOptions{NoDuplicates=true});
         foreach (var node in nodesNoDups)
         {
@@ -394,7 +394,7 @@ public static class JsonPathExamples
         Console.WriteLine();
 
         Console.WriteLine("Remove duplicate nodes and sort by paths");
-        IList<JsonPathNode> nodesNoDupsSort = selector.SelectNodes(doc.RootElement, 
+        IList<PathValuePair> nodesNoDupsSort = selector.SelectNodes(doc.RootElement, 
                                                                new JsonPathOptions{NoDuplicates=true, SortBy=NodeSortBy.Path});
         foreach (var node in nodesNoDupsSort)
         {
