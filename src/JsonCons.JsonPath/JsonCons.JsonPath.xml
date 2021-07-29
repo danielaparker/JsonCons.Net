@@ -78,7 +78,7 @@
         </member>
         <member name="F:JsonCons.JsonPath.JsonSelectorExecutionMode.Parallel">
             <summary>
-            Parallelizes execution of selectors.
+            Parallelizes execution of individual selectors in unions.
             </summary>
         </member>
         <member name="T:JsonCons.JsonPath.JsonSelectorOptions">

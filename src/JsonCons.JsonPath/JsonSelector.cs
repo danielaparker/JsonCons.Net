@@ -47,7 +47,7 @@ namespace JsonCons.JsonPath
         /// </summary>
         Sequential,
         /// <summary>
-        /// Parallelizes execution of selectors.
+        /// Parallelizes execution of individual selectors in unions.
         /// </summary>
         Parallel 
     }
