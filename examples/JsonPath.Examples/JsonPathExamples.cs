@@ -532,7 +532,7 @@ public static class JsonPathExamples
                                                ?@.Category=='Drama'
                                               ]");
         IList<JsonElement> results2 = selector2.Select(doc.RootElement,
-            new JsonSelectorOptions{ExecutionMode = JsonSelectorExecutionMode.ParallelizeUnions});
+            new JsonSelectorOptions{ExecutionMode = JsonSelectorExecutionMode.Parallelized});
 
         Console.WriteLine("Results with parallel processing:");
         foreach (var element in results2)

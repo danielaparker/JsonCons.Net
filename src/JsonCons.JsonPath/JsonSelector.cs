@@ -49,7 +49,7 @@ namespace JsonCons.JsonPath
         /// <summary>
         /// Parallelizes execution of individual selectors in unions.
         /// </summary>
-        ParallelizeUnions 
+        Parallelized 
     }
 
     /// <summary>
@@ -298,7 +298,7 @@ namespace JsonCons.JsonPath
             {
                 var nodes = new List<JsonPathNode>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
-                if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.ParallelizeUnions)
+                if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
                 {
                     accumulator = new SynchronizedNodeAccumulator(accumulator);
                 }
@@ -347,7 +347,7 @@ namespace JsonCons.JsonPath
             else
             {
                 INodeAccumulator accumulator = new JsonElementAccumulator(values);            
-                if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.ParallelizeUnions)
+                if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
                 {
                     accumulator = new SynchronizedNodeAccumulator(accumulator);
                 }
@@ -395,7 +395,7 @@ namespace JsonCons.JsonPath
 
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.ParallelizeUnions)
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -468,7 +468,7 @@ namespace JsonCons.JsonPath
 
             var nodes = new List<JsonPathNode>();
             INodeAccumulator accumulator = new NodeAccumulator(nodes);
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.ParallelizeUnions)
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }

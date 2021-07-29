@@ -546,7 +546,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.ParallelizeUnions)
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -613,7 +613,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.ParallelizeUnions)
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -673,7 +673,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.ParallelizeUnions)
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -754,7 +754,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.ParallelizeUnions)
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -837,7 +837,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.ParallelizeUnions)
+            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }

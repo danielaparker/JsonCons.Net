@@ -205,12 +205,12 @@ references:
   commentId: T:JsonCons.JsonPath.JsonSelectorExecutionMode
   fullName: JsonCons.JsonPath.JsonSelectorExecutionMode
   nameWithType: JsonSelectorExecutionMode
-- uid: JsonCons.JsonPath.JsonSelectorExecutionMode.ParallelizeUnions
-  name: ParallelizeUnions
-  href: ref/JsonCons.JsonPath.JsonSelectorExecutionMode.html#JsonCons_JsonPath_JsonSelectorExecutionMode_ParallelizeUnions
-  commentId: F:JsonCons.JsonPath.JsonSelectorExecutionMode.ParallelizeUnions
-  fullName: JsonCons.JsonPath.JsonSelectorExecutionMode.ParallelizeUnions
-  nameWithType: JsonSelectorExecutionMode.ParallelizeUnions
+- uid: JsonCons.JsonPath.JsonSelectorExecutionMode.Parallelized
+  name: Parallelized
+  href: ref/JsonCons.JsonPath.JsonSelectorExecutionMode.html#JsonCons_JsonPath_JsonSelectorExecutionMode_Parallelized
+  commentId: F:JsonCons.JsonPath.JsonSelectorExecutionMode.Parallelized
+  fullName: JsonCons.JsonPath.JsonSelectorExecutionMode.Parallelized
+  nameWithType: JsonSelectorExecutionMode.Parallelized
 - uid: JsonCons.JsonPath.JsonSelectorExecutionMode.Sequential
   name: Sequential
   href: ref/JsonCons.JsonPath.JsonSelectorExecutionMode.html#JsonCons_JsonPath_JsonSelectorExecutionMode_Sequential
