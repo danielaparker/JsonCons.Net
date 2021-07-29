@@ -119,10 +119,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonElementEqualityComparer_Instance.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonElementEqualityComparer.Instance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/develop/apiSpec/new?filename=JsonCons_Utilities_JsonElementEqualityComparer_Instance.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonElementEqualityComparer.Instance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonElementEqualityComparer.cs/#L17">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/src/JsonCons.Utilities/JsonElementEqualityComparer.cs/#L17">View Source</a>
   </span>
   <a id="JsonCons_Utilities_JsonElementEqualityComparer_Instance_" data-uid="JsonCons.Utilities.JsonElementEqualityComparer.Instance*"></a>
   <h4 id="JsonCons_Utilities_JsonElementEqualityComparer_Instance" data-uid="JsonCons.Utilities.JsonElementEqualityComparer.Instance">Instance</h4>
@@ -152,14 +152,30 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonElementEqualityComparer_Equals_System_Text_Json_JsonElement_System_Text_Json_JsonElement_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement%2CSystem.Text.Json.JsonElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/develop/apiSpec/new?filename=JsonCons_Utilities_JsonElementEqualityComparer_Equals_System_Text_Json_JsonElement_System_Text_Json_JsonElement_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement%2CSystem.Text.Json.JsonElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonElementEqualityComparer.cs/#L29">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/src/JsonCons.Utilities/JsonElementEqualityComparer.cs/#L51">View Source</a>
   </span>
   <a id="JsonCons_Utilities_JsonElementEqualityComparer_Equals_" data-uid="JsonCons.Utilities.JsonElementEqualityComparer.Equals*"></a>
   <h4 id="JsonCons_Utilities_JsonElementEqualityComparer_Equals_System_Text_Json_JsonElement_System_Text_Json_JsonElement_" data-uid="JsonCons.Utilities.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">Equals(JsonElement, JsonElement)</h4>
   <div class="markdown level1 summary"><p>Determines whether the provided <span class="xref">System.Text.Json.JsonElement</span> objects are equal.</p>
+<p>If the two JsonElement instances have different data types, they are different.</p>
+<p>If both JsonElement instances are null, true, or false, they are equal.</p>
+<p>If both are strings, they are compared with the String.Equals method.</p>
+<p>If both are numbers, and both can be represented by a <span class="xref">System.Decimal</span>,
+they are compared with the Decimal.Equals method, otherwise they are
+compared as doubles.</p>
+<p>If both are objects, they are compared accoring to the following rules:</p>
+<ul>
+<li>If the two objects have a different number of properties, they are different.</li>
+<li>Otherwise, order each object&apos;s properties by name and compare sequentially.
+The properties are compared first by name with the String.Equals method, then by value with JsonElementEqualityComparer</li>
+<li> A mismatching property means the two JsonElement instance are different.</li>
+<li> 
+If both are arrays, and both have the same length and compare equal element wise with JsonElementEqualityComparer,
+they are equal, otherwise they are different.</li>
+</ul>  
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -207,10 +223,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonElementEqualityComparer_GetHashCode_System_Text_Json_JsonElement_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/develop/apiSpec/new?filename=JsonCons_Utilities_JsonElementEqualityComparer_GetHashCode_System_Text_Json_JsonElement_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonElementEqualityComparer.cs/#L103">View Source</a>
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/src/JsonCons.Utilities/JsonElementEqualityComparer.cs/#L132">View Source</a>
   </span>
   <a id="JsonCons_Utilities_JsonElementEqualityComparer_GetHashCode_" data-uid="JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode*"></a>
   <h4 id="JsonCons_Utilities_JsonElementEqualityComparer_GetHashCode_System_Text_Json_JsonElement_" data-uid="JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)">GetHashCode(JsonElement)</h4>
@@ -266,10 +282,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/new/main/apiSpec/new?filename=JsonCons_Utilities_JsonElementEqualityComparer.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonElementEqualityComparer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/new/develop/apiSpec/new?filename=JsonCons_Utilities_JsonElementEqualityComparer.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonElementEqualityComparer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/src/JsonCons.Utilities/JsonElementEqualityComparer.cs/#L14" class="contribution-link">View Source</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/src/JsonCons.Utilities/JsonElementEqualityComparer.cs/#L14" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

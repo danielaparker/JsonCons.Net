@@ -38,6 +38,10 @@
             
             If both are strings, they are compared with the string CompareTo method.
             
+            If both are numbers, and both can be represented by a <see cref="T:System.Decimal"/>,
+            they are compared with the Decimal.CompareTo method, otherwise they are
+            compared as doubles.
+            
             If both are objects, they are compared accoring to the following rules:
             
             <ul>
@@ -46,6 +50,11 @@
             <li> The first mismatching property defines which JsonElement instance is less or greater than the other.</li>
             <li> If the two sequences have no mismatching properties until one of them ends, and the other is longer, the shorter sequence is less than the other.</li>
             <li> If the two sequences have no mismatching properties and have the same length, they are equal.</li>
+            <li>
+            If both are arrays, they are compared element wise with JsonElementComparer.
+            The first mismatching element defines which JsonElement instance is less or greater than the other.
+            If the two arrays have no mismatching elements until one of them ends, and the other is longer, the shorter array is less than the other.
+            If the two arrays have no mismatching elements and have the same length, they are equal.</li>
             </ul>  
             
             </summary>
@@ -64,6 +73,28 @@
         <member name="M:JsonCons.Utilities.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
             <summary>
             Determines whether the provided <see cref="T:System.Text.Json.JsonElement"/> objects are equal.
+            
+            If the two JsonElement instances have different data types, they are different.
+            
+            If both JsonElement instances are null, true, or false, they are equal.
+            
+            If both are strings, they are compared with the String.Equals method.
+            
+            If both are numbers, and both can be represented by a <see cref="T:System.Decimal"/>,
+            they are compared with the Decimal.Equals method, otherwise they are
+            compared as doubles.
+            
+            If both are objects, they are compared accoring to the following rules:
+            
+            <ul>
+            <li>If the two objects have a different number of properties, they are different.</li>
+            <li>Otherwise, order each object's properties by name and compare sequentially.
+            The properties are compared first by name with the String.Equals method, then by value with JsonElementEqualityComparer</li>
+            <li> A mismatching property means the two JsonElement instance are different.</li>
+            <li> 
+            If both are arrays, and both have the same length and compare equal element wise with JsonElementEqualityComparer,
+            they are equal, otherwise they are different.</li>
+            </ul>  
             </summary>
             <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
             <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>

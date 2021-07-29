@@ -16,12 +16,34 @@ namespace JsonCons.Utilities
         /// <summary>Gets a singleton instance of JsonElementEqualityComparer. This property is read-only.</summary>
         public static JsonElementEqualityComparer Instance { get; } = new JsonElementEqualityComparer();
     
-        private int _maxHashDepth { get; } = 100;
+        private int MaxHashDepth { get; } = 64;
     
         JsonElementEqualityComparer() {}
 
         /// <summary>
         /// Determines whether the provided <see cref="JsonElement"/> objects are equal.
+        /// 
+        /// If the two JsonElement instances have different data types, they are different.
+        /// 
+        /// If both JsonElement instances are null, true, or false, they are equal.
+        /// 
+        /// If both are strings, they are compared with the String.Equals method.
+        /// 
+        /// If both are numbers, and both can be represented by a <see cref="Decimal"/>,
+        /// they are compared with the Decimal.Equals method, otherwise they are
+        /// compared as doubles.
+        /// 
+        /// If both are objects, they are compared accoring to the following rules:
+        /// 
+        /// <ul>
+        /// <li>If the two objects have a different number of properties, they are different.</li>
+        /// <li>Otherwise, order each object's properties by name and compare sequentially.
+        /// The properties are compared first by name with the String.Equals method, then by value with JsonElementEqualityComparer</li>
+        /// <li> A mismatching property means the two JsonElement instance are different.</li>
+        /// <li> 
+        /// If both are arrays, and both have the same length and compare equal element wise with JsonElementEqualityComparer,
+        /// they are equal, otherwise they are different.</li>
+        /// </ul>  
         /// </summary>
         /// <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
         /// <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>
@@ -47,7 +69,7 @@ namespace JsonCons.Utilities
                     double val2;
                     if (lhs.TryGetDecimal(out dec1) && rhs.TryGetDecimal(out dec2))
                     {
-                        return dec1 == dec2;
+                        return dec1.Equals(dec2);
                     }
                     else if (lhs.TryGetDouble(out val1) && rhs.TryGetDouble(out val2))
                     {
@@ -68,8 +90,15 @@ namespace JsonCons.Utilities
                 case JsonValueKind.Object:
                 {
                     // OrderBy performs a stable sort (Note that JsonElement supports duplicate property names)
-                    var enumerator1 = lhs.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
-                    var enumerator2 = rhs.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
+                    var baseEnumerator1 = lhs.EnumerateObject();
+                    var baseEnumerator2 = rhs.EnumerateObject();
+                    if (baseEnumerator1.Count() != baseEnumerator2.Count())
+                    {
+                        return false;
+                    }
+
+                    var enumerator1 = baseEnumerator1.OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
+                    var enumerator2 = baseEnumerator2.OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
     
                     bool result1 = enumerator1.MoveNext();
                     bool result2 = enumerator2.MoveNext();
@@ -126,7 +155,7 @@ namespace JsonCons.Utilities
                     break;
     
                 case JsonValueKind.Array:
-                    if (depth < _maxHashDepth)
+                    if (depth < MaxHashDepth)
                         foreach (var item in element.EnumerateArray())
                             hashCode += 17*ComputeHashCode(item, depth+1);
                     break;
@@ -135,7 +164,7 @@ namespace JsonCons.Utilities
                      foreach (var property in element.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal))
                      {
                          hashCode += 17*property.Name.GetHashCode();
-                         if (depth < _maxHashDepth)
+                         if (depth < MaxHashDepth)
                              hashCode += 17*ComputeHashCode(property.Value, depth+1);
                      }
                      break;

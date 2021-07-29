@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Remove="JsonPathTestSuite.cs" />
+    <Compile Remove="JsonSelectorParallelExecutionTests.cs" />
     <Compile Remove="NormalizedPathTests.cs" />
   </ItemGroup>
 
@@ -19,10 +20,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="TestFiles\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -41,6 +41,10 @@ namespace JsonCons.Utilities
         /// 
         /// If both are strings, they are compared with the string CompareTo method.
         /// 
+        /// If both are numbers, and both can be represented by a <see cref="Decimal"/>,
+        /// they are compared with the Decimal.CompareTo method, otherwise they are
+        /// compared as doubles.
+        /// 
         /// If both are objects, they are compared accoring to the following rules:
         /// 
         /// <ul>
@@ -49,6 +53,11 @@ namespace JsonCons.Utilities
         /// <li> The first mismatching property defines which JsonElement instance is less or greater than the other.</li>
         /// <li> If the two sequences have no mismatching properties until one of them ends, and the other is longer, the shorter sequence is less than the other.</li>
         /// <li> If the two sequences have no mismatching properties and have the same length, they are equal.</li>
+        /// <li>
+        /// If both are arrays, they are compared element wise with JsonElementComparer.
+        /// The first mismatching element defines which JsonElement instance is less or greater than the other.
+        /// If the two arrays have no mismatching elements until one of them ends, and the other is longer, the shorter array is less than the other.
+        /// If the two arrays have no mismatching elements and have the same length, they are equal.</li>
         /// </ul>  
         /// 
         /// </summary>
