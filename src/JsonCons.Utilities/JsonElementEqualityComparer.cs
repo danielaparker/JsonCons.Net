@@ -13,7 +13,7 @@ namespace JsonCons.Utilities
 
     public sealed class JsonElementEqualityComparer : IEqualityComparer<JsonElement>
     {
-        /// <summary>Gets a singleton instance of JsonElementEqualityComparer. This property is read-only.</summary>
+        /// <summary>Gets a singleton instance of <see cref="JsonElementEqualityComparer"/>. This property is read-only.</summary>
         public static JsonElementEqualityComparer Instance { get; } = new JsonElementEqualityComparer();
     
         private int MaxHashDepth { get; } = 64;
@@ -38,11 +38,11 @@ namespace JsonCons.Utilities
         /// <ul>
         /// <li>If the two objects have a different number of properties, they are different.</li>
         /// <li>Otherwise, order each object's properties by name and compare sequentially.
-        /// The properties are compared first by name with the String.Equals method, then by value with JsonElementEqualityComparer</li>
+        /// The properties are compared first by name with the String.Equals method, then by value with <see cref="JsonElementEqualityComparer"/></li>
         /// <li> A mismatching property means the two JsonElement instance are different.</li>
         /// </ul>  
         /// 
-        /// If both are arrays, and both have the same length and compare equal element wise with JsonElementEqualityComparer,
+        /// If both are arrays, and both have the same length and compare equal element wise with <see cref="JsonElementEqualityComparer"/>,
         /// they are equal, otherwise they are different.
         /// </summary>
         /// <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>

@@ -13,11 +13,11 @@ namespace JsonCons.Utilities
 
     public sealed class JsonElementComparer : IComparer<JsonElement>, System.Collections.IComparer
     {
-        /// <summary>Gets a singleton instance of JsonElementComparer. This property is read-only.</summary>
+        /// <summary>Gets a singleton instance of <see cref="JsonElementComparer"/>. This property is read-only.</summary>
         public static JsonElementComparer Instance { get; } = new JsonElementComparer();
 
         /// <summary>
-        /// Constructs a JsonElementComparer
+        /// Constructs a <see cref="JsonElementComparer"/>
         /// </summary>
         public JsonElementComparer() {}
 
@@ -49,13 +49,13 @@ namespace JsonCons.Utilities
         /// 
         /// <ul>
         /// <li>Order each object's properties by name and compare sequentially.
-        /// The properties are compared first by name with the String.CompareTo method, then by value with JsonElementComparer</li>
+        /// The properties are compared first by name with the String.CompareTo method, then by value with <see cref="JsonElementComparer"/></li>
         /// <li> The first mismatching property defines which JsonElement instance is less or greater than the other.</li>
         /// <li> If the two sequences have no mismatching properties until one of them ends, and the other is longer, the shorter sequence is less than the other.</li>
         /// <li> If the two sequences have no mismatching properties and have the same length, they are equal.</li>
         /// </ul>  
         /// 
-        /// If both are arrays, they are compared element wise with JsonElementComparer.
+        /// If both are arrays, they are compared element wise with <see cref="JsonElementComparer"/>.
         /// The first mismatching element defines which JsonElement instance is less or greater than the other.
         /// If the two arrays have no mismatching elements until one of them ends, and the other is longer, the shorter array is less than the other.
         /// If the two arrays have no mismatching elements and have the same length, they are equal.

@@ -10,11 +10,11 @@
             </summary>
         </member>
         <member name="P:JsonCons.Utilities.JsonElementComparer.Instance">
-            <summary>Gets a singleton instance of JsonElementComparer. This property is read-only.</summary>
+            <summary>Gets a singleton instance of <see cref="T:JsonCons.Utilities.JsonElementComparer"/>. This property is read-only.</summary>
         </member>
         <member name="M:JsonCons.Utilities.JsonElementComparer.#ctor">
             <summary>
-            Constructs a JsonElementComparer
+            Constructs a <see cref="T:JsonCons.Utilities.JsonElementComparer"/>
             </summary>
         </member>
         <member name="M:JsonCons.Utilities.JsonElementComparer.Compare(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
@@ -46,13 +46,13 @@
             
             <ul>
             <li>Order each object's properties by name and compare sequentially.
-            The properties are compared first by name with the String.CompareTo method, then by value with JsonElementComparer</li>
+            The properties are compared first by name with the String.CompareTo method, then by value with <see cref="T:JsonCons.Utilities.JsonElementComparer"/></li>
             <li> The first mismatching property defines which JsonElement instance is less or greater than the other.</li>
             <li> If the two sequences have no mismatching properties until one of them ends, and the other is longer, the shorter sequence is less than the other.</li>
             <li> If the two sequences have no mismatching properties and have the same length, they are equal.</li>
             </ul>  
             
-            If both are arrays, they are compared element wise with JsonElementComparer.
+            If both are arrays, they are compared element wise with <see cref="T:JsonCons.Utilities.JsonElementComparer"/>.
             The first mismatching element defines which JsonElement instance is less or greater than the other.
             If the two arrays have no mismatching elements until one of them ends, and the other is longer, the shorter array is less than the other.
             If the two arrays have no mismatching elements and have the same length, they are equal.
@@ -68,7 +68,7 @@
             </summary>
         </member>
         <member name="P:JsonCons.Utilities.JsonElementEqualityComparer.Instance">
-            <summary>Gets a singleton instance of JsonElementEqualityComparer. This property is read-only.</summary>
+            <summary>Gets a singleton instance of <see cref="T:JsonCons.Utilities.JsonElementEqualityComparer"/>. This property is read-only.</summary>
         </member>
         <member name="M:JsonCons.Utilities.JsonElementEqualityComparer.Equals(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
             <summary>
@@ -89,11 +89,11 @@
             <ul>
             <li>If the two objects have a different number of properties, they are different.</li>
             <li>Otherwise, order each object's properties by name and compare sequentially.
-            The properties are compared first by name with the String.Equals method, then by value with JsonElementEqualityComparer</li>
+            The properties are compared first by name with the String.Equals method, then by value with <see cref="T:JsonCons.Utilities.JsonElementEqualityComparer"/></li>
             <li> A mismatching property means the two JsonElement instance are different.</li>
             </ul>  
             
-            If both are arrays, and both have the same length and compare equal element wise with JsonElementEqualityComparer,
+            If both are arrays, and both have the same length and compare equal element wise with <see cref="T:JsonCons.Utilities.JsonElementEqualityComparer"/>,
             they are equal, otherwise they are different.
             </summary>
             <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
