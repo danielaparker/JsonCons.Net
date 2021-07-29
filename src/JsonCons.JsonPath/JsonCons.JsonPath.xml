@@ -101,38 +101,33 @@
             Sort by <see cref="T:System.Text.Json.JsonElement"/> instances using the <see cref="T:JsonCons.Utilities.JsonElementComparer"/>.
             </summary>
         </member>
-        <member name="T:JsonCons.JsonPath.JsonSelectorOptions">
+        <member name="T:JsonCons.JsonPath.JsonPathOptions">
             <summary>
-            Defines the various ways a <see cref="T:JsonCons.JsonPath.JsonSelector"/> can handle duplicate
-            paths and order of results.
+            Defines options for processing JSONPath queries.
             </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.JsonSelectorOptions.Default">
+        <member name="F:JsonCons.JsonPath.JsonPathOptions.Default">
             <summary>
-            Gets a singleton instance of JsonSelectorOptions. NoDuplicates and SortByPath are both false, and MaximumDepth is 64.
+            Gets a singleton instance of JsonPathOptions. NoDuplicates is false, 
+            no sorting is in effect, MaximumDepth is 64, and execution mode is sequentional.
             </summary>
         </member>
-        <member name="P:JsonCons.JsonPath.JsonSelectorOptions.NoDuplicates">
+        <member name="P:JsonCons.JsonPath.JsonPathOptions.NoDuplicates">
             <summary>
             Remove items from results that correspond to the same path.
             </summary>
         </member>
-        <member name="P:JsonCons.JsonPath.JsonSelectorOptions.SortByPath">
-            <summary>
-            Sort results by path.
-            </summary>
-        </member>
-        <member name="P:JsonCons.JsonPath.JsonSelectorOptions.SortBy">
+        <member name="P:JsonCons.JsonPath.JsonPathOptions.SortBy">
             <summary>
             Sort <see cref="T:System.Text.Json.JsonElement"/> instances using the <see cref="T:JsonCons.Utilities.JsonElementComparer"/>.
             </summary>
         </member>
-        <member name="P:JsonCons.JsonPath.JsonSelectorOptions.MaxDepth">
+        <member name="P:JsonCons.JsonPath.JsonPathOptions.MaxDepth">
             <summary>
             Gets or sets the depth limit for recursive descent, with the default value a maximum depth of 64.
             </summary>
         </member>
-        <member name="P:JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode">
+        <member name="P:JsonCons.JsonPath.JsonPathOptions.ExecutionMode">
             <summary>
             Gets or sets the execution mode.
             </summary>
@@ -243,7 +238,7 @@
                     
                     Console.WriteLine("Remove duplicate nodes");
                     IList&lt;JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
-                                                                new JsonSelectorOptions{NoDuplicates=true});
+                                                                new JsonPathOptions{NoDuplicates=true});
                     foreach (var node in uniqueNodes)
                     {
                         Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
@@ -290,7 +285,7 @@
               The <paramref name="jsonPath"/> is <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">
+        <member name="M:JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonPathOptions)">
             <summary>
             Selects values within the root value matched by this JSONPath expression. 
             </summary>
@@ -302,7 +297,7 @@
               Maximum depth level exceeded in recursive descent selector.
             </exception>
         </member>
-        <member name="M:JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">
+        <member name="M:JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonPathOptions)">
             <summary>
             Selects paths identifying the values within the root value matched by this JSONPath expression. 
             </summary>
@@ -311,7 +306,7 @@
             <returns>A list of <see cref="T:JsonCons.JsonPath.NormalizedPath"/> identifying the values within the root value matched by this JSONPath expression,
             or an empty list if none were matched.</returns>
         </member>
-        <member name="M:JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">
+        <member name="M:JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonPathOptions)">
             <summary>
             Selects nodes that represent location-value pairs within the root value matched by this JSONPath expression. 
             </summary>
@@ -321,7 +316,7 @@
             within the root value matched by this JSONPath expression,
             or an empty list if none were matched.</returns>
         </member>
-        <member name="M:JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">
+        <member name="M:JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonPathOptions)">
             <summary>
             Selects values within the root value matched by the provided JSONPath expression. 
             This method parses and applies the expression in one operation.
@@ -341,7 +336,7 @@
               Maximum depth level exceeded in recursive descent selector.
             </exception>
         </member>
-        <member name="M:JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">
+        <member name="M:JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonPathOptions)">
             <summary>
             Selects paths identifying the values within the root value matched by the JSONPath expression. 
             This method parses and applies the expression in one operation.
@@ -361,7 +356,7 @@
               Maximum depth level exceeded in recursive descent selector.
             </exception>
         </member>
-        <member name="M:JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">
+        <member name="M:JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonPathOptions)">
             <summary>
             Selects nodes that represent location-value pairs within the root value matched by the JSONPath expression. 
             This method parses and applies the expression in one operation.

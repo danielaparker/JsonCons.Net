@@ -39,7 +39,7 @@ namespace JsonCons.JsonPath.Tests
                         comment = "";
                     }
 
-                    var options = new JsonSelectorOptions();
+                    var options = new JsonPathOptions();
 
                     JsonElement element;
                     if (testCase.TryGetProperty("nodups", out element) && element.ValueKind == JsonValueKind.True)

@@ -13,11 +13,11 @@ namespace JsonCons.JsonPath
 {
     sealed class DynamicResources 
     {
-        internal JsonSelectorOptions Options {get;}
+        internal JsonPathOptions Options {get;}
 
         Dictionary<Int32,IValue> _cache = new Dictionary<Int32,IValue>();
 
-        internal DynamicResources(JsonSelectorOptions options)
+        internal DynamicResources(JsonPathOptions options)
         {
             Options = options;
         }
@@ -73,25 +73,20 @@ namespace JsonCons.JsonPath
     };
 
     /// <summary>
-    /// Defines the various ways a <see cref="JsonSelector"/> can handle duplicate
-    /// paths and order of results.
+    /// Defines options for processing JSONPath queries.
     /// </summary>
-    public sealed class JsonSelectorOptions 
+    public sealed class JsonPathOptions 
     {
         /// <summary>
-        /// Gets a singleton instance of JsonSelectorOptions. NoDuplicates and SortByPath are both false, and MaximumDepth is 64.
+        /// Gets a singleton instance of JsonPathOptions. NoDuplicates is false, 
+        /// no sorting is in effect, MaximumDepth is 64, and execution mode is sequentional.
         /// </summary>
-        public static readonly JsonSelectorOptions Default = new JsonSelectorOptions();
+        public static readonly JsonPathOptions Default = new JsonPathOptions();
 
         /// <summary>
         /// Remove items from results that correspond to the same path.
         /// </summary>
         public bool NoDuplicates {get;set;} = false;
-
-        /// <summary>
-        /// Sort results by path.
-        /// </summary>
-        public bool SortByPath {get;set;} = false;
 
         /// <summary>
         /// Sort <see cref="JsonElement"/> instances using the <see cref="JsonElementComparer"/>.
@@ -214,7 +209,7 @@ namespace JsonCons.JsonPath
     ///         
     ///         Console.WriteLine("Remove duplicate nodes");
     ///         IList&lt;JsonPathNode> uniqueNodes = selector.SelectNodes(doc.RootElement, 
-    ///                                                     new JsonSelectorOptions{NoDuplicates=true});
+    ///                                                     new JsonPathOptions{NoDuplicates=true});
     ///         foreach (var node in uniqueNodes)
     ///         {
     ///             Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
@@ -296,7 +291,7 @@ namespace JsonCons.JsonPath
         /// </exception>
 
         public IList<JsonElement> Select(JsonElement root, 
-                                         JsonSelectorOptions? options = null)
+                                         JsonPathOptions? options = null)
         {
             DynamicResources resources;
             ProcessingFlags flags = _requiredFlags;
@@ -314,7 +309,7 @@ namespace JsonCons.JsonPath
             }
             else
             {
-                resources = new DynamicResources(JsonSelectorOptions.Default);
+                resources = new DynamicResources(JsonPathOptions.Default);
             }
 
             var values = new List<JsonElement>();
@@ -404,7 +399,7 @@ namespace JsonCons.JsonPath
         /// or an empty list if none were matched.</returns>
 
         public IList<NormalizedPath> SelectPaths(JsonElement root, 
-                                                 JsonSelectorOptions? options = null)
+                                                 JsonPathOptions? options = null)
         {
             DynamicResources resources;
             ProcessingFlags flags = _requiredFlags;
@@ -422,7 +417,7 @@ namespace JsonCons.JsonPath
             }
             else
             {
-                resources = new DynamicResources(JsonSelectorOptions.Default);
+                resources = new DynamicResources(JsonPathOptions.Default);
             }
 
             var paths = new List<NormalizedPath>();
@@ -477,7 +472,7 @@ namespace JsonCons.JsonPath
         /// or an empty list if none were matched.</returns>
 
         public IList<JsonPathNode> SelectNodes(JsonElement root, 
-                                               JsonSelectorOptions? options = null)
+                                               JsonPathOptions? options = null)
         {
             DynamicResources resources;
             ProcessingFlags flags = _requiredFlags;
@@ -495,7 +490,7 @@ namespace JsonCons.JsonPath
             }
             else
             {
-                resources = new DynamicResources(JsonSelectorOptions.Default);
+                resources = new DynamicResources(JsonPathOptions.Default);
             }
 
             var nodes = new List<JsonPathNode>();
@@ -560,7 +555,7 @@ namespace JsonCons.JsonPath
         /// </exception>
 
         public static IList<JsonElement> Select(JsonElement root, string jsonPath, 
-                                                JsonSelectorOptions? options = null)
+                                                JsonPathOptions? options = null)
         {
             if (jsonPath == null)
             {
@@ -591,7 +586,7 @@ namespace JsonCons.JsonPath
 
         public static IList<NormalizedPath> SelectPaths(JsonElement root, 
                                                         string jsonPath, 
-                                                        JsonSelectorOptions? options = null)
+                                                        JsonPathOptions? options = null)
         {
             if (jsonPath == null)
             {
@@ -623,7 +618,7 @@ namespace JsonCons.JsonPath
 
         public static IList<JsonPathNode> SelectNodes(JsonElement root, 
                                                       string jsonPath, 
-                                                      JsonSelectorOptions? options = null)
+                                                      JsonPathOptions? options = null)
         {
             if (jsonPath == null)
             {

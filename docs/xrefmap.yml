@@ -78,6 +78,70 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.JsonPathNode.Value
   nameWithType: JsonPathNode.Value
+- uid: JsonCons.JsonPath.JsonPathOptions
+  name: JsonPathOptions
+  href: ref/JsonCons.JsonPath.JsonPathOptions.html
+  commentId: T:JsonCons.JsonPath.JsonPathOptions
+  fullName: JsonCons.JsonPath.JsonPathOptions
+  nameWithType: JsonPathOptions
+- uid: JsonCons.JsonPath.JsonPathOptions.Default
+  name: Default
+  href: ref/JsonCons.JsonPath.JsonPathOptions.html#JsonCons_JsonPath_JsonPathOptions_Default
+  commentId: F:JsonCons.JsonPath.JsonPathOptions.Default
+  fullName: JsonCons.JsonPath.JsonPathOptions.Default
+  nameWithType: JsonPathOptions.Default
+- uid: JsonCons.JsonPath.JsonPathOptions.ExecutionMode
+  name: ExecutionMode
+  href: ref/JsonCons.JsonPath.JsonPathOptions.html#JsonCons_JsonPath_JsonPathOptions_ExecutionMode
+  commentId: P:JsonCons.JsonPath.JsonPathOptions.ExecutionMode
+  fullName: JsonCons.JsonPath.JsonPathOptions.ExecutionMode
+  nameWithType: JsonPathOptions.ExecutionMode
+- uid: JsonCons.JsonPath.JsonPathOptions.ExecutionMode*
+  name: ExecutionMode
+  href: ref/JsonCons.JsonPath.JsonPathOptions.html#JsonCons_JsonPath_JsonPathOptions_ExecutionMode_
+  commentId: Overload:JsonCons.JsonPath.JsonPathOptions.ExecutionMode
+  isSpec: "True"
+  fullName: JsonCons.JsonPath.JsonPathOptions.ExecutionMode
+  nameWithType: JsonPathOptions.ExecutionMode
+- uid: JsonCons.JsonPath.JsonPathOptions.MaxDepth
+  name: MaxDepth
+  href: ref/JsonCons.JsonPath.JsonPathOptions.html#JsonCons_JsonPath_JsonPathOptions_MaxDepth
+  commentId: P:JsonCons.JsonPath.JsonPathOptions.MaxDepth
+  fullName: JsonCons.JsonPath.JsonPathOptions.MaxDepth
+  nameWithType: JsonPathOptions.MaxDepth
+- uid: JsonCons.JsonPath.JsonPathOptions.MaxDepth*
+  name: MaxDepth
+  href: ref/JsonCons.JsonPath.JsonPathOptions.html#JsonCons_JsonPath_JsonPathOptions_MaxDepth_
+  commentId: Overload:JsonCons.JsonPath.JsonPathOptions.MaxDepth
+  isSpec: "True"
+  fullName: JsonCons.JsonPath.JsonPathOptions.MaxDepth
+  nameWithType: JsonPathOptions.MaxDepth
+- uid: JsonCons.JsonPath.JsonPathOptions.NoDuplicates
+  name: NoDuplicates
+  href: ref/JsonCons.JsonPath.JsonPathOptions.html#JsonCons_JsonPath_JsonPathOptions_NoDuplicates
+  commentId: P:JsonCons.JsonPath.JsonPathOptions.NoDuplicates
+  fullName: JsonCons.JsonPath.JsonPathOptions.NoDuplicates
+  nameWithType: JsonPathOptions.NoDuplicates
+- uid: JsonCons.JsonPath.JsonPathOptions.NoDuplicates*
+  name: NoDuplicates
+  href: ref/JsonCons.JsonPath.JsonPathOptions.html#JsonCons_JsonPath_JsonPathOptions_NoDuplicates_
+  commentId: Overload:JsonCons.JsonPath.JsonPathOptions.NoDuplicates
+  isSpec: "True"
+  fullName: JsonCons.JsonPath.JsonPathOptions.NoDuplicates
+  nameWithType: JsonPathOptions.NoDuplicates
+- uid: JsonCons.JsonPath.JsonPathOptions.SortBy
+  name: SortBy
+  href: ref/JsonCons.JsonPath.JsonPathOptions.html#JsonCons_JsonPath_JsonPathOptions_SortBy
+  commentId: P:JsonCons.JsonPath.JsonPathOptions.SortBy
+  fullName: JsonCons.JsonPath.JsonPathOptions.SortBy
+  nameWithType: JsonPathOptions.SortBy
+- uid: JsonCons.JsonPath.JsonPathOptions.SortBy*
+  name: SortBy
+  href: ref/JsonCons.JsonPath.JsonPathOptions.html#JsonCons_JsonPath_JsonPathOptions_SortBy_
+  commentId: Overload:JsonCons.JsonPath.JsonPathOptions.SortBy
+  isSpec: "True"
+  fullName: JsonCons.JsonPath.JsonPathOptions.SortBy
+  nameWithType: JsonPathOptions.SortBy
 - uid: JsonCons.JsonPath.JsonPathParseException
   name: JsonPathParseException
   href: ref/JsonCons.JsonPath.JsonPathParseException.html
@@ -142,18 +206,18 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.JsonSelector.Parse
   nameWithType: JsonSelector.Parse
-- uid: JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)
-  name: Select(JsonElement, JsonSelectorOptions)
-  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_
-  commentId: M:JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)
-  fullName: JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement, JsonCons.JsonPath.JsonSelectorOptions)
-  nameWithType: JsonSelector.Select(JsonElement, JsonSelectorOptions)
-- uid: JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)
-  name: Select(JsonElement, String, JsonSelectorOptions)
-  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_
-  commentId: M:JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)
-  fullName: JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement, System.String, JsonCons.JsonPath.JsonSelectorOptions)
-  nameWithType: JsonSelector.Select(JsonElement, String, JsonSelectorOptions)
+- uid: JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonPathOptions)
+  name: Select(JsonElement, JsonPathOptions)
+  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonPathOptions_
+  commentId: M:JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonPathOptions)
+  fullName: JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement, JsonCons.JsonPath.JsonPathOptions)
+  nameWithType: JsonSelector.Select(JsonElement, JsonPathOptions)
+- uid: JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonPathOptions)
+  name: Select(JsonElement, String, JsonPathOptions)
+  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonPathOptions_
+  commentId: M:JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonPathOptions)
+  fullName: JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement, System.String, JsonCons.JsonPath.JsonPathOptions)
+  nameWithType: JsonSelector.Select(JsonElement, String, JsonPathOptions)
 - uid: JsonCons.JsonPath.JsonSelector.Select*
   name: Select
   href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_Select_
@@ -161,18 +225,18 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.JsonSelector.Select
   nameWithType: JsonSelector.Select
-- uid: JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)
-  name: SelectNodes(JsonElement, JsonSelectorOptions)
-  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_
-  commentId: M:JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)
-  fullName: JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement, JsonCons.JsonPath.JsonSelectorOptions)
-  nameWithType: JsonSelector.SelectNodes(JsonElement, JsonSelectorOptions)
-- uid: JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)
-  name: SelectNodes(JsonElement, String, JsonSelectorOptions)
-  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_
-  commentId: M:JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)
-  fullName: JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement, System.String, JsonCons.JsonPath.JsonSelectorOptions)
-  nameWithType: JsonSelector.SelectNodes(JsonElement, String, JsonSelectorOptions)
+- uid: JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonPathOptions)
+  name: SelectNodes(JsonElement, JsonPathOptions)
+  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonPathOptions_
+  commentId: M:JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonPathOptions)
+  fullName: JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement, JsonCons.JsonPath.JsonPathOptions)
+  nameWithType: JsonSelector.SelectNodes(JsonElement, JsonPathOptions)
+- uid: JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonPathOptions)
+  name: SelectNodes(JsonElement, String, JsonPathOptions)
+  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonPathOptions_
+  commentId: M:JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonPathOptions)
+  fullName: JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement, System.String, JsonCons.JsonPath.JsonPathOptions)
+  nameWithType: JsonSelector.SelectNodes(JsonElement, String, JsonPathOptions)
 - uid: JsonCons.JsonPath.JsonSelector.SelectNodes*
   name: SelectNodes
   href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_SelectNodes_
@@ -180,18 +244,18 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.JsonSelector.SelectNodes
   nameWithType: JsonSelector.SelectNodes
-- uid: JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)
-  name: SelectPaths(JsonElement, JsonSelectorOptions)
-  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_
-  commentId: M:JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)
-  fullName: JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement, JsonCons.JsonPath.JsonSelectorOptions)
-  nameWithType: JsonSelector.SelectPaths(JsonElement, JsonSelectorOptions)
-- uid: JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)
-  name: SelectPaths(JsonElement, String, JsonSelectorOptions)
-  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_
-  commentId: M:JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)
-  fullName: JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement, System.String, JsonCons.JsonPath.JsonSelectorOptions)
-  nameWithType: JsonSelector.SelectPaths(JsonElement, String, JsonSelectorOptions)
+- uid: JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonPathOptions)
+  name: SelectPaths(JsonElement, JsonPathOptions)
+  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonPathOptions_
+  commentId: M:JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonPathOptions)
+  fullName: JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement, JsonCons.JsonPath.JsonPathOptions)
+  nameWithType: JsonSelector.SelectPaths(JsonElement, JsonPathOptions)
+- uid: JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonPathOptions)
+  name: SelectPaths(JsonElement, String, JsonPathOptions)
+  href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonPathOptions_
+  commentId: M:JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonPathOptions)
+  fullName: JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement, System.String, JsonCons.JsonPath.JsonPathOptions)
+  nameWithType: JsonSelector.SelectPaths(JsonElement, String, JsonPathOptions)
 - uid: JsonCons.JsonPath.JsonSelector.SelectPaths*
   name: SelectPaths
   href: ref/JsonCons.JsonPath.JsonSelector.html#JsonCons_JsonPath_JsonSelector_SelectPaths_
@@ -217,83 +281,6 @@ references:
   commentId: F:JsonCons.JsonPath.JsonSelectorExecutionMode.Sequential
   fullName: JsonCons.JsonPath.JsonSelectorExecutionMode.Sequential
   nameWithType: JsonSelectorExecutionMode.Sequential
-- uid: JsonCons.JsonPath.JsonSelectorOptions
-  name: JsonSelectorOptions
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html
-  commentId: T:JsonCons.JsonPath.JsonSelectorOptions
-  fullName: JsonCons.JsonPath.JsonSelectorOptions
-  nameWithType: JsonSelectorOptions
-- uid: JsonCons.JsonPath.JsonSelectorOptions.Default
-  name: Default
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_Default
-  commentId: F:JsonCons.JsonPath.JsonSelectorOptions.Default
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.Default
-  nameWithType: JsonSelectorOptions.Default
-- uid: JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode
-  name: ExecutionMode
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_ExecutionMode
-  commentId: P:JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode
-  nameWithType: JsonSelectorOptions.ExecutionMode
-- uid: JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode*
-  name: ExecutionMode
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_ExecutionMode_
-  commentId: Overload:JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode
-  isSpec: "True"
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.ExecutionMode
-  nameWithType: JsonSelectorOptions.ExecutionMode
-- uid: JsonCons.JsonPath.JsonSelectorOptions.MaxDepth
-  name: MaxDepth
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_MaxDepth
-  commentId: P:JsonCons.JsonPath.JsonSelectorOptions.MaxDepth
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.MaxDepth
-  nameWithType: JsonSelectorOptions.MaxDepth
-- uid: JsonCons.JsonPath.JsonSelectorOptions.MaxDepth*
-  name: MaxDepth
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_MaxDepth_
-  commentId: Overload:JsonCons.JsonPath.JsonSelectorOptions.MaxDepth
-  isSpec: "True"
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.MaxDepth
-  nameWithType: JsonSelectorOptions.MaxDepth
-- uid: JsonCons.JsonPath.JsonSelectorOptions.NoDuplicates
-  name: NoDuplicates
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_NoDuplicates
-  commentId: P:JsonCons.JsonPath.JsonSelectorOptions.NoDuplicates
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.NoDuplicates
-  nameWithType: JsonSelectorOptions.NoDuplicates
-- uid: JsonCons.JsonPath.JsonSelectorOptions.NoDuplicates*
-  name: NoDuplicates
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_NoDuplicates_
-  commentId: Overload:JsonCons.JsonPath.JsonSelectorOptions.NoDuplicates
-  isSpec: "True"
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.NoDuplicates
-  nameWithType: JsonSelectorOptions.NoDuplicates
-- uid: JsonCons.JsonPath.JsonSelectorOptions.SortBy
-  name: SortBy
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_SortBy
-  commentId: P:JsonCons.JsonPath.JsonSelectorOptions.SortBy
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.SortBy
-  nameWithType: JsonSelectorOptions.SortBy
-- uid: JsonCons.JsonPath.JsonSelectorOptions.SortBy*
-  name: SortBy
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_SortBy_
-  commentId: Overload:JsonCons.JsonPath.JsonSelectorOptions.SortBy
-  isSpec: "True"
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.SortBy
-  nameWithType: JsonSelectorOptions.SortBy
-- uid: JsonCons.JsonPath.JsonSelectorOptions.SortByPath
-  name: SortByPath
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_SortByPath
-  commentId: P:JsonCons.JsonPath.JsonSelectorOptions.SortByPath
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.SortByPath
-  nameWithType: JsonSelectorOptions.SortByPath
-- uid: JsonCons.JsonPath.JsonSelectorOptions.SortByPath*
-  name: SortByPath
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_SortByPath_
-  commentId: Overload:JsonCons.JsonPath.JsonSelectorOptions.SortByPath
-  isSpec: "True"
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.SortByPath
-  nameWithType: JsonSelectorOptions.SortByPath
 - uid: JsonCons.JsonPath.JsonSelectorSortBy
   name: JsonSelectorSortBy
   href: ref/JsonCons.JsonPath.JsonSelectorSortBy.html
