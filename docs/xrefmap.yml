@@ -620,6 +620,68 @@ references:
   commentId: F:JsonCons.Utilities.IntegerTokenUnflattening.TryIndex
   fullName: JsonCons.Utilities.IntegerTokenUnflattening.TryIndex
   nameWithType: IntegerTokenUnflattening.TryIndex
+- uid: JsonCons.Utilities.JsonElementComparer
+  name: JsonElementComparer
+  href: ref/JsonCons.Utilities.JsonElementComparer.html
+  commentId: T:JsonCons.Utilities.JsonElementComparer
+  fullName: JsonCons.Utilities.JsonElementComparer
+  nameWithType: JsonElementComparer
+- uid: JsonCons.Utilities.JsonElementComparer.#ctor
+  name: JsonElementComparer()
+  href: ref/JsonCons.Utilities.JsonElementComparer.html#JsonCons_Utilities_JsonElementComparer__ctor
+  commentId: M:JsonCons.Utilities.JsonElementComparer.#ctor
+  fullName: JsonCons.Utilities.JsonElementComparer.JsonElementComparer()
+  nameWithType: JsonElementComparer.JsonElementComparer()
+- uid: JsonCons.Utilities.JsonElementComparer.#ctor*
+  name: JsonElementComparer
+  href: ref/JsonCons.Utilities.JsonElementComparer.html#JsonCons_Utilities_JsonElementComparer__ctor_
+  commentId: Overload:JsonCons.Utilities.JsonElementComparer.#ctor
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonElementComparer.JsonElementComparer
+  nameWithType: JsonElementComparer.JsonElementComparer
+- uid: JsonCons.Utilities.JsonElementComparer.Compare(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  name: Compare(JsonElement, JsonElement)
+  href: ref/JsonCons.Utilities.JsonElementComparer.html#JsonCons_Utilities_JsonElementComparer_Compare_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.Utilities.JsonElementComparer.Compare(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonElementComparer.Compare(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
+  nameWithType: JsonElementComparer.Compare(JsonElement, JsonElement)
+- uid: JsonCons.Utilities.JsonElementComparer.Compare*
+  name: Compare
+  href: ref/JsonCons.Utilities.JsonElementComparer.html#JsonCons_Utilities_JsonElementComparer_Compare_
+  commentId: Overload:JsonCons.Utilities.JsonElementComparer.Compare
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonElementComparer.Compare
+  nameWithType: JsonElementComparer.Compare
+- uid: JsonCons.Utilities.JsonElementComparer.Instance
+  name: Instance
+  href: ref/JsonCons.Utilities.JsonElementComparer.html#JsonCons_Utilities_JsonElementComparer_Instance
+  commentId: P:JsonCons.Utilities.JsonElementComparer.Instance
+  fullName: JsonCons.Utilities.JsonElementComparer.Instance
+  nameWithType: JsonElementComparer.Instance
+- uid: JsonCons.Utilities.JsonElementComparer.Instance*
+  name: Instance
+  href: ref/JsonCons.Utilities.JsonElementComparer.html#JsonCons_Utilities_JsonElementComparer_Instance_
+  commentId: Overload:JsonCons.Utilities.JsonElementComparer.Instance
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonElementComparer.Instance
+  nameWithType: JsonElementComparer.Instance
+- uid: JsonCons.Utilities.JsonElementComparer.System#Collections#IComparer#Compare(System.Object,System.Object)
+  name: IComparer.Compare(Object, Object)
+  href: ref/JsonCons.Utilities.JsonElementComparer.html#JsonCons_Utilities_JsonElementComparer_System_Collections_IComparer_Compare_System_Object_System_Object_
+  commentId: M:JsonCons.Utilities.JsonElementComparer.System#Collections#IComparer#Compare(System.Object,System.Object)
+  name.vb: System.Collections.IComparer.Compare(Object, Object)
+  fullName: JsonCons.Utilities.JsonElementComparer.System.Collections.IComparer.Compare(System.Object, System.Object)
+  nameWithType: JsonElementComparer.IComparer.Compare(Object, Object)
+  nameWithType.vb: JsonElementComparer.System.Collections.IComparer.Compare(Object, Object)
+- uid: JsonCons.Utilities.JsonElementComparer.System#Collections#IComparer#Compare*
+  name: IComparer.Compare
+  href: ref/JsonCons.Utilities.JsonElementComparer.html#JsonCons_Utilities_JsonElementComparer_System_Collections_IComparer_Compare_
+  commentId: Overload:JsonCons.Utilities.JsonElementComparer.System#Collections#IComparer#Compare
+  isSpec: "True"
+  name.vb: System.Collections.IComparer.Compare
+  fullName: JsonCons.Utilities.JsonElementComparer.System.Collections.IComparer.Compare
+  nameWithType: JsonElementComparer.IComparer.Compare
+  nameWithType.vb: JsonElementComparer.System.Collections.IComparer.Compare
 - uid: JsonCons.Utilities.JsonElementEqualityComparer
   name: JsonElementEqualityComparer
   href: ref/JsonCons.Utilities.JsonElementEqualityComparer.html

@@ -11,7 +11,7 @@ namespace JsonCons.Utilities.Tests
     public class JsonElementComparerTests
     {
         [TestMethod]
-        public void CompareUnequlKindTest()
+        public void CompareUnequalKindTest()
         {
             using var doc1 = JsonDocument.Parse(@"
     {

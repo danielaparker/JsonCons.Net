@@ -8,18 +8,49 @@ using System.Text.Json;
 namespace JsonCons.Utilities
 {
     /// <summary>
-    /// Compares two <see cref="JsonElement"/> instances for equality by using value-based comparison.
+    /// Compares two <see cref="JsonElement"/> instances.
     /// </summary>
 
     public sealed class JsonElementComparer : IComparer<JsonElement>, System.Collections.IComparer
     {
-        /// <summary>Gets a singleton instance of JsonElementEqualityComparer. This property is read-only.</summary>
+        /// <summary>Gets a singleton instance of JsonElementComparer. This property is read-only.</summary>
         public static JsonElementComparer Instance { get; } = new JsonElementComparer();
 
+        /// <summary>
+        /// Constructs a JsonElementComparer
+        /// </summary>
         public JsonElementComparer() {}
 
         /// <summary>
-        /// Determines whether the provided <see cref="JsonElement"/> objects are equal.
+        /// Compares two <see cref="JsonElement"/> instances.
+        /// 
+        /// If the two JsonElement instances have different data types, they are
+        /// compared according to their ValueKind property, which gives this ordering:
+        /// <code>
+        ///    Undefined
+        ///    Object
+        ///    Array
+        ///    String
+        ///    Number
+        ///    True
+        ///    False
+        ///    Null
+        /// </code>
+        /// 
+        /// If both JsonElement instances are null, true, or false, they are equal.
+        /// 
+        /// If both are strings, they are compared with the string CompareTo method.
+        /// 
+        /// If both are objects, they are compared accoring to the following rules:
+        /// 
+        /// <ul>
+        /// <li>Order each object's properties by name and compare sequentially.
+        /// The properties are compared first by name with the string CompareTo method, then by value with JsonElementComparer</li>
+        /// <li> The first mismatching property defines which JsonElement instance is less or greater than the other.</li>
+        /// <li> If the two sequences have no mismatching properties until one of them ends, and the other is longer, the shorter sequence is less than the other.</li>
+        /// <li> If the two sequences have no mismatching properties and have the same length, they are equal.</li>
+        /// </ul>  
+        /// 
         /// </summary>
         /// <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
         /// <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>
