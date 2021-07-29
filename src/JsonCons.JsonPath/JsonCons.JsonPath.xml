@@ -81,6 +81,26 @@
             Parallelizes execution of individual selectors in unions.
             </summary>
         </member>
+        <member name="T:JsonCons.JsonPath.JsonSelectorSortBy">
+            <summary>
+            Defines the various ways a <see cref="T:JsonCons.JsonPath.JsonSelector"/> query can order the results.
+            </summary>
+        </member>
+        <member name="F:JsonCons.JsonPath.JsonSelectorSortBy.Default">
+            <summary>
+            No sorting
+            </summary>
+        </member>
+        <member name="F:JsonCons.JsonPath.JsonSelectorSortBy.Path">
+            <summary>
+            Sort by path
+            </summary>
+        </member>
+        <member name="F:JsonCons.JsonPath.JsonSelectorSortBy.Value">
+            <summary>
+            Sort by <see cref="T:System.Text.Json.JsonElement"/> instances using the <see cref="T:JsonCons.Utilities.JsonElementComparer"/>.
+            </summary>
+        </member>
         <member name="T:JsonCons.JsonPath.JsonSelectorOptions">
             <summary>
             Defines the various ways a <see cref="T:JsonCons.JsonPath.JsonSelector"/> can handle duplicate
@@ -102,7 +122,7 @@
             Sort results by path.
             </summary>
         </member>
-        <member name="P:JsonCons.JsonPath.JsonSelectorOptions.SortByValue">
+        <member name="P:JsonCons.JsonPath.JsonSelectorOptions.SortBy">
             <summary>
             Sort <see cref="T:System.Text.Json.JsonElement"/> instances using the <see cref="T:JsonCons.Utilities.JsonElementComparer"/>.
             </summary>

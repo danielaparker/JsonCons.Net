@@ -54,6 +54,25 @@ namespace JsonCons.JsonPath
     }
 
     /// <summary>
+    /// Defines the various ways a <see cref="JsonSelector"/> query can order the results.
+    /// </summary>
+
+    public enum JsonSelectorSortBy {
+        /// <summary>
+        /// No sorting
+        /// </summary>
+        Default,
+        /// <summary>
+        /// Sort by path
+        /// </summary>
+        Path, 
+        /// <summary>
+        /// Sort by <see cref="JsonElement"/> instances using the <see cref="JsonElementComparer"/>.
+        /// </summary>
+        Value
+    };
+
+    /// <summary>
     /// Defines the various ways a <see cref="JsonSelector"/> can handle duplicate
     /// paths and order of results.
     /// </summary>
@@ -77,7 +96,7 @@ namespace JsonCons.JsonPath
         /// <summary>
         /// Sort <see cref="JsonElement"/> instances using the <see cref="JsonElementComparer"/>.
         /// </summary>
-        public bool SortByValue {get;set;} = false;
+        public JsonSelectorSortBy SortBy {get;set;} = JsonSelectorSortBy.Default;
 
         /// <summary>
         /// Gets or sets the depth limit for recursive descent, with the default value a maximum depth of 64.
@@ -287,7 +306,7 @@ namespace JsonCons.JsonPath
                 {
                     flags |= ProcessingFlags.NoDups;
                 }
-                if (options.SortByPath)
+                if (options.SortBy == JsonSelectorSortBy.Path)
                 {
                     flags |= ProcessingFlags.SortByPath;
                 }
@@ -368,7 +387,7 @@ namespace JsonCons.JsonPath
 
             if (options != null)
             {
-                if (options.SortByValue)
+                if (options.SortBy == JsonSelectorSortBy.Value)
                 {
                     values.Sort(JsonElementComparer.Instance);
                 }
@@ -395,7 +414,7 @@ namespace JsonCons.JsonPath
                 {
                     flags |= ProcessingFlags.NoDups;
                 }
-                if (options.SortByPath)
+                if (options.SortBy == JsonSelectorSortBy.Path)
                 {
                     flags |= ProcessingFlags.SortByPath;
                 }
@@ -468,7 +487,7 @@ namespace JsonCons.JsonPath
                 {
                     flags |= ProcessingFlags.NoDups;
                 }
-                if (options.SortByPath)
+                if (options.SortBy == JsonSelectorSortBy.Path)
                 {
                     flags |= ProcessingFlags.SortByPath;
                 }

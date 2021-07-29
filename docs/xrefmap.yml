@@ -268,6 +268,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.JsonSelectorOptions.NoDuplicates
   nameWithType: JsonSelectorOptions.NoDuplicates
+- uid: JsonCons.JsonPath.JsonSelectorOptions.SortBy
+  name: SortBy
+  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_SortBy
+  commentId: P:JsonCons.JsonPath.JsonSelectorOptions.SortBy
+  fullName: JsonCons.JsonPath.JsonSelectorOptions.SortBy
+  nameWithType: JsonSelectorOptions.SortBy
+- uid: JsonCons.JsonPath.JsonSelectorOptions.SortBy*
+  name: SortBy
+  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_SortBy_
+  commentId: Overload:JsonCons.JsonPath.JsonSelectorOptions.SortBy
+  isSpec: "True"
+  fullName: JsonCons.JsonPath.JsonSelectorOptions.SortBy
+  nameWithType: JsonSelectorOptions.SortBy
 - uid: JsonCons.JsonPath.JsonSelectorOptions.SortByPath
   name: SortByPath
   href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_SortByPath
@@ -281,19 +294,30 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.JsonSelectorOptions.SortByPath
   nameWithType: JsonSelectorOptions.SortByPath
-- uid: JsonCons.JsonPath.JsonSelectorOptions.SortByValue
-  name: SortByValue
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_SortByValue
-  commentId: P:JsonCons.JsonPath.JsonSelectorOptions.SortByValue
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.SortByValue
-  nameWithType: JsonSelectorOptions.SortByValue
-- uid: JsonCons.JsonPath.JsonSelectorOptions.SortByValue*
-  name: SortByValue
-  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_SortByValue_
-  commentId: Overload:JsonCons.JsonPath.JsonSelectorOptions.SortByValue
-  isSpec: "True"
-  fullName: JsonCons.JsonPath.JsonSelectorOptions.SortByValue
-  nameWithType: JsonSelectorOptions.SortByValue
+- uid: JsonCons.JsonPath.JsonSelectorSortBy
+  name: JsonSelectorSortBy
+  href: ref/JsonCons.JsonPath.JsonSelectorSortBy.html
+  commentId: T:JsonCons.JsonPath.JsonSelectorSortBy
+  fullName: JsonCons.JsonPath.JsonSelectorSortBy
+  nameWithType: JsonSelectorSortBy
+- uid: JsonCons.JsonPath.JsonSelectorSortBy.Default
+  name: Default
+  href: ref/JsonCons.JsonPath.JsonSelectorSortBy.html#JsonCons_JsonPath_JsonSelectorSortBy_Default
+  commentId: F:JsonCons.JsonPath.JsonSelectorSortBy.Default
+  fullName: JsonCons.JsonPath.JsonSelectorSortBy.Default
+  nameWithType: JsonSelectorSortBy.Default
+- uid: JsonCons.JsonPath.JsonSelectorSortBy.Path
+  name: Path
+  href: ref/JsonCons.JsonPath.JsonSelectorSortBy.html#JsonCons_JsonPath_JsonSelectorSortBy_Path
+  commentId: F:JsonCons.JsonPath.JsonSelectorSortBy.Path
+  fullName: JsonCons.JsonPath.JsonSelectorSortBy.Path
+  nameWithType: JsonSelectorSortBy.Path
+- uid: JsonCons.JsonPath.JsonSelectorSortBy.Value
+  name: Value
+  href: ref/JsonCons.JsonPath.JsonSelectorSortBy.html#JsonCons_JsonPath_JsonSelectorSortBy_Value
+  commentId: F:JsonCons.JsonPath.JsonSelectorSortBy.Value
+  fullName: JsonCons.JsonPath.JsonSelectorSortBy.Value
+  nameWithType: JsonSelectorSortBy.Value
 - uid: JsonCons.JsonPath.NormalizedPath
   name: NormalizedPath
   href: ref/JsonCons.JsonPath.NormalizedPath.html
