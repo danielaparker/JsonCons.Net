@@ -23,9 +23,9 @@ namespace JsonCons.Utilities
         /// <summary>
         /// Determines whether the provided <see cref="JsonElement"/> objects are equal.
         /// 
-        /// If the two JsonElement instances have different data types, they are different.
+        /// If the two <see cref="JsonElement"/> instances have different data types, they are different.
         /// 
-        /// If both JsonElement instances are null, true, or false, they are equal.
+        /// If both <see cref="JsonElement"/> instances are null, true, or false, they are equal.
         /// 
         /// If both are strings, they are compared with the String.Equals method.
         /// 
@@ -39,7 +39,7 @@ namespace JsonCons.Utilities
         /// <li>If the two objects have a different number of properties, they are different.</li>
         /// <li>Otherwise, order each object's properties by name and compare sequentially.
         /// The properties are compared first by name with the String.Equals method, then by value with <see cref="JsonElementEqualityComparer"/></li>
-        /// <li> A mismatching property means the two JsonElement instance are different.</li>
+        /// <li> A mismatching property means the two <see cref="JsonElement"/> instance are different.</li>
         /// </ul>  
         /// 
         /// If both are arrays, and both have the same length and compare equal element wise with <see cref="JsonElementEqualityComparer"/>,
@@ -89,7 +89,7 @@ namespace JsonCons.Utilities
     
                 case JsonValueKind.Object:
                 {
-                    // OrderBy performs a stable sort (Note that JsonElement supports duplicate property names)
+                    // OrderBy performs a stable sort (Note that <see cref="JsonElement"/> supports duplicate property names)
                     var baseEnumerator1 = lhs.EnumerateObject();
                     var baseEnumerator2 = rhs.EnumerateObject();
                     if (baseEnumerator1.Count() != baseEnumerator2.Count())
@@ -125,7 +125,7 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Returns a hash code for the specified JsonElement value.
+        /// Returns a hash code for the specified <see cref="JsonElement"/> value.
         /// </summary>
         /// <param name="value"></param>
         /// <returns>An Int32 value representing the hash code of the value.</returns>

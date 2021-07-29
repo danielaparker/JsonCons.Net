@@ -12,7 +12,7 @@ namespace JsonCons.Utilities
     /// Defines how the unflatten operation handles integer tokens in a JSON Pointer 
     /// </summary>
     /// <example>
-    /// This example illustrates the use of IntegerTokenUnflattening
+    /// This example illustrates the use of <see cref="IntegerTokenUnflattening"/>
     /// <code>
     /// using System;
     /// using System.Diagnostics;

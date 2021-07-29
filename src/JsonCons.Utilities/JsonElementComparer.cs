@@ -24,7 +24,7 @@ namespace JsonCons.Utilities
         /// <summary>
         /// Compares two <see cref="JsonElement"/> instances.
         /// 
-        /// If the two JsonElement instances have different data types, they are
+        /// If the two <see cref="JsonElement"/> instances have different data types, they are
         /// compared according to their ValueKind property, which gives this ordering:
         /// <code>
         ///    Undefined
@@ -37,7 +37,7 @@ namespace JsonCons.Utilities
         ///    Null
         /// </code>
         /// 
-        /// If both JsonElement instances are null, true, or false, they are equal.
+        /// If both <see cref="JsonElement"/> instances are null, true, or false, they are equal.
         /// 
         /// If both are strings, they are compared with the String.CompareTo method.
         /// 
@@ -50,13 +50,13 @@ namespace JsonCons.Utilities
         /// <ul>
         /// <li>Order each object's properties by name and compare sequentially.
         /// The properties are compared first by name with the String.CompareTo method, then by value with <see cref="JsonElementComparer"/></li>
-        /// <li> The first mismatching property defines which JsonElement instance is less or greater than the other.</li>
+        /// <li> The first mismatching property defines which <see cref="JsonElement"/> instance is less or greater than the other.</li>
         /// <li> If the two sequences have no mismatching properties until one of them ends, and the other is longer, the shorter sequence is less than the other.</li>
         /// <li> If the two sequences have no mismatching properties and have the same length, they are equal.</li>
         /// </ul>  
         /// 
         /// If both are arrays, they are compared element wise with <see cref="JsonElementComparer"/>.
-        /// The first mismatching element defines which JsonElement instance is less or greater than the other.
+        /// The first mismatching element defines which <see cref="JsonElement"/> instance is less or greater than the other.
         /// If the two arrays have no mismatching elements until one of them ends, and the other is longer, the shorter array is less than the other.
         /// If the two arrays have no mismatching elements and have the same length, they are equal.
         /// 
@@ -121,7 +121,7 @@ namespace JsonCons.Utilities
 
                 case JsonValueKind.Object:
                 {
-                    // OrderBy performs a stable sort (Note that JsonElement supports duplicate property names)
+                    // OrderBy performs a stable sort (Note that <see cref="JsonElement"/> supports duplicate property names)
                     var enumerator1 = lhs.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
                     var enumerator2 = rhs.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
     

@@ -21,7 +21,7 @@
             <summary>
             Compares two <see cref="T:System.Text.Json.JsonElement"/> instances.
             
-            If the two JsonElement instances have different data types, they are
+            If the two <see cref="T:System.Text.Json.JsonElement"/> instances have different data types, they are
             compared according to their ValueKind property, which gives this ordering:
             <code>
                Undefined
@@ -34,7 +34,7 @@
                Null
             </code>
             
-            If both JsonElement instances are null, true, or false, they are equal.
+            If both <see cref="T:System.Text.Json.JsonElement"/> instances are null, true, or false, they are equal.
             
             If both are strings, they are compared with the String.CompareTo method.
             
@@ -47,13 +47,13 @@
             <ul>
             <li>Order each object's properties by name and compare sequentially.
             The properties are compared first by name with the String.CompareTo method, then by value with <see cref="T:JsonCons.Utilities.JsonElementComparer"/></li>
-            <li> The first mismatching property defines which JsonElement instance is less or greater than the other.</li>
+            <li> The first mismatching property defines which <see cref="T:System.Text.Json.JsonElement"/> instance is less or greater than the other.</li>
             <li> If the two sequences have no mismatching properties until one of them ends, and the other is longer, the shorter sequence is less than the other.</li>
             <li> If the two sequences have no mismatching properties and have the same length, they are equal.</li>
             </ul>  
             
             If both are arrays, they are compared element wise with <see cref="T:JsonCons.Utilities.JsonElementComparer"/>.
-            The first mismatching element defines which JsonElement instance is less or greater than the other.
+            The first mismatching element defines which <see cref="T:System.Text.Json.JsonElement"/> instance is less or greater than the other.
             If the two arrays have no mismatching elements until one of them ends, and the other is longer, the shorter array is less than the other.
             If the two arrays have no mismatching elements and have the same length, they are equal.
             
@@ -74,9 +74,9 @@
             <summary>
             Determines whether the provided <see cref="T:System.Text.Json.JsonElement"/> objects are equal.
             
-            If the two JsonElement instances have different data types, they are different.
+            If the two <see cref="T:System.Text.Json.JsonElement"/> instances have different data types, they are different.
             
-            If both JsonElement instances are null, true, or false, they are equal.
+            If both <see cref="T:System.Text.Json.JsonElement"/> instances are null, true, or false, they are equal.
             
             If both are strings, they are compared with the String.Equals method.
             
@@ -90,7 +90,7 @@
             <li>If the two objects have a different number of properties, they are different.</li>
             <li>Otherwise, order each object's properties by name and compare sequentially.
             The properties are compared first by name with the String.Equals method, then by value with <see cref="T:JsonCons.Utilities.JsonElementEqualityComparer"/></li>
-            <li> A mismatching property means the two JsonElement instance are different.</li>
+            <li> A mismatching property means the two <see cref="T:System.Text.Json.JsonElement"/> instance are different.</li>
             </ul>  
             
             If both are arrays, and both have the same length and compare equal element wise with <see cref="T:JsonCons.Utilities.JsonElementEqualityComparer"/>,
@@ -102,7 +102,7 @@
         </member>
         <member name="M:JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)">
             <summary>
-            Returns a hash code for the specified JsonElement value.
+            Returns a hash code for the specified <see cref="T:System.Text.Json.JsonElement"/> value.
             </summary>
             <param name="value"></param>
             <returns>An Int32 value representing the hash code of the value.</returns>
@@ -112,7 +112,7 @@
             Defines how the unflatten operation handles integer tokens in a JSON Pointer 
             </summary>
             <example>
-            This example illustrates the use of IntegerTokenUnflattening
+            This example illustrates the use of <see cref="T:JsonCons.Utilities.IntegerTokenUnflattening"/>
             <code>
             using System;
             using System.Diagnostics;
@@ -694,25 +694,25 @@
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement)">
             <summary>
-            Returns <c>true</c> if the provided JsonElement contains a value at the referenced location.
+            Returns <c>true</c> if the provided <see cref="T:System.Text.Json.JsonElement"/> contains a value at the referenced location.
             </summary>
             <param name="target"></param>
-            <returns><c>true</c> if the provided JsonElement contains a value at the referenced location, otherwise <c>false</c>.</returns>
+            <returns><c>true</c> if the provided <see cref="T:System.Text.Json.JsonElement"/> contains a value at the referenced location, otherwise <c>false</c>.</returns>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement,System.String)">
             <summary>
-            Returns <c>true</c> if the provided JsonElement contains a value at the referenced location.
+            Returns <c>true</c> if the provided <see cref="T:System.Text.Json.JsonElement"/> contains a value at the referenced location.
             </summary>
             <param name="target"></param>
             <param name="pointer"></param>
-            <returns><c>true</c> if the provided JsonElement contains a value at the referenced location, otherwise <c>false</c>.</returns>
+            <returns><c>true</c> if the provided <see cref="T:System.Text.Json.JsonElement"/> contains a value at the referenced location, otherwise <c>false</c>.</returns>
             <exception cref="T:System.ArgumentNullException">
               The <paramref name="pointer"/> is <see langword="null"/>.
             </exception>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement,System.Text.Json.JsonElement@)">
             <summary>
-            Gets the value at the referenced location in the provided JsonElement.
+            Gets the value at the referenced location in the provided <see cref="T:System.Text.Json.JsonElement"/>.
             </summary>
             <param name="target"></param>
             <param name="value"></param>
@@ -720,7 +720,7 @@
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.TryGetValue(System.Text.Json.JsonElement,System.String,System.Text.Json.JsonElement@)">
             <summary>
-            Gets the value at the referenced location in the provided JsonElement.
+            Gets the value at the referenced location in the provided <see cref="T:System.Text.Json.JsonElement"/>.
             </summary>
             <param name="target"></param>
             <param name="pointer"></param>

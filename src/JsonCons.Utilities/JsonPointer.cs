@@ -321,10 +321,10 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the provided JsonElement contains a value at the referenced location.
+        /// Returns <c>true</c> if the provided <see cref="JsonElement"/> contains a value at the referenced location.
         /// </summary>
         /// <param name="target"></param>
-        /// <returns><c>true</c> if the provided JsonElement contains a value at the referenced location, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the provided <see cref="JsonElement"/> contains a value at the referenced location, otherwise <c>false</c>.</returns>
         public bool ContainsValue(JsonElement target)
         {
             JsonElement value = target;
@@ -365,11 +365,11 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the provided JsonElement contains a value at the referenced location.
+        /// Returns <c>true</c> if the provided <see cref="JsonElement"/> contains a value at the referenced location.
         /// </summary>
         /// <param name="target"></param>
         /// <param name="pointer"></param>
-        /// <returns><c>true</c> if the provided JsonElement contains a value at the referenced location, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the provided <see cref="JsonElement"/> contains a value at the referenced location, otherwise <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException">
         ///   The <paramref name="pointer"/> is <see langword="null"/>.
         /// </exception>
@@ -422,7 +422,7 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Gets the value at the referenced location in the provided JsonElement.
+        /// Gets the value at the referenced location in the provided <see cref="JsonElement"/>.
         /// </summary>
         /// <param name="target"></param>
         /// <param name="value"></param>
@@ -467,7 +467,7 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
-        /// Gets the value at the referenced location in the provided JsonElement.
+        /// Gets the value at the referenced location in the provided <see cref="JsonElement"/>.
         /// </summary>
         /// <param name="target"></param>
         /// <param name="pointer"></param>

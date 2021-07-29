@@ -179,7 +179,7 @@
   <a id="JsonCons_Utilities_JsonElementComparer_Compare_" data-uid="JsonCons.Utilities.JsonElementComparer.Compare*"></a>
   <h4 id="JsonCons_Utilities_JsonElementComparer_Compare_System_Text_Json_JsonElement_System_Text_Json_JsonElement_" data-uid="JsonCons.Utilities.JsonElementComparer.Compare(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">Compare(JsonElement, JsonElement)</h4>
   <div class="markdown level1 summary"><p>Compares two <span class="xref">System.Text.Json.JsonElement</span> instances.</p>
-<p>If the two JsonElement instances have different data types, they are
+<p>If the two <span class="xref">System.Text.Json.JsonElement</span> instances have different data types, they are
 compared according to their ValueKind property, which gives this ordering:</p>
 <pre><code>   Undefined
    Object
@@ -189,7 +189,7 @@ compared according to their ValueKind property, which gives this ordering:</p>
    True
    False
    Null</code></pre>
-<p>If both JsonElement instances are null, true, or false, they are equal.</p>
+<p>If both <span class="xref">System.Text.Json.JsonElement</span> instances are null, true, or false, they are equal.</p>
 <p>If both are strings, they are compared with the String.CompareTo method.</p>
 <p>If both are numbers, and both can be represented by a <span class="xref">System.Decimal</span>,
 they are compared with the Decimal.CompareTo method, otherwise they are
@@ -198,12 +198,12 @@ compared as doubles.</p>
 <ul>
 <li>Order each object&apos;s properties by name and compare sequentially.
 The properties are compared first by name with the String.CompareTo method, then by value with <a class="xref" href="JsonCons.Utilities.JsonElementComparer.html">JsonElementComparer</a></li>
-<li> The first mismatching property defines which JsonElement instance is less or greater than the other.</li>
+<li> The first mismatching property defines which <span class="xref">System.Text.Json.JsonElement</span> instance is less or greater than the other.</li>
 <li> If the two sequences have no mismatching properties until one of them ends, and the other is longer, the shorter sequence is less than the other.</li>
 <li> If the two sequences have no mismatching properties and have the same length, they are equal.</li>
 </ul>  
 <p>If both are arrays, they are compared element wise with <a class="xref" href="JsonCons.Utilities.JsonElementComparer.html">JsonElementComparer</a>.
-The first mismatching element defines which JsonElement instance is less or greater than the other.
+The first mismatching element defines which <span class="xref">System.Text.Json.JsonElement</span> instance is less or greater than the other.
 If the two arrays have no mismatching elements until one of them ends, and the other is longer, the shorter array is less than the other.
 If the two arrays have no mismatching elements and have the same length, they are equal.</p>
 </div>
