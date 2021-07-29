@@ -721,18 +721,6 @@ namespace JsonCons.JsonPath
             }
         }
 
-        void SelectI(DynamicResources resources, 
-                     IValue root, 
-                     PathNode last,
-                     IValue current,
-                     INodeAccumulator accumulator,
-                     ProcessingFlags options,
-                     int depth,
-                     int i)
-        {
-            _selectors[i].Select(resources, root, last, current, accumulator, options, depth);
-        }
-
         public void Select(DynamicResources resources, 
                            IValue root, 
                            PathNode last,
