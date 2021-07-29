@@ -283,7 +283,7 @@ namespace JsonCons.JsonPath
         /// Selects values within the root value matched by this JSONPath expression. 
         /// </summary>
         /// <param name="root">The root value.</param>
-        /// <param name="options">Options for handling duplicate paths and order of results.</param>
+        /// <param name="options">Defines options for processing JSONPath queries.</param>
         /// <returns>A list of values within the root value matched by this JSONPath expression,
         ///  or an empty list if none were matched.</returns>
         /// <exception cref="InvalidOperationException">
@@ -394,7 +394,7 @@ namespace JsonCons.JsonPath
         /// Selects paths identifying the values within the root value matched by this JSONPath expression. 
         /// </summary>
         /// <param name="root">The root value.</param>
-        /// <param name="options">Options for handling duplicate paths and order of results.</param>
+        /// <param name="options">Defines options for processing JSONPath queries.</param>
         /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value matched by this JSONPath expression,
         /// or an empty list if none were matched.</returns>
 
@@ -466,7 +466,7 @@ namespace JsonCons.JsonPath
         /// Selects nodes that represent location-value pairs within the root value matched by this JSONPath expression. 
         /// </summary>
         /// <param name="root">The root value.</param>
-        /// <param name="options">Options for handling duplicate paths and order of results.</param>
+        /// <param name="options">Defines options for processing JSONPath queries.</param>
         /// <returns>A list of <see cref="PathValuePair"/> representing location-value pairs 
         /// within the root value matched by this JSONPath expression,
         /// or an empty list if none were matched.</returns>
@@ -541,7 +541,7 @@ namespace JsonCons.JsonPath
         /// </summary>
         /// <param name="root">The root value.</param>
         /// <param name="jsonPath">A JSONPath string.</param>
-        /// <param name="options">Options for handling duplicate paths and order of results.</param>
+        /// <param name="options">Defines options for processing JSONPath queries.</param>
         /// <returns>A list of values within the root value matched by the provided JSONPath expression,
         /// or an empty list if none were matched.</returns>
         /// <exception cref="JsonPathParseException">
@@ -571,7 +571,7 @@ namespace JsonCons.JsonPath
         /// </summary>
         /// <param name="root">The root value.</param>
         /// <param name="jsonPath">A JSONPath string.</param>
-        /// <param name="options">Options for handling duplicate paths and order of results.</param>
+        /// <param name="options">Defines options for processing JSONPath queries.</param>
         /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value matched by the provided JSONPath expression,
         /// or an empty list if none were matched.</returns>
         /// <exception cref="JsonPathParseException">
@@ -602,7 +602,7 @@ namespace JsonCons.JsonPath
         /// </summary>
         /// <param name="root">The root value.</param>
         /// <param name="jsonPath">A JSONPath string.</param>
-        /// <param name="options">Options for handling duplicate paths and order of results.</param>
+        /// <param name="options">Defines options for processing JSONPath queries.</param>
         /// <returns>A list of <see cref="PathValuePair"/> representing location-value pairs 
         /// within the root value matched by the provided JSONPath expression,
         /// or an empty list if none were matched.</returns>
