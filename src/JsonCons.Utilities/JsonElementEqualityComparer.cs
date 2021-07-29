@@ -40,10 +40,10 @@ namespace JsonCons.Utilities
         /// <li>Otherwise, order each object's properties by name and compare sequentially.
         /// The properties are compared first by name with the String.Equals method, then by value with JsonElementEqualityComparer</li>
         /// <li> A mismatching property means the two JsonElement instance are different.</li>
-        /// <li> 
-        /// If both are arrays, and both have the same length and compare equal element wise with JsonElementEqualityComparer,
-        /// they are equal, otherwise they are different.</li>
         /// </ul>  
+        /// 
+        /// If both are arrays, and both have the same length and compare equal element wise with JsonElementEqualityComparer,
+        /// they are equal, otherwise they are different.
         /// </summary>
         /// <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
         /// <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>
