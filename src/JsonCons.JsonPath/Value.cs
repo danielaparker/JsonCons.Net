@@ -242,7 +242,7 @@ namespace JsonCons.JsonPath
 
         public JsonElement GetJsonElement()
         {
-            throw new JsonException("Not a JsonElement");
+            throw new InvalidOperationException("Not a JsonElement");
         }      
     };
 
@@ -300,7 +300,7 @@ namespace JsonCons.JsonPath
 
         public JsonElement GetJsonElement()
         {
-            throw new JsonException("Not a JsonElement");
+            throw new InvalidOperationException("Not a JsonElement");
         }      
     };
 
@@ -356,7 +356,7 @@ namespace JsonCons.JsonPath
 
         public JsonElement GetJsonElement()
         {
-            throw new JsonException("Not a JsonElement");
+            throw new InvalidOperationException("Not a JsonElement");
         }      
     };
 
@@ -402,7 +402,7 @@ namespace JsonCons.JsonPath
 
         public JsonElement GetJsonElement()
         {
-            throw new JsonException("Not a JsonElement");
+            throw new InvalidOperationException("Not a JsonElement");
         }      
     };
 
@@ -448,7 +448,7 @@ namespace JsonCons.JsonPath
 
         public JsonElement GetJsonElement()
         {
-            throw new JsonException("Not a JsonElement");
+            throw new InvalidOperationException("Not a JsonElement");
         }      
     };
 
@@ -494,7 +494,7 @@ namespace JsonCons.JsonPath
 
         public JsonElement GetJsonElement()
         {
-            throw new JsonException("Not a JsonElement");
+            throw new InvalidOperationException("Not a JsonElement");
         }      
     };
 
@@ -591,7 +591,7 @@ namespace JsonCons.JsonPath
 
         public JsonElement GetJsonElement()
         {
-            throw new JsonException("Not a JsonElement");
+            throw new InvalidOperationException("Not a JsonElement");
         }      
     };
 

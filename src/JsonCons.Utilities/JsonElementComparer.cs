@@ -64,6 +64,9 @@ namespace JsonCons.Utilities
         /// <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
         /// <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>
         /// <returns></returns>
+        /// <exception cref="InvalidOperationException">
+        ///   Unable to compare numbers as either <see cref="Decimal"/> or double (shouldn't happen.)
+        /// </exception>
         public int Compare(JsonElement lhs, JsonElement rhs)
         {
             if (lhs.ValueKind != rhs.ValueKind)
@@ -93,7 +96,7 @@ namespace JsonCons.Utilities
                     }
                     else
                     {
-                        throw new JsonException("Unable to compare numbers");
+                        throw new InvalidOperationException("Unable to compare numbers");
                     }
                 }
     
@@ -146,7 +149,7 @@ namespace JsonCons.Utilities
                 }
     
                 default:
-                    throw new JsonException(string.Format("Unknown JsonValueKind {0}", lhs.ValueKind));
+                    throw new InvalidOperationException(string.Format("Unknown JsonValueKind {0}", lhs.ValueKind));
             }
         }
 

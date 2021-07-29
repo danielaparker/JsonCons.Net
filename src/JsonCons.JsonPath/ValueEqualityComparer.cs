@@ -80,7 +80,7 @@ namespace JsonCons.JsonPath
                }
 
                default:
-                   throw new JsonException(string.Format("Unknown JsonValueKind {0}", lhs.ValueKind));
+                   throw new InvalidOperationException(string.Format("Unknown JsonValueKind {0}", lhs.ValueKind));
            }
        }
 
@@ -129,7 +129,7 @@ namespace JsonCons.JsonPath
                     break;
 
                 default:
-                   throw new JsonException(string.Format("Unknown JsonValueKind {0}", element.ValueKind));
+                   throw new InvalidOperationException(string.Format("Unknown JsonValueKind {0}", element.ValueKind));
            }
            return hashCode;
        }

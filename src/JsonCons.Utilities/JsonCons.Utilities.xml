@@ -61,6 +61,9 @@
             <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
             <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>
             <returns></returns>
+            <exception cref="T:System.InvalidOperationException">
+              Unable to compare numbers as either <see cref="T:System.Decimal"/> or double (shouldn't happen.)
+            </exception>
         </member>
         <member name="T:JsonCons.Utilities.JsonElementEqualityComparer">
             <summary>
@@ -99,6 +102,9 @@
             <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
             <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>
             <returns></returns>
+            <exception cref="T:System.InvalidOperationException">
+              Unable to compare numbers as either <see cref="T:System.Decimal"/> or double (shouldn't happen.)
+            </exception>
         </member>
         <member name="M:JsonCons.Utilities.JsonElementEqualityComparer.GetHashCode(System.Text.Json.JsonElement)">
             <summary>

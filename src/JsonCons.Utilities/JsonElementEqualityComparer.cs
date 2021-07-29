@@ -48,6 +48,9 @@ namespace JsonCons.Utilities
         /// <param name="lhs">The first object of type cref="JsonElement"/> to compare.</param>
         /// <param name="rhs">The second object of type cref="JsonElement"/> to compare.</param>
         /// <returns></returns>
+        /// <exception cref="InvalidOperationException">
+        ///   Unable to compare numbers as either <see cref="Decimal"/> or double (shouldn't happen.)
+        /// </exception>
         public bool Equals(JsonElement lhs, JsonElement rhs)
         {
             if (lhs.ValueKind != rhs.ValueKind)
@@ -120,7 +123,7 @@ namespace JsonCons.Utilities
                 }
     
                 default:
-                    throw new JsonException(string.Format("Unknown JsonValueKind {0}", lhs.ValueKind));
+                    throw new InvalidOperationException(string.Format("Unknown JsonValueKind {0}", lhs.ValueKind));
             }
         }
 
@@ -170,7 +173,7 @@ namespace JsonCons.Utilities
                      break;
     
                  default:
-                    throw new JsonException(string.Format("Unknown JsonValueKind {0}", element.ValueKind));
+                    throw new InvalidOperationException(string.Format("Unknown JsonValueKind {0}", element.ValueKind));
             }
             return hashCode;
         }
