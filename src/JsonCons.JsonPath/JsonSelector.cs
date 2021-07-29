@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using JsonCons.Utilities;
 
 #nullable enable        
 
@@ -72,6 +73,11 @@ namespace JsonCons.JsonPath
         /// Sort results by path.
         /// </summary>
         public bool SortByPath {get;set;} = false;
+
+        /// <summary>
+        /// Sort <see cref="JsonElement"/> instances using the <see cref="JsonElementComparer"/>.
+        /// </summary>
+        public bool SortByValue {get;set;} = false;
 
         /// <summary>
         /// Gets or sets the depth limit for recursive descent, with the default value a maximum depth of 64.
@@ -360,6 +366,13 @@ namespace JsonCons.JsonPath
                                  0);
             }
 
+            if (options != null)
+            {
+                if (options.SortByValue)
+                {
+                    values.Sort(JsonElementComparer.Instance);
+                }
+            }
             return values;
         }
 

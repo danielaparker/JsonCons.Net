@@ -102,6 +102,11 @@
             Sort results by path.
             </summary>
         </member>
+        <member name="P:JsonCons.JsonPath.JsonSelectorOptions.SortByValue">
+            <summary>
+            Sort <see cref="T:System.Text.Json.JsonElement"/> instances using the <see cref="T:JsonCons.Utilities.JsonElementComparer"/>.
+            </summary>
+        </member>
         <member name="P:JsonCons.JsonPath.JsonSelectorOptions.MaxDepth">
             <summary>
             Gets or sets the depth limit for recursive descent, with the default value a maximum depth of 64.

@@ -281,6 +281,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.JsonSelectorOptions.SortByPath
   nameWithType: JsonSelectorOptions.SortByPath
+- uid: JsonCons.JsonPath.JsonSelectorOptions.SortByValue
+  name: SortByValue
+  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_SortByValue
+  commentId: P:JsonCons.JsonPath.JsonSelectorOptions.SortByValue
+  fullName: JsonCons.JsonPath.JsonSelectorOptions.SortByValue
+  nameWithType: JsonSelectorOptions.SortByValue
+- uid: JsonCons.JsonPath.JsonSelectorOptions.SortByValue*
+  name: SortByValue
+  href: ref/JsonCons.JsonPath.JsonSelectorOptions.html#JsonCons_JsonPath_JsonSelectorOptions_SortByValue_
+  commentId: Overload:JsonCons.JsonPath.JsonSelectorOptions.SortByValue
+  isSpec: "True"
+  fullName: JsonCons.JsonPath.JsonSelectorOptions.SortByValue
+  nameWithType: JsonSelectorOptions.SortByValue
 - uid: JsonCons.JsonPath.NormalizedPath
   name: NormalizedPath
   href: ref/JsonCons.JsonPath.NormalizedPath.html
