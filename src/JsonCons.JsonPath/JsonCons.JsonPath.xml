@@ -66,37 +66,37 @@
             </summary>
             <returns>A string representation of the current exception.</returns>
         </member>
-        <member name="T:JsonCons.JsonPath.JsonSelectorExecutionMode">
+        <member name="T:JsonCons.JsonPath.JsonPathExecutionMode">
             <summary>
             Defines the options for executing selectors
             </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.JsonSelectorExecutionMode.Sequential">
+        <member name="F:JsonCons.JsonPath.JsonPathExecutionMode.Sequential">
             <summary>
             Executes selectors sequentially.
             </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.JsonSelectorExecutionMode.Parallelized">
+        <member name="F:JsonCons.JsonPath.JsonPathExecutionMode.Parallel">
             <summary>
             Parallelizes execution of individual selectors in unions.
             </summary>
         </member>
-        <member name="T:JsonCons.JsonPath.JsonSelectorSortBy">
+        <member name="T:JsonCons.JsonPath.NodeSortBy">
             <summary>
             Defines the various ways a <see cref="T:JsonCons.JsonPath.JsonSelector"/> query can order the results.
             </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.JsonSelectorSortBy.Default">
+        <member name="F:JsonCons.JsonPath.NodeSortBy.Default">
             <summary>
             No sorting
             </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.JsonSelectorSortBy.Path">
+        <member name="F:JsonCons.JsonPath.NodeSortBy.Path">
             <summary>
             Sort by path
             </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.JsonSelectorSortBy.Value">
+        <member name="F:JsonCons.JsonPath.NodeSortBy.Value">
             <summary>
             Sort by <see cref="T:System.Text.Json.JsonElement"/> instances using the <see cref="T:JsonCons.Utilities.JsonElementComparer"/>.
             </summary>

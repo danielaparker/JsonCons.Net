@@ -7,6 +7,24 @@ references:
   commentId: N:JsonCons.JsonPath
   fullName: JsonCons.JsonPath
   nameWithType: JsonCons.JsonPath
+- uid: JsonCons.JsonPath.JsonPathExecutionMode
+  name: JsonPathExecutionMode
+  href: ref/JsonCons.JsonPath.JsonPathExecutionMode.html
+  commentId: T:JsonCons.JsonPath.JsonPathExecutionMode
+  fullName: JsonCons.JsonPath.JsonPathExecutionMode
+  nameWithType: JsonPathExecutionMode
+- uid: JsonCons.JsonPath.JsonPathExecutionMode.Parallel
+  name: Parallel
+  href: ref/JsonCons.JsonPath.JsonPathExecutionMode.html#JsonCons_JsonPath_JsonPathExecutionMode_Parallel
+  commentId: F:JsonCons.JsonPath.JsonPathExecutionMode.Parallel
+  fullName: JsonCons.JsonPath.JsonPathExecutionMode.Parallel
+  nameWithType: JsonPathExecutionMode.Parallel
+- uid: JsonCons.JsonPath.JsonPathExecutionMode.Sequential
+  name: Sequential
+  href: ref/JsonCons.JsonPath.JsonPathExecutionMode.html#JsonCons_JsonPath_JsonPathExecutionMode_Sequential
+  commentId: F:JsonCons.JsonPath.JsonPathExecutionMode.Sequential
+  fullName: JsonCons.JsonPath.JsonPathExecutionMode.Sequential
+  nameWithType: JsonPathExecutionMode.Sequential
 - uid: JsonCons.JsonPath.JsonPathNode
   name: JsonPathNode
   href: ref/JsonCons.JsonPath.JsonPathNode.html
@@ -263,48 +281,30 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonPath.JsonSelector.SelectPaths
   nameWithType: JsonSelector.SelectPaths
-- uid: JsonCons.JsonPath.JsonSelectorExecutionMode
-  name: JsonSelectorExecutionMode
-  href: ref/JsonCons.JsonPath.JsonSelectorExecutionMode.html
-  commentId: T:JsonCons.JsonPath.JsonSelectorExecutionMode
-  fullName: JsonCons.JsonPath.JsonSelectorExecutionMode
-  nameWithType: JsonSelectorExecutionMode
-- uid: JsonCons.JsonPath.JsonSelectorExecutionMode.Parallelized
-  name: Parallelized
-  href: ref/JsonCons.JsonPath.JsonSelectorExecutionMode.html#JsonCons_JsonPath_JsonSelectorExecutionMode_Parallelized
-  commentId: F:JsonCons.JsonPath.JsonSelectorExecutionMode.Parallelized
-  fullName: JsonCons.JsonPath.JsonSelectorExecutionMode.Parallelized
-  nameWithType: JsonSelectorExecutionMode.Parallelized
-- uid: JsonCons.JsonPath.JsonSelectorExecutionMode.Sequential
-  name: Sequential
-  href: ref/JsonCons.JsonPath.JsonSelectorExecutionMode.html#JsonCons_JsonPath_JsonSelectorExecutionMode_Sequential
-  commentId: F:JsonCons.JsonPath.JsonSelectorExecutionMode.Sequential
-  fullName: JsonCons.JsonPath.JsonSelectorExecutionMode.Sequential
-  nameWithType: JsonSelectorExecutionMode.Sequential
-- uid: JsonCons.JsonPath.JsonSelectorSortBy
-  name: JsonSelectorSortBy
-  href: ref/JsonCons.JsonPath.JsonSelectorSortBy.html
-  commentId: T:JsonCons.JsonPath.JsonSelectorSortBy
-  fullName: JsonCons.JsonPath.JsonSelectorSortBy
-  nameWithType: JsonSelectorSortBy
-- uid: JsonCons.JsonPath.JsonSelectorSortBy.Default
+- uid: JsonCons.JsonPath.NodeSortBy
+  name: NodeSortBy
+  href: ref/JsonCons.JsonPath.NodeSortBy.html
+  commentId: T:JsonCons.JsonPath.NodeSortBy
+  fullName: JsonCons.JsonPath.NodeSortBy
+  nameWithType: NodeSortBy
+- uid: JsonCons.JsonPath.NodeSortBy.Default
   name: Default
-  href: ref/JsonCons.JsonPath.JsonSelectorSortBy.html#JsonCons_JsonPath_JsonSelectorSortBy_Default
-  commentId: F:JsonCons.JsonPath.JsonSelectorSortBy.Default
-  fullName: JsonCons.JsonPath.JsonSelectorSortBy.Default
-  nameWithType: JsonSelectorSortBy.Default
-- uid: JsonCons.JsonPath.JsonSelectorSortBy.Path
+  href: ref/JsonCons.JsonPath.NodeSortBy.html#JsonCons_JsonPath_NodeSortBy_Default
+  commentId: F:JsonCons.JsonPath.NodeSortBy.Default
+  fullName: JsonCons.JsonPath.NodeSortBy.Default
+  nameWithType: NodeSortBy.Default
+- uid: JsonCons.JsonPath.NodeSortBy.Path
   name: Path
-  href: ref/JsonCons.JsonPath.JsonSelectorSortBy.html#JsonCons_JsonPath_JsonSelectorSortBy_Path
-  commentId: F:JsonCons.JsonPath.JsonSelectorSortBy.Path
-  fullName: JsonCons.JsonPath.JsonSelectorSortBy.Path
-  nameWithType: JsonSelectorSortBy.Path
-- uid: JsonCons.JsonPath.JsonSelectorSortBy.Value
+  href: ref/JsonCons.JsonPath.NodeSortBy.html#JsonCons_JsonPath_NodeSortBy_Path
+  commentId: F:JsonCons.JsonPath.NodeSortBy.Path
+  fullName: JsonCons.JsonPath.NodeSortBy.Path
+  nameWithType: NodeSortBy.Path
+- uid: JsonCons.JsonPath.NodeSortBy.Value
   name: Value
-  href: ref/JsonCons.JsonPath.JsonSelectorSortBy.html#JsonCons_JsonPath_JsonSelectorSortBy_Value
-  commentId: F:JsonCons.JsonPath.JsonSelectorSortBy.Value
-  fullName: JsonCons.JsonPath.JsonSelectorSortBy.Value
-  nameWithType: JsonSelectorSortBy.Value
+  href: ref/JsonCons.JsonPath.NodeSortBy.html#JsonCons_JsonPath_NodeSortBy_Value
+  commentId: F:JsonCons.JsonPath.NodeSortBy.Value
+  fullName: JsonCons.JsonPath.NodeSortBy.Value
+  nameWithType: NodeSortBy.Value
 - uid: JsonCons.JsonPath.NormalizedPath
   name: NormalizedPath
   href: ref/JsonCons.JsonPath.NormalizedPath.html

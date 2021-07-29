@@ -41,7 +41,7 @@ namespace JsonCons.JsonPath
     /// <summary>
     /// Defines the options for executing selectors
     /// </summary>
-    public enum JsonSelectorExecutionMode
+    public enum JsonPathExecutionMode
     {
         /// <summary>
         /// Executes selectors sequentially.
@@ -50,14 +50,14 @@ namespace JsonCons.JsonPath
         /// <summary>
         /// Parallelizes execution of individual selectors in unions.
         /// </summary>
-        Parallelized 
+        Parallel 
     }
 
     /// <summary>
     /// Defines the various ways a <see cref="JsonSelector"/> query can order the results.
     /// </summary>
 
-    public enum JsonSelectorSortBy {
+    public enum NodeSortBy {
         /// <summary>
         /// No sorting
         /// </summary>
@@ -91,7 +91,7 @@ namespace JsonCons.JsonPath
         /// <summary>
         /// Sort <see cref="JsonElement"/> instances using the <see cref="JsonElementComparer"/>.
         /// </summary>
-        public JsonSelectorSortBy SortBy {get;set;} = JsonSelectorSortBy.Default;
+        public NodeSortBy SortBy {get;set;} = NodeSortBy.Default;
 
         /// <summary>
         /// Gets or sets the depth limit for recursive descent, with the default value a maximum depth of 64.
@@ -101,7 +101,7 @@ namespace JsonCons.JsonPath
         /// <summary>
         /// Gets or sets the execution mode.
         /// </summary>
-        public JsonSelectorExecutionMode ExecutionMode{ get; set; } = JsonSelectorExecutionMode.Sequential;
+        public JsonPathExecutionMode ExecutionMode{ get; set; } = JsonPathExecutionMode.Sequential;
     };
 
     /// <summary>
@@ -301,7 +301,7 @@ namespace JsonCons.JsonPath
                 {
                     flags |= ProcessingFlags.NoDups;
                 }
-                if (options.SortBy == JsonSelectorSortBy.Path)
+                if (options.SortBy == NodeSortBy.Path)
                 {
                     flags |= ProcessingFlags.SortByPath;
                 }
@@ -318,7 +318,7 @@ namespace JsonCons.JsonPath
             {
                 var nodes = new List<JsonPathNode>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
-                if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
+                if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
                 {
                     accumulator = new SynchronizedNodeAccumulator(accumulator);
                 }
@@ -367,7 +367,7 @@ namespace JsonCons.JsonPath
             else
             {
                 INodeAccumulator accumulator = new JsonElementAccumulator(values);            
-                if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
+                if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
                 {
                     accumulator = new SynchronizedNodeAccumulator(accumulator);
                 }
@@ -382,7 +382,7 @@ namespace JsonCons.JsonPath
 
             if (options != null)
             {
-                if (options.SortBy == JsonSelectorSortBy.Value)
+                if (options.SortBy == NodeSortBy.Value)
                 {
                     values.Sort(JsonElementComparer.Instance);
                 }
@@ -409,7 +409,7 @@ namespace JsonCons.JsonPath
                 {
                     flags |= ProcessingFlags.NoDups;
                 }
-                if (options.SortBy == JsonSelectorSortBy.Path)
+                if (options.SortBy == NodeSortBy.Path)
                 {
                     flags |= ProcessingFlags.SortByPath;
                 }
@@ -422,7 +422,7 @@ namespace JsonCons.JsonPath
 
             var paths = new List<NormalizedPath>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
+            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -482,7 +482,7 @@ namespace JsonCons.JsonPath
                 {
                     flags |= ProcessingFlags.NoDups;
                 }
-                if (options.SortBy == JsonSelectorSortBy.Path)
+                if (options.SortBy == NodeSortBy.Path)
                 {
                     flags |= ProcessingFlags.SortByPath;
                 }
@@ -495,7 +495,7 @@ namespace JsonCons.JsonPath
 
             var nodes = new List<JsonPathNode>();
             INodeAccumulator accumulator = new NodeAccumulator(nodes);
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
+            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }

@@ -76,12 +76,12 @@ namespace JsonCons.JsonPath.Tests
                                                   ?@.Category=='Nonfiction'
                                                 ]");
 
-            IList<JsonElement> results1 = selector.Select(doc.RootElement, new JsonPathOptions{ExecutionMode = JsonSelectorExecutionMode.Sequential});
+            IList<JsonElement> results1 = selector.Select(doc.RootElement, new JsonPathOptions{ExecutionMode = JsonPathExecutionMode.Sequential});
 
             var serializerOptions = new JsonSerializerOptions() { WriteIndented = true };
             Debug.WriteLine($"{JsonSerializer.Serialize(doc, serializerOptions)}\n");
 
-            IList<JsonElement> results2 = selector.Select(doc.RootElement, new JsonPathOptions{ExecutionMode = JsonSelectorExecutionMode.Parallelized});
+            IList<JsonElement> results2 = selector.Select(doc.RootElement, new JsonPathOptions{ExecutionMode = JsonPathExecutionMode.Parallel});
 
             System.Collections.ArrayList.Adapter((System.Collections.IList)results1).Sort(new JsonElementComparer());
             System.Collections.ArrayList.Adapter((System.Collections.IList)results2).Sort(new JsonElementComparer());

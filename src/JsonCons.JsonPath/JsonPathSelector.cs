@@ -546,7 +546,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
+            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -613,7 +613,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
+            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -673,7 +673,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
+            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -729,7 +729,7 @@ namespace JsonCons.JsonPath
                            ProcessingFlags options,
                            int depth)
         {
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Sequential)
+            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Sequential)
             {
                 foreach (var selector in _selectors)
                 {
@@ -754,7 +754,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
+            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -837,7 +837,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonSelectorExecutionMode.Parallelized)
+            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
