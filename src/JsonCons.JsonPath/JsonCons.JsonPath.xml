@@ -131,7 +131,7 @@
             Remove items from results that correspond to the same path.
             </summary>
         </member>
-        <member name="F:JsonCons.JsonPath.ProcessingFlags.Sort">
+        <member name="F:JsonCons.JsonPath.ProcessingFlags.SortByPath">
             <summary>
             Sort results by path.
             </summary>

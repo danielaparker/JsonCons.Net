@@ -105,7 +105,7 @@ namespace JsonCons.JsonPath
         /// <summary>
         /// Sort results by path.
         /// </summary>
-        Sort=Path|4
+        SortByPath=Path|4
     };
 
     /// <summary>
@@ -283,7 +283,7 @@ namespace JsonCons.JsonPath
                 }
                 if (options.SortByPath)
                 {
-                    flags |= ProcessingFlags.Sort;
+                    flags |= ProcessingFlags.SortByPath;
                 }
                 resources = new DynamicResources(options);
             }
@@ -294,7 +294,7 @@ namespace JsonCons.JsonPath
 
             var values = new List<JsonElement>();
 
-            if ((flags & ProcessingFlags.Sort | flags & ProcessingFlags.NoDups) != 0)
+            if ((flags & ProcessingFlags.SortByPath | flags & ProcessingFlags.NoDups) != 0)
             {
                 var nodes = new List<JsonPathNode>();
                 INodeAccumulator accumulator = new NodeAccumulator(nodes);
@@ -312,11 +312,11 @@ namespace JsonCons.JsonPath
 
                 if (nodes.Count > 1)
                 {
-                    if ((flags & ProcessingFlags.Sort) == ProcessingFlags.Sort)
+                    if ((flags & ProcessingFlags.SortByPath) != 0)
                     {
                         nodes.Sort();
                     }
-                    if ((flags & ProcessingFlags.NoDups) == ProcessingFlags.NoDups)
+                    if ((flags & ProcessingFlags.NoDups) != 0)
                     {
                         var index = new HashSet<JsonPathNode>(nodes);
                         foreach (var node in nodes)
@@ -384,7 +384,7 @@ namespace JsonCons.JsonPath
                 }
                 if (options.SortByPath)
                 {
-                    flags |= ProcessingFlags.Sort;
+                    flags |= ProcessingFlags.SortByPath;
                 }
                 resources = new DynamicResources(options);
             }
@@ -407,15 +407,15 @@ namespace JsonCons.JsonPath
                              flags | ProcessingFlags.Path,
                              0);
 
-            if ((flags & ProcessingFlags.Sort | flags & ProcessingFlags.NoDups) != 0)
+            if ((flags & ProcessingFlags.SortByPath | flags & ProcessingFlags.NoDups) != 0)
             {
                 if (paths.Count > 1)
                 {
-                    if ((flags & ProcessingFlags.Sort) == ProcessingFlags.Sort)
+                    if ((flags & ProcessingFlags.SortByPath) != 0)
                     {
                         paths.Sort();
                     }
-                    if ((flags & ProcessingFlags.NoDups) == ProcessingFlags.NoDups)
+                    if ((flags & ProcessingFlags.NoDups) != 0)
                     {
                         var temp = new List<NormalizedPath>();
                         var index = new HashSet<NormalizedPath>(paths);
@@ -457,7 +457,7 @@ namespace JsonCons.JsonPath
                 }
                 if (options.SortByPath)
                 {
-                    flags |= ProcessingFlags.Sort;
+                    flags |= ProcessingFlags.SortByPath;
                 }
                 resources = new DynamicResources(options);
             }
@@ -480,15 +480,15 @@ namespace JsonCons.JsonPath
                              flags | ProcessingFlags.Path,
                              0);
 
-            if ((flags & ProcessingFlags.Sort | flags & ProcessingFlags.NoDups) != 0)
+            if ((flags & ProcessingFlags.SortByPath | flags & ProcessingFlags.NoDups) != 0)
             {
                 if (nodes.Count > 1)
                 {
-                    if ((flags & ProcessingFlags.Sort) == ProcessingFlags.Sort)
+                    if ((flags & ProcessingFlags.SortByPath) != 0)
                     {
                         nodes.Sort();
                     }
-                    if ((flags & ProcessingFlags.NoDups) == ProcessingFlags.NoDups)
+                    if ((flags & ProcessingFlags.NoDups) != 0)
                     {
                         var temp = new List<JsonPathNode>();
                         var index = new HashSet<JsonPathNode>(nodes);
