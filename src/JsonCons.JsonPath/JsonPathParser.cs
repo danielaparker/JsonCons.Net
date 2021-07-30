@@ -320,22 +320,44 @@ namespace JsonCons.JsonPath
                                 ++_column;
                                 break;
                             default:
-                                Char ch = _span[_index];
-                                if (Char.IsLetterOrDigit(ch) || ch == '_')
+                                if (!char.IsSurrogate(_span[_index]))
                                 {
-                                    // Unquoted string or function expression
-                                    buffer.Clear();
-                                    _stateStack.Pop(); 
-                                    _stateStack.Push(JsonPathState.IdentifierOrFunctionExpr);
-                                    _stateStack.Push(JsonPathState.UnquotedString);
-                                    buffer.Append(ch);
-                                    ++_index;
-                                    ++_column;
+                                    int codepoint = (int)(_span[_index]);
+                                    if (IsUnquotedStringCodepoint(codepoint))
+                                    {
+                                        buffer.Append (_span[_index]);
+                                        ++_index;
+                                        ++_column;
+                                    }
+                                    else
+                                    {
+                                        throw new JsonPathParseException("Expected unquoted string, or single or double quoted string, or index or '*'", _line, _column);
+                                    }
+                                }
+                                else if (_index + 1 < _span.Length && char.IsSurrogatePair(_span[_index], _span[_index + 1]))
+                                {
+                                    int codepoint = char.ConvertToUtf32(_span[_index], _span[_index + 1]);
+                                    if (IsUnquotedStringCodepoint(codepoint))
+                                    {
+                                        buffer.Append(_span[_index]);
+                                        ++_index;
+                                        ++_column;
+                                        buffer.Append(_span[_index]);
+                                        ++_index;
+                                        ++_column;
+                                    }
+                                    else
+                                    {
+                                        throw new JsonPathParseException("Expected unquoted string, or single or double quoted string, or index or '*'", _line, _column);
+                                    }
                                 }
                                 else
                                 {
-                                    throw new JsonPathParseException("Expected unquoted string, or single or double quoted string, or index or '*'", _line, _column);
+                                    throw new JsonPathParseException("String is not well formed", _line, _column);
                                 }
+                                _stateStack.Pop(); 
+                                _stateStack.Push(JsonPathState.IdentifierOrFunctionExpr);
+                                _stateStack.Push(JsonPathState.UnquotedString);
                                 break;
                         }
                         break;
@@ -365,16 +387,40 @@ namespace JsonCons.JsonPath
                         break;
                     case JsonPathState.UnquotedString: 
                     {
-                        Char ch = _span[_index];
-                        if (Char.IsLetterOrDigit(ch) || ch == '_')
+                        if (!char.IsSurrogate(_span[_index]))
                         {
-                            buffer.Append (ch);
-                            ++_index;
-                            ++_column;
+                            int codepoint = (int)(_span[_index]);
+                            if (IsUnquotedStringCodepoint(codepoint))
+                            {
+                                buffer.Append (_span[_index]);
+                                ++_index;
+                                ++_column;
+                            }
+                            else
+                            {
+                                _stateStack.Pop(); // UnquotedString
+                            }
+                        }
+                        else if (_index + 1 < _span.Length && char.IsSurrogatePair(_span[_index], _span[_index + 1]))
+                        {
+                            int codepoint = char.ConvertToUtf32(_span[_index], _span[_index + 1]);
+                            if (IsUnquotedStringCodepoint(codepoint))
+                            {
+                                buffer.Append (_span[_index]);
+                                ++_index;
+                                ++_column;
+                                buffer.Append (_span[_index]);
+                                ++_index;
+                                ++_column;
+                            }
+                            else
+                            {
+                                _stateStack.Pop(); // UnquotedString
+                            }
                         }
                         else
                         {
-                            _stateStack.Pop(); // UnquotedString
+                            throw new JsonPathParseException("String is not well formed", _line, _column);
                         }
                         break;                    
                     }
@@ -1891,6 +1937,22 @@ namespace JsonCons.JsonPath
             Token token = _outputStack.Pop();
 
             return new JsonSelector(token.GetSelector(), pathsRequired);
+        }
+
+        bool IsUnquotedStringCodepoint(int codepoint)
+        {
+            if ((codepoint >= 0x30 && codepoint <= 0x39) ||
+                (codepoint >= 0x41 && codepoint <= 0x5A) ||
+                (codepoint == '_') ||
+                (codepoint >= 0x61 && codepoint <= 0x7A) ||
+                (codepoint >= 0x80 && codepoint <= 0x10FFFF))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         void UnwindRParen()
