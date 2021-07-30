@@ -46,6 +46,15 @@ After tokenization, the JSONPath becomes
 
 ![SelectorList](./images/SelectorList.png)
 
+Execution proceeds as follows:
+
+![ExecuteSelectorList](./images/ExecuteSelectorList.png)
+
+The final result is
+```
+["bar","qux"]
+```
+
 ## Filter Expressions
 
 [!include[True and False Values](./TrueAndFalseValues.md)]
