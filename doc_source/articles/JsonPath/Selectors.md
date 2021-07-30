@@ -3,17 +3,17 @@
 After tokenization, a JSONPath string is transformed into a null terminated 
 linked list of selectors. There are ten different kinds of selectors:
 
-[Root selector ($)](#Selector1)
-[Current node selector (@)](#Selector2)
-[Parent node selector (^)](#Selector3)
-[Identifier selector](#Selector4)
-[Index selector](#Selector5)
-[Slice selector](#Selector6)
-[Recursive descent selector (..)](#Selector7)
-[Wildcard selector (*)](#Selector8)
-[Union selector](#Selector9)
-[Filter selector](#Selector10)
-
+[Root selector ($)](#Selector1) 
+[Current node selector (@)](#Selector2) 
+[Parent node selector (^)](#Selector3) 
+[Identifier selector](#Selector4) 
+[Index selector](#Selector5) 
+[Slice selector](#Selector6) 
+[Recursive descent selector (..)](#Selector7) 
+[Wildcard selector (*)](#Selector8) 
+[Union selector](#Selector9) 
+[Filter selector](#Selector10) 
+ 
 Each selector supports a select operation for selecting zero or more values 
 from a provided JSON value, and for adding selected values to a result list.
 The syntax for this operation is:
