@@ -65,7 +65,7 @@ namespace JsonCons.JsonPath
 
     interface INodeAccumulator
     {
-        void AddNode(NormalizedPathNode last, IValue value);
+        void Add(NormalizedPathNode last, IValue value);
     };
 
     sealed class SynchronizedNodeAccumulator : INodeAccumulator
@@ -78,9 +78,9 @@ namespace JsonCons.JsonPath
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void AddNode(NormalizedPathNode last, IValue value)
+        public void Add(NormalizedPathNode last, IValue value)
         {
-            _accumulator.AddNode(last, value);
+            _accumulator.Add(last, value);
         }
     }
 
@@ -93,7 +93,7 @@ namespace JsonCons.JsonPath
             _values = values;
         }
 
-        public void AddNode(NormalizedPathNode last, IValue value)
+        public void Add(NormalizedPathNode last, IValue value)
         {
             _values.Add(value.GetJsonElement());
         }
@@ -108,7 +108,7 @@ namespace JsonCons.JsonPath
             _values = values;
         }
 
-        public void AddNode(NormalizedPathNode last, IValue value)
+        public void Add(NormalizedPathNode last, IValue value)
         {
             _values.Add(value);
         }
@@ -123,7 +123,7 @@ namespace JsonCons.JsonPath
             _values = values;
         }
 
-        public void AddNode(NormalizedPathNode last, IValue value)
+        public void Add(NormalizedPathNode last, IValue value)
         {
             _values.Add(new NormalizedPath(last));
         }
@@ -138,7 +138,7 @@ namespace JsonCons.JsonPath
             _nodes = nodes;
         }
 
-        public void AddNode(NormalizedPathNode last, IValue value)
+        public void Add(NormalizedPathNode last, IValue value)
         {
             _nodes.Add(new PathValuePair(new NormalizedPath(last), value.GetJsonElement()));
         }

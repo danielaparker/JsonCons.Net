@@ -101,7 +101,7 @@ namespace JsonCons.JsonPath
         {
             if (Tail == null)
             {
-                accumulator.AddNode(last, current);
+                accumulator.Add(last, current);
             }
             else
             {
