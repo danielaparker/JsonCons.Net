@@ -34,7 +34,7 @@
     "resource": [
       {
         "files": [
-          "articles/images/**",
+          "articles/JsonPath/images/**",
           "images/**"
         ]
       }
