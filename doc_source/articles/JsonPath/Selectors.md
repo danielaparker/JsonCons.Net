@@ -48,6 +48,6 @@ Execution proceeds as follows:
 
 The final result is
 ```
-["bar","qux"]
+["baz","qux"]
 ```
 
