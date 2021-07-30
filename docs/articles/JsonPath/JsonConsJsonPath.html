@@ -88,20 +88,15 @@ The <code>JsonCons</code> implementation returns an empty array in case of no ma
 <li><p>Options are provided to exclude results corresponding to duplicate paths, and to sort results according to paths.</p>
 </li>
 </ul>
-<p><a href="#S1">Root and current node</a></p>
-<p><a href="#S2">Paths</a></p>
-<p><a href="#S3">Duplicates and ordering</a></p>
-<p><a href="#S4">Slices</a></p>
-<p><a href="#S5">Unions</a></p>
-<p><a href="#S6">Parent operator</a></p>
-<p><a href="#S7">Filter expressions</a></p>
+<p><a href="#S1">Paths</a></p>
+<p><a href="#S2">Selectors</a></p>
+<p><a href="#S3">Root and current node</a></p>
+<p><a href="#S4">Parent selector</a></p>
+<p><a href="#S5">Slices</a></p>
+<p><a href="#S6">Unions</a></p>
+<p><a href="#S7">Filter selector</a></p>
+<p><a href="#S8">Duplicates and ordering</a></p>
 <div id="S1"></div> 
-<h3 id="root-and-current-node">Root and current node</h3>
-<p>The symbol '$' represents the root JSON value, the JSON document to be evaluated.
-The symbol '@' represents the &quot;current node&quot;. At the start of an expression,
-the current node is the document to be evaluated, and as the expression
-is evaluated, it changes to reflect the node currently being processed.</p>
-<div id="S2"></div> 
 <h3 id="paths">Paths</h3>
 <p>JSONPath uses paths to select values. It is a feature of JSONPath that it selects values in the original JSON document,
 and does not create JSON elements that are not in the original.</p>
@@ -187,83 +182,149 @@ that names with hyphens must be quoted.</p>
 <p>Union of the fourth book and all books with price &gt; 10:</p>
 <pre><code>$.store[@.book[3],@.book[?(@.price &gt; 10)]]
 </code></pre>
-<div id="S3"></div> 
-<h3 id="duplicates-and-ordering">Duplicates and ordering</h3>
+<div id="S2"></div> 
+<h2 id="selectors">Selectors</h2>
+<p>After tokenization, a JSONPath string is transformed into a null terminated
+linked list of selectors. There are ten different kinds of selectors:</p>
+<ul>
+<li>Root selector (&quot;$&quot;)</li>
+<li>Current node selector (&quot;@&quot;)</li>
+<li>Parent node selector (&quot;^&quot;)</li>
+<li>Identifier selector</li>
+<li>Index selector</li>
+<li>Slice selector</li>
+<li>Recursive descent selector (&quot;..&quot;)</li>
+<li>Wildcard selector (&quot;*&quot;)</li>
+<li>Union selector</li>
+<li>Filter selector</li>
+</ul>
+<p>Each selector supports a select operation for selecting zero or more values
+from a provided JSON value, and for adding selected values to a result list.</p>
+<p>Executing a list of selectors against a JSON value means executing
+the select operation on the head of the list with that JSON value
+as an argument. This operation selects zero or more items from the provided value,
+and executes the tail of the list for each item with the item as an argument.
+This proceeds recursively until the tail is null, when the provided JSON
+value is added to the result list. Note that only the last selector in the list
+adds to the result list.</p>
 <p>Consider the JSON document</p>
-<pre><code class="lang-json">{
-    &quot;books&quot;:
-    [
-        {
-            &quot;title&quot; : &quot;A Wild Sheep Chase&quot;,
-            &quot;author&quot; : &quot;Haruki Murakami&quot;
-        },
-        {
-            &quot;title&quot; : &quot;The Night Watch&quot;,
-            &quot;author&quot; : &quot;Sergei Lukyanenko&quot;
-        },
-        {
-            &quot;title&quot; : &quot;The Comedians&quot;,
-            &quot;author&quot; : &quot;Graham Greene&quot;
-        },
-        {
-            &quot;title&quot; : &quot;The Night Watch&quot;,
-            &quot;author&quot; : &quot;Phillips, David Atlee&quot;
-        }
-    ]
-}
+<pre><code>{&quot;foo&quot;:[
+  {&quot;a&quot;:&quot;bar&quot;},
+  {&quot;b&quot;:&quot;baz&quot;},
+  {&quot;b&quot;:&quot;qux&quot;}
+]}
 </code></pre>
-<p>with selector</p>
-<pre><code>$.books[1,1,3].title
+<p>and JSONPath</p>
+<pre><code>$.foo[*].b 
 </code></pre>
-<p>Note that the second book, <em>The Night Watch</em> by Sergei Lukyanenko, is selected twice.</p>
-<p>The majority of JSONPath implementations will produce (with duplicate paths allowed):</p>
-<table>
-<thead>
-<tr>
-<th>Path</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>$['books'][1]['title']</code></td>
-<td>&quot;The Night Watch&quot;</td>
-</tr>
-<tr>
-<td><code>$['books'][1]['title']</code></td>
-<td>&quot;The Night Watch&quot;</td>
-</tr>
-<tr>
-<td><code>$['books'][3]['title']</code></td>
-<td>&quot;The Night Watch&quot;</td>
-</tr>
-</tbody>
-</table>
-<p>A minority will produce (with duplicate paths excluded):</p>
-<table>
-<thead>
-<tr>
-<th>Path</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>$['books'][1]['title']</code></td>
-<td>&quot;The Night Watch&quot;</td>
-</tr>
-<tr>
-<td><code>$['books'][3]['title']</code></td>
-<td>&quot;The Night Watch&quot;</td>
-</tr>
-</tbody>
-</table>
-<p>The <code>JsonPath.Select</code> functions default to allowing
-duplicates, but have an option for no duplicates.</p>
-<p>By default, the ordering of results is unspecified, although the user may
-expect array ordering at least to be preserved.  The <code>JsonPath.Select</code> functions
-provide an option for sorting results by paths.</p>
+<p>After tokenization, the JSONPath becomes</p>
+<p><img src="images/SelectorList.png" alt="SelectorList"></p>
+<p>Execution proceeds as follows:</p>
+<p><img src="images/ExecuteSelectorList.png" alt="ExecuteSelectorList"></p>
+<p>The final result is</p>
+<pre><code>[&quot;bar&quot;,&quot;qux&quot;]
+</code></pre>
+<div id="S3"></div> 
+<h3 id="root-and-current-node">Root and current node</h3>
+<p>The symbol '$' represents the root JSON value, the JSON document to be evaluated.
+The symbol '@' represents the &quot;current node&quot;. At the start of an expression,
+the current node is the document to be evaluated, and as the expression
+is evaluated, it changes to reflect the node currently being processed.</p>
 <div id="S4"></div> 
+<h3 id="parent-selector">Parent selector</h3>
+<p>Consider the JSON document</p>
+<pre><code>[
+    {
+      &quot;author&quot; : &quot;Haruki Murakami&quot;,
+      &quot;title&quot;: &quot;A Wild Sheep Chase&quot;,
+      &quot;reviews&quot;: [{&quot;rating&quot;: 4, &quot;reviewer&quot;: &quot;Nan&quot;}]
+    },
+    {
+      &quot;author&quot; : &quot;Sergei Lukyanenko&quot;,
+      &quot;title&quot;: &quot;The Night Watch&quot;,
+      &quot;reviews&quot;: [{&quot;rating&quot;: 5, &quot;reviewer&quot;: &quot;Alan&quot;},
+                  {&quot;rating&quot;: 3,&quot;reviewer&quot;: &quot;Anne&quot;}]
+    },
+    {
+      &quot;author&quot; : &quot;Graham Greene&quot;,
+      &quot;title&quot;: &quot;The Comedians&quot;,
+      &quot;reviews&quot;: [{&quot;rating&quot;: 4, &quot;reviewer&quot;: &quot;Lisa&quot;},
+                  {&quot;rating&quot;: 5, &quot;reviewer&quot;: &quot;Robert&quot;}]
+    }
+]
+</code></pre>
+<p>JsonCons supports the parent selector, <code>^</code>, borrowed from <a href="https://www.npmjs.com/package/jsonpath-plus">JSONPath Plus</a>,
+that allows you to select book objects based on criteria applied to descendent values.</p>
+<table>
+<thead>
+<tr>
+<th>Query</th>
+<th>Output paths</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$[*]reviews[?(@.rating == 5)]</code></td>
+<td>&quot;$[1]['reviews'][0]&quot;</td>
+</tr>
+<tr>
+<td> </td>
+<td>&quot;$[2]['reviews'][1]&quot;</td>
+</tr>
+<tr>
+<td><code>$[*]reviews[?(@.rating == 5)]^</code></td>
+<td>&quot;$[1]['reviews']&quot;</td>
+</tr>
+<tr>
+<td> </td>
+<td>&quot;$[2]['reviews']&quot;</td>
+</tr>
+<tr>
+<td><code>$[*]reviews[?(@.rating == 5)]^^</code></td>
+<td>&quot;$[1]&quot;</td>
+</tr>
+<tr>
+<td> </td>
+<td>&quot;$[2]&quot;</td>
+</tr>
+</tbody>
+</table>
+<p>The JSONPath expression</p>
+<pre><code>$[*].reviews[?(@.rating == 5)]^^
+</code></pre>
+<p>selects all the book objects that have ratings of 5:</p>
+<pre><code>[
+    {
+        &quot;author&quot;: &quot;Sergei Lukyanenko&quot;,
+        &quot;reviews&quot;: [
+            {
+                &quot;rating&quot;: 5,
+                &quot;reviewer&quot;: &quot;Alan&quot;
+            },
+            {
+                &quot;rating&quot;: 3,
+                &quot;reviewer&quot;: &quot;Anne&quot;
+            }
+        ],
+        &quot;title&quot;: &quot;The Night Watch&quot;
+    },
+    {
+        &quot;author&quot;: &quot;Graham Greene&quot;,
+        &quot;reviews&quot;: [
+            {
+                &quot;rating&quot;: 4,
+                &quot;reviewer&quot;: &quot;Lisa&quot;
+            },
+            {
+                &quot;rating&quot;: 5,
+                &quot;reviewer&quot;: &quot;Robert&quot;
+            }
+        ],
+        &quot;title&quot;: &quot;The Comedians&quot;
+    }
+]
+</code></pre>
+<div id="S5"></div> 
 <h3 id="slices">Slices</h3>
 <p>JsonCons jsonpath slices have the same semantics as Python slices</p>
 <p>The syntax for a slice is</p>
@@ -349,7 +410,7 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 </tr>
 </tbody>
 </table>
-<div id="S5"></div> 
+<div id="S6"></div> 
 <h3 id="unions">Unions</h3>
 <p>In JsonCons, a JSONPath union element can be</p>
 <ul>
@@ -365,102 +426,8 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 the last, and the third from <a href="https://goessner.net/articles/JsonPath/index.html#e3">Stefan Goessner's store</a>:</p>
 <pre><code>&quot;$.store.book[0:2,-1,?(@.author=='Herman Melville')].title&quot;
 </code></pre>
-<div id="S6"></div> 
-<h3 id="parent-operator">Parent operator</h3>
-<p>Consider the JSON document</p>
-<pre><code>[
-    {
-      &quot;author&quot; : &quot;Haruki Murakami&quot;,
-      &quot;title&quot;: &quot;A Wild Sheep Chase&quot;,
-      &quot;reviews&quot;: [{&quot;rating&quot;: 4, &quot;reviewer&quot;: &quot;Nan&quot;}]
-    },
-    {
-      &quot;author&quot; : &quot;Sergei Lukyanenko&quot;,
-      &quot;title&quot;: &quot;The Night Watch&quot;,
-      &quot;reviews&quot;: [{&quot;rating&quot;: 5, &quot;reviewer&quot;: &quot;Alan&quot;},
-                  {&quot;rating&quot;: 3,&quot;reviewer&quot;: &quot;Anne&quot;}]
-    },
-    {
-      &quot;author&quot; : &quot;Graham Greene&quot;,
-      &quot;title&quot;: &quot;The Comedians&quot;,
-      &quot;reviews&quot;: [{&quot;rating&quot;: 4, &quot;reviewer&quot;: &quot;Lisa&quot;},
-                  {&quot;rating&quot;: 5, &quot;reviewer&quot;: &quot;Robert&quot;}]
-    }
-]
-</code></pre>
-<p>JsonCons supports the parent operator, <code>^</code>, borrowed from <a href="https://www.npmjs.com/package/jsonpath-plus">JSONPath Plus</a>,
-that allows you to select book objects based on criteria applied to descendent values.</p>
-<table>
-<thead>
-<tr>
-<th>Query</th>
-<th>Output paths</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>$[*]reviews[?(@.rating == 5)]</code></td>
-<td>&quot;$[1]['reviews'][0]&quot;</td>
-</tr>
-<tr>
-<td> </td>
-<td>&quot;$[2]['reviews'][1]&quot;</td>
-</tr>
-<tr>
-<td><code>$[*]reviews[?(@.rating == 5)]^</code></td>
-<td>&quot;$[1]['reviews']&quot;</td>
-</tr>
-<tr>
-<td> </td>
-<td>&quot;$[2]['reviews']&quot;</td>
-</tr>
-<tr>
-<td><code>$[*]reviews[?(@.rating == 5)]^^</code></td>
-<td>&quot;$[1]&quot;</td>
-</tr>
-<tr>
-<td> </td>
-<td>&quot;$[2]&quot;</td>
-</tr>
-</tbody>
-</table>
-<p>The JSONPath expression</p>
-<pre><code>$[*].reviews[?(@.rating == 5)]^^
-</code></pre>
-<p>selects all the book objects that have ratings of 5:</p>
-<pre><code>[
-    {
-        &quot;author&quot;: &quot;Sergei Lukyanenko&quot;,
-        &quot;reviews&quot;: [
-            {
-                &quot;rating&quot;: 5,
-                &quot;reviewer&quot;: &quot;Alan&quot;
-            },
-            {
-                &quot;rating&quot;: 3,
-                &quot;reviewer&quot;: &quot;Anne&quot;
-            }
-        ],
-        &quot;title&quot;: &quot;The Night Watch&quot;
-    },
-    {
-        &quot;author&quot;: &quot;Graham Greene&quot;,
-        &quot;reviews&quot;: [
-            {
-                &quot;rating&quot;: 4,
-                &quot;reviewer&quot;: &quot;Lisa&quot;
-            },
-            {
-                &quot;rating&quot;: 5,
-                &quot;reviewer&quot;: &quot;Robert&quot;
-            }
-        ],
-        &quot;title&quot;: &quot;The Comedians&quot;
-    }
-]
-</code></pre>
 <div id="S7"></div> 
-<h3 id="filter-expressions">Filter expressions</h3>
+<h3 id="filter-selector">Filter selector</h3>
 <p>JSONPath uses filter expressions <code>[?&lt;expr&gt;]</code> to restrict the set of nodes
 returned by a path, e.g. <code>$..book[?(@.price&lt;10)]</code> returns the books with
 prices less than 10. Filter expressions are applied to each element in a
@@ -718,6 +685,82 @@ or a path that selects from the current node <code>@</code>.</p>
 </tr>
 </tbody>
 </table>
+<div id="S8"></div> 
+<h3 id="duplicates-and-ordering">Duplicates and ordering</h3>
+<p>Consider the JSON document</p>
+<pre><code class="lang-json">{
+    &quot;books&quot;:
+    [
+        {
+            &quot;title&quot; : &quot;A Wild Sheep Chase&quot;,
+            &quot;author&quot; : &quot;Haruki Murakami&quot;
+        },
+        {
+            &quot;title&quot; : &quot;The Night Watch&quot;,
+            &quot;author&quot; : &quot;Sergei Lukyanenko&quot;
+        },
+        {
+            &quot;title&quot; : &quot;The Comedians&quot;,
+            &quot;author&quot; : &quot;Graham Greene&quot;
+        },
+        {
+            &quot;title&quot; : &quot;The Night Watch&quot;,
+            &quot;author&quot; : &quot;Phillips, David Atlee&quot;
+        }
+    ]
+}
+</code></pre>
+<p>with selector</p>
+<pre><code>$.books[1,1,3].title
+</code></pre>
+<p>Note that the second book, <em>The Night Watch</em> by Sergei Lukyanenko, is selected twice.</p>
+<p>The majority of JSONPath implementations will produce (with duplicate paths allowed):</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$['books'][1]['title']</code></td>
+<td>&quot;The Night Watch&quot;</td>
+</tr>
+<tr>
+<td><code>$['books'][1]['title']</code></td>
+<td>&quot;The Night Watch&quot;</td>
+</tr>
+<tr>
+<td><code>$['books'][3]['title']</code></td>
+<td>&quot;The Night Watch&quot;</td>
+</tr>
+</tbody>
+</table>
+<p>A minority will produce (with duplicate paths excluded):</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$['books'][1]['title']</code></td>
+<td>&quot;The Night Watch&quot;</td>
+</tr>
+<tr>
+<td><code>$['books'][3]['title']</code></td>
+<td>&quot;The Night Watch&quot;</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>JsonPath.Select</code> functions default to allowing
+duplicates, but have an option for no duplicates.</p>
+<p>By default, the ordering of results is unspecified, although the user may
+expect array ordering at least to be preserved.  The <code>JsonPath.Select</code> functions
+provide an option for sorting results by paths.</p>
 </article>
           </div>
           

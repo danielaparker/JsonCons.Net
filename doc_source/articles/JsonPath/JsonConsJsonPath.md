@@ -22,30 +22,23 @@ The JsonCons implementation differs from Stefan Goessner's original JavaScript i
 - A parent operator `^` provides access to the parent node.
 - Options are provided to exclude results corresponding to duplicate paths, and to sort results according to paths.
 
-[Root and current node](#S1)  
+[Paths](#S1) 
 
-[Paths](#S2)  
+[Selectors](#S2) 
 
-[Duplicates and ordering](#S3)  
+[Root and current node](#S3) 
 
-[Slices](#S4)  
+[Parent selector](#S4) 
 
-[Unions](#S5)  
+[Slices](#S5) 
 
-[Parent operator](#S6)  
+[Unions](#S6) 
 
-[Filter expressions](#S7)  
+[Filter selector](#S7) 
+
+[Duplicates and ordering](#S8) 
 
 <div id="S1"/> 
-
-### Root and current node
-
-The symbol '$' represents the root JSON value, the JSON document to be evaluated.
-The symbol '@' represents the "current node". At the start of an expression, 
-the current node is the document to be evaluated, and as the expression 
-is evaluated, it changes to reflect the node currently being processed.   
-
-<div id="S2"/> 
 
 ### Paths
 
@@ -104,127 +97,22 @@ Union of the fourth book and all books with price > 10:
 
     $.store[@.book[3],@.book[?(@.price > 10)]]
 
+<div id="S2"/> 
+
+[!include[Selectors](./Selectors.md)]
+
 <div id="S3"/> 
 
-### Duplicates and ordering
+### Root and current node
 
-Consider the JSON document 
-
-```json
-{
-    "books":
-    [
-        {
-            "title" : "A Wild Sheep Chase",
-            "author" : "Haruki Murakami"
-        },
-        {
-            "title" : "The Night Watch",
-            "author" : "Sergei Lukyanenko"
-        },
-        {
-            "title" : "The Comedians",
-            "author" : "Graham Greene"
-        },
-        {
-            "title" : "The Night Watch",
-            "author" : "Phillips, David Atlee"
-        }
-    ]
-}
-```
-with selector
-```
-$.books[1,1,3].title
-```
-Note that the second book, _The Night Watch_ by Sergei Lukyanenko, is selected twice.
-
-The majority of JSONPath implementations will produce (with duplicate paths allowed):
-
-Path|Value
--------|------------------
- `$['books'][1]['title']` | "The Night Watch" 
- `$['books'][1]['title']` | "The Night Watch" 
- `$['books'][3]['title']` | "The Night Watch" 
-
-A minority will produce (with duplicate paths excluded):
-
-Path|Value
----------|------------------
-`$['books'][1]['title']` | "The Night Watch"
-`$['books'][3]['title']` | "The Night Watch"
-
-The `JsonPath.Select` functions default to allowing
-duplicates, but have an option for no duplicates.
-
-By default, the ordering of results is unspecified, although the user may
-expect array ordering at least to be preserved.  The `JsonPath.Select` functions 
-provide an option for sorting results by paths.
+The symbol '$' represents the root JSON value, the JSON document to be evaluated.
+The symbol '@' represents the "current node". At the start of an expression, 
+the current node is the document to be evaluated, and as the expression 
+is evaluated, it changes to reflect the node currently being processed.   
 
 <div id="S4"/> 
 
-### Slices
-
-JsonCons jsonpath slices have the same semantics as Python slices
-
-The syntax for a slice is
-```
-[start:stop:step]
-```
-Each component is optional.
-
-- If `start` is omitted, it defaults to `0` if `step` is positive,
-or the end of the array if `step` is negative.
-
-- If `stop` is omitted, it defaults to the length of the array if `step` 
-is positive, or the beginning of the array if `step` is negative.
-
-- If `step` is omitted, it defaults to `1`.
-
-Slice expression|       Description
---------|--------------------------------
-`[start:stop]`  | Items `start` through `stop-1`
-`[start:]`      | Items `start` to the end of the array
-`[:stop]`       | Items from the beginning of the array through `stop-1`
-`[:]`           | All items
-`[start:stop:step]`|Items `start` up to but not including `stop`, by `step` 
-
-A component `start`, `stop`, or `step` may be a negative number.
-
-Example | Description
---------|------------
-$[-1]    | Last item 
-$[-2:]   | Last two items
-$[:-2]   | All items except the last two
-$[::-1]    | All items, reversed
-$[1::-1]   | First two items, reversed
-$[:-3:-1]  | Last two items, reversed
-$[-3::-1]  | All items except the last two, reversed
-
-<div id="S5"/> 
-
-### Unions
-
-In JsonCons, a JSONPath union element can be
-
-- an index or slice expression
-- a single quoted name
-- a double quoted name
-- a filter
-- a wildcard, i.e. `*`
-- a path relative to the root of the JSON document (begins with `$`)
-- a path relative to the current value being processed (begins with `@`)
-
-To illustrate, the path expression below selects the first and second titles, 
-the last, and the third from [Stefan Goessner's store](https://goessner.net/articles/JsonPath/index.html#e3):
-
-```
-"$.store.book[0:2,-1,?(@.author=='Herman Melville')].title"
-```
-
-<div id="S6"/> 
-
-### Parent operator 
+### Parent selector 
 
 Consider the JSON document 
 
@@ -250,7 +138,7 @@ Consider the JSON document
 ]
 ```
 
-JsonCons supports the parent operator, `^`, borrowed from [JSONPath Plus](https://www.npmjs.com/package/jsonpath-plus),
+JsonCons supports the parent selector, `^`, borrowed from [JSONPath Plus](https://www.npmjs.com/package/jsonpath-plus),
 that allows you to select book objects based on criteria applied to descendent values.
 
 Query                               | Output paths
@@ -301,9 +189,70 @@ selects all the book objects that have ratings of 5:
 ]
 ```
 
+<div id="S5"/> 
+
+### Slices
+
+JsonCons jsonpath slices have the same semantics as Python slices
+
+The syntax for a slice is
+```
+[start:stop:step]
+```
+Each component is optional.
+
+- If `start` is omitted, it defaults to `0` if `step` is positive,
+or the end of the array if `step` is negative.
+
+- If `stop` is omitted, it defaults to the length of the array if `step` 
+is positive, or the beginning of the array if `step` is negative.
+
+- If `step` is omitted, it defaults to `1`.
+
+Slice expression|       Description
+--------|--------------------------------
+`[start:stop]`  | Items `start` through `stop-1`
+`[start:]`      | Items `start` to the end of the array
+`[:stop]`       | Items from the beginning of the array through `stop-1`
+`[:]`           | All items
+`[start:stop:step]`|Items `start` up to but not including `stop`, by `step` 
+
+A component `start`, `stop`, or `step` may be a negative number.
+
+Example | Description
+--------|------------
+$[-1]    | Last item 
+$[-2:]   | Last two items
+$[:-2]   | All items except the last two
+$[::-1]    | All items, reversed
+$[1::-1]   | First two items, reversed
+$[:-3:-1]  | Last two items, reversed
+$[-3::-1]  | All items except the last two, reversed
+
+<div id="S6"/> 
+
+### Unions
+
+In JsonCons, a JSONPath union element can be
+
+- an index or slice expression
+- a single quoted name
+- a double quoted name
+- a filter
+- a wildcard, i.e. `*`
+- a path relative to the root of the JSON document (begins with `$`)
+- a path relative to the current value being processed (begins with `@`)
+
+To illustrate, the path expression below selects the first and second titles, 
+the last, and the third from [Stefan Goessner's store](https://goessner.net/articles/JsonPath/index.html#e3):
+
+```
+"$.store.book[0:2,-1,?(@.author=='Herman Melville')].title"
+```
+
 <div id="S7"/> 
 
-### Filter expressions
+### Filter selector
 
 JSONPath uses filter expressions `[?<expr>]` to restrict the set of nodes
 returned by a path, e.g. `$..book[?(@.price<10)]` returns the books with 
@@ -401,4 +350,61 @@ Function|Description
 [sum](functions/sum.md)|Returns the sum of the items in an array of numbers.
 [to_number](functions/to_number.md)|If string, returns the parsed number. If number, returns the passed in value.
 [tokenize](functions/tokenize.md)|Returns an array of strings formed by splitting the source string into an array of strings, separated by substrings that match a given regular expression pattern.
+
+<div id="S8"/> 
+
+### Duplicates and ordering
+
+Consider the JSON document 
+
+```json
+{
+    "books":
+    [
+        {
+            "title" : "A Wild Sheep Chase",
+            "author" : "Haruki Murakami"
+        },
+        {
+            "title" : "The Night Watch",
+            "author" : "Sergei Lukyanenko"
+        },
+        {
+            "title" : "The Comedians",
+            "author" : "Graham Greene"
+        },
+        {
+            "title" : "The Night Watch",
+            "author" : "Phillips, David Atlee"
+        }
+    ]
+}
+```
+with selector
+```
+$.books[1,1,3].title
+```
+Note that the second book, _The Night Watch_ by Sergei Lukyanenko, is selected twice.
+
+The majority of JSONPath implementations will produce (with duplicate paths allowed):
+
+Path|Value
+-------|------------------
+ `$['books'][1]['title']` | "The Night Watch" 
+ `$['books'][1]['title']` | "The Night Watch" 
+ `$['books'][3]['title']` | "The Night Watch" 
+
+A minority will produce (with duplicate paths excluded):
+
+Path|Value
+---------|------------------
+`$['books'][1]['title']` | "The Night Watch"
+`$['books'][3]['title']` | "The Night Watch"
+
+The `JsonPath.Select` functions default to allowing
+duplicates, but have an option for no duplicates.
+
+By default, the ordering of results is unspecified, although the user may
+expect array ordering at least to be preserved.  The `JsonPath.Select` functions 
+provide an option for sorting results by paths.
 
