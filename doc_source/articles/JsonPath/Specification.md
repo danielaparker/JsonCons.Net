@@ -31,7 +31,11 @@ adds to the result list.
 
 Consider the JSON document
 ```
-{"foo":[{"a":"bar"},{"b":"baz"},{"b":"qux"}]}
+{"foo":[
+  {"a":"bar"},
+  {"b":"baz"},
+  {"b":"qux"}
+]}
 ```
 and JSONPath
 ```
@@ -40,7 +44,7 @@ $.foo[*].b
 
 After tokenization, the JSONPath becomes
 
-![SerializerList](./images/SerializerList.png)
+![SerializerList](./images/SelectorList.png)
 
 ## Filter Expressions
 
