@@ -152,20 +152,21 @@ function-arg        = expression
 <h2 id="selectors">Selectors</h2>
 <p>After tokenization, a JSONPath string is transformed into a null terminated
 linked list of selectors. There are ten different kinds of selectors:</p>
-<ul>
-<li>Root selector (&quot;$&quot;)</li>
-<li>Current node selector (&quot;@&quot;)</li>
-<li>Parent node selector (&quot;^&quot;)</li>
-<li>Identifier selector</li>
-<li>Index selector</li>
-<li>Slice selector</li>
-<li>Recursive descent selector (&quot;..&quot;)</li>
-<li>Wildcard selector (&quot;*&quot;)</li>
-<li>Union selector</li>
-<li>Filter selector</li>
-</ul>
+<p><a href="#Selector1">Root selector ($)</a>
+<a href="#Selector2">Current node selector (@)</a>
+<a href="#Selector3">Parent node selector (^)</a>
+<a href="#Selector4">Identifier selector</a>
+<a href="#Selector5">Index selector</a>
+<a href="#Selector6">Slice selector</a>
+<a href="#Selector7">Recursive descent selector (..)</a>
+<a href="#Selector8">Wildcard selector (*)</a>
+<a href="#Selector9">Union selector</a>
+<a href="#Selector10">Filter selector</a></p>
 <p>Each selector supports a select operation for selecting zero or more values
-from a provided JSON value, and for adding selected values to a result list.</p>
+from a provided JSON value, and for adding selected values to a result list.
+The syntax for this operation is:</p>
+<pre><code>select(&lt;current value&gt;, out &lt;result list&gt;) 
+</code></pre>
 <p>Executing a list of selectors against a JSON value means executing
 the select operation on the head of the list with that JSON value
 as an argument. This operation selects zero or more items from the provided value,
@@ -190,6 +191,226 @@ adds to the result list.</p>
 <p>The final result is</p>
 <pre><code>[&quot;baz&quot;,&quot;qux&quot;]
 </code></pre>
+<div id="Selector1"></div> 
+<h3 id="root-and-current-node">Root and current node</h3>
+<p>The symbol '$' represents the root JSON value, the JSON document to be evaluated.
+The symbol '@' represents the &quot;current node&quot;. At the start of an expression,
+the current node is the document to be evaluated, and as the expression
+is evaluated, it changes to reflect the node currently being processed.</p>
+<div id="Selector3"></div> 
+<h3 id="parent-selector">Parent selector</h3>
+<p>Consider the JSON document</p>
+<pre><code>[
+    {
+      &quot;author&quot; : &quot;Haruki Murakami&quot;,
+      &quot;title&quot;: &quot;A Wild Sheep Chase&quot;,
+      &quot;reviews&quot;: [{&quot;rating&quot;: 4, &quot;reviewer&quot;: &quot;Nan&quot;}]
+    },
+    {
+      &quot;author&quot; : &quot;Sergei Lukyanenko&quot;,
+      &quot;title&quot;: &quot;The Night Watch&quot;,
+      &quot;reviews&quot;: [{&quot;rating&quot;: 5, &quot;reviewer&quot;: &quot;Alan&quot;},
+                  {&quot;rating&quot;: 3,&quot;reviewer&quot;: &quot;Anne&quot;}]
+    },
+    {
+      &quot;author&quot; : &quot;Graham Greene&quot;,
+      &quot;title&quot;: &quot;The Comedians&quot;,
+      &quot;reviews&quot;: [{&quot;rating&quot;: 4, &quot;reviewer&quot;: &quot;Lisa&quot;},
+                  {&quot;rating&quot;: 5, &quot;reviewer&quot;: &quot;Robert&quot;}]
+    }
+]
+</code></pre>
+<p>JsonCons supports the parent selector, <code>^</code>, borrowed from <a href="https://www.npmjs.com/package/jsonpath-plus">JSONPath Plus</a>,
+that allows you to select book objects based on criteria applied to descendent values.</p>
+<table>
+<thead>
+<tr>
+<th>Query</th>
+<th>Output paths</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$[*]reviews[?(@.rating == 5)]</code></td>
+<td>&quot;$[1]['reviews'][0]&quot;</td>
+</tr>
+<tr>
+<td> </td>
+<td>&quot;$[2]['reviews'][1]&quot;</td>
+</tr>
+<tr>
+<td><code>$[*]reviews[?(@.rating == 5)]^</code></td>
+<td>&quot;$[1]['reviews']&quot;</td>
+</tr>
+<tr>
+<td> </td>
+<td>&quot;$[2]['reviews']&quot;</td>
+</tr>
+<tr>
+<td><code>$[*]reviews[?(@.rating == 5)]^^</code></td>
+<td>&quot;$[1]&quot;</td>
+</tr>
+<tr>
+<td> </td>
+<td>&quot;$[2]&quot;</td>
+</tr>
+</tbody>
+</table>
+<p>The JSONPath expression</p>
+<pre><code>$[*].reviews[?(@.rating == 5)]^^
+</code></pre>
+<p>selects all the book objects that have ratings of 5:</p>
+<pre><code>[
+    {
+        &quot;author&quot;: &quot;Sergei Lukyanenko&quot;,
+        &quot;reviews&quot;: [
+            {
+                &quot;rating&quot;: 5,
+                &quot;reviewer&quot;: &quot;Alan&quot;
+            },
+            {
+                &quot;rating&quot;: 3,
+                &quot;reviewer&quot;: &quot;Anne&quot;
+            }
+        ],
+        &quot;title&quot;: &quot;The Night Watch&quot;
+    },
+    {
+        &quot;author&quot;: &quot;Graham Greene&quot;,
+        &quot;reviews&quot;: [
+            {
+                &quot;rating&quot;: 4,
+                &quot;reviewer&quot;: &quot;Lisa&quot;
+            },
+            {
+                &quot;rating&quot;: 5,
+                &quot;reviewer&quot;: &quot;Robert&quot;
+            }
+        ],
+        &quot;title&quot;: &quot;The Comedians&quot;
+    }
+]
+</code></pre>
+<div id="Selector6"></div> 
+<h3 id="slices">Slices</h3>
+<p>JsonCons jsonpath slices have the same semantics as Python slices</p>
+<p>The syntax for a slice is</p>
+<pre><code>[start:stop:step]
+</code></pre>
+<p>Each component is optional.</p>
+<ul>
+<li><p>If <code>start</code> is omitted, it defaults to <code>0</code> if <code>step</code> is positive,
+or the end of the array if <code>step</code> is negative.</p>
+</li>
+<li><p>If <code>stop</code> is omitted, it defaults to the length of the array if <code>step</code>
+is positive, or the beginning of the array if <code>step</code> is negative.</p>
+</li>
+<li><p>If <code>step</code> is omitted, it defaults to <code>1</code>.</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Slice expression</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[start:stop]</code></td>
+<td>Items <code>start</code> through <code>stop-1</code></td>
+</tr>
+<tr>
+<td><code>[start:]</code></td>
+<td>Items <code>start</code> to the end of the array</td>
+</tr>
+<tr>
+<td><code>[:stop]</code></td>
+<td>Items from the beginning of the array through <code>stop-1</code></td>
+</tr>
+<tr>
+<td><code>[:]</code></td>
+<td>All items</td>
+</tr>
+<tr>
+<td><code>[start:stop:step]</code></td>
+<td>Items <code>start</code> up to but not including <code>stop</code>, by <code>step</code></td>
+</tr>
+</tbody>
+</table>
+<p>A component <code>start</code>, <code>stop</code>, or <code>step</code> may be a negative number.</p>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$[-1]</td>
+<td>Last item</td>
+</tr>
+<tr>
+<td>$[-2:]</td>
+<td>Last two items</td>
+</tr>
+<tr>
+<td>$[:-2]</td>
+<td>All items except the last two</td>
+</tr>
+<tr>
+<td>$[::-1]</td>
+<td>All items, reversed</td>
+</tr>
+<tr>
+<td>$[1::-1]</td>
+<td>First two items, reversed</td>
+</tr>
+<tr>
+<td>$[:-3:-1]</td>
+<td>Last two items, reversed</td>
+</tr>
+<tr>
+<td>$[-3::-1]</td>
+<td>All items except the last two, reversed</td>
+</tr>
+</tbody>
+</table>
+<div id="Selector9"></div> 
+<h3 id="unions">Unions</h3>
+<p>In JsonCons, a JSONPath union element can be</p>
+<ul>
+<li>an index or slice expression</li>
+<li>a single quoted name</li>
+<li>a double quoted name</li>
+<li>a filter</li>
+<li>a wildcard, i.e. <code>*</code></li>
+<li>a path relative to the root of the JSON document (begins with <code>$</code>)</li>
+<li>a path relative to the current value being processed (begins with <code>@</code>)</li>
+</ul>
+<p>To illustrate, the path expression below selects the first and second titles,
+the last, and the third from <a href="https://goessner.net/articles/JsonPath/index.html#e3">Stefan Goessner's store</a>:</p>
+<pre><code>&quot;$.store.book[0:2,-1,?(@.author=='Herman Melville')].title&quot;
+</code></pre>
+<div id="Selector10"></div> 
+<h3 id="filter-selector">Filter selector</h3>
+<p>JSONPath uses filter expressions <code>[?&lt;expr&gt;]</code> to restrict the set of nodes
+returned by a path, e.g. <code>$..book[?(@.price&lt;10)]</code> returns the books with
+prices less than 10. Filter expressions are applied to each element in a
+JSON array or each member in a JSON object. The symbol <code>@</code> represents the
+value currently being processed. An expression evaluates to true or false,
+if true, the array element, or value part of an object member, is selected.</p>
+<p>An expression is considered false if it evaluates to any of the following values:</p>
+<ul>
+<li>empty array: [],</li>
+<li>empty object: {},</li>
+<li>empty string: &quot;&quot;,</li>
+<li>false,</li>
+<li>null,</li>
+<li>zero.</li>
+</ul>
+<p>It is considered true if it is not false.</p>
 <h2 id="filter-expressions">Filter Expressions</h2>
 <h3 id="true-and-false-values">True and False Values</h3>
 <p>A false value is any value on this list:</p>

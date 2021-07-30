@@ -90,13 +90,9 @@ The <code>JsonCons</code> implementation returns an empty array in case of no ma
 </ul>
 <p><a href="#S1">Paths</a></p>
 <p><a href="#S2">Selectors</a></p>
-<p><a href="#S3">Root and current node</a></p>
-<p><a href="#S4">Parent selector</a></p>
-<p><a href="#S5">Slices</a></p>
-<p><a href="#S6">Unions</a></p>
-<p><a href="#S7">Filter selector</a></p>
-<p><a href="#S8">Duplicates and ordering</a></p>
-<div id="S1"></div> 
+<p><a href="#S3">Filter expressions</a></p>
+<p><a href="#S4">Duplicates and ordering</a></p>
+<div id="S4"></div> 
 <h3 id="paths">Paths</h3>
 <p>JSONPath uses paths to select values. It is a feature of JSONPath that it selects values in the original JSON document,
 and does not create JSON elements that are not in the original.</p>
@@ -186,20 +182,21 @@ that names with hyphens must be quoted.</p>
 <h2 id="selectors">Selectors</h2>
 <p>After tokenization, a JSONPath string is transformed into a null terminated
 linked list of selectors. There are ten different kinds of selectors:</p>
-<ul>
-<li>Root selector (&quot;$&quot;)</li>
-<li>Current node selector (&quot;@&quot;)</li>
-<li>Parent node selector (&quot;^&quot;)</li>
-<li>Identifier selector</li>
-<li>Index selector</li>
-<li>Slice selector</li>
-<li>Recursive descent selector (&quot;..&quot;)</li>
-<li>Wildcard selector (&quot;*&quot;)</li>
-<li>Union selector</li>
-<li>Filter selector</li>
-</ul>
+<p><a href="#Selector1">Root selector ($)</a>
+<a href="#Selector2">Current node selector (@)</a>
+<a href="#Selector3">Parent node selector (^)</a>
+<a href="#Selector4">Identifier selector</a>
+<a href="#Selector5">Index selector</a>
+<a href="#Selector6">Slice selector</a>
+<a href="#Selector7">Recursive descent selector (..)</a>
+<a href="#Selector8">Wildcard selector (*)</a>
+<a href="#Selector9">Union selector</a>
+<a href="#Selector10">Filter selector</a></p>
 <p>Each selector supports a select operation for selecting zero or more values
-from a provided JSON value, and for adding selected values to a result list.</p>
+from a provided JSON value, and for adding selected values to a result list.
+The syntax for this operation is:</p>
+<pre><code>select(&lt;current value&gt;, out &lt;result list&gt;) 
+</code></pre>
 <p>Executing a list of selectors against a JSON value means executing
 the select operation on the head of the list with that JSON value
 as an argument. This operation selects zero or more items from the provided value,
@@ -224,13 +221,13 @@ adds to the result list.</p>
 <p>The final result is</p>
 <pre><code>[&quot;baz&quot;,&quot;qux&quot;]
 </code></pre>
-<div id="S3"></div> 
+<div id="Selector1"></div> 
 <h3 id="root-and-current-node">Root and current node</h3>
 <p>The symbol '$' represents the root JSON value, the JSON document to be evaluated.
 The symbol '@' represents the &quot;current node&quot;. At the start of an expression,
 the current node is the document to be evaluated, and as the expression
 is evaluated, it changes to reflect the node currently being processed.</p>
-<div id="S4"></div> 
+<div id="Selector3"></div> 
 <h3 id="parent-selector">Parent selector</h3>
 <p>Consider the JSON document</p>
 <pre><code>[
@@ -324,7 +321,7 @@ that allows you to select book objects based on criteria applied to descendent v
     }
 ]
 </code></pre>
-<div id="S5"></div> 
+<div id="Selector6"></div> 
 <h3 id="slices">Slices</h3>
 <p>JsonCons jsonpath slices have the same semantics as Python slices</p>
 <p>The syntax for a slice is</p>
@@ -410,7 +407,7 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 </tr>
 </tbody>
 </table>
-<div id="S6"></div> 
+<div id="Selector9"></div> 
 <h3 id="unions">Unions</h3>
 <p>In JsonCons, a JSONPath union element can be</p>
 <ul>
@@ -426,7 +423,7 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 the last, and the third from <a href="https://goessner.net/articles/JsonPath/index.html#e3">Stefan Goessner's store</a>:</p>
 <pre><code>&quot;$.store.book[0:2,-1,?(@.author=='Herman Melville')].title&quot;
 </code></pre>
-<div id="S7"></div> 
+<div id="Selector10"></div> 
 <h3 id="filter-selector">Filter selector</h3>
 <p>JSONPath uses filter expressions <code>[?&lt;expr&gt;]</code> to restrict the set of nodes
 returned by a path, e.g. <code>$..book[?(@.price&lt;10)]</code> returns the books with
@@ -444,6 +441,8 @@ if true, the array element, or value part of an object member, is selected.</p>
 <li>zero.</li>
 </ul>
 <p>It is considered true if it is not false.</p>
+<div id="S3"></div> 
+<p>Filter Expressions</p>
 <p><a href="http://goessner.net/articles/JsonPath/">Stefan Goessner's JSONPath</a>
 does not provide any specification for the allowable filter expressions,
 simply stating that expressions can be anything that the underlying script
@@ -685,7 +684,7 @@ or a path that selects from the current node <code>@</code>.</p>
 </tr>
 </tbody>
 </table>
-<div id="S8"></div> 
+<div id="S4"></div> 
 <h3 id="duplicates-and-ordering">Duplicates and ordering</h3>
 <p>Consider the JSON document</p>
 <pre><code class="lang-json">{
