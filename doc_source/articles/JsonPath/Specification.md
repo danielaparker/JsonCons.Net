@@ -44,7 +44,7 @@ $.foo[*].b
 
 After tokenization, the JSONPath becomes
 
-![SerializerList](./images/SelectorList.png)
+![SelectorList](./images/SelectorList.png)
 
 ## Filter Expressions
 

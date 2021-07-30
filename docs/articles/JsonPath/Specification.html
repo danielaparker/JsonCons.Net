@@ -174,13 +174,17 @@ This proceeds recursively until the tail is null, when the provided JSON
 value is added to the result list. Note that only the last selector in the list
 adds to the result list.</p>
 <p>Consider the JSON document</p>
-<pre><code>{&quot;foo&quot;:[{&quot;a&quot;:&quot;bar&quot;},{&quot;b&quot;:&quot;baz&quot;},{&quot;b&quot;:&quot;qux&quot;}]}
+<pre><code>{&quot;foo&quot;:[
+  {&quot;a&quot;:&quot;bar&quot;},
+  {&quot;b&quot;:&quot;baz&quot;},
+  {&quot;b&quot;:&quot;qux&quot;}
+]}
 </code></pre>
 <p>and JSONPath</p>
 <pre><code>$.foo[*].b 
 </code></pre>
 <p>After tokenization, the JSONPath becomes</p>
-<p><img src="./images/SerializerList.png" alt="SerializerList"></p>
+<p><img src="./images/SelectorList.png" alt="SelectorList"></p>
 <h2 id="filter-expressions">Filter Expressions</h2>
 <h3 id="true-and-false-values">True and False Values</h3>
 <p>A false value is any value on this list:</p>
@@ -923,7 +927,7 @@ namespace JsonCons.Examples
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/doc_source/articles/JsonPath/Specification.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/articles/JsonPath/Specification.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
