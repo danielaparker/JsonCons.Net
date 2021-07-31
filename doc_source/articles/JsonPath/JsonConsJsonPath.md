@@ -32,7 +32,7 @@ The JsonCons implementation differs from Stefan Goessner's original JavaScript i
 
 <div id="S4"/> 
 
-### Paths
+## Paths
 
 JSONPath uses paths to select values. It is a feature of JSONPath that it selects values in the original JSON document, 
 and does not create JSON elements that are not in the original. 
@@ -95,7 +95,7 @@ Union of the fourth book and all books with price > 10:
 
 <div id="S3"/> 
 
-Filter Expressions
+## Filter Expressions
 
 [Stefan Goessner's JSONPath](http://goessner.net/articles/JsonPath/) 
 does not provide any specification for the allowable filter expressions, 
@@ -103,7 +103,7 @@ simply stating that expressions can be anything that the underlying script
 engine can handle. `JsonCons` expressions support the following comparision 
 and arithmetic operators. 
 
-#### Binary operators
+### Binary operators
 
 Operator| Expression |      Description
 --------|--------------------------------
@@ -125,7 +125,7 @@ Operator| Expression |      Description
 The ordering operators `>`, `>=`, `<`, `<=` are only valid if both left and right are numbers,
 or if both left and right are strings. Otherwise the item will be excluded from the result set.
 
-#### Unary operators
+### Unary operators
 
 Operator| Expression |      Description
 --------|------------|-------------------
@@ -134,7 +134,7 @@ Operator| Expression |      Description
 
 The unary minus operator is only valid if right is a number.
 
-#### Operator precedence
+### Operator precedence
 
 Precedence|Operator|Associativity
 ----------|--------|-----------
@@ -149,7 +149,7 @@ Precedence|Operator|Associativity
 
 The precedence rules may be overriden with explicit parentheses, e.g. (a || b) && c.
 
-#### Functions
+### Functions
 
 Support for function in filter expressions is a JsonCons extension.
 
@@ -178,7 +178,7 @@ Function|Description
 
 <div id="S4"/> 
 
-### Duplicates and ordering
+## Duplicates and ordering
 
 Consider the JSON document 
 

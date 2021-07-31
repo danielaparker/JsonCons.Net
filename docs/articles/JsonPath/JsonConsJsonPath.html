@@ -93,7 +93,7 @@ The <code>JsonCons</code> implementation returns an empty array in case of no ma
 <p><a href="#S3">Filter expressions</a></p>
 <p><a href="#S4">Duplicates and ordering</a></p>
 <div id="S4"></div> 
-<h3 id="paths">Paths</h3>
+<h2 id="paths">Paths</h2>
 <p>JSONPath uses paths to select values. It is a feature of JSONPath that it selects values in the original JSON document,
 and does not create JSON elements that are not in the original.</p>
 <table>
@@ -442,13 +442,13 @@ if true, the array element, or value part of an object member, is selected.</p>
 </ul>
 <p>It is considered true if it is not false.</p>
 <div id="S3"></div> 
-<p>Filter Expressions</p>
+<h2 id="filter-expressions">Filter Expressions</h2>
 <p><a href="http://goessner.net/articles/JsonPath/">Stefan Goessner's JSONPath</a>
 does not provide any specification for the allowable filter expressions,
 simply stating that expressions can be anything that the underlying script
 engine can handle. <code>JsonCons</code> expressions support the following comparision
 and arithmetic operators.</p>
-<h4 id="binary-operators">Binary operators</h4>
+<h3 id="binary-operators">Binary operators</h3>
 <table>
 <thead>
 <tr>
@@ -532,7 +532,7 @@ and arithmetic operators.</p>
 </table>
 <p>The ordering operators <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code> are only valid if both left and right are numbers,
 or if both left and right are strings. Otherwise the item will be excluded from the result set.</p>
-<h4 id="unary-operators">Unary operators</h4>
+<h3 id="unary-operators">Unary operators</h3>
 <table>
 <thead>
 <tr>
@@ -555,7 +555,7 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 </tbody>
 </table>
 <p>The unary minus operator is only valid if right is a number.</p>
-<h4 id="operator-precedence">Operator precedence</h4>
+<h3 id="operator-precedence">Operator precedence</h3>
 <table>
 <thead>
 <tr>
@@ -608,7 +608,7 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 </tbody>
 </table>
 <p>The precedence rules may be overriden with explicit parentheses, e.g. (a || b) &amp;&amp; c.</p>
-<h4 id="functions">Functions</h4>
+<h3 id="functions">Functions</h3>
 <p>Support for function in filter expressions is a JsonCons extension.</p>
 <p>Functions can be passed JSONPath paths, single quoted strings, literal JSON values
 such as <code>1.5</code>, <code>true</code>, or <code>{&quot;foo&quot; : &quot;bar&quot;}</code>, or expressions such as <code>@.price*10</code>.
@@ -685,7 +685,7 @@ or a path that selects from the current node <code>@</code>.</p>
 </tbody>
 </table>
 <div id="S4"></div> 
-<h3 id="duplicates-and-ordering">Duplicates and ordering</h3>
+<h2 id="duplicates-and-ordering">Duplicates and ordering</h2>
 <p>Consider the JSON document</p>
 <pre><code class="lang-json">{
     &quot;books&quot;:
