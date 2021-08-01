@@ -130,8 +130,9 @@ namespace JsonCons.JsonPath.Tests
                 RunJsonPathTests(@".\TestFiles\union.json");
                 RunJsonPathTests(@".\TestFiles\wildcard.json");
                 RunJsonPathTests(@".\TestFiles\parent-operator.json");
+                RunJsonPathTests(@".\TestFiles\recursive-descent.json");
                 
-                RunJsonPathTests(@".\TestFiles\test.json");              
+                //RunJsonPathTests(@".\TestFiles\test.json");              
             }
             catch (Exception e)
             {

@@ -582,9 +582,9 @@ namespace JsonCons.JsonPath
                 throw new InvalidOperationException($"Maximum depth level exceeded in recursive descent selector.");
             }
 
+            this.TailSelect(resources, root, last, current, accumulator, options, depth+1);
             if (current.ValueKind == JsonValueKind.Array)
             {
-                this.TailSelect(resources, root, last, current, accumulator, options, depth+1);
                 Int32 index = 0;
                 foreach (var item in current.EnumerateArray())
                 {
@@ -596,7 +596,6 @@ namespace JsonCons.JsonPath
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
-                this.TailSelect(resources, root, last, current, accumulator, options, depth+1);
                 foreach (var prop in current.EnumerateObject())
                 {
                     Select(resources, root, 

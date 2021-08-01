@@ -45,6 +45,9 @@
     <None Update="TestFiles\parent-operator.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestFiles\recursive-descent.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestFiles\regex.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
