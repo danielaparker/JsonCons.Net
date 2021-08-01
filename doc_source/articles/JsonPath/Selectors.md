@@ -13,10 +13,11 @@ linked list of selectors. There are ten different kinds of selectors:
 [Wildcard selector (*)](#Selector8)  
 [Union selector](#Selector9)  
 [Filter selector](#Selector10)  
- 
-When executing a JSONPath query against a JSON value, the list of selectors 
-is applied to the value to produce a result set of selected items. This works as follows:
 
+Each selector is respsonsible for performing a select operation
+against a single JSON value. The end result is a set of
+selected values. Evaluation works as follows:
+ 
 - Provide the value to the selector at the head of the list
 - This selector will select zero or more items from the provided value, 
 and, for each item, provide the item to its tail.
