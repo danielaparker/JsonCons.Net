@@ -223,7 +223,7 @@ $..b
 
 After tokenization, the JSONPath becomes
 
-![SelectorListWithRecursiveDescent](./images/SelectorListWithRecursiveDescent)
+![SelectorListWithRecursiveDescent](./images/SelectorListWithRecursiveDescent.png)
 
 Evaluation proceeds as follows:
 
