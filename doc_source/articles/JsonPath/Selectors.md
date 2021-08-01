@@ -42,7 +42,7 @@ After tokenization, the JSONPath becomes
 
 ![SelectorList](./images/SelectorList.png)
 
-Execution proceeds as follows:
+Evaluation proceeds as follows:
 
 ![ExecuteSelectorList](./images/ExecuteSelectorList.png)
 
@@ -178,6 +178,36 @@ $[::-1]    | All items, reversed
 $[1::-1]   | First two items, reversed
 $[:-3:-1]  | Last two items, reversed
 $[-3::-1]  | All items except the last two, reversed
+
+<div id="Selector7"/> 
+
+### Recursive descent selector
+
+Consider the JSON document
+```
+{"foo":[
+  {"a":"bar"},
+  {"b":"baz"},
+  {"b":"qux"}
+]}
+```
+and JSONPath
+```
+$..b 
+```
+
+After tokenization, the JSONPath becomes
+
+![SelectorListWithRecursiveDescent](./images/SelectorListWithRecursiveDescent)
+
+Evaluation proceeds as follows:
+
+![ExecuteSelectorListWithRecursiveDescent](./images/ExecuteSelectorListWithRecursiveDescent.png)
+
+The final result is
+```
+["baz","qux"]
+```
 
 <div id="Selector9"/> 
 

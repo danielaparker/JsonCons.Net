@@ -21,19 +21,22 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/JsonConsJsonPath.html",
-          "hash": "j4wtLu5uCHHc8z+FliRYWmGTTOJbkWPm2noLEYCAsYQ="
+          "hash": "/U6qYqDoVWMU1CLk6iPRMy3o/2I409l8Oo4RxojfuGI="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "articles/JsonPath/Selectors.md",
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/Selectors.html",
-          "hash": "89o0NZ1Xm97Mi642xwxDdTiJgveSSUkwMiHhSWKzsnY="
+          "hash": "N97SFgU7QMzzXaiBBWajj4X3quwwTGaClV9mY1K3AmI="
         }
       },
       "is_incremental": false,
@@ -45,7 +48,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/Specification.html",
-          "hash": "x/kEh3ekzKwawkOWQ0d0T0Vw59u+1Vau6yF6TvwDaw0="
+          "hash": "bOI+ZlbWMoq0ea45TsS3ZnQJ4EIddPjpym8zKwguG0Q="
         }
       },
       "is_incremental": false,
@@ -245,6 +248,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "articles/JsonPath/images/EvaluateSelectorListWithRecursiveDescent.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/JsonPath/images/EvaluateSelectorListWithRecursiveDescent.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "articles/JsonPath/images/ExecuteSelectorList.png",
       "output": {
         "resource": {
@@ -260,6 +274,17 @@
       "output": {
         "resource": {
           "relative_path": "articles/JsonPath/images/SelectorList.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "articles/JsonPath/images/SelectorListWithRecursiveDescent.png",
+      "output": {
+        "resource": {
+          "relative_path": "articles/JsonPath/images/SelectorListWithRecursiveDescent.png"
         }
       },
       "is_incremental": false,
@@ -379,10 +404,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.JsonPathExecutionMode.html",
-          "hash": "kXD5fTcIAltlrxYFAheZ/C+kEZAL0iL2+oCq2uP4loo="
+          "hash": "AA9GATYgkyFt0ote91tZ2UTOyhAqu4y13bgZJN1weGc="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -391,10 +416,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.JsonPathOptions.html",
-          "hash": "krMmu5Uta5f6iHSwI9lvxIPtKlJ4eWgr27Xgi76uQF8="
+          "hash": "10iHXWYNlQYLVMPYgPRcnfNFwDKMc8kM8VUk1hSKdLg="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -403,10 +428,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.JsonPathParseException.html",
-          "hash": "kOm/go+Fc9kv9YnZi5qa/I1k7tmkVXJ4FyixgUDDslM="
+          "hash": "Yop3VzEjeJf4UaI+EIauHRFGjiBDDiF/eSJ0EBXast4="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -415,10 +440,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.JsonSelector.html",
-          "hash": "PeT7zAuwrYyQ5Y9Px9WUctddRaCq+6wPAWNNazTgI1c="
+          "hash": "6om7rrhLo3ompSmlc6M9APriEzteZuEWfKskVpRMRug="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -427,10 +452,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.NodeSortBy.html",
-          "hash": "pp/k2kutjWmofmbOyzLLDIxRtLFK3TqYLUxu29e/Vck="
+          "hash": "Snf85DkNM30OPhAK8c8RJegHrVIftx1aStwmhjwz4ps="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -439,10 +464,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.NormalizedPath.html",
-          "hash": "nH3RlHj80EUewiag1TETuGWlGzqpCIpplBPuzd3n3CU="
+          "hash": "mUprD3CSlu4lUWfSkyXDLwwqf41vZCYi4CH+vujqAnE="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -451,10 +476,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.NormalizedPathNode.html",
-          "hash": "QTQVk3x/ewTYv1FFzblOK1ocVpYlnJYsUvwOvyvzeD0="
+          "hash": "fMJZYgEz54aEjhQpXODsXfpYOq6lV9YzXFQbBreYbs8="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -463,10 +488,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.NormalizedPathNodeKind.html",
-          "hash": "itMUr1IDfbOYP2ZQt/HVvpeJ1sPA/d5enlz9evC33Yk="
+          "hash": "RKYTMsv5CZ9vTgYOiwDgmGY9bB+UEanBRWfGpD3z1LY="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -475,10 +500,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.JsonPath.PathValuePair.html",
-          "hash": "uf1KI9HW7PlucKP5hR7oeR4PImKwPXmOGGKclLLaPE4="
+          "hash": "10tCNIKo+eZfsHCrVv3yWjJpEuWFShaMF7RUm/J1AlA="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -490,7 +515,7 @@
           "hash": "ZmpZDe/BRla+kb3V3zc9U07mqPpfisIIdGpQGi/5BPU="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -499,10 +524,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.IntegerTokenUnflattening.html",
-          "hash": "ZTHnIH1vz/CJHSL0hfdki+kZQ8zE2IDLR6uKVg8/GMs="
+          "hash": "CLAo+WmRCm6SPREfj4XXOwICrg0B+01vnxGr7TIhkoo="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -511,10 +536,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.JsonElementComparer.html",
-          "hash": "2EkfBuGjKs5Eb6SGXHlUhberwbpCUkc/yXmfr19Nvlg="
+          "hash": "pP/VqPPLJOp0fsJqdjn1lYOdgZgi3eNZQZ58n4bup28="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -523,10 +548,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.JsonElementEqualityComparer.html",
-          "hash": "HwdJXnye92XGX/i2Pr5w0YOW0ca/TIwDbJC31M8upVA="
+          "hash": "2vtP3Jhs3gI9VtkOd/0im7NIHXM6YIzV1eoqxhGGC2Q="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -535,10 +560,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.JsonFlattener.html",
-          "hash": "SmQvi0cwnR1C9XtJUfeAVLbdmUYQm+rLIIYQhtcAN+c="
+          "hash": "x/e+aE7GPwqSxvmPNtbUiJPlOL/C5Z0/MGpCQvtjxuk="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -547,10 +572,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.JsonMergePatch.html",
-          "hash": "giBGq4qR9AJk4PEnTT7BMXRu73JxGODOXuvvmHmVMi8="
+          "hash": "VufyzknJCjiMIGJPmeCiQRwxlq01Sa5XFRenne7rtho="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -559,10 +584,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.JsonPatch.html",
-          "hash": "duL1kzJSI/rkDV4StlJf5d9AGI0SpBhRs35ukMumaJs="
+          "hash": "9i2+NTFROArJIQnW99u1I9yPJTJdy8Iy7zMXdhnxpXM="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -571,10 +596,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.JsonPatchException.html",
-          "hash": "6ePdRpSMjEwTUkcA/CB0ifCLzSBEd7n8EFLomgqXoaA="
+          "hash": "/PckfOSOCdpYTV6XQOjSA3sp0fRFMeInjDvjVwpPMfc="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -583,10 +608,10 @@
       "output": {
         ".html": {
           "relative_path": "ref/JsonCons.Utilities.JsonPointer.html",
-          "hash": "NNSeBtpITPsBnBRCHnL/B/J9nVHy4Oe2YR6Nq6jFKY8="
+          "hash": "kFZlF9QLormh8ueaWCSOlJQYVW/bBiGaoAe5aNnt2Wg="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -598,7 +623,7 @@
           "hash": "jvazj43FNP9a0xJxroknCtUy37OE6mgR+rdZn0Q561M="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -657,7 +682,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 19,
-          "skipped_file_count": 19
+          "skipped_file_count": 2
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

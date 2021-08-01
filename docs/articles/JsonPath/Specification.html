@@ -184,7 +184,7 @@ in the list will add its provided value to the result set.</li>
 </code></pre>
 <p>After tokenization, the JSONPath becomes</p>
 <p><img src="images/SelectorList.png" alt="SelectorList"></p>
-<p>Execution proceeds as follows:</p>
+<p>Evaluation proceeds as follows:</p>
 <p><img src="images/ExecuteSelectorList.png" alt="ExecuteSelectorList"></p>
 <p>The final result is</p>
 <pre><code>[&quot;baz&quot;,&quot;qux&quot;]
@@ -375,6 +375,25 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 </tr>
 </tbody>
 </table>
+<div id="Selector7"></div> 
+<h3 id="recursive-descent-selector">Recursive descent selector</h3>
+<p>Consider the JSON document</p>
+<pre><code>{&quot;foo&quot;:[
+  {&quot;a&quot;:&quot;bar&quot;},
+  {&quot;b&quot;:&quot;baz&quot;},
+  {&quot;b&quot;:&quot;qux&quot;}
+]}
+</code></pre>
+<p>and JSONPath</p>
+<pre><code>$..b 
+</code></pre>
+<p>After tokenization, the JSONPath becomes</p>
+<p><img src="images/SelectorListWithRecursiveDescent" alt="SelectorListWithRecursiveDescent"></p>
+<p>Evaluation proceeds as follows:</p>
+<p><img src="images/ExecuteSelectorListWithRecursiveDescent.png" alt="ExecuteSelectorListWithRecursiveDescent"></p>
+<p>The final result is</p>
+<pre><code>[&quot;baz&quot;,&quot;qux&quot;]
+</code></pre>
 <div id="Selector9"></div> 
 <h3 id="unions">Unions</h3>
 <p>In JsonCons, a JSONPath union element can be</p>
@@ -1151,7 +1170,7 @@ namespace JsonCons.Examples
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/articles/JsonPath/Specification.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/doc/doc_source/articles/JsonPath/Specification.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
