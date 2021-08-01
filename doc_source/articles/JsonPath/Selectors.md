@@ -14,8 +14,8 @@ linked list of selectors. There are ten different kinds of selectors:
 [Union selector](#Selector9)  
 [Filter selector](#Selector10)  
  
-The list of selectors is applied to a JSON value to produce a
-result set of selected items. This works as follows:
+When executing a JSONPath query against a JSON value, the list of selectors 
+is applied to the value to produce a result set of selected items. This works as follows:
 
 - Provide the value to the selector at the head of the list
 - This selector will select zero or more items from the provided value, 
