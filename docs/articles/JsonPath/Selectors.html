@@ -110,13 +110,18 @@ in the list will add its provided value to the result set.</li>
 <pre><code>[&quot;baz&quot;,&quot;qux&quot;]
 </code></pre>
 <div id="Selector1"></div> 
-<h3 id="root-and-current-node">Root and current node</h3>
-<p>The symbol '$' represents the root JSON value, the JSON document to be evaluated.
-The symbol '@' represents the &quot;current node&quot;. At the start of an expression,
+<h3 id="root-selector">Root selector</h3>
+<p>The symbol &quot;$&quot; represents the root JSON value, the JSON document to be evaluated.
+The root selector selects this value.</p>
+<div id="Selector2"></div> 
+<h3 id="current-node-selector">Current node selector</h3>
+<p>The symbol &quot;@&quot; represents the &quot;current node&quot;. At the start of an expression,
 the current node is the document to be evaluated, and as the expression
-is evaluated, it changes to reflect the node currently being processed.</p>
+is evaluated, it changes to reflect the node currently being processed.<br>
+The current node selector selects this value.</p>
 <div id="Selector3"></div> 
 <h3 id="parent-selector">Parent selector</h3>
+<p>The symbol &quot;^&quot; represents the parent of the current node.</p>
 <p>Consider the JSON document</p>
 <pre><code>[
     {

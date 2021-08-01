@@ -54,16 +54,25 @@ The final result is
 
 <div id="Selector1"/> 
 
-### Root and current node
+### Root selector
 
-The symbol '$' represents the root JSON value, the JSON document to be evaluated.
-The symbol '@' represents the "current node". At the start of an expression, 
+The symbol "$" represents the root JSON value, the JSON document to be evaluated.
+The root selector selects this value.
+
+<div id="Selector2"/> 
+
+### Current node selector
+
+The symbol "@" represents the "current node". At the start of an expression, 
 the current node is the document to be evaluated, and as the expression 
 is evaluated, it changes to reflect the node currently being processed.   
+The current node selector selects this value.
 
 <div id="Selector3"/> 
 
 ### Parent selector 
+
+The symbol "^" represents the parent of the current node.
 
 Consider the JSON document 
 
