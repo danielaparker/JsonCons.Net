@@ -81,17 +81,16 @@ linked list of selectors. There are ten different kinds of selectors:</p>
 <a href="#Selector8">Wildcard selector (*)</a><br>
 <a href="#Selector9">Union selector</a><br>
 <a href="#Selector10">Filter selector</a></p>
-<p>Each selector is responsible for selecting zero or more values
-from a provided JSON value, and for adding selected values to a result list.
-The way this works is as follows:</p>
+<p>The list of selectors is applied to a JSON value to produce a
+result set of selected items. This works as follows:</p>
 <ul>
-<li>Provide the JSON value to the selector at the head of the list</li>
+<li>Provide the value to the selector at the head of the list</li>
 <li>This selector will select zero or more items from the provided value,
 and, for each item, provide the item to its tail.</li>
-<li>This proceeds recursively until the tail is null. The selector at the
-end of the list will add its provided JSON value to the result list.</li>
+<li>This proceeds recursively until the tail is null. The last selector
+in the list will add its provided value to the result set.</li>
 </ul>
-<p>Note that only the last selector in the list adds to the result list.</p>
+<p>Note that only the last selector in the list adds to the result set.</p>
 <p>Consider the JSON document</p>
 <pre><code>{&quot;foo&quot;:[
   {&quot;a&quot;:&quot;bar&quot;},

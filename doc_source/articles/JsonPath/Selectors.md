@@ -14,17 +14,16 @@ linked list of selectors. There are ten different kinds of selectors:
 [Union selector](#Selector9)  
 [Filter selector](#Selector10)  
  
-Each selector is responsible for selecting zero or more values 
-from a provided JSON value, and for adding selected values to a result list.
-The way this works is as follows:
+The list of selectors is applied to a JSON value to produce a
+result set of selected items. This works as follows:
 
-- Provide the JSON value to the selector at the head of the list
+- Provide the value to the selector at the head of the list
 - This selector will select zero or more items from the provided value, 
 and, for each item, provide the item to its tail.
-- This proceeds recursively until the tail is null. The selector at the
-end of the list will add its provided JSON value to the result list. 
+- This proceeds recursively until the tail is null. The last selector
+in the list will add its provided value to the result set. 
 
-Note that only the last selector in the list adds to the result list.
+Note that only the last selector in the list adds to the result set.
 
 Consider the JSON document
 ```
