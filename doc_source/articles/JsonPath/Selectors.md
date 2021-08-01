@@ -183,16 +183,20 @@ $[-3::-1]  | All items except the last two, reversed
 
 ### Recursive descent selector (..)
 
-The recursive descent selector receives a JSON value as input.
-If its tail is null, it adds the value to the result list.
-Otherwise, it provides the value to its tail, and then
-proceeds as follows:
+The recursive descent selector performs a select operation
+on a provided JSON value as follows:
 
-- If the value is a JSON array, it iterates over each item in the
-array, and recursively selects from each item.
+- If its tail is null, it adds the value to the result list,
+and exits. Otherwise, it first provides the value to its tail,
+and continues as below.
 
-- If the value is a JSON object, it iterates over each property in the
-array, and recursively selects from the value of each property.
+- If the provided value is a JSON array, it iterates over each 
+item in the array, and recursively performs the select
+operation on each item.
+
+- If the provided value is a JSON object, it iterates over each 
+property in the object, and recursively performs the select
+operation on each property's value.
 
 Consider the JSON document
 ```
