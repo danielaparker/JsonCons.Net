@@ -14,21 +14,17 @@ linked list of selectors. There are ten different kinds of selectors:
 [Union selector](#Selector9)  
 [Filter selector](#Selector10)  
  
-Each selector supports a select operation for selecting zero or more values 
+Each selector is responsible for selecting zero or more values 
 from a provided JSON value, and for adding selected values to a result list.
-The syntax for this operation is:
+The way this works is as follows:
 
-```
-select(<current value>, out <result list>) 
-```
+- Provide the JSON value to the selector at the head of the list
+- This selector will select zero or more items from the provided value, 
+and, for each item, provide the item to its tail.
+- This proceeds recursively until the tail is null. The selector at the
+end of the list will add its provided JSON value to the result list. 
 
-Executing a list of selectors against a JSON value means executing 
-the select operation on the head of the list with that JSON value 
-as an argument. This operation selects zero or more items from the provided value, 
-and executes the tail of the list for each item with the item as an argument.
-This proceeds recursively until the tail is null, when the provided JSON
-value is added to the result list. Note that only the last selector in the list
-adds to the result list.
+Note that only the last selector in the list adds to the result list.
 
 Consider the JSON document
 ```
