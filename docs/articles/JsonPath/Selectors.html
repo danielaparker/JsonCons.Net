@@ -295,7 +295,19 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 </tbody>
 </table>
 <div id="Selector7"></div> 
-<h3 id="recursive-descent-selector">Recursive descent selector</h3>
+<h3 id="recursive-descent-selector-">Recursive descent selector (..)</h3>
+<p>The recursive descent selector receives a JSON value as input.
+If its tail is null, it adds the value to the result list.
+Otherwise, it provides the value to its tail, and then
+proceeds as follows:</p>
+<ul>
+<li><p>If the value is a JSON array, it iterates over each item in the
+array, and recursively selects from each item.</p>
+</li>
+<li><p>If the value is a JSON object, it iterates over each property in the
+array, and recursively selects from the value of each property.</p>
+</li>
+</ul>
 <p>Consider the JSON document</p>
 <pre><code>{&quot;foo&quot;:[
   {&quot;a&quot;:&quot;bar&quot;},

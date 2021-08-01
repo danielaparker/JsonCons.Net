@@ -181,7 +181,18 @@ $[-3::-1]  | All items except the last two, reversed
 
 <div id="Selector7"/> 
 
-### Recursive descent selector
+### Recursive descent selector (..)
+
+The recursive descent selector receives a JSON value as input.
+If its tail is null, it adds the value to the result list.
+Otherwise, it provides the value to its tail, and then
+proceeds as follows:
+
+- If the value is a JSON array, it iterates over each item in the
+array, and recursively selects from each item.
+
+- If the value is a JSON object, it iterates over each property in the
+array, and recursively selects from the value of each property.
 
 Consider the JSON document
 ```
