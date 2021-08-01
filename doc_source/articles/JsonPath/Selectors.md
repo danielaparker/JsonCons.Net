@@ -202,7 +202,7 @@ After tokenization, the JSONPath becomes
 
 Evaluation proceeds as follows:
 
-![ExecuteSelectorListWithRecursiveDescent](./images/ExecuteSelectorListWithRecursiveDescent.png)
+![EvaluateSelectorListWithRecursiveDescent](./images/EvaluateSelectorListWithRecursiveDescent.png)
 
 The final result is
 ```
