@@ -32,6 +32,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonCons.JsonSchema", "sec\JsonCons.JsonSchema\JsonCons.JsonSchema.csproj", "{914AFB1A-59BE-418B-BB25-DC4972E3F4FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonCons.JsonSchema.Tests", "tests\JsonCons.JsonSchema.Tests\JsonCons.JsonSchema.Tests.csproj", "{C4977F15-154C-446D-869F-2182B4D2B8B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{114AD9FC-CC86-4FA7-B581-87FE76FF4827} = {114AD9FC-CC86-4FA7-B581-87FE76FF4827}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
