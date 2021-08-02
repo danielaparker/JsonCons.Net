@@ -25,8 +25,16 @@ namespace JsonCons.JsonSchema
 
     sealed class JsonValidatorCreator
     {
+        Func<Uri,JsonDocument> _uriResolver;
+
+        internal JsonValidatorCreator()
+        {
+            _uriResolver = DefaultUriResolver;
+        }
+
         internal JsonValidatorCreator(Func<Uri,JsonDocument> uriResolver)
         {
+            _uriResolver = uriResolver;
         }
 
         internal JsonValidator Create(JsonElement schema)
@@ -34,11 +42,11 @@ namespace JsonCons.JsonSchema
             return new JsonValidator();
         }
 
-        internal JsonDocument DefaultUriResolver(Uri uri)
+        static JsonDocument DefaultUriResolver(Uri uri)
         {
             if (uri.PathAndQuery.Equals("/draft-07/schema"))
             {
-                return SchemaDraft7.Instance;
+                return SchemaDraft7.Instance.Schema;
             }
             else
             {
