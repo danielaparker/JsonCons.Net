@@ -149,6 +149,14 @@ selects all the book objects that have ratings of 5:
 ]
 ```
 
+<div id="Selector4"/> 
+
+### Identifier selector 
+
+<div id="Selector5"/> 
+
+### Index selector 
+
 <div id="Selector6"/> 
 
 ### Slices
@@ -234,6 +242,13 @@ The final result is
 ```
 ["baz","qux"]
 ```
+
+<div id="Selector8"/> 
+
+### Wildcard selector (*)
+
+The recursive descent selector performs a select operation
+on a provided JSON value as follows:
 
 <div id="Selector9"/> 
 

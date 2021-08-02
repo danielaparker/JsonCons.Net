@@ -30,7 +30,7 @@ The JsonCons implementation differs from Stefan Goessner's original JavaScript i
 
 [Duplicates and ordering](#S4) 
 
-<div id="S4"/> 
+<div id="S1"/> 
 
 ## Paths
 
