@@ -1,9 +1,7 @@
-###############
-#    folder   #
-###############
-/**/DROP/
-/**/TEMP/
-/**/packages/
-/**/bin/
-/**/obj/
-_site
+**/DROP/
+**/TEMP/
+**/packages/
+**/bin/
+**/obj/
+log.txt
+
