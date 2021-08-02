@@ -39,7 +39,7 @@ namespace JsonCons.JsonPath.Tests
                         comment = "";
                     }
 
-                    var options = new JsonPathOptions();
+                    var options = new JsonSelectorOptions();
 
                     JsonElement element;
                     if (testCase.TryGetProperty("nodups", out element) && element.ValueKind == JsonValueKind.True)
@@ -48,7 +48,7 @@ namespace JsonCons.JsonPath.Tests
                     }
                     if (testCase.TryGetProperty("sort", out element) && element.ValueKind == JsonValueKind.True)
                     {
-                        options.SortBy = NodeSortBy.Path;
+                        options.Sort = true;
                     }
 
                     var exprElement = testCase.GetProperty("expression");
@@ -83,7 +83,7 @@ namespace JsonCons.JsonPath.Tests
                                 {
                                     Debug.WriteLine("nodups");
                                 }
-                                if (options.SortBy == NodeSortBy.Path)
+                                if (options.Sort)
                                 {
                                     Debug.WriteLine("sort");
                                 }

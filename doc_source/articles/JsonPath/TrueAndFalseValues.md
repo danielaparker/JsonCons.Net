@@ -6,7 +6,6 @@ A false value is any value on this list:
 - empty object: {},
 - empty string: "",
 - false,
-- null,
-- zero.
+- null.
 
 A true value is any value that is not false

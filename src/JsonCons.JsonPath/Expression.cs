@@ -49,17 +49,7 @@ namespace JsonCons.JsonPath
                 case JsonValueKind.String:
                     return val.GetString().Length == 0;
                 case JsonValueKind.Number:
-                {
-                    Decimal dec;
-                    if (val.TryGetDecimal(out dec))
-                    {
-                        return dec == 0;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+                    return false;
                 default:
                     return false;
             }

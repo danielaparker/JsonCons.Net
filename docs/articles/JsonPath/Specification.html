@@ -295,6 +295,10 @@ that allows you to select book objects based on criteria applied to descendent v
     }
 ]
 </code></pre>
+<div id="Selector4"></div> 
+<h3 id="identifier-selector">Identifier selector</h3>
+<div id="Selector5"></div> 
+<h3 id="index-selector">Index selector</h3>
 <div id="Selector6"></div> 
 <h3 id="slices">Slices</h3>
 <p>JsonCons jsonpath slices have the same semantics as Python slices</p>
@@ -387,15 +391,16 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 on a provided JSON value as follows:</p>
 <ul>
 <li><p>If its tail is null, it adds the value to the result list,
-and exits. Otherwise, it first provides the value to its tail,
-and continues as below.</p>
+and exits. Otherwise, it continues as below.</p>
 </li>
-<li><p>If the provided value is a JSON array, it iterates over each
-item in the array, and recursively performs the select
+<li><p>If the provided value is a JSON array, it first provides
+the value to its tail, and then iterates over each
+item in the array, recursively performing the select
 operation on each item.</p>
 </li>
-<li><p>If the provided value is a JSON object, it iterates over each
-property in the object, and recursively performs the select
+<li><p>If the provided value is a JSON object, it first provides
+the value to its tail, and then iterates over each
+property in the object, recursively performing the select
 operation on each property's value.</p>
 </li>
 </ul>
@@ -416,6 +421,10 @@ operation on each property's value.</p>
 <p>The final result is</p>
 <pre><code>[&quot;baz&quot;,&quot;qux&quot;]
 </code></pre>
+<div id="Selector8"></div> 
+<h3 id="wildcard-selector-">Wildcard selector (*)</h3>
+<p>The recursive descent selector performs a select operation
+on a provided JSON value as follows:</p>
 <div id="Selector9"></div> 
 <h3 id="unions">Unions</h3>
 <p>In JsonCons, a JSONPath union element can be</p>
@@ -458,8 +467,7 @@ if true, the array element, or value part of an object member, is selected.</p>
 <li>empty object: {},</li>
 <li>empty string: &quot;&quot;,</li>
 <li>false,</li>
-<li>null,</li>
-<li>zero.</li>
+<li>null.</li>
 </ul>
 <p>A true value is any value that is not false</p>
 <h3 id="operator-precedence">Operator Precedence</h3>

@@ -74,7 +74,7 @@ public static class JsonPathExamples
 
         Console.WriteLine("Remove duplicate nodes");
         IList<PathValuePair> uniqueNodes = selector.SelectNodes(doc.RootElement, 
-                                                       new JsonPathOptions{NoDuplicates=true});
+                                                       new JsonSelectorOptions{NoDuplicates=true});
         foreach (var node in uniqueNodes)
         {
             Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
@@ -377,7 +377,7 @@ public static class JsonPathExamples
 
         Console.WriteLine("Allow duplicate nodes and sort by paths");
         IList<PathValuePair> nodesSort = selector.SelectNodes(doc.RootElement, 
-                                                             new JsonPathOptions{SortBy=NodeSortBy.Path});
+                                                             new JsonSelectorOptions{Sort=true});
         foreach (var node in nodesSort)
         {
             Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
@@ -386,7 +386,7 @@ public static class JsonPathExamples
 
         Console.WriteLine("Remove duplicate nodes");
         IList<PathValuePair> nodesNoDups = selector.SelectNodes(doc.RootElement, 
-                                                           new JsonPathOptions{NoDuplicates=true});
+                                                           new JsonSelectorOptions{NoDuplicates=true});
         foreach (var node in nodesNoDups)
         {
             Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
@@ -395,7 +395,7 @@ public static class JsonPathExamples
 
         Console.WriteLine("Remove duplicate nodes and sort by paths");
         IList<PathValuePair> nodesNoDupsSort = selector.SelectNodes(doc.RootElement, 
-                                                               new JsonPathOptions{NoDuplicates=true, SortBy=NodeSortBy.Path});
+                                                               new JsonSelectorOptions{NoDuplicates=true, Sort=true});
         foreach (var node in nodesNoDupsSort)
         {
             Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, options)}");
@@ -532,7 +532,7 @@ public static class JsonPathExamples
                                                ?@.Category=='Drama'
                                               ]");
         IList<JsonElement> results2 = selector2.Select(doc.RootElement,
-            new JsonPathOptions{ExecutionMode = JsonPathExecutionMode.Parallel});
+            new JsonSelectorOptions{ExecutionMode = PathExecutionMode.Parallel});
 
         Console.WriteLine("Results with parallel processing:");
         foreach (var element in results2)
