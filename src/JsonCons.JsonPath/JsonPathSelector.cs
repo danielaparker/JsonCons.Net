@@ -546,7 +546,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
+            if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -582,9 +582,9 @@ namespace JsonCons.JsonPath
                 throw new InvalidOperationException($"Maximum depth level exceeded in recursive descent selector.");
             }
 
-            this.TailSelect(resources, root, last, current, accumulator, options, depth+1);
             if (current.ValueKind == JsonValueKind.Array)
             {
+                this.TailSelect(resources, root, last, current, accumulator, options, depth+1);
                 Int32 index = 0;
                 foreach (var item in current.EnumerateArray())
                 {
@@ -596,6 +596,7 @@ namespace JsonCons.JsonPath
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
+                this.TailSelect(resources, root, last, current, accumulator, options, depth+1);
                 foreach (var prop in current.EnumerateObject())
                 {
                     Select(resources, root, 
@@ -612,7 +613,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
+            if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -672,7 +673,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
+            if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -728,7 +729,7 @@ namespace JsonCons.JsonPath
                            ProcessingFlags options,
                            int depth)
         {
-            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Sequential)
+            if (resources.Options.ExecutionMode == PathExecutionMode.Sequential)
             {
                 foreach (var selector in _selectors)
                 {
@@ -753,7 +754,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
+            if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }
@@ -836,7 +837,7 @@ namespace JsonCons.JsonPath
         {
             var elements = new List<IValue>();
             INodeAccumulator accumulator = new ValueAccumulator(elements);  
-            if (resources.Options.ExecutionMode == JsonPathExecutionMode.Parallel)
+            if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
                 accumulator = new SynchronizedNodeAccumulator(accumulator);
             }

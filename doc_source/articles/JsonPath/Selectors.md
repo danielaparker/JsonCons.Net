@@ -197,15 +197,16 @@ The recursive descent selector performs a select operation
 on a provided JSON value as follows:
 
 - If its tail is null, it adds the value to the result list,
-and exits. Otherwise, it first provides the value to its tail,
-and continues as below.
+and exits. Otherwise, it continues as below.
 
-- If the provided value is a JSON array, it iterates over each 
-item in the array, and recursively performs the select
+- If the provided value is a JSON array, it first provides 
+the value to its tail, and then iterates over each 
+item in the array, recursively performing the select
 operation on each item.
 
-- If the provided value is a JSON object, it iterates over each 
-property in the object, and recursively performs the select
+- If the provided value is a JSON object, it first provides 
+the value to its tail, and then iterates over each 
+property in the object, recursively performing the select
 operation on each property's value.
 
 Consider the JSON document
