@@ -13,7 +13,18 @@ System.Text.Json namespace with support for JsonPath.</Description>
     <PackageProjectUrl>https://github.com/danielaparker/JsonCons.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/danielaparker/JsonCons.Net</RepositoryUrl>
     <PackageTags>jsonpath json-path</PackageTags>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes>Changes:
+
+- class JsonPathOptions renamed to JsonSelectorOptions
+- property JsonSelectorOptions.SortBy replaced by 
+JsonSelectorOptions.Sort, which is a boolean value that indicates 
+whether to sort results by normalized paths
+- JsonPathExecutionMode renamed to PathExecutionMode
+
+Defect fixes:
+
+- Unquoted strings now allow all characters in the range
+%x80-10FFFF, as per specification.</PackageReleaseNotes>
     <Copyright>Daniel Parker</Copyright>
   </PropertyGroup>
 
