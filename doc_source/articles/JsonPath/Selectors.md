@@ -21,14 +21,14 @@ proceeds as follows:
 - The selector at the head of the list will select zero, one or
 many items from its provided value, and, for each item,
 evaluate the tail of the list (recursively.) For example, 
-given 
+given  
 ```
 [{"a":"bar"},{"b":"baz"},{"b":"qux"}]
-```
-and a JSONPath 
+```  
+and a JSONPath  
 ```
 $.*.b
-```
+```  
 the root selector will select the root and evalaute `*.b(root)`,
 the wildcard selector will select the elements in the root and
 evaluate `b({"a":"bar"})`, `b({"b":"baz"})`, and `b({"b":"qux"})`.
