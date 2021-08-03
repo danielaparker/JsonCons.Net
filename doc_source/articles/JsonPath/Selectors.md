@@ -25,7 +25,7 @@ given
 <br/><br/><pre><code>[{"a":"bar"},{"b":"baz"},{"b":"qux"}]</code></pre>
 and a JSONPath
 <br/><br/><pre><code>$.*.b</code></pre>
-the root selector will select the root and evalaute `*.b(root)`,
+the root selector will select the root and evaluate `*.b(root)`,
 the wildcard selector will select the elements in the root and
 evaluate `b({"a":"bar"})`, `b({"b":"baz"})`, and `b({"b":"qux"})`.
    
