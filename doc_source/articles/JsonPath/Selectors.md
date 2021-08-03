@@ -14,17 +14,25 @@ linked list of selectors. There are ten different kinds of selectors:
 [Union selector](#Selector9)  
 [Filter selector](#Selector10)  
 
-Each selector is respsonsible for performing a select operation
-against a single JSON value. The end result is a set of
-selected values. Evaluation works as follows:
- 
-- Provide the value to the selector at the head of the list
-- This selector will select zero or more items from the provided value, 
-and, for each item, provide the item to its tail.
-- This proceeds recursively until the tail is null. The last selector
-in the list will add its provided value to the result set. 
+The selectors arranged in a linked list take a JSON value as
+input and produce a list of JSON values as output. Evaluation
+proceeds as follows:
 
-Note that only the last selector in the list adds to the result set.
+* The selector at the head of the list will select zero, one or
+many items from its provided value, and, for each item,
+evaluate the tail of the list (recursively.) For example,
+given
+<br/><br/><pre><code>[{"a":"bar"},{"b":"baz"},{"b":"qux"}]</code></pre>
+and a JSONPath
+<br/><br/><pre><code>$.*.b</code></pre>
+the root selector will select the root and evaluate `*.b(root)`,
+the wildcard selector will select the elements in the root and
+evaluate `b({"a":"bar"})`, `b({"b":"baz"})`, and `b({"b":"qux"})`.
+   
+* When the tail is null, evaluation stops. The last selector
+in the list will add its provided value to the output list. 
+
+Note that only the last selector adds to the output list.
 
 Consider the JSON document
 ```
@@ -247,8 +255,9 @@ The final result is
 
 ### Wildcard selector (*)
 
-The recursive descent selector performs a select operation
-on a provided JSON value as follows:
+The wildcard selector can select multiple items. If provided with an array,
+it will select all the array's elements, and if provided with an object,
+it will select the value part of all the object's name-value pairs.
 
 <div id="Selector9"/> 
 
@@ -288,8 +297,7 @@ An expression is considered false if it evaluates to any of the following values
 - empty object: {},
 - empty string: "",
 - false,
-- null,
-- zero.
+- null.
 
 It is considered true if it is not false.
 
