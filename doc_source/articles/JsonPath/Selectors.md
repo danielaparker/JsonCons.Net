@@ -255,8 +255,9 @@ The final result is
 
 ### Wildcard selector (*)
 
-The recursive descent selector performs a select operation
-on a provided JSON value as follows:
+The wildcard selector can select multiple items. If provided with an array,
+it will select all the array's elements, and if provided with an object,
+it will select the value part of all the object's name-value pairs.
 
 <div id="Selector9"/> 
 
