@@ -192,17 +192,28 @@ linked list of selectors. There are ten different kinds of selectors:</p>
 <a href="#Selector8">Wildcard selector (*)</a><br>
 <a href="#Selector9">Union selector</a><br>
 <a href="#Selector10">Filter selector</a></p>
-<p>Each selector is respsonsible for performing a select operation
-against a single JSON value. The end result is a set of
-selected values. Evaluation works as follows:</p>
+<p>The selectors arranged in a linked list take a JSON value as
+input and produce a list of JSON values as output. Evaluation
+proceeds as follows:</p>
 <ul>
-<li>Provide the value to the selector at the head of the list</li>
-<li>This selector will select zero or more items from the provided value,
-and, for each item, provide the item to its tail.</li>
-<li>This proceeds recursively until the tail is null. The last selector
-in the list will add its provided value to the result set.</li>
+<li>The selector at the head of the list will select zero, one or
+many items from its provided value, and, for each item,
+evaluate the tail of the list (recursively.) For example,
+given</li>
 </ul>
-<p>Note that only the last selector in the list adds to the result set.</p>
+<pre><code>[{&quot;a&quot;:&quot;bar&quot;},{&quot;b&quot;:&quot;baz&quot;},{&quot;b&quot;:&quot;qux&quot;}]
+</code></pre>
+<p>and a JSONPath</p>
+<pre><code>$.*.b
+</code></pre>
+<p>the root selector will select the root and evalaute <code>*.b(root)</code>,
+the wildcard selector will select the elements in the root and
+evaluate <code>b({&quot;a&quot;:&quot;bar&quot;})</code>, <code>b({&quot;b&quot;:&quot;baz&quot;})</code>, and <code>b({&quot;b&quot;:&quot;qux&quot;})</code>.</p>
+<ul>
+<li>When the tail is null, evaluation stops. The last selector
+in the list will add its provided value to the output list.</li>
+</ul>
+<p>Note that only the last selector adds to the output list.</p>
 <p>Consider the JSON document</p>
 <pre><code>{&quot;foo&quot;:[
   {&quot;a&quot;:&quot;bar&quot;},
