@@ -18,22 +18,22 @@ The selectors arranged in a linked list take a JSON value as
 input and produce a list of JSON values as output. Evaluation
 proceeds as follows:
 
-- The selector at the head of the list will select zero, one or
+* The selector at the head of the list will select zero, one or
 many items from its provided value, and, for each item,
-evaluate the tail of the list (recursively.) For example, 
-given  
+evaluate the tail of the list (recursively.) For example,
+given
 ```
 [{"a":"bar"},{"b":"baz"},{"b":"qux"}]
-```  
-and a JSONPath  
+```
+and a JSONPath
 ```
 $.*.b
-```  
+```
 the root selector will select the root and evalaute `*.b(root)`,
 the wildcard selector will select the elements in the root and
 evaluate `b({"a":"bar"})`, `b({"b":"baz"})`, and `b({"b":"qux"})`.
    
-- When the tail is null, evaluation stops. The last selector
+* When the tail is null, evaluation stops. The last selector
 in the list will add its provided value to the output list. 
 
 Note that only the last selector adds to the output list.
