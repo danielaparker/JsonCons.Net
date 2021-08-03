@@ -88,17 +88,20 @@ proceeds as follows:</p>
 <li><p>The selector at the head of the list will select zero, one or
 many items from its provided value, and, for each item,
 evaluate the tail of the list (recursively.) For example,
-given
-[{&quot;a&quot;:&quot;bar&quot;},{&quot;b&quot;:&quot;baz&quot;},{&quot;b&quot;:&quot;qux&quot;}]
-and a JSONPath
-$.*.b
-the root selector will select the root and evalaute <code>*.b(root)</code>,
+given</p>
+<pre><code>  [{&quot;a&quot;:&quot;bar&quot;},{&quot;b&quot;:&quot;baz&quot;},{&quot;b&quot;:&quot;qux&quot;}]
+</code></pre>
+</li>
+</ul>
+<p>and a JSONPath</p>
+<pre><code>    $.*.b
+</code></pre>
+<p>the root selector will select the root and evalaute <code>*.b(root)</code>,
 the wildcard selector will select the elements in the root and
 evaluate <code>b({&quot;a&quot;:&quot;bar&quot;})</code>, <code>b({&quot;b&quot;:&quot;baz&quot;})</code>, and <code>b({&quot;b&quot;:&quot;qux&quot;})</code>.</p>
-</li>
-<li><p>When the tail is null, evaluation stops. The last selector
-in the list will add its provided value to the output list.</p>
-</li>
+<ul>
+<li>When the tail is null, evaluation stops. The last selector
+in the list will add its provided value to the output list.</li>
 </ul>
 <p>Note that only the last selector adds to the output list.</p>
 <p>Consider the JSON document</p>
