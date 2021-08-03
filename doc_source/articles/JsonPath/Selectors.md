@@ -297,8 +297,7 @@ An expression is considered false if it evaluates to any of the following values
 - empty object: {},
 - empty string: "",
 - false,
-- null,
-- zero.
+- null.
 
 It is considered true if it is not false.
 
