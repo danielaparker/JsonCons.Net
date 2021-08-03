@@ -22,11 +22,9 @@ proceeds as follows:
 many items from its provided value, and, for each item,
 evaluate the tail of the list (recursively.) For example,
 given
-
-        [{"a":"bar"},{"b":"baz"},{"b":"qux"}]
+<br/><br/><pre><code>[{"a":"bar"},{"b":"baz"},{"b":"qux"}]</code></pre>
 and a JSONPath
-
-        $.*.b
+<br/><br/><pre><code>$.*.b</code></pre>
 the root selector will select the root and evalaute `*.b(root)`,
 the wildcard selector will select the elements in the root and
 evaluate `b({"a":"bar"})`, `b({"b":"baz"})`, and `b({"b":"qux"})`.
