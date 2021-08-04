@@ -53,6 +53,10 @@ namespace JsonCons.Utilities.Tests
                         {
                             using JsonDocument result = JsonPatch.ApplyPatch(given, patch);
                             Assert.IsTrue(comparer.Equals(result.RootElement,expected));
+
+                            using JsonDocument patch2 = JsonPatch.FromDiff(given,result.RootElement);
+                            using JsonDocument result2 = JsonPatch.ApplyPatch(given, patch2.RootElement);
+                            Assert.IsTrue(comparer.Equals(result2.RootElement,expected));
                         }
                     }
                     catch (Exception e)

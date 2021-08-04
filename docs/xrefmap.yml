@@ -778,6 +778,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.Utilities.JsonMergePatch.ApplyMergePatch
   nameWithType: JsonMergePatch.ApplyMergePatch
+- uid: JsonCons.Utilities.JsonMergePatch.FromDiff(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  name: FromDiff(JsonElement, JsonElement)
+  href: ref/JsonCons.Utilities.JsonMergePatch.html#JsonCons_Utilities_JsonMergePatch_FromDiff_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.Utilities.JsonMergePatch.FromDiff(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonMergePatch.FromDiff(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
+  nameWithType: JsonMergePatch.FromDiff(JsonElement, JsonElement)
+- uid: JsonCons.Utilities.JsonMergePatch.FromDiff*
+  name: FromDiff
+  href: ref/JsonCons.Utilities.JsonMergePatch.html#JsonCons_Utilities_JsonMergePatch_FromDiff_
+  commentId: Overload:JsonCons.Utilities.JsonMergePatch.FromDiff
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonMergePatch.FromDiff
+  nameWithType: JsonMergePatch.FromDiff
 - uid: JsonCons.Utilities.JsonPatch
   name: JsonPatch
   href: ref/JsonCons.Utilities.JsonPatch.html

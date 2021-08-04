@@ -54,9 +54,9 @@ namespace JsonCons.Utilities
     ///     var options = new JsonSerializerOptions() { WriteIndented = true };
     /// 
     ///     Console.WriteLine("The original document:\n");
-    ///     Console.WriteLine($"{JsonSerializer.Serialize(doc.RootElement, options)}\n");
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(doc, options)}\n");
     ///     Console.WriteLine("The patch:\n");
-    ///     Console.WriteLine($"{JsonSerializer.Serialize(patch.RootElement, options)}\n");
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(patch, options)}\n");
     ///     Console.WriteLine("The result:\n");
     ///     Console.WriteLine($"{JsonSerializer.Serialize(result, options)}\n");
     ///        ");
@@ -162,6 +162,59 @@ namespace JsonCons.Utilities
             {
                 return new JsonDocumentBuilder(patch);
             }
+        }
+
+        /// <summary>
+        /// Builds a JSON Merge Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc7396">RFC 7396</see> 
+        /// given two JSON values, a source and a target.
+        /// </summary>
+        /// <remarks>
+        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// </remarks>
+        /// <param name="source">The source JSON value.</param>
+        /// <param name="target">The target JSON value.</param>
+        /// <returns>A JSON Merge Patch to convert the source JSON value to the target JSON value</returns>
+        public static JsonDocument FromDiff(JsonElement source, JsonElement target)
+        {
+            return _FromDiff(source, target).ToJsonDocument();
+        }
+
+        static JsonDocumentBuilder _FromDiff(JsonElement source, JsonElement target)
+        {
+            JsonElementEqualityComparer comparer = JsonElementEqualityComparer.Instance;
+
+            if (source.ValueKind != JsonValueKind.Object || target.ValueKind != JsonValueKind.Object)
+            {
+                return new JsonDocumentBuilder(target);
+            }
+            var builder = new JsonDocumentBuilder(JsonValueKind.Object);
+
+            foreach (var property in source.EnumerateObject())
+            {
+                JsonElement value;
+                if (target.TryGetProperty(property.Name, out value))
+                {
+                    if (!comparer.Equals(property.Value,value))
+                    {
+                        builder.AddProperty(property.Name, _FromDiff(property.Value, value));
+                    }
+                }
+                else
+                {
+                    builder.AddProperty(property.Name, new JsonDocumentBuilder(JsonValueKind.Null));
+                }
+            }
+
+            foreach (var property in target.EnumerateObject())
+            {
+                JsonElement value;
+                if (!source.TryGetProperty(property.Name, out value))
+                {
+                    builder.AddProperty(property.Name, new JsonDocumentBuilder(property.Value));
+                }
+            }
+
+            return builder;
         }
     }
 

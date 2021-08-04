@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text.Json;
 using JsonCons.Utilities;
 
@@ -27,9 +28,9 @@ class JsonPatchExamples
         var options = new JsonSerializerOptions() { WriteIndented = true };
 
         Console.WriteLine("The original document:\n");
-        Console.WriteLine($"{JsonSerializer.Serialize(doc.RootElement, options)}\n");
+        Console.WriteLine($"{JsonSerializer.Serialize(doc, options)}\n");
         Console.WriteLine("The patch:\n");
-        Console.WriteLine($"{JsonSerializer.Serialize(patch.RootElement, options)}\n");
+        Console.WriteLine($"{JsonSerializer.Serialize(patch, options)}\n");
         Console.WriteLine("The result:\n");
         Console.WriteLine($"{JsonSerializer.Serialize(result, options)}\n");
     }
@@ -57,11 +58,14 @@ class JsonPatchExamples
         var options = new JsonSerializerOptions() { WriteIndented = true };
 
         Console.WriteLine("The source document:\n");
-        Console.WriteLine($"{JsonSerializer.Serialize(sourceDoc.RootElement, options)}\n");
+        Console.WriteLine($"{JsonSerializer.Serialize(sourceDoc, options)}\n");
         Console.WriteLine("The target document:\n");
-        Console.WriteLine($"{JsonSerializer.Serialize(targetDoc.RootElement, options)}\n");
+        Console.WriteLine($"{JsonSerializer.Serialize(targetDoc, options)}\n");
         Console.WriteLine("Patch to be applied to source:\n");
         Console.WriteLine($"{JsonSerializer.Serialize(patch, options)}\n");
+
+        using JsonDocument result = JsonPatch.ApplyPatch(sourceDoc.RootElement, patch.RootElement);
+        Debug.Assert(JsonElementEqualityComparer.Instance.Equals(result.RootElement, targetDoc.RootElement));
     }
 
     static void Main(string[] args)

@@ -50,6 +50,10 @@ namespace JsonCons.Utilities.Tests
                         {
                             using JsonDocument result = JsonMergePatch.ApplyMergePatch(given, patch);
                             Assert.IsTrue(comparer.Equals(result.RootElement,expected));
+
+                            using JsonDocument patch2 = JsonMergePatch.FromDiff(given,result.RootElement);
+                            using JsonDocument result2 = JsonMergePatch.ApplyMergePatch(given, patch2.RootElement);
+                            Assert.IsTrue(comparer.Equals(result2.RootElement,expected));
                         }
                     }
                     catch (Exception e)

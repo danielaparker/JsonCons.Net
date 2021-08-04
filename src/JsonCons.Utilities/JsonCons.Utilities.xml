@@ -363,9 +363,9 @@
                 var options = new JsonSerializerOptions() { WriteIndented = true };
             
                 Console.WriteLine("The original document:\n");
-                Console.WriteLine($"{JsonSerializer.Serialize(doc.RootElement, options)}\n");
+                Console.WriteLine($"{JsonSerializer.Serialize(doc, options)}\n");
                 Console.WriteLine("The patch:\n");
-                Console.WriteLine($"{JsonSerializer.Serialize(patch.RootElement, options)}\n");
+                Console.WriteLine($"{JsonSerializer.Serialize(patch, options)}\n");
                 Console.WriteLine("The result:\n");
                 Console.WriteLine($"{JsonSerializer.Serialize(result, options)}\n");
                    ");
@@ -433,6 +433,18 @@
             <param name="patch">The JSON merge patch to be applied to the source JSON value.</param>
             <returns>The patched JSON value</returns>
         </member>
+        <member name="M:JsonCons.Utilities.JsonMergePatch.FromDiff(System.Text.Json.JsonElement,System.Text.Json.JsonElement)">
+            <summary>
+            Builds a JSON Merge Patch as defined in <see href="https://datatracker.ietf.org/doc/html/rfc7396">RFC 7396</see> 
+            given two JSON values, a source and a target.
+            </summary>
+            <remarks>
+            It is the users responsibilty to properly Dispose the returned JSONDocument value
+            </remarks>
+            <param name="source">The source JSON value.</param>
+            <param name="target">The target JSON value.</param>
+            <returns>A JSON Merge Patch to convert the source JSON value to the target JSON value</returns>
+        </member>
         <member name="T:JsonCons.Utilities.JsonPatchException">
             <summary>
             Captures error message and the operation that caused it.
@@ -488,9 +500,9 @@
                 var options = new JsonSerializerOptions() { WriteIndented = true };
             
                 Console.WriteLine("The original document:\n");
-                Console.WriteLine($"{JsonSerializer.Serialize(doc.RootElement, options)}\n");
+                Console.WriteLine($"{JsonSerializer.Serialize(doc, options)}\n");
                 Console.WriteLine("The patch:\n");
-                Console.WriteLine($"{JsonSerializer.Serialize(patch.RootElement, options)}\n");
+                Console.WriteLine($"{JsonSerializer.Serialize(patch, options)}\n");
                 Console.WriteLine("The result:\n");
                 Console.WriteLine($"{JsonSerializer.Serialize(result, options)}\n");
                    ");
@@ -568,7 +580,7 @@
             </remarks>
             <param name="source">The source JSON value.</param>
             <param name="target">The target JSON value.</param>
-            <returns>A patch to convert the source JSON value to the target JSON value</returns>
+            <returns>A JSON Merge Patch to convert the source JSON value to the target JSON value</returns>
         </member>
         <member name="T:JsonCons.Utilities.JsonPointer">
             <summary>
