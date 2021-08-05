@@ -5,7 +5,7 @@ The JsonCons.JsonPath library complements the functionality of the
 with an implementation of [Stefan Goessner's JsonPath](https://goessner.net/articles/JsonPath/). 
 This implementation has the following features:
 
-- It is based on a hand-constructed recursive-descent parser that follows a formal
+- It is based on a hand-constructed finite state machine that follows a formal
 grammar described in an [ABNF grammar](https://danielaparker.github.io/JsonCons.Net/articles/JsonPath/Specification.html)
 with specification.
 
