@@ -8,6 +8,8 @@
 
 [!include[True and False Values](./TrueAndFalseValues.md)]
 
+[!include[Operands](./Operands.md)]
+
 [!include[Operator Precedence](./operators/OperatorPrecedence.md)]
 
 [!include[Or Expression](./operators/or-expression.md)]

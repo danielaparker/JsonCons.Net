@@ -5,17 +5,17 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Add your introductions here! </title>
+    <title>Operands </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Add your introductions here! ">
+    <meta name="title" content="Operands ">
     <meta name="generator" content="docfx 2.58.0.0">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
     
     
     
@@ -34,8 +34,8 @@
                 <span class="icon-bar"></span>
               </button>
               
-              <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../logo.svg" alt="">
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
@@ -67,8 +67,43 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="add-your-introductions-here">Add your introductions here!</h1>
+<h2 id="operands">Operands</h2>
 
+<p>The operands in an expression may be a jsonpath</p>
+<pre><code>jsonpath = &quot;$&quot; [relative-location]
+jsonpath = &quot;@&quot; [relative-location]
+</code></pre>
+<p>or a JSON value</p>
+<pre><code>json-literal ; Any valid JSON value
+</code></pre>
+<p>For example, given a JSON document</p>
+<pre><code>[[1, 2, 3], [1], [2, 3], 1, 2]
+</code></pre>
+<p>the four queries below are all valid</p>
+<pre><code>$[?@ == 2]          
+
+$[?@ == [1,2,3]]    
+
+$[?@[0:1]==[1]]     
+
+$[?$[2] == [2,3]]   
+</code></pre>
+<p>and produce the results</p>
+<pre><code class="lang-json">[2]   
+
+[[1,2, 3]]    
+
+[[1, 2, 3],  [1]]  
+
+[[1,2,3],[1],[2,3],1,2]
+</code></pre>
+<p>Note that, in an expression, a <code>jsonpath</code> is not evaluated as a
+collection of matching JSON values, but rather, as a single JSON value.
+The slice, recursive descent, wildcard, union and filter selectors,
+which can evaluate to zero, one, or many items, are wrapped
+in a Json array. The others - root, current node, parent node,
+identifier, and index selectors - evaluate to a single value if
+matched, otherwise a null value.</p>
 </article>
           </div>
           
@@ -77,7 +112,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/workflows/doc_source/articles/intro.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/workflows/doc_source/articles/JsonPath/Operands.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -104,8 +139,8 @@
       </footer>
     </div>
     
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
-    <script type="text/javascript" src="../styles/docfx.js"></script>
-    <script type="text/javascript" src="../styles/main.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
   </body>
 </html>

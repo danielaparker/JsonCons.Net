@@ -57,7 +57,7 @@ single-quoted-string     = single-quote
                            single-quote
 
 expression = single-quoted-string 
-expression =/ json-literal
+expression =/ json-literal ; any valid JSON value
 expression =/ jsonpath 
 expression =/ unary-expression / binary-expression / regex-expression / paren-expression 
 paren-expression  = "(" expression ")"
@@ -67,8 +67,6 @@ regex-expression = expression regex-operator "/" regex "/" [i]
 unary-operator = "!" / "-"
 binary-operator  = "*" / "/" / "%" / "+" / "-" / "&&" / "||" / <" / "<=" / "==" / ">=" / ">" / "!=" 
 regex-operator = "=~"
-
-; "json-literal" is any valid JSON value.  
 ;
 ; "regex" represents regular expression characters
 

@@ -103,6 +103,8 @@ simply stating that expressions can be anything that the underlying script
 engine can handle. `JsonCons` expressions support the following comparision 
 and arithmetic operators. 
 
+[!include[Operands](./Operands.md)]
+
 ### Binary operators
 
 Operator| Expression |      Description

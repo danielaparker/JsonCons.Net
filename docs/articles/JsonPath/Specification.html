@@ -126,7 +126,7 @@ single-quoted-string     = single-quote
                            single-quote
 
 expression = single-quoted-string 
-expression =/ json-literal
+expression =/ json-literal ; any valid JSON value
 expression =/ jsonpath 
 expression =/ unary-expression / binary-expression / regex-expression / paren-expression 
 paren-expression  = &quot;(&quot; expression &quot;)&quot;
@@ -136,8 +136,6 @@ regex-expression = expression regex-operator &quot;/&quot; regex &quot;/&quot; [
 unary-operator = &quot;!&quot; / &quot;-&quot;
 binary-operator  = &quot;*&quot; / &quot;/&quot; / &quot;%&quot; / &quot;+&quot; / &quot;-&quot; / &quot;&amp;&amp;&quot; / &quot;||&quot; / &lt;&quot; / &quot;&lt;=&quot; / &quot;==&quot; / &quot;&gt;=&quot; / &quot;&gt;&quot; / &quot;!=&quot; 
 regex-operator = &quot;=~&quot;
-
-; &quot;json-literal&quot; is any valid JSON value.  
 ;
 ; &quot;regex&quot; represents regular expression characters
 
@@ -479,6 +477,42 @@ if true, the array element, or value part of an object member, is selected.</p>
 <li>null.</li>
 </ul>
 <p>A true value is any value that is not false</p>
+<h2 id="operands">Operands</h2>
+<p>The operands in an expression may be a jsonpath</p>
+<pre><code>jsonpath = &quot;$&quot; [relative-location]
+jsonpath = &quot;@&quot; [relative-location]
+</code></pre>
+<p>or a JSON value</p>
+<pre><code>json-literal ; Any valid JSON value
+</code></pre>
+<p>For example, given a JSON document</p>
+<pre><code>[[1, 2, 3], [1], [2, 3], 1, 2]
+</code></pre>
+<p>the four queries below are all valid</p>
+<pre><code>$[?@ == 2]          
+
+$[?@ == [1,2,3]]    
+
+$[?@[0:1]==[1]]     
+
+$[?$[2] == [2,3]]   
+</code></pre>
+<p>and produce the results</p>
+<pre><code class="lang-json">[2]   
+
+[[1,2, 3]]    
+
+[[1, 2, 3],  [1]]  
+
+[[1,2,3],[1],[2,3],1,2]
+</code></pre>
+<p>Note that, in an expression, a <code>jsonpath</code> is not evaluated as a
+collection of matching JSON values, but rather, as a single JSON value.
+The slice, recursive descent, wildcard, union and filter selectors,
+which can evaluate to zero, one, or many items, are wrapped
+in a Json array. The others - root, current node, parent node,
+identifier, and index selectors - evaluate to a single value if
+matched, otherwise a null value.</p>
 <h3 id="operator-precedence">Operator Precedence</h3>
 <table>
 <thead>
@@ -1209,7 +1243,7 @@ namespace JsonCons.Examples
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/doc_source/articles/JsonPath/Specification.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/workflows/doc_source/articles/JsonPath/Specification.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

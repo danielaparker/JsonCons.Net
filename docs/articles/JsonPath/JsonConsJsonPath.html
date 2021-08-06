@@ -505,6 +505,42 @@ does not provide any specification for the allowable filter expressions,
 simply stating that expressions can be anything that the underlying script
 engine can handle. <code>JsonCons</code> expressions support the following comparision
 and arithmetic operators.</p>
+<h2 id="operands">Operands</h2>
+<p>The operands in an expression may be a jsonpath</p>
+<pre><code>jsonpath = &quot;$&quot; [relative-location]
+jsonpath = &quot;@&quot; [relative-location]
+</code></pre>
+<p>or a JSON value</p>
+<pre><code>json-literal ; Any valid JSON value
+</code></pre>
+<p>For example, given a JSON document</p>
+<pre><code>[[1, 2, 3], [1], [2, 3], 1, 2]
+</code></pre>
+<p>the four queries below are all valid</p>
+<pre><code>$[?@ == 2]          
+
+$[?@ == [1,2,3]]    
+
+$[?@[0:1]==[1]]     
+
+$[?$[2] == [2,3]]   
+</code></pre>
+<p>and produce the results</p>
+<pre><code class="lang-json">[2]   
+
+[[1,2, 3]]    
+
+[[1, 2, 3],  [1]]  
+
+[[1,2,3],[1],[2,3],1,2]
+</code></pre>
+<p>Note that, in an expression, a <code>jsonpath</code> is not evaluated as a
+collection of matching JSON values, but rather, as a single JSON value.
+The slice, recursive descent, wildcard, union and filter selectors,
+which can evaluate to zero, one, or many items, are wrapped
+in a Json array. The others - root, current node, parent node,
+identifier, and index selectors - evaluate to a single value if
+matched, otherwise a null value.</p>
 <h3 id="binary-operators">Binary operators</h3>
 <table>
 <thead>
@@ -825,7 +861,7 @@ provide an option for sorting results by paths.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/doc_source/articles/JsonPath/JsonConsJsonPath.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/workflows/doc_source/articles/JsonPath/JsonConsJsonPath.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
