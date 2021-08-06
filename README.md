@@ -1,5 +1,9 @@
 # JsonCons.Net
 
+|JsonCons.JsonPath|JsonCons.JsonPath<br>.Generation|JsonCons.JsonPath<br>.Data|JsonCons.JsonPath<br>.UniqueKeys|JsonPointer.Net|
+|:-:|:-:|:-:|:-:|:-:|
+|<a href="https://www.nuget.org/packages/JsonCons.JsonPath/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonCons.JsonPath.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonCons.JsonPath.svg?svg=true"></img></a>|<a href="https://www.nuget.org/packages/JsonCons.JsonPath.Generation/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonCons.JsonPath.Generation.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonCons.JsonPath.Generation.svg?svg=true"></img></a>|<a href="https://www.nuget.org/packages/JsonCons.JsonPath.Data/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonCons.JsonPath.Data.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonCons.JsonPath.Data.svg?svg=true"></img></a>|<a href="https://www.nuget.org/packages/JsonCons.JsonPath.UniqueKeys/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonCons.JsonPath.UniqueKeys.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonCons.JsonPath.UniqueKeys.svg?svg=true"></img></a>|<a href="https://www.nuget.org/packages/JsonPointer.Net/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonPointer.Net.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonPointer.Net.svg?svg=true"></img></a>|
+
 The JsonCons.Net libraries include classes that complement the functionality of the 
 [System.Text.Json namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1),
 offering support for:
