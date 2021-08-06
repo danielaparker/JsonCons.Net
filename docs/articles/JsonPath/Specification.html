@@ -482,14 +482,12 @@ if true, the array element, or value part of an object member, is selected.</p>
 <pre><code>jsonpath = &quot;$&quot; [relative-location]
 jsonpath = &quot;@&quot; [relative-location]
 </code></pre>
-<p>or a JSON value</p>
-<pre><code>json-literal ; Any valid JSON value
-</code></pre>
+<p>a single quoted string, or a JSON literal.</p>
 <p>For example, given a JSON document</p>
-<pre><code>[[1, 2, 3], [1], [2, 3], 1, 2]
+<pre><code>[[1, 2, 3], [1], [2, 3], &quot;1&quot;, &quot;2&quot;]
 </code></pre>
 <p>the four queries below are all valid</p>
-<pre><code>$[?@ == 2]          
+<pre><code>$[?@ == '2']
 
 $[?@ == [1,2,3]]    
 
@@ -498,13 +496,13 @@ $[?@[0:1]==[1]]
 $[?$[2] == [2,3]]   
 </code></pre>
 <p>and produce the results</p>
-<pre><code class="lang-json">[2]   
+<pre><code class="lang-json">[&quot;2&quot;]   
 
 [[1,2, 3]]    
 
-[[1, 2, 3],  [1]]  
+[[1, 2, 3], [1]]  
 
-[[1,2,3],[1],[2,3],1,2]
+[[1, 2, 3], [1], [2, 3], &quot;1&quot;, &quot;2&quot;]
 </code></pre>
 <p>In an expression, a <code>jsonpath</code> is not evaluated as a
 collection of matching JSON values, but rather, as a single JSON value.

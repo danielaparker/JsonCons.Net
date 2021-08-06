@@ -7,19 +7,16 @@ jsonpath = "$" [relative-location]
 jsonpath = "@" [relative-location]
 ```
 
-or a JSON value
-```
-json-literal ; Any valid JSON value
-```
+a single quoted string, or a JSON literal. 
 
 For example, given a JSON document
 ```
-[[1, 2, 3], [1], [2, 3], 1, 2]
+[[1, 2, 3], [1], [2, 3], "1", "2"]
 ```
 the four queries below are all valid
 
 ```
-$[?@ == 2]          
+$[?@ == '2']
 
 $[?@ == [1,2,3]]    
 
@@ -29,13 +26,13 @@ $[?$[2] == [2,3]]
 ```
 and produce the results
 ```json
-[2]   
+["2"]   
 
 [[1,2, 3]]    
 
-[[1, 2, 3],  [1]]  
+[[1, 2, 3], [1]]  
 
-[[1,2,3],[1],[2,3],1,2]
+[[1, 2, 3], [1], [2, 3], "1", "2"]
 ```
 
 In an expression, a `jsonpath` is not evaluated as a
