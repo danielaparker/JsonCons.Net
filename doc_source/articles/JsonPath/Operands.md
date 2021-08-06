@@ -7,7 +7,7 @@ jsonpath = "$" [relative-location]
 jsonpath = "@" [relative-location]
 ```
 
-a single quoted string, or a JSON literal. 
+a `single-quoted-string`, or a `json-literal`. 
 
 For example, given a JSON document
 ```
