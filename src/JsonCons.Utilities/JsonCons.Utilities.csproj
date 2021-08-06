@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>1.0.0-preview.1</Version>
+    <Version>1.0.0-preview.2</Version>
     <Authors>Daniel Parker</Authors>
     <Description>The JsonCons.Utilities library includes classes that complement the functionality of the 
 System.Text.Json namespace with support for JSON Pointer, JSON Patch, and JSON Merge Patch.</Description>
@@ -12,7 +12,9 @@ System.Text.Json namespace with support for JSON Pointer, JSON Patch, and JSON M
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/danielaparker/JsonCons.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/danielaparker/JsonCons.Net</RepositoryUrl>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes>- Added `JsonMergePatch.FromDiff` for creating a JSON Merge Patch
+from source and target JSON documents
+</PackageReleaseNotes>
     <PackageTags>jsonpointer json-pointer jsonpatch json-patch json-merge-patch</PackageTags>
   </PropertyGroup>
 
