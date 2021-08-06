@@ -38,7 +38,7 @@ and produce the results
 [[1,2,3],[1],[2,3],1,2]
 ```
 
-Note that, in an expression, a `jsonpath` is not evaluated as a
+In an expression, a `jsonpath` is not evaluated as a
 collection of matching JSON values, but rather, as a single JSON value.
 The slice, recursive descent, wildcard, union and filter selectors,
 which can evaluate to zero, one, or many items, are wrapped
