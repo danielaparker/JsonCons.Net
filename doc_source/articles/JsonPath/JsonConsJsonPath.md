@@ -1,28 +1,44 @@
 # JsonCons JSONPath
 
-[JSONPath](http://goessner.net/articles/JsonPath/) is a loosely standardized syntax for querying JSON. 
-There are many implementations and they differ in significant ways, see Christoph Burgmer's 
-[JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
+The JsonCons.JsonPath library complements the functionality of the 
+[System.Text.Json namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1)
+with an implementation of JSONPath. It provides support for querying the 
+JsonDocument/JsonElement classes. It targets .Net Standard 2.1.
 
-The JsonCons implementation is described in an [ABNF grammar](Specification.md) (in progress.)
-It explicitly implements a state machine that corresponds to this grammar. 
+JSONPath is a loosely standardized syntax for querying JSON. The original JavaScript JSONPath is a creation
+of Stefan Goessner and is described [here](https://goessner.net/articles/JsonPath/). Since
+the original, there have been many implementations in multiple languages, 
+implementations that differ in significant ways. For an exhaustive comparison of differences, 
+see Christoph Burgmer's [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
 
-The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:
+The JsonCons implementation attempts to preseve the essential flavor of JSONPath. Where
+implementations differ, it generally takes into account the consensus as established in
+the [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
+[Paths](#S1) 
 
-- Stefan Goessner's implemention returns `false` in case of no match, but in a note he suggests an alternative is to return an empty array. 
-  The `JsonCons` implementation returns an empty array in case of no match.
-- Names in the dot notation may be unquoted (no spaces), single-quoted, or double-quoted.
-- Names in the square bracket notation may be single-quoted or double-quoted.
-- Wildcards are allowed in the dot notation
-- Unions of separate JSONPath expressions are allowed, e.g.
+In addition, the JsonCons incorporates some generalizations and tightening of syntax introduced
+in the more innovative and rigourously specified implementations.
+
+- Like [dchester/jsonpath](https://github.com/dchester/jsonpath), it requires
+that unquoted names be restricted to one or more ASCII letters, digits, or underscores, and
+must start with `A-Za-z_`. 
+
+- It allows names in the dot notation to be unquoted, single-quoted, or double-quoted.
+
+- It allows names in the square bracket notation to be single-quoted or double-quoted.
+
+- Like [PaesslerAG/jsonpath/ajson](https://github.com/PaesslerAG/jsonpath), it allows filter expressions 
+to omit the enclosing parentheses, as in `$..book[?(@.price<10)]`. 
+
+- It supports unions of separate JSONPath selectors, e.g.
 
     $..[@.firstName,@.address.city]
 
-- Fiter expressions, e.g. `$..book[?(@.price<10)]`, may omit the enclosing parentheses, like so `$..book[?@.price<10]`. 
-- A parent operator `^` provides access to the parent node.
-- Options are provided to exclude results corresponding to duplicate paths, and to sort results according to paths.
+- Like [JSONPath Plus](https://www.npmjs.com/package/jsonpath-plus), it supports a parent operator `^` 
+for providing access to the parent node.
 
-[Paths](#S1) 
+The JsonCons implementation is described in an [ABNF grammar](Specification.md) with specification.
+It explicitly implements a state machine that corresponds to this grammar. 
 
 [Selectors](#S2) 
 

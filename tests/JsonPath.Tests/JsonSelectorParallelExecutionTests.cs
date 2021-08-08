@@ -79,7 +79,7 @@ namespace JsonCons.JsonPath.Tests
             IList<JsonElement> results1 = selector.Select(doc.RootElement, new JsonSelectorOptions{ExecutionMode = PathExecutionMode.Sequential});
 
             var serializerOptions = new JsonSerializerOptions() { WriteIndented = true };
-            Debug.WriteLine($"{JsonSerializer.Serialize(doc, serializerOptions)}\n");
+            //Debug.WriteLine($"{JsonSerializer.Serialize(doc, serializerOptions)}\n");
 
             IList<JsonElement> results2 = selector.Select(doc.RootElement, new JsonSelectorOptions{ExecutionMode = PathExecutionMode.Parallel});
 

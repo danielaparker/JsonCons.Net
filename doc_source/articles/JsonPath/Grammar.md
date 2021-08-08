@@ -21,15 +21,14 @@ filter-expression = "?" expression
 
 slice-expression  = [integer] ":" [integer] [ ":" [integer] ]
 
-integer            = ["-"]1*digit
+integer           = ["-"]1*digit
 
 identifier = unquoted-string / single-quoted-string / double-quoted-string
 
-unquoted-string   =     %x30-39  /  ; 0-9
-                        %x41-5A  /  ; A-Z
-                        %x5F     /  ; _
-                        %x61-7A  /  ; a-z
-                        %x80-10FFFF ; U+0080 ...    
+unquoted-string   =  (%x41-5A / %x5F / %x61-7A) ; A-Za-z_
+                     *(
+                       %x30-39 / %x41-5A / %x5F / %x61-7A) ; 0-9A-Za-z_
+                      )
 
 double-quoted-string     = double-quote 
                            1*(unescaped-char / single-quote / escaped-char / escaped-double-quote) 
