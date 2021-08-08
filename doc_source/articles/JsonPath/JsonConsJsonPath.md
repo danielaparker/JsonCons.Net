@@ -14,7 +14,6 @@ see Christoph Burgmer's [JSONPath comparison](https://cburgmer.github.io/json-pa
 The JsonCons implementation attempts to preseve the essential flavor of JSONPath. Where
 implementations differ, it generally takes into account the consensus as established in
 the [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
-[Paths](#S1) 
 
 In addition, the JsonCons incorporates some generalizations and tightening of syntax introduced
 in the more innovative and rigourously specified implementations.
@@ -42,6 +41,8 @@ sort results by paths.
 
 The JsonCons implementation is described in an [ABNF grammar](Specification.md) with specification.
 It explicitly implements a state machine that corresponds to this grammar. 
+
+[Paths](#S1) 
 
 [Selectors](#S2) 
 
