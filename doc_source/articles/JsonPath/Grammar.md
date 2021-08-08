@@ -30,13 +30,17 @@ unquoted-string   =  (%x41-5A / %x5F / %x61-7A) ; A-Za-z_
                        %x30-39 / %x41-5A / %x5F / %x61-7A) ; 0-9A-Za-z_
                       )
 
+single-quoted-string     = single-quote 
+                           1*(unescaped-char / double-quote / escaped-char / escaped-single-quote) 
+                           single-quote
+
 double-quoted-string     = double-quote 
                            1*(unescaped-char / single-quote / escaped-char / escaped-double-quote) 
                            double-quote
 
 unescaped-char    = %x20-21 / %x23-2b / %x2d-5B / %x5D-10FFFF
-Escape            = %x5C   ; Back slash: \
-escaped-char      = Escape (
+escape            = %x5C   ; Back slash: \
+escaped-char      = escape (
                         %x5C /          ; \    reverse solidus U+005C
                         %x2F /          ; /    solidus         U+002F
                         %x62 /          ; b    backspace       U+0008
@@ -48,12 +52,8 @@ escaped-char      = Escape (
 
 single-quote             = %x2c   ; Single quote: "'"
 double-quote             = %x22   ; Double quote: '"'
-escaped-double-quote      = Escape %x22          ; "    double quote  U+0022
-escaped-single-quote      = Escape %x2c          ; '    single quote  U+002c
-
-single-quoted-string     = single-quote 
-                           1*(unescaped-char / double-quote / escaped-char / escaped-single-quote) 
-                           single-quote
+escaped-double-quote      = escape %x22          ; "    double quote  U+0022
+escaped-single-quote      = escape %x2c          ; '    single quote  U+002c
 
 expression = single-quoted-string 
 expression =/ json-literal ; any valid JSON value
