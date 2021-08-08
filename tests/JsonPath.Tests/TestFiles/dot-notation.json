@@ -66,7 +66,7 @@
             {
                 "comment" : "Dot notation with dash",
                 "expression" : "$.key-dash",
-                "error" : true
+                "error" : "syntax"
             },
             {
                 "comment" : "Dot notation with dash",
