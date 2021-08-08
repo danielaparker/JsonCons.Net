@@ -57,9 +57,13 @@ sort results by paths.
 The JsonCons implementation is described in an [ABNF grammar](Specification.md) with specification.
 It explicitly implements a state machine that corresponds to this grammar. 
 
-Reference documentation is available at [https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.JsonPath.html](https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.JsonPath.html)
+Documentation and examples may be found here:
 
-Code examples may be found at[https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPath.Examples/JsonPathExamples.cs](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPath.Examples/JsonPathExamples.cs)
+- [JsonCons JSONPath](https://danielaparker.github.io/JsonCons.Net/articles/JsonPath/JsonConsJsonPath.html)
+
+- [Reference](https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.JsonPath.html)
+
+- [Code examples](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPath.Examples/JsonPathExamples.cs)
 
 ## Acknowledgements
 

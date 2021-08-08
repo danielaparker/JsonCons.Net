@@ -11,7 +11,7 @@ offering support for:
 - JSON Pointer as defined in [RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901)
 - JSON Patch as defined in [RFC 6902](https://datatracker.ietf.org/doc/html/rfc6902)
 - JSON Merge Patch as defined in [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396)
-- JSONPath as defined in [JsonCons JsonPath](https://danielaparker.github.io/JsonCons.Net/articles/JsonPath/JsonConsJsonPath.html)
+- JSONPath as defined in [JsonCons JsonPath](https://danielaparker.github.io/JsonCons.Net/articles/JsonPath/Specification.html)
 
 For example, given a [system.text.json.JsonDocument](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsondocument?view=net-5.0)
 obtained as
