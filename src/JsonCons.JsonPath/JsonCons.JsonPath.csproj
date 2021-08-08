@@ -8,7 +8,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>The JsonCons.JsonPath library includes classes that complement the functionality of the 
-System.Text.Json namespace with support for JsonPath.</Description>
+System.Text.Json namespace with support for JsonPath. It provides support for querying the JsonDocument/JsonElement classes.</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/danielaparker/JsonCons.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/danielaparker/JsonCons.Net</RepositoryUrl>

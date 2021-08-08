@@ -37,6 +37,9 @@ to omit the enclosing parentheses, as in `$..book[?(@.price<10)]`.
 - Like [JSONPath Plus](https://www.npmjs.com/package/jsonpath-plus), it supports a parent operator `^` 
 for providing access to the parent node.
 
+- Options are provided to exclude results corresponding to duplicate paths, and to 
+sort results by paths.
+
 The JsonCons implementation is described in an [ABNF grammar](Specification.md) with specification.
 It explicitly implements a state machine that corresponds to this grammar. 
 
