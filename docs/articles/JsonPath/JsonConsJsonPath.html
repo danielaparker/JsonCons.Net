@@ -62,33 +62,42 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="jsoncons-jsonpath">JsonCons JSONPath</h1>
 
-<p><a href="http://goessner.net/articles/JsonPath/">JSONPath</a> is a loosely standardized syntax for querying JSON.
-There are many implementations and they differ in significant ways, see Christoph Burgmer's
-<a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.</p>
-<p>The JsonCons implementation is described in an <a href="Specification.html">ABNF grammar</a> (in progress.)
-It explicitly implements a state machine that corresponds to this grammar.</p>
-<p>The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:</p>
+<p>The JsonCons.JsonPath library complements the functionality of the
+<a href="https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1">System.Text.Json namespace</a>
+with an implementation of JSONPath. It provides support for querying the
+JsonDocument/JsonElement classes. It targets .Net Standard 2.1.</p>
+<p>JSONPath is a loosely standardized syntax for querying JSON. The original JavaScript JSONPath is a creation
+of Stefan Goessner and is described <a href="https://goessner.net/articles/JsonPath/">here</a>. Since
+the original, there have been many implementations in multiple languages,
+implementations that differ in significant ways. For an exhaustive comparison of differences,
+see Christoph Burgmer's <a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.</p>
+<p>The JsonCons implementation attempts to preseve the essential flavor of JSONPath. Where
+implementations differ, it generally takes into account the consensus as established in
+the <a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.
+<a href="#S1">Paths</a></p>
+<p>In addition, the JsonCons incorporates some generalizations and tightening of syntax introduced
+in the more innovative and rigourously specified implementations.</p>
 <ul>
-<li><p>Stefan Goessner's implemention returns <code>false</code> in case of no match, but in a note he suggests an alternative is to return an empty array.
-The <code>JsonCons</code> implementation returns an empty array in case of no match.</p>
+<li><p>Like <a href="https://github.com/dchester/jsonpath">dchester/jsonpath</a>, it requires
+that unquoted names be restricted to one or more ASCII letters, digits, or underscores, and
+must start with <code>A-Za-z_</code>.</p>
 </li>
-<li><p>Names in the dot notation may be unquoted (no spaces), single-quoted, or double-quoted.</p>
+<li><p>It allows names in the dot notation to be unquoted, single-quoted, or double-quoted.</p>
 </li>
-<li><p>Names in the square bracket notation may be single-quoted or double-quoted.</p>
+<li><p>It allows names in the square bracket notation to be single-quoted or double-quoted.</p>
 </li>
-<li><p>Wildcards are allowed in the dot notation</p>
+<li><p>Like <a href="https://github.com/PaesslerAG/jsonpath">PaesslerAG/jsonpath/ajson</a>, it allows filter expressions
+to omit the enclosing parentheses, as in <code>$..book[?(@.price&lt;10)]</code>.</p>
 </li>
-<li><p>Unions of separate JSONPath expressions are allowed, e.g.</p>
+<li><p>It supports unions of separate JSONPath selectors, e.g.</p>
 <p>$..[@.firstName,@.address.city]</p>
 </li>
-<li><p>Fiter expressions, e.g. <code>$..book[?(@.price&lt;10)]</code>, may omit the enclosing parentheses, like so <code>$..book[?@.price&lt;10]</code>.</p>
-</li>
-<li><p>A parent operator <code>^</code> provides access to the parent node.</p>
-</li>
-<li><p>Options are provided to exclude results corresponding to duplicate paths, and to sort results according to paths.</p>
+<li><p>Like <a href="https://www.npmjs.com/package/jsonpath-plus">JSONPath Plus</a>, it supports a parent operator <code>^</code>
+for providing access to the parent node.</p>
 </li>
 </ul>
-<p><a href="#S1">Paths</a></p>
+<p>The JsonCons implementation is described in an <a href="Specification.html">ABNF grammar</a> with specification.
+It explicitly implements a state machine that corresponds to this grammar.</p>
 <p><a href="#S2">Selectors</a></p>
 <p><a href="#S3">Filter expressions</a></p>
 <p><a href="#S4">Duplicates and ordering</a></p>

@@ -54,9 +54,9 @@ for providing access to the parent node.
 The JsonCons implementation is described in an [ABNF grammar](Specification.md) with specification.
 It explicitly implements a state machine that corresponds to this grammar. 
 
-Code examples may be found at:
+Reference documentation is available at [https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.JsonPath.html](https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.JsonPath.html)
 
-[JSONPath examples](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPath.Examples/JsonPathExamples.cs)
+Code examples may be found at[https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPath.Examples/JsonPathExamples.cs](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPath.Examples/JsonPathExamples.cs)
 
 ## Acknowledgements
 
