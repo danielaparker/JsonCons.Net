@@ -11,6 +11,7 @@ relative-location =/ parent [relative-location]
 
 relative-path = identifier [relative-location]
 relative-path =/ wildcard [relative-location]
+```
 
 ```text
 [!include[](./BracketExpression.md)]
@@ -22,7 +23,6 @@ current-node      = "@"
 parent            = "^"
 ```
 
-```
 [!include[](./Identifier.md)]
 
 ```text

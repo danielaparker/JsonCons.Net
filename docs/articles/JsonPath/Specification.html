@@ -80,18 +80,50 @@ relative-location =/ parent [relative-location]
 
 relative-path = identifier [relative-location]
 relative-path =/ wildcard [relative-location]
-
-```text
-[!include[](./BracketExpression.md)]
+</code></pre>
+<pre><code class="lang-text">[!include[](./BracketExpression.md)]
 </code></pre>
 <pre><code class="lang-text">root              = &quot;$&quot;
 current-node      = &quot;@&quot;
 parent            = &quot;^&quot;
 </code></pre>
-<pre><code>[!include[](./Identifier.md)]
+<pre><code class="lang-text">identifier = unquoted-string / single-quoted-string / double-quoted-string
 
-```text
-index             = integer 
+unquoted-string   =  (%x41-5A / %x5F / %x61-7A)            ; A-Za-z_
+                     *(
+                       %x30-39 / %x41-5A / %x5F / %x61-7A) ; 0-9A-Za-z_
+                      )
+
+single-quoted-string     = single-quote 
+                           1*(unescaped-char / double-quote / 
+                              escaped-char / escaped-single-quote) 
+                           single-quote
+
+double-quoted-string     = double-quote 
+                           1*(unescaped-char / single-quote / 
+                              escaped-char / escaped-double-quote) 
+                           double-quote
+
+escaped-single-quote      = escape single-quote    ; '    single quote  U+002c
+escaped-double-quote      = escape double-quote    ; &quot;    double quote  U+0022
+
+single-quote             = %x2c                    ; Single quote: &quot;'&quot;
+double-quote             = %x22                    ; Double quote: '&quot;'
+
+unescaped-char    = %x20-21 / %x23-2b / %x2d-5B / %x5D-10FFFF
+escape            = %x5C                ; Back slash: \
+escaped-char      = escape (
+                        %x5C /          ; \    reverse solidus U+005C
+                        %x2F /          ; /    solidus         U+002F
+                        %x62 /          ; b    backspace       U+0008
+                        %x66 /          ; f    form feed       U+000C
+                        %x6E /          ; n    line feed       U+000A
+                        %x72 /          ; r    carriage return U+000D
+                        %x74 /          ; t    tab             U+0009
+                        %x75 4HEXDIG )  ; uXXXX                U+XXXX
+</code></pre>
+
+<pre><code class="lang-text">index             = integer 
 slice             = [integer] &quot;:&quot; [integer] [ &quot;:&quot; [integer] ]
 recursive-descent = &quot;..&quot;
 wildcard          = &quot;*&quot;
