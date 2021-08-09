@@ -13,9 +13,7 @@ relative-path = identifier [relative-location]
 relative-path =/ wildcard [relative-location]
 ```
 
-```text
 [!include[](./BracketExpression.md)]
-```
 
 ```text
 root              = "$"

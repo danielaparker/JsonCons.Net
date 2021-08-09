@@ -80,8 +80,12 @@ relative-location =/ parent [relative-location]
 relative-path = identifier [relative-location]
 relative-path =/ wildcard [relative-location]
 </code></pre>
-<pre><code class="lang-text">[!include[](./BracketExpression.md)]
+<pre><code class="lang-text">bracket-expression = &quot;[&quot; bracketed-element *(&quot;,&quot; bracketed-element) &quot;]&quot;
+
+bracketed-element = index / slice-expression / single-quoted-string / double-quoted-string
+bracketed-element =/ wildcard / filter-expression / jsonpath
 </code></pre>
+
 <pre><code class="lang-text">root              = &quot;$&quot;
 current-node      = &quot;@&quot;
 parent            = &quot;^&quot;
