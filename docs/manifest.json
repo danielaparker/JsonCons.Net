@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/JsonConsJsonPath.html",
-          "hash": "UuY3qaxhZeu+MSHGnvf315vnLdATkuZPxR/t/sGx9bs="
+          "hash": "3gS+V2EhDhguI156DC8OYZ4vHiuzx3GcRRLDkzEByF0="
         }
       },
       "is_incremental": false,
@@ -33,7 +33,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/Selectors.html",
-          "hash": "PqG9iFxJh3BgqssCGb0ZduMYK0ak/h1wjW9j9cmClis="
+          "hash": "r8PiW//+N+hbZyi5Ct/SZCcxkgNMJjuqHi0Q8xAyzgw="
         }
       },
       "is_incremental": false,
@@ -45,7 +45,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/Specification.html",
-          "hash": "kcIRgsPtAB6ccjRNPjUYB3J6uwvZEOQheACkoQj3NS0="
+          "hash": "aORX4LJzA7lWCiL4Pt3Jq0lLnqn8dafIuL+hdkP2nD0="
         }
       },
       "is_incremental": false,
@@ -245,6 +245,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "articles/JsonPath/grammar/BracketExpression.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/JsonPath/grammar/BracketExpression.html",
+          "hash": "EA1xSgxGJpg3MOMKyDIYCCZYPBNfZvbUMLJKkJUtlYs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "articles/JsonPath/grammar/FilterExpression.md",
       "output": {
         ".html": {
@@ -261,7 +273,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/JsonPath/grammar/Grammar.html",
-          "hash": "CrXWTqp1u4a2r2R8md6tCU3B2+cNK3K+civuX6vzuME="
+          "hash": "y7Z1Nxiut2FHBBFleZwLdcj+WiDFYvrx8MyQCHM6kWk="
         }
       },
       "is_incremental": false,
@@ -274,18 +286,6 @@
         ".html": {
           "relative_path": "articles/JsonPath/grammar/Identifier.html",
           "hash": "OB9B6u90K+JYez4W3xV3Rv9xfHvK04ekjIp2978QDK0="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "articles/JsonPath/grammar/Union.md",
-      "output": {
-        ".html": {
-          "relative_path": "articles/JsonPath/grammar/Union.html",
-          "hash": "TCSJ6786JuYtQO/GDhED6MFMNwsy/T//Lp62hDLZOj4="
         }
       },
       "is_incremental": false,

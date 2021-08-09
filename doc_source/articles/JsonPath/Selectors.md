@@ -302,7 +302,7 @@ it will select the value part of all the object's name-value pairs.
 
 ### Unions
 
-[!include[](./grammar/Union.md)]
+[!include[](./grammar/BracketExpression.md)]
 
 In JsonCons, a JSONPath union element can be
 

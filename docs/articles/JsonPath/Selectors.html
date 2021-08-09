@@ -413,9 +413,10 @@ it will select all the array's elements, and if provided with an object,
 it will select the value part of all the object's name-value pairs.</p>
 <div id="Selector9"></div> 
 <h3 id="unions">Unions</h3>
-<pre><code class="lang-text">union = &quot;[&quot; union-element *(&quot;,&quot; union-element) &quot;]&quot;
-union-element = index / slice / single-quoted-string / double-quoted-string
-union-element =/ wildcard / filter-expression / jsonpath
+<pre><code class="lang-text">bracket-expression = &quot;[&quot; bracketed-element *(&quot;,&quot; bracketed-element) &quot;]&quot;
+
+bracketed-element = index / slice-expression / single-quoted-string / double-quoted-string
+bracketed-element =/ wildcard / filter-expression / jsonpath
 </code></pre>
 
 <p>In JsonCons, a JSONPath union element can be</p>

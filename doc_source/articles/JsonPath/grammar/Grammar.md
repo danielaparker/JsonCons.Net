@@ -12,9 +12,9 @@ relative-location =/ parent [relative-location]
 relative-path = identifier [relative-location]
 relative-path =/ wildcard [relative-location]
 
-union = "[" union-element *("," union-element) "]"
-union-element = index / slice / single-quoted-string / double-quoted-string
-union-element =/ wildcard / filter-expression / jsonpath
+```text
+[!include[](./BracketExpression.md)]
+```
 
 ```text
 root              = "$"

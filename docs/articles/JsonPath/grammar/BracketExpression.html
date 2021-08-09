@@ -68,9 +68,10 @@
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
 
-<pre><code class="lang-text">union = &quot;[&quot; union-element *(&quot;,&quot; union-element) &quot;]&quot;
-union-element = index / slice / single-quoted-string / double-quoted-string
-union-element =/ wildcard / filter-expression / jsonpath
+<pre><code class="lang-text">bracket-expression = &quot;[&quot; bracketed-element *(&quot;,&quot; bracketed-element) &quot;]&quot;
+
+bracketed-element = index / slice-expression / single-quoted-string / double-quoted-string
+bracketed-element =/ wildcard / filter-expression / jsonpath
 </code></pre>
 </article>
           </div>
@@ -80,7 +81,7 @@ union-element =/ wildcard / filter-expression / jsonpath
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/doc_source/articles/JsonPath/grammar/Union.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/doc_source/articles/JsonPath/grammar/BracketExpression.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

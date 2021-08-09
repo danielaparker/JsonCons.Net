@@ -80,12 +80,10 @@ relative-location =/ parent [relative-location]
 relative-path = identifier [relative-location]
 relative-path =/ wildcard [relative-location]
 
-union = &quot;[&quot; union-element *(&quot;,&quot; union-element) &quot;]&quot;
-union-element = index / slice / single-quoted-string / double-quoted-string
-union-element =/ wildcard / filter-expression / jsonpath
-
 ```text
-root              = &quot;$&quot;
+[!include[](./BracketExpression.md)]
+</code></pre>
+<pre><code class="lang-text">root              = &quot;$&quot;
 current-node      = &quot;@&quot;
 parent            = &quot;^&quot;
 </code></pre>
