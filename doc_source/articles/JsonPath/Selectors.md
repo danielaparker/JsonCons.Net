@@ -64,12 +64,20 @@ The final result is
 
 ### Root selector
 
+```text
+root = "$"
+```
+
 The symbol "$" represents the root JSON value, the JSON document to be evaluated.
 The root selector selects this value.
 
 <div id="Selector2"/> 
 
 ### Current node selector
+
+```text
+current-node = "@"
+```
 
 The symbol "@" represents the "current node". At the start of an expression, 
 the current node is the document to be evaluated, and as the expression 
@@ -79,6 +87,10 @@ The current node selector selects this value.
 <div id="Selector3"/> 
 
 ### Parent selector 
+
+```text
+parent = "^"
+```
 
 The symbol "^" represents the parent of the current node.
 
@@ -159,15 +171,34 @@ selects all the book objects that have ratings of 5:
 
 <div id="Selector4"/> 
 
-### Identifier selector 
+### Identifier selector
+
+[!include[](./grammar/Identifier.md)]
+
+An identifier selector selects zero or one values from a JSON value,
+depending on whether it is an object that has a member with a
+corresponding name.
 
 <div id="Selector5"/> 
 
 ### Index selector 
 
+```text
+index   = integer
+```
+
+An index selector selects zero or one values from a JSON value,
+depending on whether it is an array with an element at a
+corresponding index. Indexing is zero-based. A negative index
+indicates that indexing is relative to the end of the array.
+
 <div id="Selector6"/> 
 
-### Slices
+### Slice selector
+
+```text
+slice   = [integer] ":" [integer] [ ":" [integer] ]
+```
 
 JsonCons jsonpath slices have the same semantics as Python slices
 
@@ -207,7 +238,11 @@ $[-3::-1]  | All items except the last two, reversed
 
 <div id="Selector7"/> 
 
-### Recursive descent selector (..)
+### Recursive descent selector 
+
+```text
+recursive-descent = ".."
+```
 
 The recursive descent selector performs a select operation
 on a provided JSON value as follows:
@@ -253,7 +288,11 @@ The final result is
 
 <div id="Selector8"/> 
 
-### Wildcard selector (*)
+### Wildcard selector 
+
+```text
+wildcard = "*"
+```
 
 The wildcard selector can select multiple items. If provided with an array,
 it will select all the array's elements, and if provided with an object,
@@ -262,6 +301,8 @@ it will select the value part of all the object's name-value pairs.
 <div id="Selector9"/> 
 
 ### Unions
+
+[!include[](./grammar/Union.md)]
 
 In JsonCons, a JSONPath union element can be
 
@@ -283,6 +324,8 @@ the last, and the third from [Stefan Goessner's store](https://goessner.net/arti
 <div id="Selector10"/> 
 
 ### Filter selector
+
+[!include[](./grammar/FilterExpression.md)]
 
 JSONPath uses filter expressions `[?<expr>]` to restrict the set of nodes
 returned by a path, e.g. `$..book[?(@.price<10)]` returns the books with 

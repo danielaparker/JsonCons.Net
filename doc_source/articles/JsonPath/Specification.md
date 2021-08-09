@@ -1,6 +1,6 @@
 # JsonCons JsonPath Specification
 
-[!include[Grammar](./Grammar.md)]
+[!include[Grammar](./grammar/Grammar.md)]
 
 [!include[Selectors](./Selectors.md)]
 

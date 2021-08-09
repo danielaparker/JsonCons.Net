@@ -243,16 +243,22 @@ in the list will add its provided value to the output list.</p>
 </code></pre>
 <div id="Selector1"></div> 
 <h3 id="root-selector">Root selector</h3>
+<pre><code class="lang-text">root = &quot;$&quot;
+</code></pre>
 <p>The symbol &quot;$&quot; represents the root JSON value, the JSON document to be evaluated.
 The root selector selects this value.</p>
 <div id="Selector2"></div> 
 <h3 id="current-node-selector">Current node selector</h3>
+<pre><code class="lang-text">current-node = &quot;@&quot;
+</code></pre>
 <p>The symbol &quot;@&quot; represents the &quot;current node&quot;. At the start of an expression,
 the current node is the document to be evaluated, and as the expression
 is evaluated, it changes to reflect the node currently being processed.<br>
 The current node selector selects this value.</p>
 <div id="Selector3"></div> 
 <h3 id="parent-selector">Parent selector</h3>
+<pre><code class="lang-text">parent = &quot;^&quot;
+</code></pre>
 <p>The symbol &quot;^&quot; represents the parent of the current node.</p>
 <p>Consider the JSON document</p>
 <pre><code>[
@@ -348,10 +354,57 @@ that allows you to select book objects based on criteria applied to descendent v
 </code></pre>
 <div id="Selector4"></div> 
 <h3 id="identifier-selector">Identifier selector</h3>
+<pre><code class="lang-text">identifier = unquoted-string / single-quoted-string / double-quoted-string
+
+unquoted-string   =  (%x41-5A / %x5F / %x61-7A)            ; A-Za-z_
+                     *(
+                       %x30-39 / %x41-5A / %x5F / %x61-7A) ; 0-9A-Za-z_
+                      )
+
+single-quoted-string     = single-quote 
+                           1*(unescaped-char / double-quote / 
+                              escaped-char / escaped-single-quote) 
+                           single-quote
+
+double-quoted-string     = double-quote 
+                           1*(unescaped-char / single-quote / 
+                              escaped-char / escaped-double-quote) 
+                           double-quote
+
+escaped-single-quote      = escape single-quote    ; '    single quote  U+002c
+escaped-double-quote      = escape double-quote    ; &quot;    double quote  U+0022
+
+single-quote             = %x2c                    ; Single quote: &quot;'&quot;
+double-quote             = %x22                    ; Double quote: '&quot;'
+
+unescaped-char    = %x20-21 / %x23-2b / %x2d-5B / %x5D-10FFFF
+escape            = %x5C                ; Back slash: \
+escaped-char      = escape (
+                        %x5C /          ; \    reverse solidus U+005C
+                        %x2F /          ; /    solidus         U+002F
+                        %x62 /          ; b    backspace       U+0008
+                        %x66 /          ; f    form feed       U+000C
+                        %x6E /          ; n    line feed       U+000A
+                        %x72 /          ; r    carriage return U+000D
+                        %x74 /          ; t    tab             U+0009
+                        %x75 4HEXDIG )  ; uXXXX                U+XXXX
+</code></pre>
+
+<p>An identifier selector selects zero or one values from a JSON value,
+depending on whether it is an object that has a member with a
+corresponding name.</p>
 <div id="Selector5"></div> 
 <h3 id="index-selector">Index selector</h3>
+<pre><code class="lang-text">index   = integer
+</code></pre>
+<p>An index selector selects zero or one values from a JSON value,
+depending on whether it is an array with an element at a
+corresponding index. Indexing is zero-based. A negative index
+indicates that indexing is relative to the end of the array.</p>
 <div id="Selector6"></div> 
-<h3 id="slices">Slices</h3>
+<h3 id="slice-selector">Slice selector</h3>
+<pre><code class="lang-text">slice   = [integer] &quot;:&quot; [integer] [ &quot;:&quot; [integer] ]
+</code></pre>
 <p>JsonCons jsonpath slices have the same semantics as Python slices</p>
 <p>The syntax for a slice is</p>
 <pre><code>[start:stop:step]
@@ -437,7 +490,9 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 </tbody>
 </table>
 <div id="Selector7"></div> 
-<h3 id="recursive-descent-selector-">Recursive descent selector (..)</h3>
+<h3 id="recursive-descent-selector">Recursive descent selector</h3>
+<pre><code class="lang-text">recursive-descent = &quot;..&quot;
+</code></pre>
 <p>The recursive descent selector performs a select operation
 on a provided JSON value as follows:</p>
 <ul>
@@ -473,12 +528,19 @@ operation on each property's value.</p>
 <pre><code>[&quot;baz&quot;,&quot;qux&quot;]
 </code></pre>
 <div id="Selector8"></div> 
-<h3 id="wildcard-selector-">Wildcard selector (*)</h3>
+<h3 id="wildcard-selector">Wildcard selector</h3>
+<pre><code class="lang-text">wildcard = &quot;*&quot;
+</code></pre>
 <p>The wildcard selector can select multiple items. If provided with an array,
 it will select all the array's elements, and if provided with an object,
 it will select the value part of all the object's name-value pairs.</p>
 <div id="Selector9"></div> 
 <h3 id="unions">Unions</h3>
+<pre><code class="lang-text">union = &quot;[&quot; union-element *(&quot;,&quot; union-element) &quot;]&quot;
+union-element = index / slice / single-quoted-string / double-quoted-string
+union-element =/ wildcard / filter-expression / jsonpath
+</code></pre>
+
 <p>In JsonCons, a JSONPath union element can be</p>
 <ul>
 <li>an index or slice expression</li>
@@ -495,6 +557,30 @@ the last, and the third from <a href="https://goessner.net/articles/JsonPath/ind
 </code></pre>
 <div id="Selector10"></div> 
 <h3 id="filter-selector">Filter selector</h3>
+<pre><code class="lang-text">filter-expression = &quot;?&quot; expression
+
+expression = single-quoted-string 
+expression =/ json-literal ; any valid JSON value
+expression =/ jsonpath 
+expression =/ unary-expression / binary-expression / regex-expression / paren-expression 
+paren-expression  = &quot;(&quot; expression &quot;)&quot;
+unary-expression=unary-operator expression
+binary-expression = expression binary-operator expression
+regex-expression = expression regex-operator &quot;/&quot; regex &quot;/&quot; [i]
+unary-operator = &quot;!&quot; / &quot;-&quot;
+binary-operator  = &quot;*&quot; / &quot;/&quot; / &quot;%&quot; / &quot;+&quot; / &quot;-&quot; / &quot;&amp;&amp;&quot; / &quot;||&quot; / &lt;&quot; / &quot;&lt;=&quot; / &quot;==&quot; / &quot;&gt;=&quot; / &quot;&gt;&quot; / &quot;!=&quot; 
+regex-operator = &quot;=~&quot;
+;
+; &quot;regex&quot; represents regular expression characters
+
+function-expression = unquoted-string  (
+                        no-args  /
+                        one-or-more-args )
+no-args             = &quot;(&quot; &quot;)&quot;
+one-or-more-args    = &quot;(&quot; ( function-arg *( &quot;,&quot; function-arg ) ) &quot;)&quot;
+function-arg        = expression
+</code></pre>
+
 <p>JSONPath uses filter expressions <code>[?&lt;expr&gt;]</code> to restrict the set of nodes
 returned by a path, e.g. <code>$..book[?(@.price&lt;10)]</code> returns the books with
 prices less than 10. Filter expressions are applied to each element in a
@@ -871,7 +957,7 @@ provide an option for sorting results by paths.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/articles/JsonPath/JsonConsJsonPath.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/doc_source/articles/JsonPath/JsonConsJsonPath.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
