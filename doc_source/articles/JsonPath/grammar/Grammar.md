@@ -15,7 +15,7 @@ relative-path =/ wildcard [relative-location]
 
 [!include[](./BracketExpression.md)]
 
-```text
+```
 root              = "$"
 current-node      = "@"
 parent            = "^"
