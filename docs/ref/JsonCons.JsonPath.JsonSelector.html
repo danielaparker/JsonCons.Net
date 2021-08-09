@@ -1,0 +1,794 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class JsonSelector
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class JsonSelector
+   ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="JsonCons.JsonPath.JsonSelector">
+  
+  
+  <h1 id="JsonCons_JsonPath_JsonSelector" data-uid="JsonCons.JsonPath.JsonSelector" class="text-break">Class JsonSelector
+  </h1>
+  <div class="markdown level0 summary"><p>Provides functionality for retrieving selected values from a root <a href="https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement?view=net-5.0">JsonElement</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">JsonSelector</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="JsonCons.JsonPath.html">JsonCons.JsonPath</a></h6>
+  <h6><strong>Assembly</strong>: JsonCons.JsonPath.dll</h6>
+  <h5 id="JsonCons_JsonPath_JsonSelector_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class JsonSelector</code></pre>
+  </div>
+  <h5 id="JsonCons_JsonPath_JsonSelector_examples"><strong>Examples</strong></h5>
+  <p>The following example shows how to select values, paths, and nodes from a JSON document</p>
+<pre><code>using System;
+using System.Diagnostics;
+using System.Text.Json;
+using JsonCons.Utilities;
+
+public class Example
+{
+    public static void Main()
+    {
+        string jsonString = @&quot;
+{
+    &quot;&quot;books&quot;&quot;:
+    [
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;A Wild Sheep Chase&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Haruki Murakami&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 22.72
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Night Watch&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Sergei Lukyanenko&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 23.58
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;fiction&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Comedians&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;Graham Greene&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 21.99
+        },
+        {
+            &quot;&quot;category&quot;&quot;: &quot;&quot;memoir&quot;&quot;,
+            &quot;&quot;title&quot;&quot; : &quot;&quot;The Night Watch&quot;&quot;,
+            &quot;&quot;author&quot;&quot; : &quot;&quot;David Atlee Phillips&quot;&quot;,
+            &quot;&quot;price&quot;&quot; : 260.90
+        }
+    ]
+}
+        &quot;);
+
+        using JsonDocument doc = JsonDocument.Parse(jsonString);
+
+        var options = new JsonSerializerOptions() {WriteIndented = true};
+
+        // Selector of titles from union of all books with category &apos;memoir&apos; 
+        // and all books with price > 23
+        var selector = JsonSelector.Parse(&quot;$.books[?@.category==&apos;memoir&apos;,?@.price > 23].title&quot;);
+
+        Console.WriteLine(&quot;Select values&quot;);
+        IList&lt;JsonElement> values = selector.Select(doc.RootElement);
+        foreach (var value in values)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(value, options));
+        }
+        Console.WriteLine();
+
+        Console.WriteLine(&quot;Select paths&quot;);
+        IList&lt;NormalizedPath> paths = selector.SelectPaths(doc.RootElement);
+        foreach (var path in paths)
+        {
+            Console.WriteLine(path);
+        }
+        Console.WriteLine();
+
+        Console.WriteLine(&quot;Select nodes&quot;);
+        IList&lt;PathValuePair> nodes = selector.SelectNodes(doc.RootElement);
+        foreach (var node in nodes)
+        {
+            Console.WriteLine($&quot;{node.Path} => {JsonSerializer.Serialize(node.Value, options)}&quot;);
+        }
+        Console.WriteLine();
+
+        Console.WriteLine(&quot;Remove duplicate nodes&quot;);
+        IList&lt;PathValuePair> uniqueNodes = selector.SelectNodes(doc.RootElement, 
+                                                    new JsonSelectorOptions{NoDuplicates=true});
+        foreach (var node in uniqueNodes)
+        {
+            Console.WriteLine($&quot;{node.Path} => {JsonSerializer.Serialize(node.Value, options)}&quot;);
+        }
+        Console.WriteLine();
+    }
+}</code></pre>
+<p>Output:</p>
+<pre><code>Select values
+&quot;The Night Watch&quot;
+&quot;The Night Watch&quot;
+&quot;The Night Watch&quot;
+
+Select paths
+$[&apos;books&apos;][3][&apos;title&apos;]
+$[&apos;books&apos;][1][&apos;title&apos;]
+$[&apos;books&apos;][3][&apos;title&apos;]
+
+Select nodes
+$[&apos;books&apos;][3][&apos;title&apos;] => &quot;The Night Watch&quot;
+$[&apos;books&apos;][1][&apos;title&apos;] => &quot;The Night Watch&quot;
+$[&apos;books&apos;][3][&apos;title&apos;] => &quot;The Night Watch&quot;
+
+Remove duplicate nodes
+$[&apos;books&apos;][3][&apos;title&apos;] => &quot;The Night Watch&quot;
+$[&apos;books&apos;][1][&apos;title&apos;] => &quot;The Night Watch&quot;</code></pre>
+
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/docs/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_Parse_System_String_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.Parse(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/src/JsonCons.JsonPath/JsonSelector.cs/#L243">View Source</a>
+  </span>
+  <a id="JsonCons_JsonPath_JsonSelector_Parse_" data-uid="JsonCons.JsonPath.JsonSelector.Parse*"></a>
+  <h4 id="JsonCons_JsonPath_JsonSelector_Parse_System_String_" data-uid="JsonCons.JsonPath.JsonSelector.Parse(System.String)">Parse(String)</h4>
+  <div class="markdown level1 summary"><p>Parses a JSONPath string into a <a class="xref" href="JsonCons.JsonPath.JsonSelector.html">JsonSelector</a>, for &quot;parse once, use many times&quot;.
+A <a class="xref" href="JsonCons.JsonPath.JsonSelector.html">JsonSelector</a> instance is thread safe and has no mutable state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static JsonSelector Parse(string jsonPath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">jsonPath</span></td>
+        <td><p>A JSONPath string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPath.JsonSelector.html">JsonSelector</a></td>
+        <td><p>A <a class="xref" href="JsonCons.JsonPath.JsonSelector.html">JsonSelector</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPath.JsonPathParseException.html">JsonPathParseException</a></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">jsonPath</code> parameter is not a valid JSONPath expression.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">jsonPath</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/docs/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/src/JsonCons.JsonPath/JsonSelector.cs/#L274">View Source</a>
+  </span>
+  <a id="JsonCons_JsonPath_JsonSelector_Select_" data-uid="JsonCons.JsonPath.JsonSelector.Select*"></a>
+  <h4 id="JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">Select(JsonElement, JsonSelectorOptions)</h4>
+  <div class="markdown level1 summary"><p>Selects values within the root value matched by this JSONPath expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;JsonElement&gt; Select(JsonElement root, JsonSelectorOptions options = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Json.JsonElement</span></td>
+        <td><span class="parametername">root</span></td>
+        <td><p>The root value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPath.JsonSelectorOptions.html">JsonSelectorOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Defines options for processing JSONPath queries.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.Text.Json.JsonElement</span>&gt;</td>
+        <td><p>A list of values within the root value matched by this JSONPath expression,
+or an empty list if none were matched.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Maximum depth level exceeded in recursive descent selector.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/docs/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/src/JsonCons.JsonPath/JsonSelector.cs/#L531">View Source</a>
+  </span>
+  <a id="JsonCons_JsonPath_JsonSelector_Select_" data-uid="JsonCons.JsonPath.JsonSelector.Select*"></a>
+  <h4 id="JsonCons_JsonPath_JsonSelector_Select_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.Select(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">Select(JsonElement, String, JsonSelectorOptions)</h4>
+  <div class="markdown level1 summary"><p>Selects values within the root value matched by the provided JSONPath expression.
+This method parses and applies the expression in one operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IList&lt;JsonElement&gt; Select(JsonElement root, string jsonPath, JsonSelectorOptions options = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Json.JsonElement</span></td>
+        <td><span class="parametername">root</span></td>
+        <td><p>The root value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">jsonPath</span></td>
+        <td><p>A JSONPath string.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPath.JsonSelectorOptions.html">JsonSelectorOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Defines options for processing JSONPath queries.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.Text.Json.JsonElement</span>&gt;</td>
+        <td><p>A list of values within the root value matched by the provided JSONPath expression,
+or an empty list if none were matched.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPath.JsonPathParseException.html">JsonPathParseException</a></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">jsonPath</code> parameter is not a valid JSONPath expression.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">jsonPath</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Maximum depth level exceeded in recursive descent selector.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/docs/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/src/JsonCons.JsonPath/JsonSelector.cs/#L448">View Source</a>
+  </span>
+  <a id="JsonCons_JsonPath_JsonSelector_SelectNodes_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes*"></a>
+  <h4 id="JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">SelectNodes(JsonElement, JsonSelectorOptions)</h4>
+  <div class="markdown level1 summary"><p>Selects nodes that represent location-value pairs within the root value matched by this JSONPath expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;PathValuePair&gt; SelectNodes(JsonElement root, JsonSelectorOptions options = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Json.JsonElement</span></td>
+        <td><span class="parametername">root</span></td>
+        <td><p>The root value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPath.JsonSelectorOptions.html">JsonSelectorOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Defines options for processing JSONPath queries.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.PathValuePair.html">PathValuePair</a>&gt;</td>
+        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.PathValuePair.html">PathValuePair</a> representing location-value pairs
+within the root value matched by this JSONPath expression,
+or an empty list if none were matched.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/docs/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/src/JsonCons.JsonPath/JsonSelector.cs/#L593">View Source</a>
+  </span>
+  <a id="JsonCons_JsonPath_JsonSelector_SelectNodes_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes*"></a>
+  <h4 id="JsonCons_JsonPath_JsonSelector_SelectNodes_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectNodes(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">SelectNodes(JsonElement, String, JsonSelectorOptions)</h4>
+  <div class="markdown level1 summary"><p>Selects nodes that represent location-value pairs within the root value matched by the JSONPath expression.
+This method parses and applies the expression in one operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IList&lt;PathValuePair&gt; SelectNodes(JsonElement root, string jsonPath, JsonSelectorOptions options = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Json.JsonElement</span></td>
+        <td><span class="parametername">root</span></td>
+        <td><p>The root value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">jsonPath</span></td>
+        <td><p>A JSONPath string.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPath.JsonSelectorOptions.html">JsonSelectorOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Defines options for processing JSONPath queries.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.PathValuePair.html">PathValuePair</a>&gt;</td>
+        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.PathValuePair.html">PathValuePair</a> representing location-value pairs
+within the root value matched by the provided JSONPath expression,
+or an empty list if none were matched.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPath.JsonPathParseException.html">JsonPathParseException</a></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">jsonPath</code> parameter is not a valid JSONPath expression.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">jsonPath</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Maximum depth level exceeded in recursive descent selector.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/docs/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/src/JsonCons.JsonPath/JsonSelector.cs/#L375">View Source</a>
+  </span>
+  <a id="JsonCons_JsonPath_JsonSelector_SelectPaths_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths*"></a>
+  <h4 id="JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,JsonCons.JsonPath.JsonSelectorOptions)">SelectPaths(JsonElement, JsonSelectorOptions)</h4>
+  <div class="markdown level1 summary"><p>Selects paths identifying the values within the root value matched by this JSONPath expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;NormalizedPath&gt; SelectPaths(JsonElement root, JsonSelectorOptions options = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Json.JsonElement</span></td>
+        <td><span class="parametername">root</span></td>
+        <td><p>The root value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPath.JsonSelectorOptions.html">JsonSelectorOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Defines options for processing JSONPath queries.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a>&gt;</td>
+        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a> identifying the values within the root value matched by this JSONPath expression,
+or an empty list if none were matched.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/docs/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement%2CSystem.String%2CJsonCons.JsonPath.JsonSelectorOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/src/JsonCons.JsonPath/JsonSelector.cs/#L561">View Source</a>
+  </span>
+  <a id="JsonCons_JsonPath_JsonSelector_SelectPaths_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths*"></a>
+  <h4 id="JsonCons_JsonPath_JsonSelector_SelectPaths_System_Text_Json_JsonElement_System_String_JsonCons_JsonPath_JsonSelectorOptions_" data-uid="JsonCons.JsonPath.JsonSelector.SelectPaths(System.Text.Json.JsonElement,System.String,JsonCons.JsonPath.JsonSelectorOptions)">SelectPaths(JsonElement, String, JsonSelectorOptions)</h4>
+  <div class="markdown level1 summary"><p>Selects paths identifying the values within the root value matched by the JSONPath expression.
+This method parses and applies the expression in one operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IList&lt;NormalizedPath&gt; SelectPaths(JsonElement root, string jsonPath, JsonSelectorOptions options = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Json.JsonElement</span></td>
+        <td><span class="parametername">root</span></td>
+        <td><p>The root value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">jsonPath</span></td>
+        <td><p>A JSONPath string.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPath.JsonSelectorOptions.html">JsonSelectorOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Defines options for processing JSONPath queries.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a>&gt;</td>
+        <td><p>A list of <a class="xref" href="JsonCons.JsonPath.NormalizedPath.html">NormalizedPath</a> identifying the values within the root value matched by the provided JSONPath expression,
+or an empty list if none were matched.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="JsonCons.JsonPath.JsonPathParseException.html">JsonPathParseException</a></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">jsonPath</code> parameter is not a valid JSONPath expression.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">jsonPath</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Maximum depth level exceeded in recursive descent selector.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/new/docs/apiSpec/new?filename=JsonCons_JsonPath_JsonSelector.md&amp;value=---%0Auid%3A%20JsonCons.JsonPath.JsonSelector%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/src/JsonCons.JsonPath/JsonSelector.cs/#L226" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

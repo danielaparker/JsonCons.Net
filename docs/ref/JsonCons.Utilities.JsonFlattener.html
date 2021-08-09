@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class JsonFlattener
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class JsonFlattener
+   ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="JsonCons.Utilities.JsonFlattener">
+  
+  
+  <h1 id="JsonCons_Utilities_JsonFlattener" data-uid="JsonCons.Utilities.JsonFlattener" class="text-break">Class JsonFlattener
+  </h1>
+  <div class="markdown level0 summary"><p>Provides functionality to flatten a JSON object or array to a single depth JSON object of JSON Pointer-value pairs,
+and to unflatten a flattened JSON object.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">JsonFlattener</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="JsonCons.Utilities.html">JsonCons.Utilities</a></h6>
+  <h6><strong>Assembly</strong>: JsonCons.Utilities.dll</h6>
+  <h5 id="JsonCons_Utilities_JsonFlattener_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class JsonFlattener</code></pre>
+  </div>
+  <h5 id="JsonCons_Utilities_JsonFlattener_examples"><strong>Examples</strong></h5>
+  <p>This example shows how to flatten and unflatten a JSON value</p>
+<pre><code>using System;
+using System.Diagnostics;
+using System.Text.Json;
+using JsonCons.Utilities;
+
+public class Example
+{
+   public static void Main()
+   {
+       using var doc = JsonDocument.Parse(@&quot;
+       {
+          &quot;&quot;application&quot;&quot;: &quot;&quot;hiking&quot;&quot;,
+          &quot;&quot;reputons&quot;&quot;: [
+              {
+                  &quot;&quot;rater&quot;&quot;: &quot;&quot;HikingAsylum&quot;&quot;,
+                  &quot;&quot;assertion&quot;&quot;: &quot;&quot;advanced&quot;&quot;,
+                  &quot;&quot;rated&quot;&quot;: &quot;&quot;Marilyn C&quot;&quot;,
+                  &quot;&quot;rating&quot;&quot;: 0.90
+               },
+               {
+                  &quot;&quot;rater&quot;&quot;: &quot;&quot;HikingAsylum&quot;&quot;,
+                  &quot;&quot;assertion&quot;&quot;: &quot;&quot;intermediate&quot;&quot;,
+                  &quot;&quot;rated&quot;&quot;: &quot;&quot;Hongmin&quot;&quot;,
+                  &quot;&quot;rating&quot;&quot;: 0.75
+               }    
+           ]
+       }
+       &quot;);
+
+       using JsonDocument flattened = JsonFlattener.Flatten(doc.RootElement);
+
+       var options = new JsonSerializerOptions() { WriteIndented = true };
+
+       Console.WriteLine($&quot;{JsonSerializer.Serialize(flattened, options)}\n&quot;);
+
+       using JsonDocument unflattened = JsonFlattener.Unflatten(flattened.RootElement);
+
+       var comparer = JsonElementEqualityComparer.Instance;
+       Debug.Assert(comparer.Equals(unflattened.RootElement,doc.RootElement));
+    }
+}</code></pre>
+<p>Output:</p>
+<pre><code>{
+  &quot;/application&quot;: &quot;hiking&quot;,
+  &quot;/reputons/0/rater&quot;: &quot;HikingAsylum&quot;,
+  &quot;/reputons/0/assertion&quot;: &quot;advanced&quot;,
+  &quot;/reputons/0/rated&quot;: &quot;Marilyn C&quot;,
+  &quot;/reputons/0/rating&quot;: 0.90,
+  &quot;/reputons/1/rater&quot;: &quot;HikingAsylum&quot;,
+  &quot;/reputons/1/assertion&quot;: &quot;intermediate&quot;,
+  &quot;/reputons/1/rated&quot;: &quot;Hongmin&quot;,
+  &quot;/reputons/1/rating&quot;: 0.75
+}</code></pre>
+
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/docs/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/src/JsonCons.Utilities/JsonFlattener.cs/#L194">View Source</a>
+  </span>
+  <a id="JsonCons_Utilities_JsonFlattener_Flatten_" data-uid="JsonCons.Utilities.JsonFlattener.Flatten*"></a>
+  <h4 id="JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement_" data-uid="JsonCons.Utilities.JsonFlattener.Flatten(System.Text.Json.JsonElement)">Flatten(JsonElement)</h4>
+  <div class="markdown level1 summary"><p>Converts a JSON object or array into a single depth JSON object of name-value pairs,
+such that the names are JSON Pointer strings, and the values are either string,
+number, true, false, null, empty object, or empty array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static JsonDocument Flatten(JsonElement value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Json.JsonElement</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to be flattened.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Json.JsonDocument</span></td>
+        <td><p>The flattened value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="JsonCons_Utilities_JsonFlattener_Flatten_System_Text_Json_JsonElement__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It is the users responsibilty to properly Dispose the returned JSONDocument value</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/danielaparker/JsonCons.Net/new/docs/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenUnflattening_.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement%2CJsonCons.Utilities.IntegerTokenUnflattening)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/src/JsonCons.Utilities/JsonFlattener.cs/#L219">View Source</a>
+  </span>
+  <a id="JsonCons_Utilities_JsonFlattener_Unflatten_" data-uid="JsonCons.Utilities.JsonFlattener.Unflatten*"></a>
+  <h4 id="JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenUnflattening_" data-uid="JsonCons.Utilities.JsonFlattener.Unflatten(System.Text.Json.JsonElement,JsonCons.Utilities.IntegerTokenUnflattening)">Unflatten(JsonElement, IntegerTokenUnflattening)</h4>
+  <div class="markdown level1 summary"><p>Recovers the orginal JSON value from a JSON object in flattened form, to the extent possible.
+There may not be a unique solution, an integer token in a JSON Pointer could be an array index or
+it could be an object name. The default behavior is to attempt to recover arrays. The <code data-dev-comment-type="paramref" class="paramref">options</code>
+parameter can be used to recover objects with integer names instead.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static JsonDocument Unflatten(JsonElement flattenedValue, IntegerTokenUnflattening options = IntegerTokenUnflattening.TryIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Json.JsonElement</span></td>
+        <td><span class="parametername">flattenedValue</span></td>
+        <td><p>The flattened value, which must be a JSON object of name-value pairs, such that
+the names are JSON Pointer strings, and the values are either string,
+number, true, false, null, empty object, or empty array.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="JsonCons.Utilities.IntegerTokenUnflattening.html">IntegerTokenUnflattening</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Options for handling integer tokens in the JSON Pointer.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Json.JsonDocument</span></td>
+        <td><p>The unflattened value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="JsonCons_Utilities_JsonFlattener_Unflatten_System_Text_Json_JsonElement_JsonCons_Utilities_IntegerTokenUnflattening__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It is the users responsibilty to properly Dispose the returned JSONDocument value</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">flattenedValue</code> is not a JSON object, or has a name that contains an invalid JSON pointer.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/new/docs/apiSpec/new?filename=JsonCons_Utilities_JsonFlattener.md&amp;value=---%0Auid%3A%20JsonCons.Utilities.JsonFlattener%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/docs/src/JsonCons.Utilities/JsonFlattener.cs/#L182" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
