@@ -1,11 +1,13 @@
-main
+v1.0.0
+
+Move from prerelease to release
+
+v1.0.0.preview.2
 
 Enhancements to JsonCons.Utilities:
 
 - Added `JsonMergePatch.FromDiff` for creating a JSON Merge Patch
 from source and target JSON documents
-
-v1.0.0.preview.2
 
 Changes to JsonCons.JsonPath:
 
