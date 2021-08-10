@@ -71,12 +71,12 @@ namespace JsonCons.Utilities.Tests
         }
 
         [TestMethod]
-        [DeploymentItem("TestFiles")]
+        [DeploymentItem("test_files")]
         public void Test()
         {
             try
             {
-                RunJsonPatchTests(@".\TestFiles\rfc6902-examples.json");
+                RunJsonPatchTests(@".\test_files\rfc6902-examples.json");
             }
             catch (Exception e)
             {

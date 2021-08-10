@@ -12,8 +12,7 @@ System.Text.Json namespace with support for JSON Pointer, JSON Patch, and JSON M
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/danielaparker/JsonCons.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/danielaparker/JsonCons.Net</RepositoryUrl>
-    <PackageReleaseNotes>- Added `JsonMergePatch.FromDiff` for creating a JSON Merge Patch
-from source and target JSON documents
+    <PackageReleaseNotes>Move from preview to release 1.0.0
 </PackageReleaseNotes>
     <PackageTags>jsonpointer json-pointer jsonpatch json-patch json-merge-patch</PackageTags>
   </PropertyGroup>

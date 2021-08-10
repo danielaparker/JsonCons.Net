@@ -13,7 +13,7 @@ System.Text.Json namespace with support for JsonPath. It provides support for qu
     <PackageProjectUrl>https://github.com/danielaparker/JsonCons.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/danielaparker/JsonCons.Net</RepositoryUrl>
     <PackageTags>jsonpath json-path</PackageTags>
-    <PackageReleaseNotes>- Tightens restrictions on unquoted names as per revised specification. Specifically, unquoted names are now restricted to one or more ASCII letters, digits, or underscores, and must start with `A-Za-z_`.</PackageReleaseNotes>
+    <PackageReleaseNotes>Move from preview to release 1.0.0</PackageReleaseNotes>
     <Copyright>Daniel Parker</Copyright>
   </PropertyGroup>
 

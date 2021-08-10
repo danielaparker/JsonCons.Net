@@ -72,13 +72,13 @@ namespace JsonCons.Utilities.Tests
         }
 
         [TestMethod]
-        [DeploymentItem("TestFiles")]
+        [DeploymentItem("test_files")]
         public void Test()
         {
             try
             {
-                RunJsonMergePatchTests(@".\TestFiles\rfc7396-test-cases.json");
-                //RunJsonMergePatchTests(@".\TestFiles\test.json");
+                RunJsonMergePatchTests(@".\test_files\rfc7396-test-cases.json");
+                //RunJsonMergePatchTests(@".\test_files\test.json");
             }
             catch (Exception e)
             {
