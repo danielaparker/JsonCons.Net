@@ -39,19 +39,23 @@ JSONPath	                | Result
 In addition, the JsonCons incorporates some generalizations and tightening of syntax introduced
 in the more innovative and formally specified implementations.
 
-- It allows names in the dot notation to be unquoted, single-quoted, or double-quoted.
+- Unquoted names follow the same rules for the selector and in filter
+expressions, and forbid characters such as hyphens that cause difficulties
+in expressions.
 
-- It allows names in the square bracket notation to be single-quoted or double-quoted.
+- Names in the dot notation may be unquoted, single-quoted, or double-quoted.
 
-- Like [PaesslerAG/jsonpath/ajson](https://github.com/PaesslerAG/jsonpath), it allows filter expressions 
-to omit the enclosing parentheses, as in `$..book[?(@.price<10)]`. 
+- Names in the square bracket notation may be single-quoted or double-quoted.
 
-- It supports unions of separate JSONPath selectors, e.g.
+- Like [PaesslerAG/jsonpath/ajson](https://github.com/PaesslerAG/jsonpath), filter expressions 
+may omit the parentheses around the expression, as in `$..book[?@.price<10]`. 
+
+- Unions may have separate JSONPath selectors, e.g.
 
     $..[@.firstName,@.address.city]
 
-- Like [JSONPath Plus](https://www.npmjs.com/package/jsonpath-plus), it supports a parent operator `^` 
-for providing access to the parent node.
+- A parent selector `^`, borrowed from [JSONPath Plus](https://www.npmjs.com/package/jsonpath-plus), 
+provides access to the parent node.
 
 - Options are provided to exclude results corresponding to duplicate paths, and to 
 sort results by paths.

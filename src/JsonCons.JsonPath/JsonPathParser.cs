@@ -1939,7 +1939,7 @@ namespace JsonCons.JsonPath
             return new JsonSelector(token.GetSelector(), pathsRequired);
         }
 
-        bool IsUnquotedStringCodepoint(int codepoint)
+        static bool IsUnquotedStringCodepoint(int codepoint)
         {
             if ((codepoint >= 0x30 && codepoint <= 0x39) ||
                 (codepoint >= 0x41 && codepoint <= 0x5A) ||
