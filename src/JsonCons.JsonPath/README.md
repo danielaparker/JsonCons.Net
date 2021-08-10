@@ -51,9 +51,9 @@ in expressions.
 may omit the parentheses around the expression, as in `$..book[?@.price<10]`. 
 
 - Unions may have separate JSONPath selectors, e.g.
-
+```csharp
     $..[@.firstName,@.address.city]
-
+```
 - A parent selector `^`, borrowed from [JSONPath Plus](https://www.npmjs.com/package/jsonpath-plus), 
 provides access to the parent node.
 
