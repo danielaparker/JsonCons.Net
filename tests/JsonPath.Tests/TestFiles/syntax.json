@@ -37,7 +37,7 @@
        },
        {
          "expression": "$.foo.1",
-         "error": "syntax"
+         "result": []
        }
      ]
    },
@@ -87,27 +87,5 @@
         "error": "syntax"
       }
     ]
-  },
-  {
-        "given" : {"foo": ["zero","one","two"]},
-        "cases" : [
-            {
-                "comment" : "Dot followed by index on array",
-                "expression" : "$.foo.1",
-                "error" : "syntax" 
-            }
-        ]
-  },
-  {
-      "given" : {
-         	"屬性": "value"
-         },
-      "cases" : [
-          {
-              "comment" : "Dot notation with non ASCII key",
-              "expression" : "$.屬性",
-              "error": "syntax"
-          }
-      ]
   }
 ]

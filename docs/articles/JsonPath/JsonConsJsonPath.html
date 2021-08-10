@@ -77,10 +77,6 @@ the <a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparis
 <p>In addition, the JsonCons incorporates some generalizations and tightening of syntax introduced
 in the more innovative and rigourously specified implementations.</p>
 <ul>
-<li><p>Like <a href="https://github.com/dchester/jsonpath">dchester/jsonpath</a>, it requires
-that unquoted names be restricted to one or more ASCII letters, digits, or underscores, and
-must start with <code>A-Za-z_</code>.</p>
-</li>
 <li><p>It allows names in the dot notation to be unquoted, single-quoted, or double-quoted.</p>
 </li>
 <li><p>It allows names in the square bracket notation to be single-quoted or double-quoted.</p>
@@ -356,10 +352,11 @@ that allows you to select book objects based on criteria applied to descendent v
 <h3 id="identifier-selector">Identifier selector</h3>
 <pre><code class="lang-text">identifier = unquoted-string / single-quoted-string / double-quoted-string
 
-unquoted-string   =  (%x41-5A / %x5F / %x61-7A)            ; A-Za-z_
-                     *(
-                       %x30-39 / %x41-5A / %x5F / %x61-7A) ; 0-9A-Za-z_
-                      )
+unquoted-string   =     %x30-39  /  ; 0-9
+                        %x41-5A  /  ; A-Z
+                        %x5F     /  ; _
+                        %x61-7A  /  ; a-z
+                        %x80-10FFFF ; U+0080 ...    
 
 single-quoted-string     = single-quote 
                            1*(unescaped-char / double-quote / 

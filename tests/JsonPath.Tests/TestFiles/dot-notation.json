@@ -60,13 +60,25 @@
         ]
     },
     {
+        "given" : {
+			"屬性": "value"
+		},
+        "cases" : [
+            {
+                "comment" : "Dot notation with non ASCII key",
+                "expression" : "$.屬性",
+                "result" : ["value"]
+            }
+        ]
+    },
+    {
         "source:" : "https://cburgmer.github.io/json-path-comparison/",
         "given": {"key-dash": "value"},
         "cases": [
             {
                 "comment" : "Dot notation with dash",
                 "expression" : "$.key-dash",
-                "error" : "syntax"
+                "error" : true
             },
             {
                 "comment" : "Dot notation with dash",

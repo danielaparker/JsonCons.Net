@@ -18,10 +18,6 @@ the [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
 In addition, the JsonCons incorporates some generalizations and tightening of syntax introduced
 in the more innovative and rigourously specified implementations.
 
-- Like [dchester/jsonpath](https://github.com/dchester/jsonpath), it requires
-that unquoted names be restricted to one or more ASCII letters, digits, or underscores, and
-must start with `A-Za-z_`. 
-
 - It allows names in the dot notation to be unquoted, single-quoted, or double-quoted.
 
 - It allows names in the square bracket notation to be single-quoted or double-quoted.
