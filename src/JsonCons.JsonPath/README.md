@@ -60,7 +60,7 @@ provides access to the parent node.
 - Options are provided to exclude results corresponding to duplicate paths, and to 
 sort results by paths.
 
-The JsonCons implementation is described in an [ABNF grammar](Specification.md) with specification.
+The JsonCons implementation is described in an [ABNF grammar](https://danielaparker.github.io/JsonCons.Net/articles/JsonPath/Specification.html) with specification.
 It explicitly implements a state machine that corresponds to this grammar. 
 
 Documentation and examples may be found here:
