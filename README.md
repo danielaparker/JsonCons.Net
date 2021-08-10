@@ -46,7 +46,7 @@ string jsonString = @"
 using JsonDocument doc = JsonDocument.Parse(jsonString);
 ```
 the [JsonCons.JsonPath.JsonSelector](https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.JsonPath.JsonSelector.html) 
-class provides functionality to retrieve elements in the JSON document selected according to some criteria,
+class provides functionality to select elements in the JSON document with code like this:
 
 ```
 var selector = JsonSelector.Parse("$.books[?(@.price >= 22 && @.price < 30)]");
