@@ -1590,5 +1590,30 @@
                 "result" : [2,1]
             }
         ]
+   },
+   {
+        "given" :  [0,1,2,3,4,5],
+        "cases" : [
+            {
+                "comment" : "Non-associatvity of subtraction (1)",
+                "expression" : "$[?($[5] - $[3])-$[2] == 0]",
+                "result" : [0,1,2,3,4,5]
+            },
+            {
+                "comment" : "Non-associatvity of subtraction (2)",
+                "expression" : "$[?$[5] - ($[3]-$[2]) == 4]",
+                "result" : [0,1,2,3,4,5]
+            },
+            {
+                "comment" : "Non-associatvity of division (1)",
+                "expression" : "$[?($[4]/$[2])/2 == 1]",
+                "result" : [0,1,2,3,4,5]
+            },
+            {
+                "comment" : "Non-associatvity of division (2)",
+                "expression" : "$[?$[4]/($[2]/2) == 4]",
+                "result" : [0,1,2,3,4,5]
+            }
+        ]
    }
 ]

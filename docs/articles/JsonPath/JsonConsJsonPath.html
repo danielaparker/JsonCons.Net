@@ -752,45 +752,54 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 </table>
 <p>The unary minus operator is only valid if right is a number.</p>
 <h3 id="operator-precedence">Operator precedence</h3>
-<p>The table below shows operator precedence in descending order
-(upper rows have higher precedence than lower ones).</p>
+<p>The table below lists operators in descending order of precedence
+(upper rows bind tighter than lower ones.)</p>
 <table>
 <thead>
 <tr>
+<th>Precedence</th>
 <th>Operator</th>
 <th>Associativity</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>8</td>
 <td><code>!</code> unary <code>-</code></td>
-<td>n/a</td>
+<td>Right</td>
 </tr>
 <tr>
+<td>7</td>
 <td><code>=~</code></td>
 <td>Left</td>
 </tr>
 <tr>
+<td>6</td>
 <td><code>*</code> <code>/</code>  <code>%</code></td>
 <td>Left</td>
 </tr>
 <tr>
+<td>5</td>
 <td><code>+</code> <code>-</code></td>
 <td>Left</td>
 </tr>
 <tr>
+<td>4</td>
 <td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td>
 <td>Left</td>
 </tr>
 <tr>
+<td>3</td>
 <td><code>==</code> <code>!=</code></td>
 <td>Left</td>
 </tr>
 <tr>
+<td>2</td>
 <td><code>&amp;&amp;</code></td>
 <td>Left</td>
 </tr>
 <tr>
+<td>1</td>
 <td><code>||</code></td>
 <td>Left</td>
 </tr>
@@ -957,7 +966,7 @@ provide an option for sorting results by paths.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/main/doc_source/articles/JsonPath/JsonConsJsonPath.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/danielaparker/JsonCons.Net/blob/develop/doc_source/articles/JsonPath/JsonConsJsonPath.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

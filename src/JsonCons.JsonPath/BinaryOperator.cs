@@ -36,7 +36,7 @@ namespace JsonCons.JsonPath
         internal static OrOperator Instance { get; } = new OrOperator();
 
         internal OrOperator()
-            : base(9)
+            : base(1)
         {
         }
 
@@ -68,7 +68,7 @@ namespace JsonCons.JsonPath
         internal static AndOperator Instance { get; } = new AndOperator();
 
         internal AndOperator()
-            : base(8)
+            : base(2)
         {
         }
 
@@ -96,7 +96,7 @@ namespace JsonCons.JsonPath
         internal static EqOperator Instance { get; } = new EqOperator();
 
         internal EqOperator()
-            : base(6)
+            : base(3)
         {
         }
 
@@ -125,7 +125,7 @@ namespace JsonCons.JsonPath
         internal static NeOperator Instance { get; } = new NeOperator();
 
         internal NeOperator()
-            : base(6)
+            : base(3)
         {
         }
 
@@ -160,7 +160,7 @@ namespace JsonCons.JsonPath
         internal static LtOperator Instance { get; } = new LtOperator();
 
         internal LtOperator()
-            : base(5)
+            : base(4)
         {
         }
 
@@ -207,7 +207,7 @@ namespace JsonCons.JsonPath
         internal static LteOperator Instance { get; } = new LteOperator();
 
         internal LteOperator()
-            : base(5)
+            : base(4)
         {
         }
 
@@ -255,7 +255,7 @@ namespace JsonCons.JsonPath
         internal static GtOperator Instance { get; } = new GtOperator();
 
         internal GtOperator()
-            : base(5)
+            : base(4)
         {
         }
 
@@ -302,7 +302,7 @@ namespace JsonCons.JsonPath
         internal static GteOperator Instance { get; } = new GteOperator();
 
         internal GteOperator()
-            : base(5)
+            : base(4)
         {
         }
 
@@ -349,7 +349,7 @@ namespace JsonCons.JsonPath
         internal static PlusOperator Instance { get; } = new PlusOperator();
 
         internal PlusOperator()
-            : base(4)
+            : base(5)
         {
         }
 
@@ -396,7 +396,7 @@ namespace JsonCons.JsonPath
         internal static MinusOperator Instance { get; } = new MinusOperator();
 
         internal MinusOperator()
-            : base(4)
+            : base(5)
         {
         }
 
@@ -443,7 +443,7 @@ namespace JsonCons.JsonPath
         internal static MultOperator Instance { get; } = new MultOperator();
 
         internal MultOperator()
-            : base(3)
+            : base(6)
         {
         }
 
@@ -490,7 +490,7 @@ namespace JsonCons.JsonPath
         internal static DivOperator Instance { get; } = new DivOperator();
 
         internal DivOperator()
-            : base(3)
+            : base(6)
         {
         }
 
@@ -548,7 +548,7 @@ namespace JsonCons.JsonPath
         internal static ModulusOperator Instance { get; } = new ModulusOperator();
 
         internal ModulusOperator()
-            : base(3)
+            : base(6)
         {
         }
 

@@ -1,11 +1,11 @@
 [
    {
-        "given" : [{"key": 0}, {"key": 42}, {"key": -1}, {"key": 41}, {"key": 43}, {"key": 42.0001}, {"key": 41.9999}, {"key": 100}, {"some": "value"}],
+        "given" :  [0,1,2,3,4,5],
         "cases" : [
             {
-                "comment" : "Unary minus in filter expression",
-                "expression" : "$[?-@.key>-42]",
-                "result" : [{"key": 0}, {"key": -1}, {"key": 41}, {"key": 41.9999}]
+                "comment" : "Non-associatvity of subtraction (1)",
+                "expression" : "$[?($[5] - $[3])-$[2] == 0]",
+                "result" : [0,1,2,3,4,5]
             }
         ]
    }

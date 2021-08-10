@@ -164,19 +164,19 @@ The unary minus operator is only valid if right is a number.
 
 ### Operator precedence
 
-The table below shows operator precedence in descending order 
-(upper rows have higher precedence than lower ones).
+The table below lists operators in descending order of precedence 
+(upper rows bind tighter than lower ones.)
 
-Operator|Associativity
---------|-----------
-`!` unary `-`    |n/a
-`=~`             |Left
-`*` `/`  `%`     |Left 
-`+` `-`          |Left 
-`<` `>` `<=` `>=`|Left 
-`==` `!=`        |Left 
-`&&`             |Left 
-<code>&#124;&#124;</code> |Left 
+Precedence|Operator|Associativity
+----------|--------|-----------
+8 |`!` unary `-`    |Right
+7 |`=~`             |Left
+6 |`*` `/`  `%`     |Left 
+5 |`+` `-`          |Left 
+4 |`<` `>` `<=` `>=`|Left 
+3 |`==` `!=`        |Left 
+2 |`&&`             |Left 
+1 |<code>&#124;&#124;</code> |Left 
 
 The precedence rules may be overriden with explicit parentheses, e.g. (a || b) && c.
 
