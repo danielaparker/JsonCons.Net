@@ -22,6 +22,10 @@ from source and target JSON documents
     <DocumentationFile>C:\Users\danie\source\repos\JsonCons.Net\src\JsonCons.Utilities\JsonCons.Utilities.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\danie\source\repos\Jsoncons.Net\src\JsonCons.Utilities\JsonCons.Utilities.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
   </ItemGroup>

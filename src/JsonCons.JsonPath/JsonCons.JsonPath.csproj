@@ -21,6 +21,10 @@ System.Text.Json namespace with support for JsonPath. It provides support for qu
     <DocumentationFile>C:\Users\danie\source\repos\JsonCons.Net\src\JsonCons.JsonPath\JsonCons.JsonPath.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\danie\source\repos\Jsoncons.Net\src\JsonCons.JsonPath\JsonCons.JsonPath.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="CHANGELOG.md" />
     <None Remove="README.md" />

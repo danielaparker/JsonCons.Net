@@ -64,8 +64,13 @@
 
 <p>The JsonCons.JsonPath library complements the functionality of the
 <a href="https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1">System.Text.Json namespace</a>
-with an implementation of JSONPath. It provides support for querying the
-JsonDocument/JsonElement classes. It targets .Net Standard 2.1.</p>
+with an implementation of JSONPath. It provides support for querying<br>
+JsonDocument/JsonElement instances with code like this:</p>
+<pre><code class="lang-csharp">var selector = JsonSelector.Parse(&quot;$.books[?(@.price &gt;= 22 &amp;&amp; @.price &lt; 30)]&quot;);
+
+IList&lt;JsonElement&gt; elements = selector.Select(doc.RootElement);
+</code></pre>
+<p>It targets .Net Standard 2.1.</p>
 <p>JSONPath is a loosely standardized syntax for querying JSON. The original JavaScript JSONPath is a creation
 of Stefan Goessner and is described <a href="https://goessner.net/articles/JsonPath/">here</a>. Since
 the original, there have been many implementations in multiple languages,
