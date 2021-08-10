@@ -22,7 +22,7 @@ implementations differ, it generally takes into account the consensus as establi
 the [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
 
 In addition, the JsonCons incorporates some generalizations and tightening of syntax introduced
-in the more innovative and rigourously specified implementations.
+in the more innovative and formally specified implementations.
 
 - It allows names in the dot notation to be unquoted, single-quoted, or double-quoted.
 

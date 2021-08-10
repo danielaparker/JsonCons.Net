@@ -37,7 +37,7 @@ JSONPath	                | Result
 `$..*`	                | All members of JSON structure.
 
 In addition, the JsonCons incorporates some generalizations and tightening of syntax introduced
-in the more innovative and rigourously specified implementations.
+in the more innovative and formally specified implementations.
 
 - It allows names in the dot notation to be unquoted, single-quoted, or double-quoted.
 
