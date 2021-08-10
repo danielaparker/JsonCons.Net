@@ -82,18 +82,22 @@ the <a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparis
 <p>In addition, the JsonCons incorporates some generalizations and tightening of syntax introduced
 in the more innovative and formally specified implementations.</p>
 <ul>
-<li><p>It allows names in the dot notation to be unquoted, single-quoted, or double-quoted.</p>
+<li><p>Unquoted names follow the same rules for the selector and in filter
+expressions, and forbid characters such as hyphens that cause difficulties
+in expressions.</p>
 </li>
-<li><p>It allows names in the square bracket notation to be single-quoted or double-quoted.</p>
+<li><p>Names in the dot notation may be unquoted, single-quoted, or double-quoted.</p>
 </li>
-<li><p>Like <a href="https://github.com/PaesslerAG/jsonpath">PaesslerAG/jsonpath/ajson</a>, it allows filter expressions
-to omit the enclosing parentheses, as in <code>$..book[?(@.price&lt;10)]</code>.</p>
+<li><p>Names in the square bracket notation may be single-quoted or double-quoted.</p>
 </li>
-<li><p>It supports unions of separate JSONPath selectors, e.g.</p>
+<li><p>Like <a href="https://github.com/PaesslerAG/jsonpath">PaesslerAG/jsonpath/ajson</a>, filter expressions
+may omit the parentheses around the expression, as in <code>$..book[?@.price&lt;10]</code>.</p>
+</li>
+<li><p>Unions may have separate JSONPath selectors, e.g.</p>
 <p>$..[@.firstName,@.address.city]</p>
 </li>
-<li><p>Like <a href="https://www.npmjs.com/package/jsonpath-plus">JSONPath Plus</a>, it supports a parent operator <code>^</code>
-for providing access to the parent node.</p>
+<li><p>A parent selector <code>^</code>, borrowed from <a href="https://www.npmjs.com/package/jsonpath-plus">JSONPath Plus</a>,
+provides access to the parent node.</p>
 </li>
 <li><p>Options are provided to exclude results corresponding to duplicate paths, and to
 sort results by paths.</p>
@@ -748,52 +752,45 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 </table>
 <p>The unary minus operator is only valid if right is a number.</p>
 <h3 id="operator-precedence">Operator precedence</h3>
+<p>The table below shows operator precedence in descending order
+(upper rows have higher precedence than lower ones).</p>
 <table>
 <thead>
 <tr>
-<th>Precedence</th>
 <th>Operator</th>
 <th>Associativity</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>1</td>
 <td><code>!</code> unary <code>-</code></td>
-<td>Right</td>
+<td>n/a</td>
 </tr>
 <tr>
-<td>2</td>
 <td><code>=~</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>3</td>
 <td><code>*</code> <code>/</code>  <code>%</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>4</td>
 <td><code>+</code> <code>-</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>5</td>
 <td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>6</td>
 <td><code>==</code> <code>!=</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>7</td>
 <td><code>&amp;&amp;</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>8</td>
 <td><code>||</code></td>
 <td>Left</td>
 </tr>
