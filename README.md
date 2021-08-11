@@ -77,7 +77,7 @@ Many of the test cases and some of the examples are borrowed from this resource.
 
 - The specification of JsonCons.JsonPath filter expressions is greatly influenced by
 James Saryerwinnie's [JMESPath](https://jmespath.org/specification.html),
-and largely follows JMSPath with regards to truthiness, comparator syntax and semantices,
+and largely follows JMSPath with regards to truthiness, comparator syntax and semantics,
 and function syntax and semantics. In Stefan Goessner's original article, filter
 expressions were left unspecified, and in their original implementations, they were
 Javascript or PHP. 
