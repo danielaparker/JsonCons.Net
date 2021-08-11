@@ -69,7 +69,8 @@ Code examples may be found at:
 ## Acknowledgements
 
 - Credit to [Stefan Goessner's JsonPath](https://goessner.net/articles/JsonPath/),
-the original JSONPath.
+the original JSONPath. While not a formal specification, it was enormously
+influential.
 
 - The specification of JsonCons.JsonPath draws heavily on Christoph Burgmer's 
 [JSONPath Comparison](https://cburgmer.github.io/json-path-comparison/).

@@ -74,12 +74,17 @@ Documentation and examples may be found here:
 ## Acknowledgements
 
 - Credit to [Stefan Goessner's JsonPath](https://goessner.net/articles/JsonPath/),
-the original JSONPath.
+the original JSONPath. While not a formal specification, it was enormously
+influential.
 
-- The specification of JsonCons JsonPath draws heavily on Christoph Burgmer's 
+- The specification of JsonCons.JsonPath draws heavily on Christoph Burgmer's 
 [JSONPath Comparison](https://cburgmer.github.io/json-path-comparison/).
 Many of the test cases and some of the examples are borrowed from this resource.
 
-- The specification of JSONPath filter expressions is greatly influenced by
-James Saryerwinnie's [JMESPath](https://jmespath.org/specification.html)
+- The specification of JsonCons.JsonPath filter expressions is greatly influenced by
+James Saryerwinnie's [JMESPath](https://jmespath.org/specification.html),
+and largely follows JMSPath with regards to truthiness, comparator syntax and semantics,
+and function syntax and semantics. In Stefan Goessner's original article, filter
+expressions were left unspecified, and in their original implementations, they were
+simply Javascript or PHP. 
 
