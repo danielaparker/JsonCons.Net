@@ -80,6 +80,6 @@ James Saryerwinnie's [JMESPath](https://jmespath.org/specification.html),
 and largely follows JMSPath with regards to truthiness, comparator syntax and semantics,
 and function syntax and semantics. In Stefan Goessner's original article, filter
 expressions were left unspecified, and in their original implementations, they were
-Javascript or PHP. 
+simply Javascript or PHP. 
 
 
