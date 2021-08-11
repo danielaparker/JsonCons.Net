@@ -36,7 +36,7 @@ JSONPath	                | Result
 `$..book[?(@.price<10)]`	| Filter all books cheapier than 10
 `$..*`	                | All members of JSON structure.
 
-
+  
 In addition, JsonCons.JsonPath incorporates some generalizations and tightening of syntax introduced
 in the more innovative and formally specified implementations.
 
