@@ -357,13 +357,13 @@
         </member>
         <member name="P:JsonCons.JsonPath.NormalizedPathNode.Root">
              <summary>
-             Gets a root node 
+             Gets an instance of <see cref="T:JsonCons.JsonPath.NormalizedPathNode"/> that represents the root value ($) 
             
              </summary>
         </member>
         <member name="P:JsonCons.JsonPath.NormalizedPathNode.Current">
              <summary>
-             Gets a current node 
+             Gets an instance of <see cref="T:JsonCons.JsonPath.NormalizedPathNode"/> that represents the current node (@)
             
              </summary>
         </member>

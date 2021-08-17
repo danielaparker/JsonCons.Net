@@ -52,13 +52,13 @@ namespace JsonCons.JsonPath
         private readonly Int32 _index;
 
         /// <summary>
-        /// Gets a root node 
+        /// Gets an instance of <see cref="NormalizedPathNode"/> that represents the root value ($) 
         ///
         /// </summary>
         public static NormalizedPathNode Root {get;} = new NormalizedPathNode(NormalizedPathNodeKind.Root, "$");
 
         /// <summary>
-        /// Gets a current node 
+        /// Gets an instance of <see cref="NormalizedPathNode"/> that represents the current node (@)
         ///
         /// </summary>
         public static NormalizedPathNode Current { get;} = new NormalizedPathNode(NormalizedPathNodeKind.Root, "@");
