@@ -390,28 +390,28 @@
         </member>
         <member name="M:JsonCons.JsonPath.NormalizedPathNode.GetName">
              <summary>
-             Gets the value of this NormalizedPathNode as a name.
+             Gets the value of this <see cref="T:JsonCons.JsonPath.NormalizedPathNode"/> as a name.
             
              </summary>
         </member>
         <member name="M:JsonCons.JsonPath.NormalizedPathNode.GetIndex">
              <summary>
-             Gets the value of this NormalizedPathNode as an index.
+             Gets the value of this <see cref="T:JsonCons.JsonPath.NormalizedPathNode"/> as an index.
             
              </summary>
         </member>
         <member name="M:JsonCons.JsonPath.NormalizedPathNode.CompareTo(JsonCons.JsonPath.NormalizedPathNode)">
             <summary>
-            Compares this instance with a specified NormalizedPathNode object and indicates 
+            Compares this instance with a specified <see cref="T:JsonCons.JsonPath.NormalizedPathNode"/> object and indicates 
             whether this instance precedes, follows, or appears in the same 
-            position in the sort order as the specified NormalizedPathNode.
+            position in the sort order as the specified <see cref="T:JsonCons.JsonPath.NormalizedPathNode"/>.
             </summary>
             <param name="other"></param>
             <returns></returns>
         </member>
         <member name="M:JsonCons.JsonPath.NormalizedPathNode.GetHashCode">
             <summary>
-            Returns the hash code for this NormalizedPathNode.
+            Returns the hash code for this <see cref="T:JsonCons.JsonPath.NormalizedPathNode"/>.
             </summary>
             <returns>A 32-bit signed integer hash code.</returns>
         </member>
@@ -457,31 +457,31 @@
         </member>
         <member name="M:JsonCons.JsonPath.NormalizedPath.Equals(JsonCons.JsonPath.NormalizedPath)">
             <summary>
-            Determines whether this instance and another specified NormalizedPath object have the same value.
+            Determines whether this instance and another specified <see cref="T:JsonCons.JsonPath.NormalizedPath"/> object have the same value.
             </summary>
-            <param name="other">The NormalizedPath to compare to this instance.</param>
+            <param name="other">The <see cref="T:JsonCons.JsonPath.NormalizedPath"/> to compare to this instance.</param>
             <returns>true if the value of other is the same as the value of this instance; otherwise, false. If other is null, the method returns false.</returns>
         </member>
         <member name="M:JsonCons.JsonPath.NormalizedPath.Equals(System.Object)">
             <summary>
-            Determines whether this instance and a specified object, which must also be a NormalizedPath object, have the same value.
+            Determines whether this instance and a specified object, which must also be a <see cref="T:JsonCons.JsonPath.NormalizedPath"/> object, have the same value.
             </summary>
-            <param name="other">The NormalizedPath to compare to this instance.</param>
-            <returns>true if other is a NormalizedPath and its value is the same as this instance; otherwise, false. If other is null, the method returns false.</returns>
+            <param name="other">The <see cref="T:JsonCons.JsonPath.NormalizedPath"/> to compare to this instance.</param>
+            <returns>true if other is a <see cref="T:JsonCons.JsonPath.NormalizedPath"/> and its value is the same as this instance; otherwise, false. If other is null, the method returns false.</returns>
         </member>
         <member name="M:JsonCons.JsonPath.NormalizedPath.CompareTo(JsonCons.JsonPath.NormalizedPath)">
             <summary>
-            Compares this instance with a specified NormalizedPath object and indicates 
+            Compares this instance with a specified <see cref="T:JsonCons.JsonPath.NormalizedPath"/> object and indicates 
             whether this instance precedes, follows, or appears in the same 
-            position in the sort order as the specified NormalizedPath.
+            position in the sort order as the specified <see cref="T:JsonCons.JsonPath.NormalizedPath"/>.
             </summary>
-            <param name="other">The NormalizedPath to compare with this instance.</param>
+            <param name="other">The <see cref="T:JsonCons.JsonPath.NormalizedPath"/> to compare with this instance.</param>
             <returns>A 32-bit signed integer that indicates whether this instance precedes, 
             follows, or appears in the same position in the sort order as other.</returns>
         </member>
         <member name="M:JsonCons.JsonPath.NormalizedPath.GetHashCode">
             <summary>
-            Returns the hash code for this NormalizedPath.
+            Returns the hash code for this <see cref="T:JsonCons.JsonPath.NormalizedPath"/>.
             </summary>
             <returns>A 32-bit signed integer hash code.</returns>
         </member>
