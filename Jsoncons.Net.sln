@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonCons.JmesPath", "src\Js
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonCons.JmesPath.Tests", "tests\JsonCons.JmesPath.Tests\JsonCons.JmesPath.Tests.csproj", "{0398125E-6862-4030-AAB2-DEF5F3D06F72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JmesPath.Examples", "examples\JmesPath.Examples\JmesPath.Examples.csproj", "{D2F2A501-185E-4B3A-AB25-B6401ED32B62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{0398125E-6862-4030-AAB2-DEF5F3D06F72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0398125E-6862-4030-AAB2-DEF5F3D06F72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0398125E-6862-4030-AAB2-DEF5F3D06F72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2F2A501-185E-4B3A-AB25-B6401ED32B62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F2A501-185E-4B3A-AB25-B6401ED32B62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F2A501-185E-4B3A-AB25-B6401ED32B62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F2A501-185E-4B3A-AB25-B6401ED32B62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{61DDAE76-D53D-49B6-BC6A-3498218B59D0} = {D9A9E80C-57F9-4E11-A7EA-635366A3A90A}
 		{90C9D951-1880-4F6E-ADEB-F88E59242415} = {D9A9E80C-57F9-4E11-A7EA-635366A3A90A}
 		{C6B7DCEB-559C-4242-A565-68CD277C8742} = {D9A9E80C-57F9-4E11-A7EA-635366A3A90A}
+		{D2F2A501-185E-4B3A-AB25-B6401ED32B62} = {D9A9E80C-57F9-4E11-A7EA-635366A3A90A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A38EA2A9-6AD2-457B-9B11-2A2A0EED417B}

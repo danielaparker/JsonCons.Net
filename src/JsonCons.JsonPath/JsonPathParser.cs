@@ -139,8 +139,11 @@ namespace JsonCons.JsonPath
 
         internal JsonSelector Parse()
         {
-            _stateStack = new Stack<JsonPathState>();
+            _stateStack.Clear();
+            _outputStack.Clear();
+            _operatorStack.Clear();
             _index = 0;
+            _line = 1;
             _column = 1;
 
             _stateStack.Push(JsonPathState.Start);

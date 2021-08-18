@@ -6,21 +6,21 @@ namespace JsonCons.JmesPath
     {
     }
 
-    public class JmesPathEvaluator
+    public class JsonSearcher
     {
         /// <summary>
-        /// Parses a JMESPath string into a <see cref="JmesPathEvaluator"/>, for "parse once, use many times".
-        /// A <see cref="JmesPathEvaluator"/> instance is thread safe and has no mutable state.
+        /// Parses a JMESPath string into a <see cref="JsonSearcher"/>, for "parse once, use many times".
+        /// A <see cref="JsonSearcher"/> instance is thread safe and has no mutable state.
         /// </summary>
         /// <param name="jmesPath">A JMESPath string.</param>
-        /// <returns>A <see cref="JmesPathEvaluator"/>.</returns>
+        /// <returns>A <see cref="JsonSearcher"/>.</returns>
         /// <exception cref="JmesPathParseException">
         ///   The <paramref name="jmesPath"/> parameter is not a valid JMESPath expression.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         ///   The <paramref name="jmesPath"/> is <see langword="null"/>.
         /// </exception>
-        public static JmesPathEvaluator Parse(string jmesPath)
+        public static JsonSearcher Parse(string jmesPath)
         {
             if (jmesPath == null)
             {

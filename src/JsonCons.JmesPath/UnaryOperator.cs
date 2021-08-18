@@ -42,7 +42,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue val, out IValue result)
         {
-            result = Expression.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
+            result = Truthiness.IsFalse(val) ? JsonConstants.True : JsonConstants.False;
             return true;
         }
 

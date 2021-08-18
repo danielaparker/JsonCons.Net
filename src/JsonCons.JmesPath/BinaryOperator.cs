@@ -46,7 +46,7 @@ namespace JsonCons.JmesPath
             {
                 result = JsonConstants.Null;
             }
-            if (!Expression.IsFalse(lhs))
+            if (!Truthiness.IsFalse(lhs))
             {
                 result = lhs;
             }
@@ -74,7 +74,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            if (Expression.IsTrue(lhs))
+            if (Truthiness.IsTrue(lhs))
             {
                 result = rhs;
             }
@@ -138,7 +138,7 @@ namespace JsonCons.JmesPath
                 return false;
             }
                 
-            if (Expression.IsFalse(value)) 
+            if (Truthiness.IsFalse(value)) 
             {
                 result = JsonConstants.True;
             }
