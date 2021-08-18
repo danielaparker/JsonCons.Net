@@ -2,6 +2,10 @@
 
 namespace JsonCons.JmesPath
 {
+    sealed class DynamicResources 
+    {
+    }
+
     public class JmesPathEvaluator
     {
         /// <summary>
