@@ -29,6 +29,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonCons.JsonPath", "src\Js
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonCons.JsonPath.Tests", "tests\JsonCons.JsonPath.Tests\JsonCons.JsonPath.Tests.csproj", "{A1B8C2FC-D7D0-49EB-9F44-7F23509D10EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonCons.JmesPath", "src\JsonCons.JmesPath\JsonCons.JmesPath.csproj", "{FBBA9109-2B76-499A-A423-FAA891B637E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonCons.JmesPath.Tests", "tests\JsonCons.JmesPath.Tests\JsonCons.JmesPath.Tests.csproj", "{0398125E-6862-4030-AAB2-DEF5F3D06F72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +75,14 @@ Global
 		{A1B8C2FC-D7D0-49EB-9F44-7F23509D10EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1B8C2FC-D7D0-49EB-9F44-7F23509D10EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1B8C2FC-D7D0-49EB-9F44-7F23509D10EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBBA9109-2B76-499A-A423-FAA891B637E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBBA9109-2B76-499A-A423-FAA891B637E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBBA9109-2B76-499A-A423-FAA891B637E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBBA9109-2B76-499A-A423-FAA891B637E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0398125E-6862-4030-AAB2-DEF5F3D06F72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0398125E-6862-4030-AAB2-DEF5F3D06F72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0398125E-6862-4030-AAB2-DEF5F3D06F72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0398125E-6862-4030-AAB2-DEF5F3D06F72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
