@@ -1,4 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace JsonCons.JmesPath
 {
@@ -35,6 +41,61 @@ namespace JsonCons.JmesPath
         }
     };
 
+    enum JmesPathState
+    {
+        Start,
+        LhsExpression,
+        RhsExpression,
+        SubExpression,
+        ExpressionType,
+        ComparatorExpression,
+        FunctionExpression,
+        Argument,
+        ExpressionOrExpressionType,
+        QuotedString,
+        RawString,
+        RawStringEscapeChar,
+        QuotedStringEscapeChar,
+        EscapeU1, 
+        EscapeU2, 
+        EscapeU3, 
+        EscapeU4, 
+        EscapeExpectSurrogatePair1, 
+        EscapeExpectSurrogatePair2, 
+        EscapeU5, 
+        EscapeU6, 
+        EscapeU7, 
+        EscapeU8, 
+        Literal,
+        KeyExpr,
+        ValExpr,
+        IdentifierOrFunctionExpr,
+        UnquotedString,
+        KeyValExpr,
+        Number,
+        Digit,
+        IndexOrSliceExpression,
+        BracketSpecifier,
+        BracketSpecifierOrMultiSelectList,
+        Filter,
+        MultiSelectList,
+        MultiSelectHash,
+        RhsSliceExpressionStop,
+        RhsSliceExpressionStep,
+        ExpectRbracket,
+        ExpectRparen,
+        ExpectDot,
+        ExpectFilterRbracket,
+        ExpectRbrace,
+        ExpectColon,
+        ExpectMultiSelectList,
+        CmpLtOrLte,
+        CmpEq,
+        CmpGtOrGte,
+        CmpNe,
+        ExpectPipeOrOr,
+        ExpectAnd
+    }
 
     ref struct JmesPathParser
     {
@@ -42,6 +103,9 @@ namespace JsonCons.JmesPath
         int _index;
         int _column;
         int _line;
+        Stack<JmesPathState> _stateStack;
+        Stack<Token>_outputStack;
+        Stack<Token>_operatorStack;
 
         internal JmesPathParser(string input)
         {
@@ -49,11 +113,21 @@ namespace JsonCons.JmesPath
             _index = 0;
             _column = 1;
             _line = 1;
+            _stateStack = new Stack<JmesPathState>();
+            _outputStack = new Stack<Token>();
+            _operatorStack = new Stack<Token>();
         }
 
         internal JmesPathEvaluator Parse()
         {
             return new JmesPathEvaluator();
+        }
+
+        private void PushToken(Token token)
+        {
+            switch (token.TokenKind)
+            {
+            }
         }
     }
 }
