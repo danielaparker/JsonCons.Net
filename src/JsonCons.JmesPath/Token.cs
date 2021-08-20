@@ -36,55 +36,61 @@ namespace JsonCons.JmesPath
 
     readonly struct Token : IEquatable<Token>
     {
-        readonly JmesPathTokenKind _type;
+        readonly JmesPathTokenKind _tokenKind;
         readonly object _expr;
 
-        internal Token(JmesPathTokenKind type)
+        internal Token(JmesPathTokenKind tokenKind)
         {
-            _type = type;
+            _tokenKind = tokenKind;
             _expr = null;
+        }
+
+        internal Token(JmesPathTokenKind tokenKind, string s)
+        {
+            _tokenKind = tokenKind;
+            _expr = s;
         }
 
         internal Token(IExpression expr)
         {
-            _type = JmesPathTokenKind.Expression;
+            _tokenKind = JmesPathTokenKind.Expression;
             _expr = expr;
         }
 
         internal Token(IUnaryOperator expr)
         {
-            _type = JmesPathTokenKind.UnaryOperator;
+            _tokenKind = JmesPathTokenKind.UnaryOperator;
             _expr = expr;
         }
 
         internal Token(IBinaryOperator expr)
         {
-            _type = JmesPathTokenKind.BinaryOperator;
+            _tokenKind = JmesPathTokenKind.BinaryOperator;
             _expr = expr;
         }
 
         internal Token(IFunction expr)
         {
-            _type = JmesPathTokenKind.Function;
+            _tokenKind = JmesPathTokenKind.Function;
             _expr = expr;
         }
 
         internal Token(IValue expr)
         {
-            _type = JmesPathTokenKind.Literal;
+            _tokenKind = JmesPathTokenKind.Literal;
             _expr = expr;
         }
 
         internal JmesPathTokenKind TokenKind
         {
-            get { return _type; }   
+            get { return _tokenKind; }   
         }
 
         internal bool IsOperator
         {
             get
             {
-                switch(_type)
+                switch(_tokenKind)
                 {
                     case JmesPathTokenKind.UnaryOperator:
                         return true;
@@ -96,11 +102,25 @@ namespace JsonCons.JmesPath
             }
         }
 
+        internal bool IsProjection
+        {
+            get
+            {
+                switch(_tokenKind)
+                {
+                    case JmesPathTokenKind.Expression:
+                        return GetExpression().IsProjection;
+                    default:
+                        return false;
+                }
+            }
+        }
+
         internal bool IsRightAssociative
         {
             get
             {
-                switch(_type)
+                switch(_tokenKind)
                 {
                     case JmesPathTokenKind.Expression:
                         return GetExpression().IsRightAssociative;
@@ -118,7 +138,7 @@ namespace JsonCons.JmesPath
         {
             get
             {
-                switch(_type)
+                switch(_tokenKind)
                 {
                     case JmesPathTokenKind.Expression:
                         return GetExpression().PrecedenceLevel;
@@ -132,39 +152,45 @@ namespace JsonCons.JmesPath
             }
         }
 
+        internal string GetKey()
+        {
+            Debug.Assert(_tokenKind == JmesPathTokenKind.Key);
+            return (string)_expr;
+        }
+
         internal IValue GetValue()
         {
-            Debug.Assert(_type == JmesPathTokenKind.Literal);
+            Debug.Assert(_tokenKind == JmesPathTokenKind.Literal);
             return (IValue)_expr;
         }
 
         internal IFunction GetFunction()
         {
-            Debug.Assert(_type == JmesPathTokenKind.Function);
+            Debug.Assert(_tokenKind == JmesPathTokenKind.Function);
             return (IFunction)_expr;
         }
 
         internal IExpression GetExpression()
         {
-            Debug.Assert(_type == JmesPathTokenKind.Expression);
+            Debug.Assert(_tokenKind == JmesPathTokenKind.Expression);
             return (IExpression)_expr;
         }
 
         internal IUnaryOperator GetUnaryOperator()
         {
-            Debug.Assert(_type == JmesPathTokenKind.UnaryOperator);
+            Debug.Assert(_tokenKind == JmesPathTokenKind.UnaryOperator);
             return (IUnaryOperator)_expr;
         }
 
         internal IBinaryOperator GetBinaryOperator()
         {
-            Debug.Assert(_type == JmesPathTokenKind.BinaryOperator);
+            Debug.Assert(_tokenKind == JmesPathTokenKind.BinaryOperator);
             return (IBinaryOperator)_expr;
         }
 
         public bool Equals(Token other)
         {
-            if (this._type == other._type)
+            if (this._tokenKind == other._tokenKind)
                 return true;
             else
                 return false;        
@@ -172,7 +198,7 @@ namespace JsonCons.JmesPath
 
         public override string ToString()
         {
-            switch(_type)
+            switch(_tokenKind)
             {
                 case JmesPathTokenKind.CurrentNode:
                     return "CurrentNode";
@@ -197,7 +223,7 @@ namespace JsonCons.JmesPath
                 case JmesPathTokenKind.Separator:
                     return "Separator";
                 case JmesPathTokenKind.Key:
-                    return "Key";
+                    return $"Key {_expr}";
                 case JmesPathTokenKind.Literal:
                     return $"Literal {_expr}";
                 case JmesPathTokenKind.Expression:

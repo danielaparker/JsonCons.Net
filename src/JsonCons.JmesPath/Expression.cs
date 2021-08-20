@@ -28,14 +28,32 @@ namespace JsonCons.JmesPath
                           IValue current, 
                           out IValue value);
 
-         public int PrecedenceLevel {get;} 
+         int PrecedenceLevel {get;} 
 
-         public bool IsRightAssociative {get;} 
+         bool IsProjection {get;} 
+
+         bool IsRightAssociative {get;}
+
+        void AddExpression(BaseExpression expr);
     }
 
-
-    static class Truthiness 
+    class Expression
     {
+        IReadOnlyCollection<Token> _tokens;
+
+        internal Expression(IReadOnlyCollection<Token> tokens)
+        {
+            _tokens = tokens;
+        }
+
+        public  bool TryEvaluate(DynamicResources resources,
+                                 IValue current, 
+                                 out IValue result)
+        {
+            result = JsonConstants.Null;
+            return true;
+        }
+
         internal static bool IsFalse(IValue val)
         {
             var comparer = ValueEqualityComparer.Instance;
@@ -86,7 +104,7 @@ namespace JsonCons.JmesPath
                                          IValue current, 
                                          out IValue value);
 
-        internal virtual void AddExpression(BaseExpression expressions)
+        public virtual void AddExpression(BaseExpression expressions)
         {
         }
 
@@ -197,9 +215,10 @@ namespace JsonCons.JmesPath
         internal BaseProjection(int precedence_level, bool isRightAssociative = true)
             : base(precedence_level, isRightAssociative, true)
         {
+            _expressions = new List<BaseExpression>();
         }
 
-        internal override void AddExpression(BaseExpression expr)
+        public override void AddExpression(BaseExpression expr)
         {
             if (_expressions.Count != 0 && _expressions[_expressions.Count-1].IsProjection && 
                 (expr.PrecedenceLevel < _expressions[_expressions.Count-1].PrecedenceLevel ||
@@ -246,19 +265,19 @@ namespace JsonCons.JmesPath
             }
 
             var result = new List<IValue>();
-            value = new ArrayJsonValue(result);
+            value = new ArrayValue(result);
             foreach (var item in current.EnumerateObject())
             {
                 if (item.Value.ValueKind != JsonValueKind.Null)
                 {
-                    IValue j;
-                    if (!this.TryApplyExpressions(resources, item.Value, out j))
+                    IValue val;
+                    if (!this.TryApplyExpressions(resources, item.Value, out val))
                     {
                         return false;
                     }
-                    if (j.ValueKind != JsonValueKind.Null)
+                    if (val.ValueKind != JsonValueKind.Null)
                     {
-                        result.Add(j);
+                        result.Add(val);
                     }
                 }
             }
@@ -270,106 +289,177 @@ namespace JsonCons.JmesPath
             return "ObjectProjection";
         }
     };
-/*
-    class list_projection sealed : BaseProjection
-    {
-    public:
-        list_projection()
-            : BaseProjection(11, true)
+    sealed class ListProjection : BaseProjection
+    {    
+        internal ListProjection()
+            : base(11, true)
         {
         }
 
-        reference Evaluate(reference current, dynamic_resources& resources, std::error_code& ec)
+        public override bool TryEvaluate(DynamicResources resources,
+                                         IValue current, 
+                                         out IValue value)
         {
-            if (!current.is_array())
+            if (current.ValueKind != JsonValueKind.Array)
             {
-                return resources.null_value();
+                value = JsonConstants.Null;
+                return true;
             }
 
-            var result = new List<Ivalue>();
-            for (reference item in current.EnumerateArray())
+            var result = new List<IValue>();
+            foreach (var item in current.EnumerateArray())
             {
-                if (!item.is_null())
+                if (item.ValueKind != JsonValueKind.Null)
                 {
-                    reference j = this.TryApplyExpressions(item, resources, ec);
-                    if (j.ValueKind != JsonValueKind.Null)
+                    IValue val;
+                    if (!this.TryApplyExpressions(resources, item, out val))
                     {
-                        result.Add(json_const_pointer_arg, std::addressof(j));
+                        value = JsonConstants.Null;
+                        return false;
+                    }
+                    if (val.ValueKind != JsonValueKind.Null)
+                    {
+                        result.Add(val);
                     }
                 }
             }
-            return *result;
+            value = new ArrayValue(result);
+            return true;
         }
 
-        string ToString(int indent = 0)
+        public override string ToString()
         {
-            string s;
-            for (int i = 0; i <= indent; ++i)
-            {
-                s.push_back(' ');
-            }
-            s.append("list_projection\n");
-            for (var expr : this._expressions)
-            {
-                string sss = expr.ToString(indent+2);
-                s.insert(s.end(), sss.begin(), sss.end());
-                s.push_back('\n');
-            }
-            return s;
+            return "ListProjection";
         }
     };
 
-    class slice_projection sealed : BaseProjection
+    sealed class FlattenProjection : BaseProjection
     {
-        slice slice_;
-    public:
-        slice_projection(const slice& s)
-            : BaseProjection(11, true), slice_(s)
+        internal FlattenProjection()
+            : base(11, false)
         {
         }
 
-        reference Evaluate(reference current, dynamic_resources& resources, std::error_code& ec)
+        public override bool TryEvaluate(DynamicResources resources,
+                                         IValue current, 
+                                         out IValue value)
         {
-            if (!current.is_array())
+            if (current.ValueKind != JsonValueKind.Array)
             {
-                return resources.null_value();
+                value = JsonConstants.Null;
+                return false;
             }
 
-            var start = slice_.get_start(current.size());
-            var end = slice_.get_stop(current.size());
-            var step = slice_.step();
+            var result = new List<IValue>();
+            foreach (var item in current.EnumerateArray())
+            {
+                if (item.ValueKind == JsonValueKind.Array)
+                {
+                    foreach (var elem in item.EnumerateArray())
+                    {
+                        if (elem.ValueKind != JsonValueKind.Null)
+                        {
+                            IValue val;
+                            if (!this.TryApplyExpressions(resources, elem, out val))
+                            {
+                                value = JsonConstants.Null;
+                                return false;
+                            }
+                            if (val.ValueKind != JsonValueKind.Null)
+                            {
+                                result.Add(val);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (item.ValueKind != JsonValueKind.Null)
+                    {
+                        IValue val;
+                        if (!this.TryApplyExpressions(resources, item, out val))
+                        {
+                            value = JsonConstants.Null;
+                            return false;
+                        }
+                        if (val.ValueKind != JsonValueKind.Null)
+                        {
+                            result.Add(val);
+                        }
+                    }
+                }
+            }
+
+            value = new ArrayValue(result);
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "FlattenProjection";
+        }
+    };
+
+    sealed class SliceProjection : BaseProjection
+    {
+        Slice _slice;
+    
+        internal SliceProjection(Slice s)
+            : base(11, true)
+        {
+            _slice = s;
+        }
+
+        public override bool TryEvaluate(DynamicResources resources,
+                                         IValue current, 
+                                         out IValue value)
+        {
+            if (current.ValueKind != JsonValueKind.Array)
+            {
+                value = JsonConstants.Null;
+                return true;
+            }
+
+            var start = _slice.GetStart(current.GetArrayLength());
+            var end = _slice.GetStop(current.GetArrayLength());
+            var step = _slice.Step;
 
             if (step == 0)
             {
-                ec = jmespath_errc::step_cannot_be_zero;
-                return resources.null_value();
+                value = JsonConstants.Null;
+                return false;;
             }
 
-            var result = new List<Ivalue>();
+            var result = new List<IValue>();
             if (step > 0)
             {
                 if (start < 0)
                 {
                     start = 0;
                 }
-                if (end > static_cast<Int32>(current.size()))
+                if (end > current.GetArrayLength())
                 {
-                    end = current.size();
+                    end = current.GetArrayLength();
                 }
                 for (Int32 i = start; i < end; i += step)
                 {
-                    reference j = this.TryApplyExpressions(current.at(static_cast<int>(i)), resources, ec);
-                    if (j.ValueKind != JsonValueKind.Null)
+                    IValue val;
+                    if (!this.TryApplyExpressions(resources, current[i], out val))
                     {
-                        result.Add(json_const_pointer_arg, std::addressof(j));
+                        value = JsonConstants.Null;
+                        return false;
+                    }
+                    if (val.ValueKind != JsonValueKind.Null)
+                    {
+                        result.Add(val);
                     }
                 }
             }
             else
             {
-                if (start >= static_cast<Int32>(current.size()))
+                if (start >= current.GetArrayLength())
                 {
-                    start = static_cast<Int32>(current.size()) - 1;
+                    start = current.GetArrayLength() - 1;
                 }
                 if (end < -1)
                 {
@@ -377,283 +467,206 @@ namespace JsonCons.JmesPath
                 }
                 for (Int32 i = start; i > end; i += step)
                 {
-                    reference j = this.TryApplyExpressions(current.at(static_cast<int>(i)), resources, ec);
-                    if (j.ValueKind != JsonValueKind.Null)
+                    IValue val;
+                    if (!this.TryApplyExpressions(resources, current[i], out val))
                     {
-                        result.Add(json_const_pointer_arg, std::addressof(j));
+                        value = JsonConstants.Null;
+                        return false;
+                    }
+                    if (val.ValueKind != JsonValueKind.Null)
+                    {
+                        result.Add(val);
                     }
                 }
             }
 
-            return *result;
+            value = new ArrayValue(result);
+            return true;
         }
 
-        string ToString(int indent = 0)
+        public override string ToString()
         {
-            string s;
-            for (int i = 0; i <= indent; ++i)
-            {
-                s.push_back(' ');
-            }
-            s.append("slice_projection\n");
-            for (var expr : this._expressions)
-            {
-                string sss = expr.ToString(indent+2);
-                s.insert(s.end(), sss.begin(), sss.end());
-                s.push_back('\n');
-            }
-            return s;
+            return "SliceProjection";
         }
     };
 
-    class filter_expression sealed : BaseProjection
+    sealed class FilterExpression : BaseProjection
     {
-        std::vector<token> token_list_;
-    public:
-        filter_expression(std::vector<token>&& token_list)
-            : BaseProjection(11, true), token_list_(std::move(token_list))
+        readonly Expression _expr;
+    
+        internal FilterExpression(Expression expr)
+            : base(11, true)
         {
+            _expr = expr;
         }
 
-        reference Evaluate(reference current, dynamic_resources& resources, std::error_code& ec)
+        public override bool TryEvaluate(DynamicResources resources,
+                                         IValue current, 
+                                         out IValue value)
         {
-            if (!current.is_array())
+            if (current.ValueKind != JsonValueKind.Array)
             {
-                return resources.null_value();
+                value = JsonConstants.Null;
+                return true;
             }
-            var result = new List<Ivalue>();
+            var result = new List<IValue>();
 
-            for (var item in current.EnumerateArray())
+            foreach (var item in current.EnumerateArray())
             {
-                Json j(json_const_pointer_arg, evaluate_tokens(item, token_list_, resources, ec));
-                if (is_true(j))
+                IValue test;
+                if (!_expr.TryEvaluate(resources, item, out test))
                 {
-                    reference jj = this.TryApplyExpressions(item, resources, ec);
-                    if (!jj.is_null())
+                    value = JsonConstants.Null;
+                    return false;
+                }
+                if (Expression.IsTrue(test))
+                {
+                    IValue val;
+                    if (!this.TryApplyExpressions(resources, item, out val))
                     {
-                        result.Add(json_const_pointer_arg, std::addressof(jj));
+                        value = JsonConstants.Null;
+                        return false;
+                    }
+                    if (val.ValueKind != JsonValueKind.Null)
+                    {
+                        result.Add(val);
                     }
                 }
             }
-            return *result;
+            value = new ArrayValue(result);
+            return true;
         }
 
-        string ToString(int indent = 0)
+        public override string ToString()
         {
-            string s;
-            for (int i = 0; i <= indent; ++i)
-            {
-                s.push_back(' ');
-            }
-            s.append("filter_expression\n");
-            for (var item : token_list_)
-            {
-                string sss = item.ToString(indent+2);
-                s.insert(s.end(), sss.begin(), sss.end());
-                s.push_back('\n');
-            }
-            return s;
+            return "FilterExpression";
         }
     };
 
-    class flatten_projection sealed : BaseProjection
+    sealed class MultiSelectList : BaseExpression
     {
-    public:
-        flatten_projection()
-            : BaseProjection(11, false)
+        IList<IExpression> _expressions;
+    
+        internal MultiSelectList(IList<IExpression> expressions)
+            : base(1, false, false)
         {
+            _expressions = expressions;
         }
 
-        reference Evaluate(reference current, dynamic_resources& resources, std::error_code& ec)
+        public override bool TryEvaluate(DynamicResources resources,
+                                         IValue current, 
+                                         out IValue value)
         {
-            if (!current.is_array())
+            if (current.ValueKind == JsonValueKind.Null)
             {
-                return resources.null_value();
+                value = JsonConstants.Null;
+                return true;
             }
+            var result = new List<IValue>();
 
-            var result = new List<Ivalue>();
-            for (reference current_elem in current.EnumerateArray())
+            foreach (var expr in _expressions)
             {
-                if (current_elem.is_array())
+                IValue val;
+                if (!expr.TryEvaluate(resources, current, out val))
                 {
-                    for (reference elem : current_elem.array_range())
-                    {
-                        if (!elem.is_null())
-                        {
-                            reference j = this.TryApplyExpressions(elem, resources, ec);
-                            if (j.ValueKind != JsonValueKind.Null)
-                            {
-                                result.Add(json_const_pointer_arg, std::addressof(j));
-                            }
-                        }
-                    }
+                    value = JsonConstants.Null;
+                    return false;
                 }
-                else
+                result.Add(val);
+            }
+            value = new ArrayValue(result);
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "MultiSelectList";
+        }
+    };
+
+    struct KeyExpressionPair
+    {
+        internal string Key {get;}
+        internal IExpression Expression {get;}
+
+        internal KeyExpressionPair(string key, IExpression expression) 
+        {
+            Key = key;
+            Expression = expression;
+        }
+    };
+
+    sealed class MultiSelectHash : BaseExpression
+    {
+    
+        IList<KeyExpressionPair> _keyExprPairs;
+
+        internal MultiSelectHash(IList<KeyExpressionPair> keyExprPairs)
+            : base(1, false, false)
+        {
+            _keyExprPairs = keyExprPairs;
+        }
+
+        public override bool TryEvaluate(DynamicResources resources,
+                                         IValue current, 
+                                         out IValue value)
+        {
+            if (current.ValueKind == JsonValueKind.Null)
+            {
+                value = JsonConstants.Null;
+                return true;
+            }
+            var result = new Dictionary<string,IValue>();
+            foreach (var item in _keyExprPairs)
+            {
+                IValue val;
+                if (!item.Expression.TryEvaluate(resources, current, out val))
                 {
-                    if (!current_elem.is_null())
-                    {
-                        reference j = this.TryApplyExpressions(current_elem, resources, ec);
-                        if (j.ValueKind != JsonValueKind.Null)
-                        {
-                            result.Add(json_const_pointer_arg, std::addressof(j));
-                        }
-                    }
+                    value = JsonConstants.Null;
+                    return false;
                 }
+                result.Add(item.Key, val);
             }
-            return *result;
+
+            value = new ObjectValue(result);
+            return true;
         }
 
-        string ToString(int indent = 0)
+        public override string ToString()
         {
-            string s;
-            for (int i = 0; i <= indent; ++i)
-            {
-                s.push_back(' ');
-            }
-            s.append("flatten_projection\n");
-            for (var expr : this._expressions)
-            {
-                string sss = expr.ToString(indent+2);
-                s.insert(s.end(), sss.begin(), sss.end());
-                s.push_back('\n');
-            }
-            return s;
-        }
-    };
-
-    class multi_select_list sealed : BaseExpression
-    {
-        std::vector<std::vector<token>> token_lists_;
-    public:
-        multi_select_list(std::vector<std::vector<token>>&& token_lists)
-            : token_lists_(std::move(token_lists))
-        {
-        }
-
-        reference Evaluate(reference current, dynamic_resources& resources, std::error_code& ec)
-        {
-            if (current.is_null())
-            {
-                return current;
-            }
-            var result = new List<Ivalue>();
-            result.reserve(token_lists_.size());
-
-            for (var list : token_lists_)
-            {
-                result.Add(json_const_pointer_arg, evaluate_tokens(current, list, resources, ec));
-            }
-            return *result;
-        }
-
-        string ToString(int indent = 0)
-        {
-            string s;
-            for (int i = 0; i <= indent; ++i)
-            {
-                s.push_back(' ');
-            }
-            s.append("multi_select_list\n");
-            for (var list : token_lists_)
-            {
-                for (var item : list)
-                {
-                    string sss = item.ToString(indent+2);
-                    s.insert(s.end(), sss.begin(), sss.end());
-                    s.push_back('\n');
-                }
-                s.append("---\n");
-            }
-            return s;
-        }
-    };
-
-    struct key_tokens
-    {
-        string_type key;
-        std::vector<token> tokens;
-
-        key_tokens(string_type&& key, std::vector<token>&& tokens) noexcept
-            : key(std::move(key)), tokens(std::move(tokens))
-        {
-        }
-    };
-
-    class multi_select_hash sealed : BaseExpression
-    {
-    public:
-        std::vector<key_tokens> key_toks_;
-
-        multi_select_hash(std::vector<key_tokens>&& key_toks)
-            : key_toks_(std::move(key_toks))
-        {
-        }
-
-        reference Evaluate(reference current, dynamic_resources& resources, std::error_code& ec)
-        {
-            if (current.is_null())
-            {
-                return current;
-            }
-            var resultp = resources.create_json(json_object_arg);
-            resultp.reserve(key_toks_.size());
-            for (var item : key_toks_)
-            {
-                resultp.try_emplace(item.key, json_const_pointer_arg, evaluate_tokens(current, item.tokens, resources, ec));
-            }
-
-            return *resultp;
-        }
-
-        string ToString(int indent = 0)
-        {
-            string s;
-            for (int i = 0; i <= indent; ++i)
-            {
-                s.push_back(' ');
-            }
-            s.append("multi_select_list\n");
-            return s;
-        }
-    };
-
-    class function_expression sealed : BaseExpression
-    {
-    public:
-        std::vector<token> toks_;
-
-        function_expression(std::vector<token>&& toks)
-            : toks_(std::move(toks))
-        {
-        }
-
-        reference Evaluate(reference current, dynamic_resources& resources, std::error_code& ec)
-        {
-            return *evaluate_tokens(current, toks_, resources, ec);
-        }
-
-        string ToString(int indent = 0)
-        {
-            string s;
-            for (int i = 0; i <= indent; ++i)
-            {
-                s.push_back(' ');
-            }
-            s.append("function_expression\n");
-            for (var tok : toks_)
-            {
-                for (int i = 0; i <= indent+2; ++i)
-                {
-                    s.push_back(' ');
-                }
-                string sss = tok.ToString(indent+2);
-                s.insert(s.end(), sss.begin(), sss.end());
-                s.push_back('\n');
-            }
-            return s;
+            return "MultiSelectHash";
         }
     }
 
-*/
+    sealed class FunctionExpression : BaseExpression
+    {
+        IExpression _expr;
+
+        internal FunctionExpression(IExpression expr)
+            : base(1, false, false)
+        {
+            _expr = expr;
+        }
+
+        public override bool TryEvaluate(DynamicResources resources,
+                                         IValue current, 
+                                         out IValue value)
+        {
+            IValue val;
+            if (!_expr.TryEvaluate(resources, current, out val))
+            {
+                value = JsonConstants.Null;
+                return true;
+            }
+            value = val;
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "FunctionExpression";
+        }
+    }
+
 } // namespace JsonCons.JmesPath
 

@@ -498,7 +498,7 @@ namespace JsonCons.JsonPath
         }      
     };
 
-    readonly struct ArrayJsonValue : IValue
+    readonly struct ArrayValue : IValue
     {
         internal class ArrayEnumerator : IArrayValueEnumerator
         {   
@@ -543,7 +543,7 @@ namespace JsonCons.JsonPath
 
         private readonly IList<IValue> _value;
 
-        internal ArrayJsonValue(IList<IValue> value)
+        internal ArrayValue(IList<IValue> value)
         {
             _value = value;
         }

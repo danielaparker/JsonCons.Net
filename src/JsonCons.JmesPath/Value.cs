@@ -498,7 +498,7 @@ namespace JsonCons.JmesPath
         }      
     };
 
-    readonly struct ArrayJsonValue : IValue
+    readonly struct ArrayValue : IValue
     {
         internal class ArrayEnumerator : IArrayValueEnumerator
         {   
@@ -543,7 +543,7 @@ namespace JsonCons.JmesPath
 
         private readonly IList<IValue> _value;
 
-        internal ArrayJsonValue(IList<IValue> value)
+        internal ArrayValue(IList<IValue> value)
         {
             _value = value;
         }
@@ -593,6 +593,110 @@ namespace JsonCons.JmesPath
         {
             throw new InvalidOperationException("Not a JsonElement");
         }      
-    };
+    }
+
+    readonly struct ObjectValue : IValue
+    {
+        internal class ObjectEnumerator : IObjectValueEnumerator
+        {   
+            IDictionary<string,IValue> _value;
+            System.Collections.IEnumerator _enumerator;
+
+            public ObjectEnumerator(IDictionary<string,IValue> value)
+            {
+                _value = value;
+                _enumerator = value.GetEnumerator();
+            }
+
+            public bool MoveNext()
+            {
+                return _enumerator.MoveNext();
+            }
+
+            public void Reset() { _enumerator.Reset(); }
+
+            void IDisposable.Dispose() {}
+
+            public NameValuePair Current
+            {
+                get {var pair = (KeyValuePair<string, IValue>)_enumerator.Current;
+                     return new NameValuePair(pair.Key, pair.Value); }
+            }
+
+            object System.Collections.IEnumerator.Current
+            {
+                get { return Current; }
+            }
+
+            public IEnumerator<NameValuePair> GetEnumerator()
+            {
+                return new ObjectEnumerator(_value);
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+               return (System.Collections.IEnumerator) GetEnumerator();
+            }
+        }
+
+        private readonly IDictionary<string,IValue> _value;
+
+        internal ObjectValue(IDictionary<string,IValue> value)
+        {
+            _value = value;
+        }
+
+        public JsonValueKind ValueKind {get{return JsonValueKind.Object;}}
+
+        public IValue this[int index] 
+        {
+            get { throw new InvalidOperationException(); }
+        }
+
+        public int GetArrayLength() 
+        { 
+            throw new InvalidOperationException();
+        }
+
+        public string GetString()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool TryGetDecimal(out Decimal value)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool TryGetDouble(out double value)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool TryGetProperty(string propertyName, out IValue property)
+        {
+            return _value.TryGetValue(propertyName, out property);
+        }
+
+        public IArrayValueEnumerator EnumerateArray()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public IObjectValueEnumerator EnumerateObject()
+        {
+            return new ObjectEnumerator(_value);
+        }
+
+        public bool IsJsonElement()
+        {
+            return false;
+        }
+
+        public JsonElement GetJsonElement()
+        {
+            throw new InvalidOperationException("Not a JsonElement");
+        }      
+    }
 
 } // namespace JsonCons.JmesPath

@@ -1005,7 +1005,7 @@ namespace JsonCons.JsonPath
                             }
                             case ':':
                             {
-                                if (!(buffer.Length == 0))
+                                if (buffer.Length != 0)
                                 {
                                     Int32 n;
                                     string s = buffer.ToString();
@@ -1031,7 +1031,7 @@ namespace JsonCons.JsonPath
                         break;
                     case JsonPathState.SliceExpressionStop:
                     {
-                        if (!(buffer.Length == 0))
+                        if (buffer.Length != 0)
                         {
                             Int32 n;
                             string s = buffer.ToString();
@@ -1069,7 +1069,7 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.SliceExpressionStep:
                     {
-                        if (!(buffer.Length == 0))
+                        if (buffer.Length != 0)
                         {
                             Int32 n;
                             if (!Int32.TryParse(buffer.ToString(), out n))
@@ -1124,7 +1124,7 @@ namespace JsonCons.JsonPath
                             }
                             case ':':
                             {
-                                if (!(buffer.Length == 0))
+                                if (buffer.Length != 0)
                                 {
                                     Int32 n;
                                     string s = buffer.ToString();
@@ -1958,7 +1958,7 @@ namespace JsonCons.JsonPath
             }
         }
 
-        void UnwindRParen()
+        void UnwindRightParen()
         {
             while (_operatorStack.Count > 1 && _operatorStack.Peek().TokenKind != JsonPathTokenKind.LeftParen)
             {
@@ -1981,7 +1981,7 @@ namespace JsonCons.JsonPath
                     break;
                 case JsonPathTokenKind.EndFilter:
                 {
-                    UnwindRParen();
+                    UnwindRightParen();
                     var tokens = new List<Token>();
                     while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginFilter)
                     {
@@ -2063,7 +2063,7 @@ namespace JsonCons.JsonPath
                     break;
                 case JsonPathTokenKind.RightParen:
                 {
-                    UnwindRParen();
+                    UnwindRightParen();
                     break;
                 }
                 case JsonPathTokenKind.UnaryOperator:
@@ -2105,7 +2105,7 @@ namespace JsonCons.JsonPath
                     break;
                 case JsonPathTokenKind.EndFunction:
                 {
-                    UnwindRParen();
+                    UnwindRightParen();
 
                     Int32 argCount = 0;
                     var tokens = new List<Token>();
@@ -2134,7 +2134,7 @@ namespace JsonCons.JsonPath
                 }
                 case JsonPathTokenKind.EndArgument:
                 {
-                    UnwindRParen();
+                    UnwindRightParen();
                     var tokens = new List<Token>();
                     while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginArgument)
                     {

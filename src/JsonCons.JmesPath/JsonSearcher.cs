@@ -29,5 +29,12 @@ namespace JsonCons.JmesPath
             var compiler = new JmesPathParser(jmesPath);
             return compiler.Parse();
         }
+
+        Expression _expr;
+
+        internal JsonSearcher(Expression expr)
+        {
+            _expr = expr;
+        }
     }
 }
