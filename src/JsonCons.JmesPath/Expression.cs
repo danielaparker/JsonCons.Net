@@ -34,52 +34,7 @@ namespace JsonCons.JmesPath
 
          bool IsRightAssociative {get;}
 
-        void AddExpression(BaseExpression expr);
-    }
-
-    class Expression
-    {
-        IReadOnlyCollection<Token> _tokens;
-
-        internal Expression(IReadOnlyCollection<Token> tokens)
-        {
-            _tokens = tokens;
-        }
-
-        public  bool TryEvaluate(DynamicResources resources,
-                                 IValue current, 
-                                 out IValue result)
-        {
-            result = JsonConstants.Null;
-            return true;
-        }
-
-        internal static bool IsFalse(IValue val)
-        {
-            var comparer = ValueEqualityComparer.Instance;
-            switch (val.ValueKind)
-            {
-                case JsonValueKind.False:
-                    return true;
-                case JsonValueKind.Null:
-                    return true;
-                case JsonValueKind.Array:
-                    return val.GetArrayLength() == 0;
-                case JsonValueKind.Object:
-                    return val.EnumerateObject().MoveNext() == false;
-                case JsonValueKind.String:
-                    return val.GetString().Length == 0;
-                case JsonValueKind.Number:
-                    return false;
-                default:
-                    return false;
-            }
-        }
-
-        internal static bool IsTrue(IValue val)
-        {
-            return !IsFalse(val);
-        }
+        void AddExpression(IExpression expr);
     }
 
     // BaseExpression
@@ -104,7 +59,7 @@ namespace JsonCons.JmesPath
                                          IValue current, 
                                          out IValue value);
 
-        public virtual void AddExpression(BaseExpression expressions)
+        public virtual void AddExpression(IExpression expressions)
         {
         }
 
@@ -128,7 +83,7 @@ namespace JsonCons.JmesPath
                                          IValue current, 
                                          out IValue value)
         {
-            if (current.ValueKind == JsonValueKind.Object && current.TryGetProperty(_identifier, out value))
+            if (current.Type == JmesPathType.Object && current.TryGetProperty(_identifier, out value))
             {
                 return true;
             }
@@ -179,7 +134,7 @@ namespace JsonCons.JmesPath
                                          IValue current, 
                                          out IValue value)
         {
-            if (current.ValueKind != JsonValueKind.Array)
+            if (current.Type != JmesPathType.Array)
             {
                 value = JsonConstants.Null;
                 return true;
@@ -210,15 +165,15 @@ namespace JsonCons.JmesPath
     // BaseProjection
     abstract class BaseProjection : BaseExpression
     {
-        List<BaseExpression> _expressions;
+        List<IExpression> _expressions;
 
         internal BaseProjection(int precedence_level, bool isRightAssociative = true)
             : base(precedence_level, isRightAssociative, true)
         {
-            _expressions = new List<BaseExpression>();
+            _expressions = new List<IExpression>();
         }
 
-        public override void AddExpression(BaseExpression expr)
+        public override void AddExpression(IExpression expr)
         {
             if (_expressions.Count != 0 && _expressions[_expressions.Count-1].IsProjection && 
                 (expr.PrecedenceLevel < _expressions[_expressions.Count-1].PrecedenceLevel ||
@@ -258,7 +213,7 @@ namespace JsonCons.JmesPath
                                          IValue current, 
                                          out IValue value)
         {
-            if (current.ValueKind != JsonValueKind.Object)
+            if (current.Type != JmesPathType.Object)
             {
                 value = JsonConstants.Null;
                 return true;
@@ -268,14 +223,14 @@ namespace JsonCons.JmesPath
             value = new ArrayValue(result);
             foreach (var item in current.EnumerateObject())
             {
-                if (item.Value.ValueKind != JsonValueKind.Null)
+                if (item.Value.Type != JmesPathType.Null)
                 {
                     IValue val;
                     if (!this.TryApplyExpressions(resources, item.Value, out val))
                     {
                         return false;
                     }
-                    if (val.ValueKind != JsonValueKind.Null)
+                    if (val.Type != JmesPathType.Null)
                     {
                         result.Add(val);
                     }
@@ -300,7 +255,7 @@ namespace JsonCons.JmesPath
                                          IValue current, 
                                          out IValue value)
         {
-            if (current.ValueKind != JsonValueKind.Array)
+            if (current.Type != JmesPathType.Array)
             {
                 value = JsonConstants.Null;
                 return true;
@@ -309,7 +264,7 @@ namespace JsonCons.JmesPath
             var result = new List<IValue>();
             foreach (var item in current.EnumerateArray())
             {
-                if (item.ValueKind != JsonValueKind.Null)
+                if (item.Type != JmesPathType.Null)
                 {
                     IValue val;
                     if (!this.TryApplyExpressions(resources, item, out val))
@@ -317,7 +272,7 @@ namespace JsonCons.JmesPath
                         value = JsonConstants.Null;
                         return false;
                     }
-                    if (val.ValueKind != JsonValueKind.Null)
+                    if (val.Type != JmesPathType.Null)
                     {
                         result.Add(val);
                     }
@@ -344,7 +299,7 @@ namespace JsonCons.JmesPath
                                          IValue current, 
                                          out IValue value)
         {
-            if (current.ValueKind != JsonValueKind.Array)
+            if (current.Type != JmesPathType.Array)
             {
                 value = JsonConstants.Null;
                 return false;
@@ -353,11 +308,11 @@ namespace JsonCons.JmesPath
             var result = new List<IValue>();
             foreach (var item in current.EnumerateArray())
             {
-                if (item.ValueKind == JsonValueKind.Array)
+                if (item.Type == JmesPathType.Array)
                 {
                     foreach (var elem in item.EnumerateArray())
                     {
-                        if (elem.ValueKind != JsonValueKind.Null)
+                        if (elem.Type != JmesPathType.Null)
                         {
                             IValue val;
                             if (!this.TryApplyExpressions(resources, elem, out val))
@@ -365,7 +320,7 @@ namespace JsonCons.JmesPath
                                 value = JsonConstants.Null;
                                 return false;
                             }
-                            if (val.ValueKind != JsonValueKind.Null)
+                            if (val.Type != JmesPathType.Null)
                             {
                                 result.Add(val);
                             }
@@ -374,7 +329,7 @@ namespace JsonCons.JmesPath
                 }
                 else
                 {
-                    if (item.ValueKind != JsonValueKind.Null)
+                    if (item.Type != JmesPathType.Null)
                     {
                         IValue val;
                         if (!this.TryApplyExpressions(resources, item, out val))
@@ -382,7 +337,7 @@ namespace JsonCons.JmesPath
                             value = JsonConstants.Null;
                             return false;
                         }
-                        if (val.ValueKind != JsonValueKind.Null)
+                        if (val.Type != JmesPathType.Null)
                         {
                             result.Add(val);
                         }
@@ -414,7 +369,7 @@ namespace JsonCons.JmesPath
                                          IValue current, 
                                          out IValue value)
         {
-            if (current.ValueKind != JsonValueKind.Array)
+            if (current.Type != JmesPathType.Array)
             {
                 value = JsonConstants.Null;
                 return true;
@@ -449,7 +404,7 @@ namespace JsonCons.JmesPath
                         value = JsonConstants.Null;
                         return false;
                     }
-                    if (val.ValueKind != JsonValueKind.Null)
+                    if (val.Type != JmesPathType.Null)
                     {
                         result.Add(val);
                     }
@@ -473,7 +428,7 @@ namespace JsonCons.JmesPath
                         value = JsonConstants.Null;
                         return false;
                     }
-                    if (val.ValueKind != JsonValueKind.Null)
+                    if (val.Type != JmesPathType.Null)
                     {
                         result.Add(val);
                     }
@@ -504,7 +459,7 @@ namespace JsonCons.JmesPath
                                          IValue current, 
                                          out IValue value)
         {
-            if (current.ValueKind != JsonValueKind.Array)
+            if (current.Type != JmesPathType.Array)
             {
                 value = JsonConstants.Null;
                 return true;
@@ -527,7 +482,7 @@ namespace JsonCons.JmesPath
                         value = JsonConstants.Null;
                         return false;
                     }
-                    if (val.ValueKind != JsonValueKind.Null)
+                    if (val.Type != JmesPathType.Null)
                     {
                         result.Add(val);
                     }
@@ -557,7 +512,7 @@ namespace JsonCons.JmesPath
                                          IValue current, 
                                          out IValue value)
         {
-            if (current.ValueKind == JsonValueKind.Null)
+            if (current.Type == JmesPathType.Null)
             {
                 value = JsonConstants.Null;
                 return true;
@@ -611,7 +566,7 @@ namespace JsonCons.JmesPath
                                          IValue current, 
                                          out IValue value)
         {
-            if (current.ValueKind == JsonValueKind.Null)
+            if (current.Type == JmesPathType.Null)
             {
                 value = JsonConstants.Null;
                 return true;
@@ -640,9 +595,9 @@ namespace JsonCons.JmesPath
 
     sealed class FunctionExpression : BaseExpression
     {
-        IExpression _expr;
+        Expression _expr;
 
-        internal FunctionExpression(IExpression expr)
+        internal FunctionExpression(Expression expr)
             : base(1, false, false)
         {
             _expr = expr;
@@ -665,6 +620,156 @@ namespace JsonCons.JmesPath
         public override string ToString()
         {
             return "FunctionExpression";
+        }
+    }
+
+    class Expression
+    {
+        IReadOnlyCollection<Token> _tokens;
+
+        internal Expression(IReadOnlyCollection<Token> tokens)
+        {
+            _tokens = tokens;
+        }
+
+        public  bool TryEvaluate(DynamicResources resources,
+                                 IValue current, 
+                                 out IValue result)
+        {
+            Stack<IValue> stack = new Stack<IValue>();
+            IList<IValue> argStack = new List<IValue>();
+
+            IValue root_ptr = current;
+
+            var tokenEnum = _tokens.GetEnumerator();
+            while (tokenEnum.MoveNext())
+            {
+                var token = tokenEnum.Current;
+                switch (token.TokenKind)
+                {
+                    case JmesPathTokenKind.Literal:
+                    {
+                        stack.Push(token.GetValue());
+                        break;
+                    }
+                    case JmesPathTokenKind.BeginExpressionType:
+                    {
+                        Debug.Assert(tokenEnum.MoveNext());
+                        token = tokenEnum.Current;
+                        Debug.Assert(token.TokenKind == JmesPathTokenKind.Expression);
+                        Debug.Assert(stack.Count != 0);
+                        stack.Pop();
+                        stack.Push(new ExpressionValue(token.GetExpression()));
+                        break;
+                    }
+                    case JmesPathTokenKind.Pipe:
+                    {
+                        Debug.Assert(stack.Count != 0);
+                        root_ptr = stack.Peek();
+                        break;
+                    }
+                    case JmesPathTokenKind.CurrentNode:
+                        stack.Push(root_ptr);
+                        break;
+                    case JmesPathTokenKind.Expression:
+                    {
+                        Debug.Assert(stack.Count != 0);
+                        var ptr = stack.Pop();
+                        IValue val;
+                        if (!token.GetExpression().TryEvaluate(resources, ptr, out val))
+                        {
+                            result = JsonConstants.Null;
+                            return false;
+                        }
+                        stack.Push(val);
+                        break;
+                    }
+                    case JmesPathTokenKind.UnaryOperator:
+                    {
+                        Debug.Assert(stack.Count >= 1);
+                        var rhs = stack.Pop();
+                        IValue val;
+                        if (!token.GetUnaryOperator().TryEvaluate(rhs, out val))
+                        {
+                            result = JsonConstants.Null;
+                            return false;
+                        }
+                        stack.Push(val);
+                        break;
+                    }
+                    case JmesPathTokenKind.BinaryOperator:
+                    {
+                        Debug.Assert(stack.Count >= 2);
+                        var rhs = stack.Pop();
+                        var lhs = stack.Pop();
+                        IValue val;
+                        if (!token.GetBinaryOperator().TryEvaluate(lhs, rhs, out val))
+                        {
+                            result = JsonConstants.Null;
+                            return false;
+                        }
+                        stack.Push(val);
+                        break;
+                    }
+                    case JmesPathTokenKind.Argument:
+                    {
+                        Debug.Assert(stack.Count != 0);
+                        argStack.Add(stack.Pop());
+                        break;
+                    }
+                    case JmesPathTokenKind.Function:
+                    {
+                        if (token.GetFunction().Arity != null && token.GetFunction().Arity != argStack.Count())
+                        {
+                            // airty error should never happen here
+                            result = JsonConstants.Null;
+                            return false;
+                        }
+
+                        IValue val;
+                        if (!token.GetFunction().TryEvaluate(argStack, out val))
+                        {
+                            result = JsonConstants.Null;
+                            return false;
+                        }
+                        argStack.Clear();
+                        stack.Push(val);
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+            Debug.Assert(stack.Count == 1);
+            result = stack.Peek();
+            return true;
+        }
+
+        internal static bool IsFalse(IValue val)
+        {
+            var comparer = ValueEqualityComparer.Instance;
+            switch (val.Type)
+            {
+                case JmesPathType.False:
+                    return true;
+                case JmesPathType.Null:
+                    return true;
+                case JmesPathType.Array:
+                    return val.GetArrayLength() == 0;
+                case JmesPathType.Object:
+                    return val.EnumerateObject().MoveNext() == false;
+                case JmesPathType.String:
+                    return val.GetString().Length == 0;
+                case JmesPathType.Number:
+                    return false;
+                default:
+                    return false;
+            }
+        }
+
+        internal static bool IsTrue(IValue val)
+        {
+            return !IsFalse(val);
         }
     }
 

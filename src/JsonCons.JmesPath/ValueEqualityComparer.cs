@@ -17,18 +17,17 @@ namespace JsonCons.JmesPath
 
        public bool Equals(IValue lhs, IValue rhs)
        {
-           if (lhs.ValueKind != rhs.ValueKind)
+           if (lhs.Type != rhs.Type)
                return false;
 
-           switch (lhs.ValueKind)
+           switch (lhs.Type)
            {
-               case JsonValueKind.Null:
-               case JsonValueKind.True:
-               case JsonValueKind.False:
-               case JsonValueKind.Undefined:
+               case JmesPathType.Null:
+               case JmesPathType.True:
+               case JmesPathType.False:
                    return true;
 
-               case JsonValueKind.Number:
+               case JmesPathType.Number:
                {
                    Decimal dec1;
                    Decimal dec2;
@@ -48,13 +47,13 @@ namespace JsonCons.JmesPath
                    }
                }
 
-               case JsonValueKind.String:
+               case JmesPathType.String:
                    return lhs.GetString().Equals(rhs.GetString()); 
 
-               case JsonValueKind.Array:
+               case JmesPathType.Array:
                    return lhs.EnumerateArray().SequenceEqual(rhs.EnumerateArray(), this);
 
-               case JsonValueKind.Object:
+               case JmesPathType.Object:
                {
                    // OrderBy performs a stable sort (Note that IValue supports duplicate property names)
                    var enumerator1 = lhs.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal).GetEnumerator();
@@ -80,7 +79,7 @@ namespace JsonCons.JmesPath
                }
 
                default:
-                   throw new InvalidOperationException(string.Format("Unknown JsonValueKind {0}", lhs.ValueKind));
+                   throw new InvalidOperationException(string.Format("Unknown JmesPathType {0}", lhs.Type));
            }
        }
 
@@ -91,17 +90,16 @@ namespace JsonCons.JmesPath
 
        int ComputeHashCode(IValue element, int depth)
        {
-           int hashCode = element.ValueKind.GetHashCode();
+           int hashCode = element.Type.GetHashCode();
 
-           switch (element.ValueKind)
+           switch (element.Type)
            {
-               case JsonValueKind.Null:
-               case JsonValueKind.True:
-               case JsonValueKind.False:
-               case JsonValueKind.Undefined:
+               case JmesPathType.Null:
+               case JmesPathType.True:
+               case JmesPathType.False:
                    break;
 
-               case JsonValueKind.Number:
+               case JmesPathType.Number:
                     {
                         double dbl;
                         element.TryGetDouble(out dbl);
@@ -109,17 +107,17 @@ namespace JsonCons.JmesPath
                         break;
                     }
 
-               case JsonValueKind.String:
+               case JmesPathType.String:
                     hashCode += 17 * element.GetString().GetHashCode();
                    break;
 
-               case JsonValueKind.Array:
+               case JmesPathType.Array:
                    if (depth < _maxHashDepth)
                        foreach (var item in element.EnumerateArray())
                            hashCode += 17*ComputeHashCode(item, depth+1);
                    break;
 
-                case JsonValueKind.Object:
+                case JmesPathType.Object:
                     foreach (var property in element.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal))
                     {
                         hashCode += 17*property.Name.GetHashCode();
@@ -129,7 +127,7 @@ namespace JsonCons.JmesPath
                     break;
 
                 default:
-                   throw new InvalidOperationException(string.Format("Unknown JsonValueKind {0}", element.ValueKind));
+                   throw new InvalidOperationException(string.Format("Unknown JmesPathType {0}", element.Type));
            }
            return hashCode;
        }

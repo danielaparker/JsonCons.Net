@@ -89,9 +89,9 @@ namespace JsonCons.JmesPath
 
             var comparer = ValueEqualityComparer.Instance;
 
-            switch (arg0.ValueKind)
+            switch (arg0.Type)
             {
-                case JsonValueKind.Array:
+                case JmesPathType.Array:
                     foreach (var item in arg0.EnumerateArray())
                     {
                         if (comparer.Equals(item, arg1))
@@ -102,9 +102,9 @@ namespace JsonCons.JmesPath
                     }
                     result = JsonConstants.False;
                     return true;
-                case JsonValueKind.String:
+                case JmesPathType.String:
                 {
-                    if (arg1.ValueKind != JsonValueKind.String)
+                    if (arg1.Type != JmesPathType.String)
                     {
                         result = JsonConstants.Null;
                         return false;
@@ -153,8 +153,8 @@ namespace JsonCons.JmesPath
 
             var arg0 = args[0];
             var arg1 = args[1];
-            if (arg0.ValueKind != JsonValueKind.String
-                || arg1.ValueKind != JsonValueKind.String)
+            if (arg0.Type != JmesPathType.String
+                || arg1.Type != JmesPathType.String)
             {
                 result = JsonConstants.Null;
                 return false;
@@ -197,8 +197,8 @@ namespace JsonCons.JmesPath
 
             var arg0 = args[0];
             var arg1 = args[1];
-            if (arg0.ValueKind != JsonValueKind.String
-                || arg1.ValueKind != JsonValueKind.String)
+            if (arg0.Type != JmesPathType.String
+                || arg1.Type != JmesPathType.String)
             {
                 result = JsonConstants.Null;
                 return false;
@@ -241,14 +241,14 @@ namespace JsonCons.JmesPath
             }
 
             var arg0 = args[0];
-            if (arg0.ValueKind != JsonValueKind.Array)
+            if (arg0.Type != JmesPathType.Array)
             {
                 result = JsonConstants.Null;
                 return false;
             }
             foreach (var item in arg0.EnumerateArray())
             {
-                if (item.ValueKind != JsonValueKind.Number)
+                if (item.Type != JmesPathType.Number)
                 {
                     result = JsonConstants.Null;
                     return false;
@@ -312,14 +312,14 @@ namespace JsonCons.JmesPath
             }
 
             var arg0 = args[0];
-            if (arg0.ValueKind != JsonValueKind.Array || arg0.GetArrayLength() == 0)
+            if (arg0.Type != JmesPathType.Array || arg0.GetArrayLength() == 0)
             {
                 result = JsonConstants.Null;
                 return false;
             }
             foreach (var item in arg0.EnumerateArray())
             {
-                if (item.ValueKind != JsonValueKind.Number)
+                if (item.Type != JmesPathType.Number)
                 {
                     result = JsonConstants.Null;
                     return false;
@@ -363,7 +363,7 @@ namespace JsonCons.JmesPath
                 Debug.Assert(args.Count == this.Arity.Value);
             }
             var arg0 = args[0];
-            if (arg0.ValueKind != JsonValueKind.Array || arg0.GetArrayLength() == 0)
+            if (arg0.Type != JmesPathType.Array || arg0.GetArrayLength() == 0)
             {
                 result = JsonConstants.Null;
                 return false;
@@ -417,7 +417,7 @@ namespace JsonCons.JmesPath
                 Debug.Assert(args.Count == this.Arity.Value);
             }
 
-            if (args[0].ValueKind != JsonValueKind.String || args[1].ValueKind != JsonValueKind.String)
+            if (args[0].Type != JmesPathType.String || args[1].Type != JmesPathType.String)
             {
                 result = JsonConstants.Null;
                 return false;
@@ -459,7 +459,7 @@ namespace JsonCons.JmesPath
             }
 
             var val = args[0];
-            if (val.ValueKind != JsonValueKind.Number)
+            if (val.Type != JmesPathType.Number)
             {
                 result = JsonConstants.Null;
                 return false;
@@ -507,7 +507,7 @@ namespace JsonCons.JmesPath
             }
 
             var val = args[0];
-            if (val.ValueKind != JsonValueKind.Number)
+            if (val.Type != JmesPathType.Number)
             {
                 result = JsonConstants.Null;
                 return false;
@@ -555,12 +555,12 @@ namespace JsonCons.JmesPath
             }
 
             var arg0 = args[0];
-            switch (arg0.ValueKind)
+            switch (arg0.Type)
             {
-                case JsonValueKind.Number:
+                case JmesPathType.Number:
                     result = arg0;
                     return true;
-                case JsonValueKind.String:
+                case JmesPathType.String:
                 {
                     var s = arg0.GetString();
                     Decimal dec;
@@ -609,7 +609,7 @@ namespace JsonCons.JmesPath
             }
 
             var arg0 = args[0];
-            if (arg0.ValueKind != JsonValueKind.Array)
+            if (arg0.Type != JmesPathType.Array)
             {
                 result = JsonConstants.Null;
                 return false;
@@ -619,8 +619,8 @@ namespace JsonCons.JmesPath
                 result = JsonConstants.Null;
                 return false;
             }
-            bool isNumber = arg0[0].ValueKind == JsonValueKind.Number;
-            bool isString = arg0[0].ValueKind == JsonValueKind.String;
+            bool isNumber = arg0[0].Type == JmesPathType.Number;
+            bool isString = arg0[0].Type == JmesPathType.String;
             if (!isNumber && !isString)
             {
                 result = JsonConstants.Null;
@@ -631,7 +631,7 @@ namespace JsonCons.JmesPath
             int index = 0;
             for (int i = 1; i < arg0.GetArrayLength(); ++i)
             {
-                if (!(((arg0[i].ValueKind == JsonValueKind.Number) == isNumber) && (arg0[i].ValueKind == JsonValueKind.String) == isString))
+                if (!(((arg0[i].Type == JmesPathType.Number) == isNumber) && (arg0[i].Type == JmesPathType.String) == isString))
                 {
                     result = JsonConstants.Null;
                     return false;
@@ -642,7 +642,7 @@ namespace JsonCons.JmesPath
                     result = JsonConstants.Null;
                     return false;
                 }
-                if (value.ValueKind == JsonValueKind.True )
+                if (value.Type == JmesPathType.True )
                 {
                     index = i;
                 }
@@ -674,7 +674,7 @@ namespace JsonCons.JmesPath
             }
 
             var arg0 = args[0];
-            if (arg0.ValueKind != JsonValueKind.Array)
+            if (arg0.Type != JmesPathType.Array)
             {
                 result = JsonConstants.Null;
                 return false;
@@ -684,8 +684,8 @@ namespace JsonCons.JmesPath
                 result = JsonConstants.Null;
                 return false;
             }
-            bool isNumber = arg0[0].ValueKind == JsonValueKind.Number;
-            bool isString = arg0[0].ValueKind == JsonValueKind.String;
+            bool isNumber = arg0[0].Type == JmesPathType.Number;
+            bool isString = arg0[0].Type == JmesPathType.String;
             if (!isNumber && !isString)
             {
                 result = JsonConstants.Null;
@@ -696,7 +696,7 @@ namespace JsonCons.JmesPath
             int index = 0;
             for (int i = 1; i < arg0.GetArrayLength(); ++i)
             {
-                if (!(((arg0[i].ValueKind == JsonValueKind.Number) == isNumber) && (arg0[i].ValueKind == JsonValueKind.String) == isString))
+                if (!(((arg0[i].Type == JmesPathType.Number) == isNumber) && (arg0[i].Type == JmesPathType.String) == isString))
                 {
                     result = JsonConstants.Null;
                     return false;
@@ -707,7 +707,7 @@ namespace JsonCons.JmesPath
                     result = JsonConstants.Null;
                     return false;
                 }
-                if (value.ValueKind == JsonValueKind.True )
+                if (value.Type == JmesPathType.True )
                 {
                     index = i;
                 }
@@ -740,9 +740,9 @@ namespace JsonCons.JmesPath
 
             var arg0 = args[0];
 
-            switch (arg0.ValueKind)
+            switch (arg0.Type)
             {
-                case JsonValueKind.Object:
+                case JmesPathType.Object:
                 {
                     int count = 0;
                     foreach (var item in arg0.EnumerateObject())
@@ -752,10 +752,10 @@ namespace JsonCons.JmesPath
                     result = new DecimalValue(new Decimal(count));
                     return true;
                 }
-                case JsonValueKind.Array:
+                case JmesPathType.Array:
                     result = new DecimalValue(new Decimal(arg0.GetArrayLength()));
                     return true;
-                case JsonValueKind.String:
+                case JmesPathType.String:
                 {
                     byte[] bytes = Encoding.UTF32.GetBytes(arg0.GetString().ToCharArray());
                     result = new DecimalValue(new Decimal(bytes.Length/4));
@@ -791,7 +791,7 @@ namespace JsonCons.JmesPath
             }
 
             var arg0 = args[0];
-            if (arg0.ValueKind != JsonValueKind.Object)
+            if (arg0.Type != JmesPathType.Object)
             {
                 result = JsonConstants.Null;
                 return false;

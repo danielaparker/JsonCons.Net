@@ -36,5 +36,13 @@ namespace JsonCons.JmesPath
         {
             _expr = expr;
         }
+/*
+        JsonDocument Select(JsonElement doc)
+        {
+            var resources = new DynamicResources();
+            IValue temp;
+            expr.TrySelect(resources, new JsonElementValue(doc), out temp);
+        }
     }
+*/
 }

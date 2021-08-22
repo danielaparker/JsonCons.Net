@@ -158,6 +158,18 @@ namespace JsonCons.JmesPath
             return (string)_expr;
         }
 
+        internal IUnaryOperator GetUnaryOperator()
+        {
+            Debug.Assert(_tokenKind == JmesPathTokenKind.UnaryOperator);
+            return (IUnaryOperator)_expr;
+        }
+
+        internal IBinaryOperator GetBinaryOperator()
+        {
+            Debug.Assert(_tokenKind == JmesPathTokenKind.BinaryOperator);
+            return (IBinaryOperator)_expr;
+        }
+
         internal IValue GetValue()
         {
             Debug.Assert(_tokenKind == JmesPathTokenKind.Literal);
@@ -175,19 +187,6 @@ namespace JsonCons.JmesPath
             Debug.Assert(_tokenKind == JmesPathTokenKind.Expression);
             return (IExpression)_expr;
         }
-
-        internal IUnaryOperator GetUnaryOperator()
-        {
-            Debug.Assert(_tokenKind == JmesPathTokenKind.UnaryOperator);
-            return (IUnaryOperator)_expr;
-        }
-
-        internal IBinaryOperator GetBinaryOperator()
-        {
-            Debug.Assert(_tokenKind == JmesPathTokenKind.BinaryOperator);
-            return (IBinaryOperator)_expr;
-        }
-
         public bool Equals(Token other)
         {
             if (this._tokenKind == other._tokenKind)

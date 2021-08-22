@@ -62,7 +62,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue val, out IValue result)
         {
-            if (!(val.ValueKind == JsonValueKind.Number))
+            if (!(val.Type == JmesPathType.Number))
             {
                 result = JsonConstants.Null;
                 return false; // type error
@@ -106,7 +106,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue val, out IValue result)
         {
-            if (!(val.ValueKind == JsonValueKind.String))
+            if (!(val.Type == JmesPathType.String))
             {
                 result = JsonConstants.Null;
                 return false; // type error

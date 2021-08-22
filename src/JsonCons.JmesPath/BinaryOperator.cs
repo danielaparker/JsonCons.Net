@@ -42,7 +42,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            if (lhs.ValueKind == JsonValueKind.Null && rhs.ValueKind == JsonValueKind.Null)
+            if (lhs.Type == JmesPathType.Null && rhs.Type == JmesPathType.Null)
             {
                 result = JsonConstants.Null;
             }
@@ -166,7 +166,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result) 
         {
-            if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
+            if (lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number)
             {
                 Decimal dec1;
                 Decimal dec2;
@@ -185,7 +185,7 @@ namespace JsonCons.JmesPath
                     result = JsonConstants.Null;
                 }
             }
-            else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
+            else if (lhs.Type == JmesPathType.String && rhs.Type == JmesPathType.String)
             {
                 result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
             }
@@ -213,7 +213,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result) 
         {
-            if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
+            if (lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number)
             {
                 Decimal dec1;
                 Decimal dec2;
@@ -232,7 +232,7 @@ namespace JsonCons.JmesPath
                     result = JsonConstants.Null;
                 }
             }
-            else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
+            else if (lhs.Type == JmesPathType.String && rhs.Type == JmesPathType.String)
             {
                 result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
             }
@@ -261,7 +261,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
+            if (lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number)
             {
                 Decimal dec1;
                 Decimal dec2;
@@ -280,7 +280,7 @@ namespace JsonCons.JmesPath
                     result = JsonConstants.Null;
                 }
             }
-            else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
+            else if (lhs.Type == JmesPathType.String && rhs.Type == JmesPathType.String)
             {
                 result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
             }
@@ -308,7 +308,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            if (lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number)
+            if (lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number)
             {
                 Decimal dec1;
                 Decimal dec2;
@@ -327,7 +327,7 @@ namespace JsonCons.JmesPath
                     result = JsonConstants.Null;
                 }
             }
-            else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
+            else if (lhs.Type == JmesPathType.String && rhs.Type == JmesPathType.String)
             {
                 result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
             }
@@ -355,7 +355,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
+            if (!(lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number))
             {
                 result = JsonConstants.Null;
                 return false;
@@ -402,7 +402,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
+            if (!(lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number))
             {
                 result = JsonConstants.Null;
                 return false;
@@ -449,7 +449,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
+            if (!(lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number))
             {
                 result = JsonConstants.Null;
                 return false;
@@ -496,7 +496,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
+            if (!(lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number))
             {
                 result = JsonConstants.Null;
                 return false;
@@ -554,7 +554,7 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            if (!(lhs.ValueKind == JsonValueKind.Number && rhs.ValueKind == JsonValueKind.Number))
+            if (!(lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number))
             {
                 result = JsonConstants.Null;
                 return false;

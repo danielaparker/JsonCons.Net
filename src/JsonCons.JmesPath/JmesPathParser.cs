@@ -1476,36 +1476,31 @@ namespace JsonCons.JmesPath
                     }
                     break;
                 }
-                /*case JmesPathTokenKind.EndMultiSelectList:
+                case JmesPathTokenKind.EndMultiSelectList:
                 {
                     UnwindRightParen();
-                    var expressions = new List<IExpression>(); 
-                    auto it = _outputStack.rbegin();
-                    while (it != _outputStack.rend() && it.TokenKind != JmesPathTokenKind.BeginMultiSelectList)
+                    var expressions = new List<IExpression>();
+                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginMultiSelectList)
                     {
-                        var tokens = new List<Token>();
-                        do
+                        switch (_outputStack.Peek().TokenKind)
                         {
-                            tokens.Add(std.move(*it));
-                            ++it;
-                        } while (it != _outputStack.rend() && it.TokenKind != JmesPathTokenKind.BeginMultiSelectList && it.TokenKind != JmesPathTokenKind.Separator);
-                        if (it.TokenKind == JmesPathTokenKind.Separator)
-                        {
-                            ++it;
+                            case JmesPathTokenKind.Expression:
+                                expressions.Add(_outputStack.Pop().GetExpression());
+                                break;
+                            case JmesPathTokenKind.Separator:
+                                _outputStack.Pop(); // Ignore separator
+                                break;
+                            default:
+                                _outputStack.Pop(); // Probably error
+                                break;
                         }
-                        if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
-                        {
-                            tokens.Add(JmesPathTokenKind.CurrentNode);
-                        }
-                        tokens.Reverse();
-                        expressions.Insert(0, new Expression(tokens));
                     }
-                    if (it == _outputStack.rend())
+                    if (_outputStack.Count == 0)
                     {
-                        throw new JmesPathParseException("Unbalanced braces", _line, _column);
+                        throw new JmesPathParseException("Syntax error", _line, _column);
                     }
-                    ++it;
-                    _outputStack.erase(it.base(),_outputStack.end());
+                    expressions.Reverse();
+                    _outputStack.Pop(); // JmesPathTokenKind.BeginMultiSelectList
 
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
                         (tok.PrecedenceLevel < _outputStack.Peek().PrecedenceLevel ||
@@ -1519,41 +1514,35 @@ namespace JsonCons.JmesPath
                     }
                     break;
                 }
+                
                 case JmesPathTokenKind.EndMultiSelectHash:
                 {
                     UnwindRightParen();
                     var keyExprPairs = new List<KeyExpressionPair>();
-                    auto it = _outputStack.rbegin();
-                    while (it != _outputStack.rend() && it.TokenKind != JmesPathTokenKind.BeginMultiSelectHash)
+                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginMultiSelectHash)
                     {
-                        var tokens = new List<Token>();
-                        do
-                        {
-                            tokens.Add(std.move(*it));
-                            ++it;
-                        } while (it.TokenKind != JmesPathTokenKind.Key);
-                        JSONCONS_ASSERT(it.is_key());
-                        auto key = std.move(it.key_);
-                        ++it;
-                        if (it.TokenKind == JmesPathTokenKind.Separator)
-                        {
-                            ++it;
-                        }
-                        if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
-                        {
-                            tokens.Add(JmesPathTokenKind.CurrentNode);
-                        }
-                        tokens.Reverse();
-                        keyExprPairs.Add(std.move(key), std.move(tokens));
-                    }
-                    if (it == _outputStack.rend())
-                    {
-                        throw new JmesPathParseException("Unbalanced braces", _line, _column);
-                    }
-                    std.reverse(keyExprPairs.begin(), keyExprPairs.end());
-                    ++it;
-                    _outputStack.erase(it.base(),_outputStack.end());
+                        var expressions = new List<IExpression>();
 
+                        switch (_outputStack.Peek().TokenKind)
+                        {
+                            case JmesPathTokenKind.Expression:
+                                expressions.Add(_outputStack.Pop().GetExpression());
+                                break;
+                            case JmesPathTokenKind.Separator:
+                                _outputStack.Pop(); // Ignore separator
+                                break;
+                            default:
+                                _outputStack.Pop(); // Probably error
+                                break;
+                        }
+                    }
+                    if (_outputStack.Count == 0)
+                    {
+                        throw new JmesPathParseException("Syntax error", _line, _column);
+                    }
+                    keyExprPairs.Reverse();
+                    _outputStack.Pop(); // JmesPathTokenKind.BeginMultiSelectHash
+                 
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
                         (tok.PrecedenceLevel < _outputStack.Peek().PrecedenceLevel ||
                         (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
@@ -1569,29 +1558,27 @@ namespace JsonCons.JmesPath
                 case JmesPathTokenKind.EndExpressionType:
                 {
                     var tokens = new List<Token>();
-                    auto it = _outputStack.rbegin();
-                    while (it != _outputStack.rend() && it.TokenKind != JmesPathTokenKind.BeginExpressionType)
+                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginExpressionType)
                     {
-                        tokens.Add(std.move(*it));
-                        ++it;
+                        tokens.Add(_outputStack.Pop());
                     }
-                    if (it == _outputStack.rend())
+                    if (_outputStack.Count == 0)
                     {
-                        JSONCONS_THROW(json_runtime_error<std.runtime_error>("Unbalanced braces"));
+                        throw new JmesPathParseException("Unbalanced braces", _line, _column);
                     }
                     if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
                     {
-                        tokens.Add(JmesPathTokenKind.CurrentNode);
+                        tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
                     }
                     tokens.Reverse();
-                    _outputStack.erase(it.base(),_outputStack.end());
                     _outputStack.Push(new Token(new FunctionExpression(new Expression(tokens))));
                     break;
                 }
                 case JmesPathTokenKind.Literal:
                     if (_outputStack.Count != 0 && _outputStack.Peek().TokenKind == JmesPathTokenKind.CurrentNode)
                     {
-                        _outputStack.Peek() = tok;
+                        _outputStack.Pop();
+                        _outputStack.Push(tok);
                     }
                     else
                     {
@@ -1603,7 +1590,7 @@ namespace JsonCons.JmesPath
                         (tok.PrecedenceLevel < _outputStack.Peek().PrecedenceLevel ||
                         (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
                     {
-                        _outputStack.Peek().GetExpression().AddExpression(std.move(tok.expression_));
+                        _outputStack.Peek().GetExpression().AddExpression(tok.GetExpression());
                     }
                     else
                     {
@@ -1618,34 +1605,31 @@ namespace JsonCons.JmesPath
                 case JmesPathTokenKind.EndFunction:
                     {
                         UnwindRightParen();
+                        int argCount = 0;
                         var tokens = new List<Token>();
-                        auto it = _outputStack.rbegin();
-                        std.size_t arg_count = 0;
-                        while (it != _outputStack.rend() && it.TokenKind != JmesPathTokenKind.Function)
+                        while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JmesPathTokenKind.Function)
                         {
-                            if (it.TokenKind == JmesPathTokenKind.Argument)
+                            if (_outputStack.Peek().TokenKind == JmesPathTokenKind.Argument)
                             {
-                                ++arg_count;
+                                ++argCount;
                             }
-                            tokens.Add(std.move(*it));
-                            ++it;
+                            tokens.Add(_outputStack.Pop());
                         }
-                        if (it == _outputStack.rend())
+                        if (_outputStack.Count == 0)
                         {
                             throw new JmesPathParseException("Expected parentheses", _line, _column);
                         }
-                        if (it.arity() && arg_count != *(it.arity()))
+                        if (_outputStack.Peek().GetFunction().Arity != null && argCount != _outputStack.Peek().GetFunction().Arity)
                         {
                             throw new JmesPathParseException("Invalid function arity", _line, _column);
                         }
                         if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
                         {
-                            tokens.Add(JmesPathTokenKind.CurrentNode);
+                            tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
                         }
                         tokens.Reverse();
-                        tokens.push_back(std.move(*it));
-                        ++it;
-                        _outputStack.erase(it.base(),_outputStack.end());
+                        _outputStack.Push(new Token(new FunctionExpression(new Expression(tokens))));
+                        _outputStack.Pop(); // Function
 
                         if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
                             (tok.PrecedenceLevel < _outputStack.Peek().PrecedenceLevel ||
@@ -1661,19 +1645,16 @@ namespace JsonCons.JmesPath
                     }
                 case JmesPathTokenKind.EndOfExpression:
                     {
-                        auto it = _operatorStack.rbegin();
-                        while (it != _operatorStack.rend())
+                        while (_operatorStack.Count != 0)
                         {
-                            _outputStack.Push(std.move(*it));
-                            ++it;
+                            _outputStack.Push(_operatorStack.Pop());
                         }
-                        _operatorStack.clear();
                         break;
                     }
                 case JmesPathTokenKind.UnaryOperator:
                 case JmesPathTokenKind.BinaryOperator:
                 {
-                    if (_operatorStack.empty() || _operatorStack.Peek().is_lparen())
+                    if (_operatorStack.Count == 0 || _operatorStack.Peek().TokenKind == JmesPathTokenKind.LeftParen)
                     {
                         _operatorStack.Push(tok);
                     }
@@ -1684,20 +1665,17 @@ namespace JsonCons.JmesPath
                     }
                     else
                     {
-                        auto it = _operatorStack.rbegin();
-                        while (it != _operatorStack.rend() && it.is_operator()
-                               && (tok.PrecedenceLevel > it.PrecedenceLevel
-                             || (tok.PrecedenceLevel == it.PrecedenceLevel && tok.IsRightAssociative)))
+                        while (_operatorStack.Count > 0 && _operatorStack.Peek().IsOperator
+                               && (tok.PrecedenceLevel > _operatorStack.Peek().PrecedenceLevel
+                             || (tok.PrecedenceLevel == _operatorStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
                         {
-                            _outputStack.Push(std.move(*it));
-                            ++it;
+                            _outputStack.Push(_operatorStack.Pop());
                         }
 
-                        _operatorStack.erase(it.base(),_operatorStack.end());
                         _operatorStack.Push(tok);
                     }
                     break;
-                }*/
+                }
                 case JmesPathTokenKind.Separator:
                 {
                     UnwindRightParen();

@@ -2025,7 +2025,7 @@ namespace JsonCons.JsonPath
                     break;
                 case JsonPathTokenKind.EndUnion:
                 {
-                    List<ISelector> selectors = new List<ISelector>();
+                    var selectors = new List<ISelector>();
                     while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginUnion)
                     {
                         switch (_outputStack.Peek().TokenKind)

@@ -27,9 +27,21 @@ namespace JsonCons.JmesPath
     {
     }
 
+    enum JmesPathType
+    {
+        Null,	      
+        Array,
+        False,	      
+        Number,	      
+        Object,	      
+        String,	      
+        True,   
+        Expression
+    }
+
     interface IValue 
     {
-        JsonValueKind ValueKind {get;}
+        JmesPathType Type {get;}
         IValue this[int index] {get;}
         int GetArrayLength();
         string GetString();
@@ -38,9 +50,10 @@ namespace JsonCons.JmesPath
         bool TryGetProperty(string propertyName, out IValue property);
         IArrayValueEnumerator EnumerateArray();
         IObjectValueEnumerator EnumerateObject();
-
+        IExpression GetExpression();
         bool IsJsonElement();
         JsonElement GetJsonElement();
+        //JsonDocument ToJsonDocument();
     };
 
     readonly struct JsonElementValue : IValue
@@ -130,7 +143,29 @@ namespace JsonCons.JmesPath
             _element = element;
         }
 
-        public JsonValueKind ValueKind {get{return _element.ValueKind;}}
+        public JmesPathType Type 
+        {
+            get
+            {
+                switch (_element.ValueKind)
+                {
+                    case JsonValueKind.Array:
+                        return JmesPathType.Array;
+                    case JsonValueKind.False:
+                        return JmesPathType.False;
+                    case JsonValueKind.Number:
+                        return JmesPathType.Number;
+                    case JsonValueKind.Object:
+                        return JmesPathType.Object;
+                    case JsonValueKind.String:
+                        return JmesPathType.String;
+                    case JsonValueKind.True:
+                        return JmesPathType.True;
+                    default:
+                        return JmesPathType.Null;
+                }
+            }
+        }
 
         public IValue this[int index] {get{return new JsonElementValue(_element[index]);}}
 
@@ -178,6 +213,11 @@ namespace JsonCons.JmesPath
         {
             return _element;
         }      
+
+        public IExpression GetExpression()
+        {
+            throw new InvalidOperationException("Not an expression");
+        }      
     };
 
     readonly struct DoubleValue : IValue
@@ -189,7 +229,7 @@ namespace JsonCons.JmesPath
             _value = value;
         }
 
-        public JsonValueKind ValueKind {get{return JsonValueKind.Number;}}
+        public JmesPathType Type {get{return JmesPathType.Number;}}
 
         public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
@@ -244,7 +284,12 @@ namespace JsonCons.JmesPath
         {
             throw new InvalidOperationException("Not a JsonElement");
         }      
-    };
+
+        public IExpression GetExpression()
+        {
+            throw new InvalidOperationException("Not an expression");
+        }      
+    }
 
     readonly struct DecimalValue : IValue
     {
@@ -255,7 +300,7 @@ namespace JsonCons.JmesPath
             _value = value;
         }
 
-        public JsonValueKind ValueKind {get{return JsonValueKind.Number;}}
+        public JmesPathType Type {get{return JmesPathType.Number;}}
 
         public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
@@ -302,7 +347,12 @@ namespace JsonCons.JmesPath
         {
             throw new InvalidOperationException("Not a JsonElement");
         }      
-    };
+
+        public IExpression GetExpression()
+        {
+            throw new InvalidOperationException("Not an expression");
+        }      
+    }
 
     readonly struct StringValue : IValue
     {
@@ -313,7 +363,7 @@ namespace JsonCons.JmesPath
             _value = value;
         }
 
-        public JsonValueKind ValueKind {get{return JsonValueKind.String;}}
+        public JmesPathType Type {get{return JmesPathType.String;}}
 
         public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
@@ -358,11 +408,16 @@ namespace JsonCons.JmesPath
         {
             throw new InvalidOperationException("Not a JsonElement");
         }      
-    };
+
+        public IExpression GetExpression()
+        {
+            throw new InvalidOperationException("Not an expression");
+        }      
+    }
 
     readonly struct TrueValue : IValue
     {
-        public JsonValueKind ValueKind {get{return JsonValueKind.True;}}
+        public JmesPathType Type {get{return JmesPathType.True;}}
 
         public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
@@ -404,11 +459,16 @@ namespace JsonCons.JmesPath
         {
             throw new InvalidOperationException("Not a JsonElement");
         }      
-    };
+
+        public IExpression GetExpression()
+        {
+            throw new InvalidOperationException("Not an expression");
+        }      
+    }
 
     readonly struct FalseValue : IValue
     {
-        public JsonValueKind ValueKind {get{return JsonValueKind.False;}}
+        public JmesPathType Type {get{return JmesPathType.False;}}
 
         public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
@@ -450,11 +510,16 @@ namespace JsonCons.JmesPath
         {
             throw new InvalidOperationException("Not a JsonElement");
         }      
-    };
+
+        public IExpression GetExpression()
+        {
+            throw new InvalidOperationException("Not an expression");
+        }      
+    }
 
     readonly struct NullValue : IValue
     {
-        public JsonValueKind ValueKind {get{return JsonValueKind.Null;}}
+        public JmesPathType Type {get{return JmesPathType.Null;}}
 
         public IValue this[int index] { get { throw new InvalidOperationException(); } }
 
@@ -496,7 +561,12 @@ namespace JsonCons.JmesPath
         {
             throw new InvalidOperationException("Not a JsonElement");
         }      
-    };
+
+        public IExpression GetExpression()
+        {
+            throw new InvalidOperationException("Not an expression");
+        }      
+    }
 
     readonly struct ArrayValue : IValue
     {
@@ -548,7 +618,7 @@ namespace JsonCons.JmesPath
             _value = value;
         }
 
-        public JsonValueKind ValueKind {get{return JsonValueKind.Array;}}
+        public JmesPathType Type {get{return JmesPathType.Array;}}
 
         public IValue this[int index] { get { return _value[index]; } }
 
@@ -592,6 +662,11 @@ namespace JsonCons.JmesPath
         public JsonElement GetJsonElement()
         {
             throw new InvalidOperationException("Not a JsonElement");
+        }      
+
+        public IExpression GetExpression()
+        {
+            throw new InvalidOperationException("Not an expression");
         }      
     }
 
@@ -646,7 +721,7 @@ namespace JsonCons.JmesPath
             _value = value;
         }
 
-        public JsonValueKind ValueKind {get{return JsonValueKind.Object;}}
+        public JmesPathType Type {get{return JmesPathType.Object;}}
 
         public IValue this[int index] 
         {
@@ -697,6 +772,69 @@ namespace JsonCons.JmesPath
         {
             throw new InvalidOperationException("Not a JsonElement");
         }      
+
+        public IExpression GetExpression()
+        {
+            throw new InvalidOperationException("Not an expression");
+        }      
     }
+
+    readonly struct ExpressionValue : IValue
+    {
+        readonly IExpression _expr;
+
+        internal ExpressionValue(IExpression expr)
+        {
+            _expr = expr;
+        }
+
+        public JmesPathType Type {get{return JmesPathType.Expression;}}
+
+        public IValue this[int index] { get { throw new InvalidOperationException(); } }
+
+        public int GetArrayLength() { throw new InvalidOperationException(); }
+
+        public string GetString() { throw new InvalidOperationException(); }
+
+        public bool TryGetDecimal(out Decimal value)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool TryGetDouble(out double value)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool TryGetProperty(string propertyName, out IValue property)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public IArrayValueEnumerator EnumerateArray()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public IObjectValueEnumerator EnumerateObject()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool IsJsonElement()
+        {
+            return false;
+        }
+
+        public JsonElement GetJsonElement()
+        {
+            throw new InvalidOperationException("Not a JsonElement");
+        }      
+
+        public IExpression GetExpression()
+        {
+            return _expr;
+        }      
+    };
 
 } // namespace JsonCons.JmesPath
