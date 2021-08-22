@@ -36,7 +36,7 @@ namespace JsonCons.JmesPath
         internal static OrOperator Instance { get; } = new OrOperator();
 
         internal OrOperator()
-            : base(1)
+            : base(9)
         {
         }
 
@@ -68,7 +68,7 @@ namespace JsonCons.JmesPath
         internal static AndOperator Instance { get; } = new AndOperator();
 
         internal AndOperator()
-            : base(2)
+            : base(8)
         {
         }
 
@@ -96,7 +96,7 @@ namespace JsonCons.JmesPath
         internal static EqOperator Instance { get; } = new EqOperator();
 
         internal EqOperator()
-            : base(3)
+            : base(6)
         {
         }
 
@@ -125,7 +125,7 @@ namespace JsonCons.JmesPath
         internal static NeOperator Instance { get; } = new NeOperator();
 
         internal NeOperator()
-            : base(3)
+            : base(6)
         {
         }
 
@@ -160,7 +160,7 @@ namespace JsonCons.JmesPath
         internal static LtOperator Instance { get; } = new LtOperator();
 
         internal LtOperator()
-            : base(4)
+            : base(5)
         {
         }
 
@@ -207,7 +207,7 @@ namespace JsonCons.JmesPath
         internal static LteOperator Instance { get; } = new LteOperator();
 
         internal LteOperator()
-            : base(4)
+            : base(5)
         {
         }
 
@@ -255,7 +255,7 @@ namespace JsonCons.JmesPath
         internal static GtOperator Instance { get; } = new GtOperator();
 
         internal GtOperator()
-            : base(4)
+            : base(5)
         {
         }
 
@@ -302,7 +302,7 @@ namespace JsonCons.JmesPath
         internal static GteOperator Instance { get; } = new GteOperator();
 
         internal GteOperator()
-            : base(4)
+            : base(5)
         {
         }
 
@@ -341,263 +341,6 @@ namespace JsonCons.JmesPath
         public override string ToString()
         {
             return "GteOperator";
-        }
-    };
-
-    sealed class PlusOperator : BinaryOperator
-    {
-        internal static PlusOperator Instance { get; } = new PlusOperator();
-
-        internal PlusOperator()
-            : base(5)
-        {
-        }
-
-        public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
-        {
-            if (!(lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number))
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
-            Decimal decVal1;
-            double dblVal1;
-            Decimal decVal2;
-            double dblVal2;
-
-            if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
-            {
-                Decimal val = decVal1 + decVal2;
-                result = new DecimalValue(val);
-                return true;
-            }
-            else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
-            {
-                double val = dblVal1 + dblVal2;
-                result = new DoubleValue(val);
-                return true;
-            }
-            else
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-        }
-
-        public override string ToString()
-        {
-            return "PlusOperator";
-        }
-    };
-
-    sealed class MinusOperator : BinaryOperator
-    {
-        internal static MinusOperator Instance { get; } = new MinusOperator();
-
-        internal MinusOperator()
-            : base(5)
-        {
-        }
-
-        public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
-        {
-            if (!(lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number))
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
-            Decimal decVal1;
-            double dblVal1;
-            Decimal decVal2;
-            double dblVal2;
-
-            if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
-            {
-                Decimal val = decVal1 - decVal2;
-                result = new DecimalValue(val);
-                return true;
-            }
-            else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
-            {
-                double val = dblVal1 - dblVal2;
-                result = new DoubleValue(val);
-                return true;
-            }
-            else
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-        }
-
-        public override string ToString()
-        {
-            return "MinusOperator";
-        }
-    };
-
-    sealed class MultOperator : BinaryOperator
-    {
-        internal static MultOperator Instance { get; } = new MultOperator();
-
-        internal MultOperator()
-            : base(6)
-        {
-        }
-
-        public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
-        {
-            if (!(lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number))
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
-            Decimal decVal1;
-            double dblVal1;
-            Decimal decVal2;
-            double dblVal2;
-
-            if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
-            {
-                Decimal val = decVal1 * decVal2;
-                result = new DecimalValue(val);
-                return true;
-            }
-            else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
-            {
-                double val = dblVal1 * dblVal2;
-                result = new DoubleValue(val);
-                return true;
-            }
-            else
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-        }
-
-        public override string ToString()
-        {
-            return "MultOperator";
-        }
-    };
-
-    sealed class DivOperator : BinaryOperator
-    {
-        internal static DivOperator Instance { get; } = new DivOperator();
-
-        internal DivOperator()
-            : base(6)
-        {
-        }
-
-        public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
-        {
-            if (!(lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number))
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
-            Decimal decVal1;
-            double dblVal1;
-            Decimal decVal2;
-            double dblVal2;
-
-            if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
-            {
-                if (decVal2 == 0)
-                {
-                    result = JsonConstants.Null;
-                    return false;
-                }
-                Decimal val = decVal1 / decVal2;
-                result = new DecimalValue(val);
-                return true;
-            }
-            else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
-            {
-                if (dblVal2 == 0)
-                {
-                    result = JsonConstants.Null;
-                    return false;
-                }
-                double val = dblVal1 / dblVal2;
-                result = new DoubleValue(val);
-                return true;
-            }
-            else
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-        }
-
-        public override string ToString()
-        {
-            return "DivOperator";
-        }
-    };
-
-
-    sealed class ModulusOperator : BinaryOperator
-    {
-        internal static ModulusOperator Instance { get; } = new ModulusOperator();
-
-        internal ModulusOperator()
-            : base(6)
-        {
-        }
-
-        public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
-        {
-            if (!(lhs.Type == JmesPathType.Number && rhs.Type == JmesPathType.Number))
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
-            Decimal decVal1;
-            double dblVal1;
-            Decimal decVal2;
-            double dblVal2;
-
-            if (lhs.TryGetDecimal(out decVal1) && rhs.TryGetDecimal(out decVal2))
-            {
-                if (decVal2 == 0)
-                {
-                    result = JsonConstants.Null;
-                    return false;
-                }
-                Decimal val = decVal1 % decVal2;
-                result = new DecimalValue(val);
-                return true;
-            }
-            else if (lhs.TryGetDouble(out dblVal1) && rhs.TryGetDouble(out dblVal2))
-            {
-                if (dblVal2 == 0)
-                {
-                    result = JsonConstants.Null;
-                    return false;
-                }
-                double val = dblVal1 % dblVal2;
-                result = new DoubleValue(val);
-                return true;
-            }
-            else
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-        }
-
-
-        public override string ToString()
-        {
-            return "ModulusOperator";
         }
     };
 

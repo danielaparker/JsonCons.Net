@@ -1,4 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace JsonCons.JmesPath
 {
@@ -36,13 +42,14 @@ namespace JsonCons.JmesPath
         {
             _expr = expr;
         }
-/*
-        JsonDocument Select(JsonElement doc)
+        
+        public JsonDocument Search(JsonElement doc)
         {
             var resources = new DynamicResources();
             IValue temp;
-            expr.TrySelect(resources, new JsonElementValue(doc), out temp);
+            _expr.TryEvaluate(resources, new JsonElementValue(doc), out temp);
+            return JsonDocument.Parse(temp.ToString());
         }
+        
     }
-*/
 }

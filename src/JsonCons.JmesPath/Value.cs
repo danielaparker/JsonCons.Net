@@ -51,9 +51,6 @@ namespace JsonCons.JmesPath
         IArrayValueEnumerator EnumerateArray();
         IObjectValueEnumerator EnumerateObject();
         IExpression GetExpression();
-        bool IsJsonElement();
-        JsonElement GetJsonElement();
-        //JsonDocument ToJsonDocument();
     };
 
     readonly struct JsonElementValue : IValue
@@ -204,20 +201,16 @@ namespace JsonCons.JmesPath
             return new ObjectEnumerator(_element.EnumerateObject());
         }
 
-        public bool IsJsonElement()
-        {
-            return true;
-        }
-
-        public JsonElement GetJsonElement()
-        {
-            return _element;
-        }      
-
         public IExpression GetExpression()
         {
             throw new InvalidOperationException("Not an expression");
-        }      
+        }    
+
+        public override string ToString()
+        {
+            string s = JsonSerializer.Serialize(_element);
+            return s;
+        }
     };
 
     readonly struct DoubleValue : IValue
@@ -275,20 +268,16 @@ namespace JsonCons.JmesPath
             throw new InvalidOperationException();
         }
 
-        public bool IsJsonElement()
-        {
-            return false;
-        }
-
-        public JsonElement GetJsonElement()
-        {
-            throw new InvalidOperationException("Not a JsonElement");
-        }      
-
         public IExpression GetExpression()
         {
             throw new InvalidOperationException("Not an expression");
         }      
+
+        public override string ToString()
+        {
+            string s = JsonSerializer.Serialize(_value);
+            return s;
+        }
     }
 
     readonly struct DecimalValue : IValue
@@ -338,20 +327,16 @@ namespace JsonCons.JmesPath
             throw new InvalidOperationException();
         }
 
-        public bool IsJsonElement()
-        {
-            return false;
-        }
-
-        public JsonElement GetJsonElement()
-        {
-            throw new InvalidOperationException("Not a JsonElement");
-        }      
-
         public IExpression GetExpression()
         {
             throw new InvalidOperationException("Not an expression");
         }      
+
+        public override string ToString()
+        {
+            string s = JsonSerializer.Serialize(_value);
+            return s;
+        }
     }
 
     readonly struct StringValue : IValue
@@ -399,20 +384,16 @@ namespace JsonCons.JmesPath
             throw new InvalidOperationException();
         }
 
-        public bool IsJsonElement()
-        {
-            return false;
-        }
-
-        public JsonElement GetJsonElement()
-        {
-            throw new InvalidOperationException("Not a JsonElement");
-        }      
-
         public IExpression GetExpression()
         {
             throw new InvalidOperationException("Not an expression");
         }      
+
+        public override string ToString()
+        {
+            string s = JsonSerializer.Serialize(_value);
+            return s;
+        }
     }
 
     readonly struct TrueValue : IValue
@@ -450,20 +431,15 @@ namespace JsonCons.JmesPath
             throw new InvalidOperationException();
         }
 
-        public bool IsJsonElement()
-        {
-            return false;
-        }
-
-        public JsonElement GetJsonElement()
-        {
-            throw new InvalidOperationException("Not a JsonElement");
-        }      
-
         public IExpression GetExpression()
         {
             throw new InvalidOperationException("Not an expression");
         }      
+
+        public override string ToString()
+        {
+            return "true";
+        }
     }
 
     readonly struct FalseValue : IValue
@@ -501,20 +477,15 @@ namespace JsonCons.JmesPath
             throw new InvalidOperationException();
         }
 
-        public bool IsJsonElement()
-        {
-            return false;
-        }
-
-        public JsonElement GetJsonElement()
-        {
-            throw new InvalidOperationException("Not a JsonElement");
-        }      
-
         public IExpression GetExpression()
         {
             throw new InvalidOperationException("Not an expression");
         }      
+
+        public override string ToString()
+        {
+            return "false";
+        }
     }
 
     readonly struct NullValue : IValue
@@ -552,20 +523,15 @@ namespace JsonCons.JmesPath
             throw new InvalidOperationException();
         }
 
-        public bool IsJsonElement()
-        {
-            return false;
-        }
-
-        public JsonElement GetJsonElement()
-        {
-            throw new InvalidOperationException("Not a JsonElement");
-        }      
-
         public IExpression GetExpression()
         {
             throw new InvalidOperationException("Not an expression");
         }      
+
+        public override string ToString()
+        {
+            return "null";
+        }
     }
 
     readonly struct ArrayValue : IValue
@@ -654,20 +620,31 @@ namespace JsonCons.JmesPath
             throw new InvalidOperationException();
         }
 
-        public bool IsJsonElement()
-        {
-            return false;
-        }
-
-        public JsonElement GetJsonElement()
-        {
-            throw new InvalidOperationException("Not a JsonElement");
-        }      
-
         public IExpression GetExpression()
         {
             throw new InvalidOperationException("Not an expression");
         }      
+
+        public override string ToString()
+        {
+            var buffer = new StringBuilder();
+            buffer.Append('[');
+            bool first = true;
+            foreach (var item in _value)
+            {
+                if (!first)
+                {
+                    buffer.Append(',');
+                }
+                else
+                {
+                    first = false;
+                }
+                buffer.Append(item.ToString());
+            }
+            buffer.Append(']');
+            return buffer.ToString();
+        }
     }
 
     readonly struct ObjectValue : IValue
@@ -763,20 +740,33 @@ namespace JsonCons.JmesPath
             return new ObjectEnumerator(_value);
         }
 
-        public bool IsJsonElement()
-        {
-            return false;
-        }
-
-        public JsonElement GetJsonElement()
-        {
-            throw new InvalidOperationException("Not a JsonElement");
-        }      
-
         public IExpression GetExpression()
         {
             throw new InvalidOperationException("Not an expression");
         }      
+
+        public override string ToString()
+        {
+            var buffer = new StringBuilder();
+            buffer.Append('{');
+            bool first = true;
+            foreach (var property in _value)
+            {
+                if (!first)
+                {
+                    buffer.Append(',');
+                }
+                else
+                {
+                    first = false;
+                }
+                buffer.Append(JsonSerializer.Serialize(property.Key));
+                buffer.Append(':');
+                buffer.Append(property.Value.ToString());
+            }
+            buffer.Append('}');
+            return buffer.ToString();
+        }
     }
 
     readonly struct ExpressionValue : IValue
@@ -821,20 +811,15 @@ namespace JsonCons.JmesPath
             throw new InvalidOperationException();
         }
 
-        public bool IsJsonElement()
-        {
-            return false;
-        }
-
-        public JsonElement GetJsonElement()
-        {
-            throw new InvalidOperationException("Not a JsonElement");
-        }      
-
         public IExpression GetExpression()
         {
             return _expr;
         }      
+
+        public override string ToString()
+        {
+            return "expression";
+        }
     };
 
 } // namespace JsonCons.JmesPath

@@ -1,0 +1,15 @@
+[
+    {
+        "given": {
+            "foo": [{"name": "a"}, {"name": "b"}],
+            "bar": {"baz": "qux"}
+        },
+        "cases": [
+            {
+                "comment": "Multiple literal expressions with escapes",
+                "expression": "`\"\\\\\"`.{a:`\"b\"`}",
+                "result": {"a": "b"}
+            }
+    ]
+  }
+]

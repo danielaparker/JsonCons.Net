@@ -37,7 +37,7 @@ namespace JsonCons.JmesPath
         internal static NotOperator Instance { get; } = new NotOperator();
 
         internal NotOperator()
-            : base(8, true)
+            : base(1, true)
         {}
 
         public override bool TryEvaluate(IValue val, out IValue result)
@@ -49,48 +49,6 @@ namespace JsonCons.JmesPath
         public override string ToString()
         {
             return "Not";
-        }
-    };
-
-    sealed class UnaryMinusOperator : UnaryOperator
-    {
-        internal static UnaryMinusOperator Instance { get; } = new UnaryMinusOperator();
-
-        internal UnaryMinusOperator()
-            : base(8, true)
-        {}
-
-        public override bool TryEvaluate(IValue val, out IValue result)
-        {
-            if (!(val.Type == JmesPathType.Number))
-            {
-                result = JsonConstants.Null;
-                return false; // type error
-            }
-
-            Decimal decVal;
-            double dblVal;
-
-            if (val.TryGetDecimal(out decVal))
-            {
-                result = new DecimalValue(-decVal);
-                return true;
-            }
-            else if (val.TryGetDouble(out dblVal))
-            {
-                result = new DoubleValue(-dblVal);
-                return true;
-            }
-            else
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-        }
-
-        public override string ToString()
-        {
-            return "Unary minus";
         }
     };
 

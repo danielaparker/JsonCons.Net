@@ -542,9 +542,9 @@ namespace JsonCons.JmesPath
     struct KeyExpressionPair
     {
         internal string Key {get;}
-        internal IExpression Expression {get;}
+        internal Expression Expression {get;}
 
-        internal KeyExpressionPair(string key, IExpression expression) 
+        internal KeyExpressionPair(string key, Expression expression) 
         {
             Key = key;
             Expression = expression;
@@ -625,9 +625,9 @@ namespace JsonCons.JmesPath
 
     class Expression
     {
-        IReadOnlyCollection<Token> _tokens;
+        Token[] _tokens;
 
-        internal Expression(IReadOnlyCollection<Token> tokens)
+        internal Expression(Token[] tokens)
         {
             _tokens = tokens;
         }
@@ -641,10 +641,9 @@ namespace JsonCons.JmesPath
 
             IValue root_ptr = current;
 
-            var tokenEnum = _tokens.GetEnumerator();
-            while (tokenEnum.MoveNext())
+            for (int i = 0; i < _tokens.Length; ++i)
             {
-                var token = tokenEnum.Current;
+                var token = _tokens[i];
                 switch (token.TokenKind)
                 {
                     case JmesPathTokenKind.Literal:
@@ -654,8 +653,8 @@ namespace JsonCons.JmesPath
                     }
                     case JmesPathTokenKind.BeginExpressionType:
                     {
-                        Debug.Assert(tokenEnum.MoveNext());
-                        token = tokenEnum.Current;
+                        Debug.Assert(i+1 < _tokens.Length);
+                        token = _tokens[i+1];
                         Debug.Assert(token.TokenKind == JmesPathTokenKind.Expression);
                         Debug.Assert(stack.Count != 0);
                         stack.Pop();
