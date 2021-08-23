@@ -1643,8 +1643,7 @@ namespace JsonCons.JmesPath
                             tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
                         }
                         tokens.Reverse();
-                        _outputStack.Push(new Token(new FunctionExpression(new Expression(tokens.ToArray()))));
-                        _outputStack.Pop(); // Function
+                        tokens.Add(_outputStack.Pop()); // Function
 
                         if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
                             (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
