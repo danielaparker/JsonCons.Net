@@ -500,9 +500,9 @@ namespace JsonCons.JmesPath
 
     sealed class MultiSelectList : BaseExpression
     {
-        IList<IExpression> _expressions;
+        IList<Expression> _expressions;
     
-        internal MultiSelectList(IList<IExpression> expressions)
+        internal MultiSelectList(IList<Expression> expressions)
             : base(1, false, false)
         {
             _expressions = expressions;

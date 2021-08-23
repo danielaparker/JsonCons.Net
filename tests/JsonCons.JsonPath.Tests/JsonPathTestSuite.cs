@@ -119,20 +119,20 @@ namespace JsonCons.JsonPath.Tests
         {
             try
             {
-                RunJsonPathTests(@".\test_files\dot-notation.json");
+                /*RunJsonPathTests(@".\test_files\dot-notation.json");
                 RunJsonPathTests(@".\test_files\filters.json");
                 RunJsonPathTests(@".\test_files\functions.json");              
                 RunJsonPathTests(@".\test_files\identifiers.json");
                 RunJsonPathTests(@".\test_files\indices.json");
                 RunJsonPathTests(@".\test_files\regex.json");
-                RunJsonPathTests(@".\test_files\slice.json");
-                RunJsonPathTests(@".\test_files\syntax.json");
-                RunJsonPathTests(@".\test_files\union.json");
+                RunJsonPathTests(@".\test_files\slice.json");*/
+                //RunJsonPathTests(@".\test_files\syntax.json");
+                /*RunJsonPathTests(@".\test_files\union.json");
                 RunJsonPathTests(@".\test_files\wildcard.json");
                 RunJsonPathTests(@".\test_files\parent-operator.json");
-                RunJsonPathTests(@".\test_files\recursive-descent.json");
+                RunJsonPathTests(@".\test_files\recursive-descent.json");*/
                 
-                //RunJsonPathTests(@".\test_files\test.json");              
+                RunJsonPathTests(@".\test_files\test.json");              
             }
             catch (Exception e)
             {

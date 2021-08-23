@@ -42,18 +42,8 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            if (lhs.Type == JmesPathType.Null && rhs.Type == JmesPathType.Null)
-            {
-                result = JsonConstants.Null;
-            }
-            if (!Expression.IsFalse(lhs))
-            {
-                result = lhs;
-            }
-            else
-            {
-                result = rhs;
-            }
+            bool val = Expression.IsTrue(lhs) ? true : Expression.IsTrue(rhs);
+            result = val ? JsonConstants.True : JsonConstants.False;
             return true;
         }
 
@@ -74,14 +64,8 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            if (Expression.IsTrue(lhs))
-            {
-                result = rhs;
-            }
-            else
-            {
-                result = lhs;
-            }
+            bool val = Expression.IsTrue(lhs) ? Expression.IsTrue(rhs) : false;
+            result = val ? JsonConstants.True : JsonConstants.False;
             return true;
         }
 

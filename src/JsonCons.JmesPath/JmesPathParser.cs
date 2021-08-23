@@ -1483,28 +1483,32 @@ namespace JsonCons.JmesPath
                 case JmesPathTokenKind.EndMultiSelectList:
                 {
                     UnwindRightParen();
-                    var expressions = new List<IExpression>();
-                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginMultiSelectList)
+                    var expressions = new List<Expression>();
+                    while (_outputStack.Count > 0 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginMultiSelectList)
                     {
-                        switch (_outputStack.Peek().TokenKind)
+                        var tokens = new List<Token>();
+                        do
                         {
-                            case JmesPathTokenKind.Expression:
-                                expressions.Add(_outputStack.Pop().GetExpression());
-                                break;
-                            case JmesPathTokenKind.Separator:
-                                _outputStack.Pop(); // Ignore separator
-                                break;
-                            default:
-                                _outputStack.Pop(); // Probably error
-                                break;
+                            tokens.Add(_outputStack.Pop());
                         }
+                        while (_outputStack.Count > 0 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginMultiSelectList && _outputStack.Peek().TokenKind != JmesPathTokenKind.Separator);
+                        if (_outputStack.Peek().TokenKind == JmesPathTokenKind.Separator)
+                        {
+                            _outputStack.Pop();
+                        }
+                        if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
+                        {
+                            tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
+                        }
+                        tokens.Reverse();
+                        expressions.Add(new Expression(tokens.ToArray()));
                     }
                     if (_outputStack.Count == 0)
                     {
-                        throw new JmesPathParseException("Syntax error", _line, _column);
+                        throw new JmesPathParseException("Unbalanced braces", _line, _column);
                     }
-                    expressions.Reverse();
                     _outputStack.Pop(); // JmesPathTokenKind.BeginMultiSelectList
+                    expressions.Reverse();
 
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
                         (tok.PrecedenceLevel < _outputStack.Peek().PrecedenceLevel ||

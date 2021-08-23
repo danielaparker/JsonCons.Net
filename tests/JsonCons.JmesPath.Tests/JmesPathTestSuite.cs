@@ -57,9 +57,9 @@ namespace JsonCons.JmesPath.Tests
                             {
                                 Debug.WriteLine("File: {0}", path);
                                 Debug.WriteLine(comment);
-                                Debug.WriteLine("Document: " + given.ToString());
-                                Debug.WriteLine("Path: " + exprElement.ToString());
-                                Debug.WriteLine("Expected: " + JsonSerializer.Serialize(expected));
+                                Debug.WriteLine($"Document: {given}");
+                                Debug.WriteLine($"Path: {exprElement}");
+                                Debug.WriteLine($"Expected: {JsonSerializer.Serialize(expected)}");
                                 Debug.WriteLine($"Result: {JsonSerializer.Serialize(result)}");
                             }
                             Assert.IsTrue(comparer.Equals(result.RootElement,expected));
@@ -69,6 +69,8 @@ namespace JsonCons.JmesPath.Tests
                     catch (Exception e)
                     {
                         Debug.WriteLine("File: {0}", path);
+                        Debug.WriteLine($"Document: {given}");
+                        Debug.WriteLine($"Path: {exprElement}");
                         Debug.WriteLine(comment);
                         Debug.WriteLine("Error: {0}", e.Message);
                         throw e;
@@ -92,15 +94,15 @@ namespace JsonCons.JmesPath.Tests
                 //RunJmesPathTests(@".\test_files\functions.json");              
                 //RunJmesPathTests(@".\test_files\identifiers.json");
                 //RunJmesPathTests(@".\test_files\indices.json");
-                /*RunJmesPathTests(@".\test_files\literal.json");
-                RunJmesPathTests(@".\test_files\multiselect.json");
-                RunJmesPathTests(@".\test_files\pipe.json");
-                RunJmesPathTests(@".\test_files\slice.json");
-                RunJmesPathTests(@".\test_files\syntax.json");
-                RunJmesPathTests(@".\test_files\unicode.json");
-                RunJmesPathTests(@".\test_files\wildcard.json");*/
+                //RunJmesPathTests(@".\test_files\literal.json");
+                //RunJmesPathTests(@".\test_files\multiselect.json");
+                //RunJmesPathTests(@".\test_files\pipe.json");
+                //RunJmesPathTests(@".\test_files\slice.json");
+                //RunJmesPathTests(@".\test_files\unicode.json");
+                //RunJmesPathTests(@".\test_files\syntax.json");
+                //RunJmesPathTests(@".\test_files\wildcard.json");
                 
-                RunJmesPathTests(@".\test_files\test.json");              
+               RunJmesPathTests(@".\test_files\test.json");              
             }
             catch (Exception e)
             {
