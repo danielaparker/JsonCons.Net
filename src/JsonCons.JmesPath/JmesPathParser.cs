@@ -1681,7 +1681,7 @@ namespace JsonCons.JmesPath
                     else
                     {
                         while (_operatorStack.Count > 0 && _operatorStack.Peek().IsOperator
-                               && (tok.PrecedenceLevel > _operatorStack.Peek().PrecedenceLevel
+                               && (_operatorStack.Peek().PrecedenceLevel < tok.PrecedenceLevel
                              || (tok.PrecedenceLevel == _operatorStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
                         {
                             _outputStack.Push(_operatorStack.Pop());
