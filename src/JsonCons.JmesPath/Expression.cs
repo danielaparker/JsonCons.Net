@@ -8,6 +8,7 @@ using System.Text.Json;
         
 namespace JsonCons.JmesPath
 {
+
     static class JsonConstants
     {
         static JsonConstants()
@@ -46,12 +47,11 @@ namespace JsonCons.JmesPath
 
         public bool IsProjection {get;} 
 
-        internal BaseExpression(int precedenceLevel, 
-                                bool isRightAssociative, 
+        internal BaseExpression(Operator oper,
                                 bool isProjection)
         {
-            PrecedenceLevel = precedenceLevel;
-            IsRightAssociative = isRightAssociative;
+            PrecedenceLevel = OperatorTable.PrecedenceLevel(oper);
+            IsRightAssociative = OperatorTable.IsRightAssociative(oper);
             IsProjection = isProjection;
         }
 
@@ -74,7 +74,7 @@ namespace JsonCons.JmesPath
         string _identifier;
     
         internal IdentifierSelector(string name)
-            : base(1, false, false)
+            : base(Operator.Default, false)
         {
             _identifier = name;
         }
@@ -103,7 +103,7 @@ namespace JsonCons.JmesPath
     sealed class CurrentNode : BaseExpression
     {
         internal CurrentNode()
-            : base(1, false, false)
+            : base(Operator.Default, false)
         {
         }
 
@@ -125,7 +125,7 @@ namespace JsonCons.JmesPath
     {
         Int32 _index;
         internal IndexSelector(Int32 index)
-            : base(1, false, false)
+            : base(Operator.Default, false)
         {
             _index = index;
         }
@@ -162,13 +162,12 @@ namespace JsonCons.JmesPath
         }
     };
 
-    // BaseProjection
-    abstract class BaseProjection : BaseExpression
+    abstract class Projection : BaseExpression
     {
         List<IExpression> _expressions;
 
-        internal BaseProjection(int precedence_level, bool isRightAssociative = true)
-            : base(precedence_level, isRightAssociative, true)
+        internal Projection(Operator oper = Operator.Projection)
+            : base(oper, true)
         {
             _expressions = new List<IExpression>();
         }
@@ -200,14 +199,9 @@ namespace JsonCons.JmesPath
         }
     };
 
-    sealed class ObjectProjection : BaseProjection
+    sealed class ObjectProjection : Projection
     {
         internal static ObjectProjection Instance {get;} = new ObjectProjection();
-
-        internal ObjectProjection()
-            : base(11, true)
-        {
-        }
 
         public override bool TryEvaluate(DynamicResources resources,
                                          IValue current, 
@@ -244,12 +238,9 @@ namespace JsonCons.JmesPath
             return "ObjectProjection";
         }
     };
-    sealed class ListProjection : BaseProjection
+    sealed class ListProjection : Projection
     {    
-        internal ListProjection()
-            : base(11, true)
-        {
-        }
+        internal static ListProjection Instance {get;} = new ListProjection();
 
         public override bool TryEvaluate(DynamicResources resources,
                                          IValue current, 
@@ -288,10 +279,12 @@ namespace JsonCons.JmesPath
         }
     };
 
-    sealed class FlattenProjection : BaseProjection
+    sealed class FlattenProjection : Projection
     {
+        internal static FlattenProjection Instance {get;} = new FlattenProjection();
+
         internal FlattenProjection()
-            : base(11, false)
+            : base(Operator.FlattenProjection)
         {
         }
 
@@ -302,7 +295,7 @@ namespace JsonCons.JmesPath
             if (current.Type != JmesPathType.Array)
             {
                 value = JsonConstants.Null;
-                return false;
+                return true;
             }
 
             var result = new List<IValue>();
@@ -355,12 +348,11 @@ namespace JsonCons.JmesPath
         }
     };
 
-    sealed class SliceProjection : BaseProjection
+    sealed class SliceProjection : Projection
     {
         Slice _slice;
     
         internal SliceProjection(Slice s)
-            : base(11, true)
         {
             _slice = s;
         }
@@ -445,12 +437,11 @@ namespace JsonCons.JmesPath
         }
     };
 
-    sealed class FilterExpression : BaseProjection
+    sealed class FilterExpression : Projection
     {
         readonly Expression _expr;
     
         internal FilterExpression(Expression expr)
-            : base(11, true)
         {
             _expr = expr;
         }
@@ -503,7 +494,7 @@ namespace JsonCons.JmesPath
         IList<Expression> _expressions;
     
         internal MultiSelectList(IList<Expression> expressions)
-            : base(1, false, false)
+            : base(Operator.Default, false)
         {
             _expressions = expressions;
         }
@@ -557,7 +548,7 @@ namespace JsonCons.JmesPath
         IList<KeyExpressionPair> _keyExprPairs;
 
         internal MultiSelectHash(IList<KeyExpressionPair> keyExprPairs)
-            : base(1, false, false)
+            : base(Operator.Default, false)
         {
             _keyExprPairs = keyExprPairs;
         }
@@ -598,7 +589,7 @@ namespace JsonCons.JmesPath
         Expression _expr;
 
         internal FunctionExpression(Expression expr)
-            : base(1, false, false)
+            : base(Operator.Default, false)
         {
             _expr = expr;
         }

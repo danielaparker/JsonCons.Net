@@ -85,23 +85,23 @@ namespace JsonCons.JmesPath.Tests
         {
             try
             {
-                //RunJmesPathTests(@".\test_files\basic.json");
-                //RunJmesPathTests(@".\test_files\benchmarks.json");
-                //RunJmesPathTests(@".\test_files\boolean.json");
-                //RunJmesPathTests(@".\test_files\current.json");
-                //RunJmesPathTests(@".\test_files\escape.json");
-                //RunJmesPathTests(@".\test_files\filters.json");
+/*                RunJmesPathTests(@".\test_files\basic.json");
+                RunJmesPathTests(@".\test_files\benchmarks.json");
+                RunJmesPathTests(@".\test_files\boolean.json");
+                RunJmesPathTests(@".\test_files\current.json");
+                RunJmesPathTests(@".\test_files\escape.json");
+                RunJmesPathTests(@".\test_files\filters.json");
                 //RunJmesPathTests(@".\test_files\functions.json");              
-                //RunJmesPathTests(@".\test_files\identifiers.json");
-                //RunJmesPathTests(@".\test_files\indices.json");
-                //RunJmesPathTests(@".\test_files\literal.json");
-                //RunJmesPathTests(@".\test_files\multiselect.json");
-                //RunJmesPathTests(@".\test_files\pipe.json");
-                //RunJmesPathTests(@".\test_files\slice.json");
-                //RunJmesPathTests(@".\test_files\unicode.json");
-                //RunJmesPathTests(@".\test_files\syntax.json");
-                //RunJmesPathTests(@".\test_files\wildcard.json");
-                
+                RunJmesPathTests(@".\test_files\identifiers.json");
+                RunJmesPathTests(@".\test_files\indices.json");
+                RunJmesPathTests(@".\test_files\literal.json");
+                RunJmesPathTests(@".\test_files\multiselect.json");
+                RunJmesPathTests(@".\test_files\pipe.json");
+                RunJmesPathTests(@".\test_files\slice.json");
+                RunJmesPathTests(@".\test_files\unicode.json");
+                RunJmesPathTests(@".\test_files\syntax.json");
+                RunJmesPathTests(@".\test_files\wildcard.json");
+*/                
                RunJmesPathTests(@".\test_files\test.json");              
             }
             catch (Exception e)

@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BinaryOperator - Copy.cs" />
+    <Compile Remove="Expression - Copy.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\JsonCons.Utilities\JsonCons.Utilities.csproj" />
   </ItemGroup>
 

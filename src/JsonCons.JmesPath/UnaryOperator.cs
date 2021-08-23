@@ -18,11 +18,10 @@ namespace JsonCons.JmesPath
 
     abstract class UnaryOperator : IUnaryOperator
     {
-        internal UnaryOperator(int precedenceLevel,
-                                bool isRightAssociative = false)
+        internal UnaryOperator(Operator oper)
         {
-            PrecedenceLevel = precedenceLevel;
-            IsRightAssociative = isRightAssociative;
+            PrecedenceLevel = OperatorTable.PrecedenceLevel(oper);
+            IsRightAssociative = OperatorTable.IsRightAssociative(oper);
         }
 
         public int PrecedenceLevel {get;} 
@@ -37,7 +36,7 @@ namespace JsonCons.JmesPath
         internal static NotOperator Instance { get; } = new NotOperator();
 
         internal NotOperator()
-            : base(1, true)
+            : base(Operator.Not)
         {}
 
         public override bool TryEvaluate(IValue val, out IValue result)
@@ -57,7 +56,7 @@ namespace JsonCons.JmesPath
         Regex _regex;
 
         internal RegexOperator(Regex regex)
-            : base(7, true)
+            : base(Operator.Not)
         {
             _regex = regex;
         }

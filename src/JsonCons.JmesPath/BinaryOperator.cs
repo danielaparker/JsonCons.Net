@@ -17,16 +17,14 @@ namespace JsonCons.JmesPath
 
     abstract class BinaryOperator : IBinaryOperator
     {
-        internal BinaryOperator(int precedenceLevel,
-                                bool isRightAssociative = false)
+        internal BinaryOperator(Operator oper)
         {
-            PrecedenceLevel = precedenceLevel;
-            IsRightAssociative = isRightAssociative;
+            PrecedenceLevel = OperatorTable.PrecedenceLevel(oper);
         }
 
         public int PrecedenceLevel {get;} 
 
-        public bool IsRightAssociative {get;} 
+        public bool IsRightAssociative {get;} = false;
 
         public abstract bool TryEvaluate(IValue lhs, IValue rhs, out IValue result);
     };
@@ -36,14 +34,18 @@ namespace JsonCons.JmesPath
         internal static OrOperator Instance { get; } = new OrOperator();
 
         internal OrOperator()
-            : base(9)
+            : base(Operator.Or)
         {
         }
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            bool val = Expression.IsTrue(lhs) ? true : Expression.IsTrue(rhs);
-            result = val ? JsonConstants.True : JsonConstants.False;
+            if (lhs.Type == JmesPathType.Null && rhs.Type == JmesPathType.Null)
+            {
+                result = lhs;
+                return true;
+            }
+            result = Expression.IsTrue(lhs) ? lhs : rhs;
             return true;
         }
 
@@ -58,14 +60,13 @@ namespace JsonCons.JmesPath
         internal static AndOperator Instance { get; } = new AndOperator();
 
         internal AndOperator()
-            : base(8)
+            : base(Operator.And)
         {
         }
 
         public override bool TryEvaluate(IValue lhs, IValue rhs, out IValue result)
         {
-            bool val = Expression.IsTrue(lhs) ? Expression.IsTrue(rhs) : false;
-            result = val ? JsonConstants.True : JsonConstants.False;
+            result = Expression.IsTrue(lhs) ? rhs : lhs;
             return true;
         }
 
@@ -80,7 +81,7 @@ namespace JsonCons.JmesPath
         internal static EqOperator Instance { get; } = new EqOperator();
 
         internal EqOperator()
-            : base(6)
+            : base(Operator.Eq)
         {
         }
 
@@ -109,7 +110,7 @@ namespace JsonCons.JmesPath
         internal static NeOperator Instance { get; } = new NeOperator();
 
         internal NeOperator()
-            : base(6)
+            : base(Operator.Ne)
         {
         }
 
@@ -144,7 +145,7 @@ namespace JsonCons.JmesPath
         internal static LtOperator Instance { get; } = new LtOperator();
 
         internal LtOperator()
-            : base(5)
+            : base(Operator.Lt)
         {
         }
 
@@ -191,7 +192,7 @@ namespace JsonCons.JmesPath
         internal static LteOperator Instance { get; } = new LteOperator();
 
         internal LteOperator()
-            : base(5)
+            : base(Operator.Lte)
         {
         }
 
@@ -239,7 +240,7 @@ namespace JsonCons.JmesPath
         internal static GtOperator Instance { get; } = new GtOperator();
 
         internal GtOperator()
-            : base(5)
+            : base(Operator.Gt)
         {
         }
 
@@ -286,7 +287,7 @@ namespace JsonCons.JmesPath
         internal static GteOperator Instance { get; } = new GteOperator();
 
         internal GteOperator()
-            : base(5)
+            : base(Operator.Gte)
         {
         }
 

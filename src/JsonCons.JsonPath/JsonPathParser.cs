@@ -2073,7 +2073,7 @@ namespace JsonCons.JsonPath
                     {
                         _operatorStack.Push(token);
                     }
-                    else if (token.PrecedenceLevel > _operatorStack.Peek().PrecedenceLevel
+                    else if (token.PrecedenceLevel < _operatorStack.Peek().PrecedenceLevel
                              || (token.PrecedenceLevel == _operatorStack.Peek().PrecedenceLevel && token.IsRightAssociative))
                     {
                         _operatorStack.Push(token);
@@ -2081,7 +2081,7 @@ namespace JsonCons.JsonPath
                     else
                     {
                         while (_operatorStack.Count > 0 && _operatorStack.Peek().IsOperator
-                               && (token.PrecedenceLevel < _operatorStack.Peek().PrecedenceLevel
+                               && (token.PrecedenceLevel > _operatorStack.Peek().PrecedenceLevel
                              || (token.PrecedenceLevel == _operatorStack.Peek().PrecedenceLevel && token.IsRightAssociative)))
                         {
                             _outputStack.Push(_operatorStack.Pop());

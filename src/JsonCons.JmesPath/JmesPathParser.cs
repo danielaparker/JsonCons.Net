@@ -360,7 +360,7 @@ namespace JsonCons.JmesPath
                                 ++_column;
                                 break;
                             case '*':
-                                PushToken(new Token(new ObjectProjection()));
+                                PushToken(new Token(ObjectProjection.Instance));
                                 _stateStack.Pop();
                                 ++_index;
                                 ++_column;
@@ -814,14 +814,14 @@ namespace JsonCons.JmesPath
                         switch(_span[_index])
                         {
                             case '*':
-                                PushToken(new Token(new ListProjection()));
+                                PushToken(new Token(ListProjection.Instance));
                                 _stateStack.Pop();
                                 _stateStack.Push(JmesPathState.ExpectRightBracket);
                                 ++_index;
                                 ++_column;
                                 break;
                             case ']': // []
-                                PushToken(new Token(new FlattenProjection()));
+                                PushToken(new Token(FlattenProjection.Instance));
                                 _stateStack.Pop(); // bracketSpecifier
                                 ++_index;
                                 ++_column;
@@ -898,7 +898,7 @@ namespace JsonCons.JmesPath
                             case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
                                 throw new JmesPathParseException("Expected MultiSelectList", _line, _column);
                             case '*':
-                                PushToken(new Token(new ListProjection()));
+                                PushToken(new Token(ListProjection.Instance));
                                 _stateStack.Pop();
                                 _stateStack.Push(JmesPathState.ExpectRightBracket);
                                 ++_index;
@@ -936,7 +936,7 @@ namespace JsonCons.JmesPath
                             {
                                 if (buffer.Length == 0)
                                 {
-                                    PushToken(new Token(new FlattenProjection()));
+                                    PushToken(new Token(FlattenProjection.Instance));
                                 }
                                 else
                                 {
