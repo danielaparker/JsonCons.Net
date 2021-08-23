@@ -1469,7 +1469,7 @@ namespace JsonCons.JmesPath
                     _outputStack.Pop();
 
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
-                        (tok.PrecedenceLevel < _outputStack.Peek().PrecedenceLevel ||
+                        (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
                         (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
                     {
                         _outputStack.Peek().GetExpression().AddExpression(new FilterExpression(new Expression(tokens.ToArray())));
@@ -1511,7 +1511,7 @@ namespace JsonCons.JmesPath
                     expressions.Reverse();
 
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
-                        (tok.PrecedenceLevel < _outputStack.Peek().PrecedenceLevel ||
+                        (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
                         (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
                     {
                         _outputStack.Peek().GetExpression().AddExpression(new MultiSelectList(expressions));
@@ -1559,7 +1559,7 @@ namespace JsonCons.JmesPath
                     _outputStack.Pop(); // JmesPathTokenKind.BeginMultiSelectHash
                  
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
-                        (tok.PrecedenceLevel < _outputStack.Peek().PrecedenceLevel ||
+                        (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
                         (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
                     {
                         _outputStack.Peek().GetExpression().AddExpression(new MultiSelectHash(keyExprPairs));
@@ -1602,7 +1602,7 @@ namespace JsonCons.JmesPath
                     break;
                 case JmesPathTokenKind.Expression:
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
-                        (tok.PrecedenceLevel < _outputStack.Peek().PrecedenceLevel ||
+                        (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
                         (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
                     {
                         _outputStack.Peek().GetExpression().AddExpression(tok.GetExpression());
@@ -1647,7 +1647,7 @@ namespace JsonCons.JmesPath
                         _outputStack.Pop(); // Function
 
                         if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
-                            (tok.PrecedenceLevel < _outputStack.Peek().PrecedenceLevel ||
+                            (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
                             (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
                         {
                             _outputStack.Peek().GetExpression().AddExpression(new FunctionExpression(new Expression(tokens.ToArray())));
@@ -1673,7 +1673,7 @@ namespace JsonCons.JmesPath
                     {
                         _operatorStack.Push(tok);
                     }
-                    else if (tok.PrecedenceLevel < _operatorStack.Peek().PrecedenceLevel
+                    else if (tok.PrecedenceLevel > _operatorStack.Peek().PrecedenceLevel
                              || (tok.PrecedenceLevel == _operatorStack.Peek().PrecedenceLevel && tok.IsRightAssociative))
                     {
                         _operatorStack.Push(tok);
@@ -1681,7 +1681,7 @@ namespace JsonCons.JmesPath
                     else
                     {
                         while (_operatorStack.Count > 0 && _operatorStack.Peek().IsOperator
-                               && (_operatorStack.Peek().PrecedenceLevel < tok.PrecedenceLevel
+                               && (_operatorStack.Peek().PrecedenceLevel > tok.PrecedenceLevel
                              || (tok.PrecedenceLevel == _operatorStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
                         {
                             _outputStack.Push(_operatorStack.Pop());

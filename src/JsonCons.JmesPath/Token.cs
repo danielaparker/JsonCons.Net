@@ -147,7 +147,7 @@ namespace JsonCons.JmesPath
                     case JmesPathTokenKind.BinaryOperator:
                         return GetBinaryOperator().PrecedenceLevel;
                     default:
-                        return 0;
+                        return 7;
                 }
             }
         }

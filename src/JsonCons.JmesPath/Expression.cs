@@ -174,7 +174,7 @@ namespace JsonCons.JmesPath
         public override void AddExpression(IExpression expr)
         {
             if (_expressions.Count != 0 && _expressions[_expressions.Count-1].IsProjection && 
-                (expr.PrecedenceLevel < _expressions[_expressions.Count-1].PrecedenceLevel ||
+                (expr.PrecedenceLevel > _expressions[_expressions.Count-1].PrecedenceLevel ||
                  (expr.PrecedenceLevel == _expressions[_expressions.Count-1].PrecedenceLevel && expr.IsRightAssociative)))
             {
                 _expressions[_expressions.Count-1].AddExpression(expr);

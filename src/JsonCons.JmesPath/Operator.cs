@@ -31,25 +31,25 @@ namespace JsonCons.JmesPath
             switch (oper)
             {
                 case Operator.Projection:
-                    return 6;
+                    return 1;
                 case Operator.FlattenProjection:
-                    return 6;
+                    return 1;
                 case Operator.Or:
-                    return 5;
+                    return 2;
                 case Operator.And:
-                    return 4;
+                    return 3;
                 case Operator.Eq:
                 case Operator.Ne:
-                    return 3;
+                    return 4;
                 case Operator.Lt:
                 case Operator.Lte:
                 case Operator.Gt:
                 case Operator.Gte:
-                    return 2;
+                    return 5;
                 case Operator.Not:
-                    return 1;
+                    return 6;
                 default:
-                    return 1;
+                    return 6;
             }
         }
 
