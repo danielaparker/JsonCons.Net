@@ -47,8 +47,7 @@ namespace JsonCons.JmesPath
 
         public bool IsProjection {get;} 
 
-        internal BaseExpression(Operator oper,
-                                bool isProjection)
+        internal BaseExpression(Operator oper, bool isProjection)
         {
             PrecedenceLevel = OperatorTable.PrecedenceLevel(oper);
             IsRightAssociative = OperatorTable.IsRightAssociative(oper);
@@ -166,7 +165,7 @@ namespace JsonCons.JmesPath
     {
         List<IExpression> _expressions;
 
-        internal Projection(Operator oper = Operator.Projection)
+        internal Projection(Operator oper)
             : base(oper, true)
         {
             _expressions = new List<IExpression>();
@@ -201,7 +200,10 @@ namespace JsonCons.JmesPath
 
     sealed class ObjectProjection : Projection
     {
-        internal static ObjectProjection Instance {get;} = new ObjectProjection();
+        internal ObjectProjection()
+            : base(Operator.Projection)
+        {
+        }
 
         public override bool TryEvaluate(DynamicResources resources,
                                          IValue current, 
@@ -240,7 +242,10 @@ namespace JsonCons.JmesPath
     };
     sealed class ListProjection : Projection
     {    
-        internal static ListProjection Instance {get;} = new ListProjection();
+        internal ListProjection()
+            : base(Operator.Projection)
+        {
+        }
 
         public override bool TryEvaluate(DynamicResources resources,
                                          IValue current, 
@@ -281,8 +286,6 @@ namespace JsonCons.JmesPath
 
     sealed class FlattenProjection : Projection
     {
-        internal static FlattenProjection Instance {get;} = new FlattenProjection();
-
         internal FlattenProjection()
             : base(Operator.FlattenProjection)
         {
@@ -353,6 +356,7 @@ namespace JsonCons.JmesPath
         Slice _slice;
     
         internal SliceProjection(Slice s)
+            : base(Operator.Projection)
         {
             _slice = s;
         }
@@ -442,6 +446,7 @@ namespace JsonCons.JmesPath
         readonly Expression _expr;
     
         internal FilterExpression(Expression expr)
+            : base(Operator.Projection)
         {
             _expr = expr;
         }
