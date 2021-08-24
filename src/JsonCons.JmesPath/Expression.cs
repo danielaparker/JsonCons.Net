@@ -722,7 +722,7 @@ namespace JsonCons.JmesPath
                         }
 
                         IValue val;
-                        if (!token.GetFunction().TryEvaluate(argStack, out val))
+                        if (!token.GetFunction().TryEvaluate(resources, argStack, out val))
                         {
                             result = JsonConstants.Null;
                             return false;
