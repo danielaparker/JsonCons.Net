@@ -234,7 +234,7 @@ namespace JsonCons.JsonPath
             }
             else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
-                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) <= 0 ? JsonConstants.True : JsonConstants.False;
             }
             else
             {
@@ -242,7 +242,6 @@ namespace JsonCons.JsonPath
             }
             return true;
         }
-
 
         public override string ToString()
         {
@@ -282,7 +281,7 @@ namespace JsonCons.JsonPath
             }
             else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
-                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) > 0 ? JsonConstants.True : JsonConstants.False;
             }
             else
             {
@@ -329,7 +328,7 @@ namespace JsonCons.JsonPath
             }
             else if (lhs.ValueKind == JsonValueKind.String && rhs.ValueKind == JsonValueKind.String)
             {
-                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) >= 0 ? JsonConstants.True : JsonConstants.False;
             }
             else
             {

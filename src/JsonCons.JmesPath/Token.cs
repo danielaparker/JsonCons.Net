@@ -200,6 +200,8 @@ namespace JsonCons.JmesPath
         {
             switch(_tokenKind)
             {
+                case JmesPathTokenKind.BeginArguments:
+                    return "BeginArguments";
                 case JmesPathTokenKind.CurrentNode:
                     return "CurrentNode";
                 case JmesPathTokenKind.LeftParen:

@@ -18,7 +18,7 @@
     {
       "expression": "abs(foo)",
       "result": 1
-    }/*,
+    },
     {
       "expression": "abs(foo)",
       "result": 1
@@ -584,7 +584,7 @@
       "comment": "function projection on single arg function",
       "expression": "array[].to_number(@)",
       "result": [-1, 3, 4, 5, 100]
-    }*/
+    }
   ]
 }/*, {
   "given":

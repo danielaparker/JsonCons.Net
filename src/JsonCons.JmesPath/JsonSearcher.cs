@@ -50,6 +50,19 @@ namespace JsonCons.JmesPath
             _expr.TryEvaluate(resources, new JsonElementValue(doc), out temp);
             return JsonDocument.Parse(temp.ToString());
         }
+
+        public bool TrySearch(JsonElement doc, out JsonDocument result)
+        {
+            var resources = new DynamicResources();
+            IValue temp;
+            if (!_expr.TryEvaluate(resources, new JsonElementValue(doc), out temp))
+            {
+                result = JsonDocument.Parse("null");
+                return false;
+            }
+            result = JsonDocument.Parse(temp.ToString());
+            return true;
+        }
         
     }
 }

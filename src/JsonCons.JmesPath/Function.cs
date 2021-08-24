@@ -1,12 +1,15 @@
-﻿using System;
-using System.Diagnostics;
+﻿        
+using JsonCons.Utilities;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-        
+using System.Text;
+using System.Threading.Tasks;
+using System;
+
 namespace JsonCons.JmesPath
 {
     interface IFunction 
@@ -368,7 +371,12 @@ namespace JsonCons.JmesPath
             result = new StringValue(buf.ToString());
             return true;
         }
-    };
+
+        public override string ToString()
+        {
+            return "join";
+        }
+    }
 
     sealed class KeysFunction : BaseFunction
     {
@@ -406,7 +414,7 @@ namespace JsonCons.JmesPath
         {
             return "keys";
         }
-    };
+    }
 
     sealed class LengthFunction : BaseFunction
     {
@@ -470,10 +478,8 @@ namespace JsonCons.JmesPath
         public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue);
+            Debug.Assert(args.Count == this.Arity.Value);
 
             var arg0 = args[0];
             if (arg0.Type != JmesPathType.Array)
@@ -509,7 +515,7 @@ namespace JsonCons.JmesPath
                     result = JsonConstants.Null;
                     return false;
                 }
-                if (value.Type == JmesPathType.True )
+                if (Expression.IsTrue(value))
                 {
                     index = i;
                 }
@@ -558,9 +564,9 @@ namespace JsonCons.JmesPath
                 return false;
             }
 
-            bool is_number1 = key1.Type == JmesPathType.Number;
-            bool is_string1 = key1.Type == JmesPathType.String;
-            if (!(is_number1 || is_string1))
+            bool isNumber1 = key1.Type == JmesPathType.Number;
+            bool isString1 = key1.Type == JmesPathType.String;
+            if (!(isNumber1 || isString1))
             {
                 result = JsonConstants.Null;
                 return false;
@@ -576,9 +582,9 @@ namespace JsonCons.JmesPath
                     result = JsonConstants.Null;
                     return false;
                 }
-                bool is_number2 = key2.Type == JmesPathType.Number;
-                bool is_string2 = key2.Type == JmesPathType.String;
-                if (!(is_number2 == is_number1 && is_string2 == is_string1))
+                bool isNumber2 = key2.Type == JmesPathType.Number;
+                bool isString2 = key2.Type == JmesPathType.String;
+                if (!(isNumber2 == isNumber1 && isString2 == isString1))
                 {
                     result = JsonConstants.Null;
                     return false;
@@ -598,53 +604,10 @@ namespace JsonCons.JmesPath
             result = arg0[index];
             return true;
         }
-    }
-/*
-    sealed class MapFunction : BaseFunction
-    {
-        internal MapFunction()
-            : base(2)
+
+        public override string ToString()
         {
-        }
-
-        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
-        {
-            Debug.Assert(args.Count == this.Arity.Value);
-
-            if (!(args[0].is_expression() && args[1].is_value()))
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-            var expr = args[0].GetExpression();
-
-            var arg0 = args[1];
-            if (!arg0.is_array())
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
-            auto result = resources.create_json(json_array_arg);
-
-            for (auto& item : arg0.array_range())
-            {
-                auto& j = expr.evaluate(item, resources, ec);
-                if (ec)
-                {
-                    result = JsonConstants.Null;
-                    return false;
-                }
-                result->emplace_back(json_const_pointer_arg, std::addressof(j));
-            }
-
-            return *result;
-            return true;
-        }
-
-        std::string to_string(int = 0) const override
-        {
-            return std::string("map_function\n");
+            return "max_by_function";
         }
     }
 
@@ -713,6 +676,188 @@ namespace JsonCons.JmesPath
         }
     }
 
+    sealed class MergeFunction : BaseFunction
+    {
+        internal MergeFunction()
+            : base(null)
+        {
+        }
+
+        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
+        {
+            if (args.Count() == 0)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            var arg0 = args[0];
+            if (arg0.Type != JmesPathType.Object)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+            if (args.Count == 1)
+            {
+                result = arg0;
+                return true;
+            }
+
+            var dict = new Dictionary<string,IValue>();
+            for (int i = 0; i < args.Count; ++i)
+            {
+                var argi = args[i];
+                if (argi.Type != JmesPathType.Object)
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+                foreach (var item in argi.EnumerateObject())
+                {
+                    if (!dict.TryAdd(item.Name,item.Value))
+                    {
+                        dict.Remove(item.Name);
+                        dict.Add(item.Name,item.Value);
+                    }
+                }
+            }
+
+            result = new ObjectValue(dict);
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "merge";
+        }
+    }
+
+    sealed class NotNullFunction : BaseFunction
+    {
+        internal NotNullFunction()
+            : base(null)
+        {
+        }
+
+        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
+        {
+            foreach (var arg in args)
+            {
+                if (arg.Type != JmesPathType.Null)
+                {
+                    result = arg;
+                    return true;
+                }
+            }
+            result = JsonConstants.Null;
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "not_null";
+        }
+    }
+
+    sealed class ReverseFunction : BaseFunction
+    {
+        internal ReverseFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
+        {
+            Debug.Assert(args.Count == this.Arity.Value);
+
+            var arg0 = args[0];
+            switch (arg0.Type)
+            {
+                case JmesPathType.String:
+                {
+                    result = new StringValue(string.Join("", GraphemeClusters(arg0.GetString()).Reverse().ToArray()));
+                    return true;
+                }
+                case JmesPathType.Array:
+                {
+                    var list = new List<IValue>();
+                    for (int i = arg0.GetArrayLength()-1; i >= 0; --i)
+                    {
+                        list.Add(arg0[i]);
+                    }
+                    result = new ArrayValue(list);
+                    return true;
+                }
+                default:
+                    result = JsonConstants.Null;
+                    return false;
+            }
+        }
+
+        private static IEnumerable<string> GraphemeClusters(string s) 
+        {
+            var enumerator = StringInfo.GetTextElementEnumerator(s);
+            while(enumerator.MoveNext()) 
+            {
+                yield return (string)enumerator.Current;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "reverse";
+        }
+    }
+
+/*
+    sealed class MapFunction : BaseFunction
+    {
+        internal MapFunction()
+            : base(2)
+        {
+        }
+
+        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
+        {
+            Debug.Assert(args.Count == this.Arity.Value);
+
+            if (!(args[0].is_expression() && args[1].is_value()))
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+            var expr = args[0].GetExpression();
+
+            var arg0 = args[1];
+            if (arg0.Type != JmesPathType.Array)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            auto result = resources.create_json(json_array_arg);
+
+            foreach (var item in arg0.EnumerateArray())
+            {
+                auto& j = expr.evaluate(item, resources, ec);
+                if (ec)
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+                result->emplace_back(json_const_pointer_arg, std::addressof(j));
+            }
+
+            return *result;
+            return true;
+        }
+
+        std::string to_string(int = 0) const override
+        {
+            return std::string("map_function\n");
+        }
+    }
+
     sealed class MinByFunction : BaseFunction
     {
         internal MinByFunction()
@@ -731,7 +876,7 @@ namespace JsonCons.JmesPath
             }
 
             var arg0 = args[0];
-            if (!arg0.is_array())
+            if (arg0.Type != JmesPathType.Array)
             {
                 result = JsonConstants.Null;
                 return false;
@@ -746,9 +891,9 @@ namespace JsonCons.JmesPath
             std::error_code ec2;
             IValue key1 = expr.evaluate(arg0[0], resources, ec2); 
 
-            bool is_number1 = key1.Type == JmesPathType.Number;
-            bool is_string1 = key1.Type == JmesPathType.String;
-            if (!(is_number1 || is_string1))
+            bool isNumber1 = key1.Type == JmesPathType.Number;
+            bool isString1 = key1.Type == JmesPathType.String;
+            if (!(isNumber1 || isString1))
             {
                 result = JsonConstants.Null;
                 return false;
@@ -758,7 +903,7 @@ namespace JsonCons.JmesPath
             for (int i = 1; i < arg0.GetArrayLength(); ++i)
             {
                 var key2 = expr.evaluate(arg0[i], resources, ec2); 
-                if (!(key2.is_number1() == is_number1 && key2.is_string1() == is_string1))
+                if (!(key2.isNumber1() == isNumber1 && key2.isString1() == isString1))
                 {
                     result = JsonConstants.Null;
                     return false;
@@ -771,137 +916,6 @@ namespace JsonCons.JmesPath
             }
 
             return arg0.at(index);
-        }
-    }
-
-    sealed class MergeFunction : BaseFunction
-    {
-        internal MergeFunction()
-            : base(jsoncons::optional<int>())
-        {
-        }
-
-        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
-        {
-            if (args.Count() == 0)
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
-            for (auto& param : args)
-            {
-                if (!param.is_value())
-                {
-                    result = JsonConstants.Null;
-                    return false;
-                }
-            }
-
-            var arg0 = args[0];
-            if (!arg0.is_object())
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-            if (args.Count == 1)
-            {
-                return arg0;
-            }
-
-            auto result = resources.create_json(arg0);
-            for (int i = 1; i < args.Count; ++i)
-            {
-                var argi = args[i];
-                if (!argi.is_object())
-                {
-                    result = JsonConstants.Null;
-                    return false;
-                }
-                for (auto& item : argi.object_range())
-                {
-                    result->insert_or_assign(item.key(),item);
-                }
-            }
-
-            return *result;
-            return true;
-        }
-    }
-
-    sealed class NotNullFunction final : BaseFunction
-    {
-        internal NotNullFunction()
-            : base(null)
-        {
-        }
-
-        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
-        {
-            for (auto& param : args)
-            {
-                if (param.is_value() && !param.is_null())
-                {
-                    return param;
-                }
-            }
-            result = JsonConstants.Null;
-        }
-
-        std::string to_string(int = 0) const override
-        {
-            return std::string("to_string_function\n");
-        }
-    }
-
-    sealed class SortFunction : BaseFunction
-    {
-        internal SortFunction()
-            : base(1)
-        {
-        }
-
-        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
-        {
-            Debug.Assert(args.Count == this.Arity.Value);
-
-            if (!args[0].is_value())
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
-            var arg0 = args[0];
-            if (!arg0.is_array())
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-            if (arg0.GetArrayLength() <= 1)
-            {
-                return arg0;
-            }
-
-            bool is_number1 = arg0[0].Type == JmesPathType.Number;
-            bool is_string1 = arg0[0].Type == JmesPathType.String;
-            if (!is_number1 && !is_string1)
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
-            for (int i = 1; i < arg0.GetArrayLength(); ++i)
-            {
-                if (arg0[i].is_number1() != is_number1 || arg0[i].is_string1() != is_string1)
-                {
-                    result = JsonConstants.Null;
-                    return false;
-                }
-            }
-
-            auto v = resources.create_json(arg0);
-            std::stable_sort((v->array_range()).begin(), (v->array_range()).end());
-            return *v;
         }
     }
 
@@ -923,7 +937,7 @@ namespace JsonCons.JmesPath
             }
 
             var arg0 = args[0];
-            if (!arg0.is_array())
+            if (arg0.Type != JmesPathType.Array)
             {
                 result = JsonConstants.Null;
                 return false;
@@ -936,21 +950,21 @@ namespace JsonCons.JmesPath
             var expr = args[1].GetExpression();
 
             auto v = resources.create_json(arg0);
-            std::stable_sort((v->array_range()).begin(), (v->array_range()).end(),
+            std::stable_sort((v->EnumerateArray()).begin(), (v->EnumerateArray()).end(),
                 [&expr,&resources,&ec](var lhs, var rhs) -> bool
             {
                 std::error_code ec2;
                 var key1 = expr.evaluate(lhs, resources, ec2);
-                bool is_number1 = key1.Type == JmesPathType.Number;
-                bool is_string1 = key1.Type == JmesPathType.String;
-                if (!(is_number1 || is_string1))
+                bool isNumber1 = key1.Type == JmesPathType.Number;
+                bool isString1 = key1.Type == JmesPathType.String;
+                if (!(isNumber1 || isString1))
                 {
                     result = JsonConstants.Null;
                     return false;
                 }
 
                 var key2 = expr.evaluate(rhs, resources, ec2);
-                if (!(key2.is_number1() == is_number1 && key2.is_string1() == is_string1))
+                if (!(key2.isNumber1() == isNumber1 && key2.isString1() == isString1))
                 {
                     result = JsonConstants.Null;
                     return false;
@@ -966,10 +980,11 @@ namespace JsonCons.JmesPath
             return std::string("sort_by_function\n");
         }
     }
+*/
 
-    sealed class TypeFunction : BaseFunction
+    sealed class SortFunction : BaseFunction
     {
-        internal TypeFunction()
+        internal SortFunction()
             : base(1)
         {
         }
@@ -978,77 +993,49 @@ namespace JsonCons.JmesPath
         {
             Debug.Assert(args.Count == this.Arity.Value);
 
-            if (!args[0].is_value())
+            var arg0 = args[0];
+            if (arg0.Type != JmesPathType.Array)
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+            if (arg0.GetArrayLength() <= 1)
+            {
+                result = arg0;
+                return true;
+            }
+
+            bool isNumber1 = arg0[0].Type == JmesPathType.Number;
+            bool isString1 = arg0[0].Type == JmesPathType.String;
+            if (!isNumber1 && !isString1)
             {
                 result = JsonConstants.Null;
                 return false;
             }
 
-            var arg0 = args[0];
+            var comparer = ValueComparer.Instance;
 
-            switch (arg0.type())
+            var list = new List<IValue>();
+            foreach (var item in arg0.EnumerateArray())
             {
-                case json_type::int64_value:
-                case json_type::uint64_value:
-                case json_type::double_value:
-                    return resources.number_type_name();
-                case json_type::bool_value:
-                    return resources.boolean_type_name();
-                case json_type::string_value:
-                    return resources.string_type_name();
-                case json_type::object_value:
-                    return resources.object_type_name();
-                case json_type::array_value:
-                    return resources.array_type_name();
-                default:
-                    return resources.null_type_name();
-                    break;
-
-            }
-        }
-    }
-
-    sealed class ReverseFunction final : BaseFunction
-    {
-        internal ReverseFunction()
-            : base(1)
-        {
-        }
-
-        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
-        {
-            Debug.Assert(args.Count == this.Arity.Value);
-
-            if (!args[0].is_value())
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
-            var arg0 = args[0];
-            switch (arg0.type())
-            {
-                case json_type::string_value:
+                bool isNumber2 = item.Type == JmesPathType.Number;
+                bool isString2 = item.Type == JmesPathType.String;
+                if (!(isNumber2 == isNumber1 && isString2 == isString1))
                 {
-                    string_view_type sv = arg0.as_string_view();
-                    std::basic_string<char32_t> buf;
-                    unicode_traits::convert(sv.data(), sv.size(), buf);
-                    std::reverse(buf.begin(), buf.end());
-                    string_type s;
-                    unicode_traits::convert(buf.data(), buf.size(), s);
-                    return *resources.create_json(s);
-                }
-                case json_type::array_value:
-                {
-                    auto result = resources.create_json(arg0);
-                    std::reverse(result->array_range().begin(),result->array_range().end());
-                    return *result;
-                    return true;
-                }
-                default:
                     result = JsonConstants.Null;
                     return false;
+                }
+                list.Add(item);
             }
+
+            list.Sort(comparer);
+            result = new ArrayValue(list);
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "sort";
         }
     }
 
@@ -1094,7 +1081,7 @@ namespace JsonCons.JmesPath
             return "starts_with";
         }
     }
-*/
+
     sealed class SumFunction : BaseFunction
     {
         internal static SumFunction Instance { get; } = new SumFunction();
@@ -1168,7 +1155,6 @@ namespace JsonCons.JmesPath
         }
     }
 
-/*
     sealed class ToArrayFunction : BaseFunction
     {
         internal ToArrayFunction()
@@ -1180,29 +1166,24 @@ namespace JsonCons.JmesPath
         {
             Debug.Assert(args.Count == this.Arity.Value);
 
-            if (!args[0].is_value())
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
             var arg0 = args[0];
-            if (arg0.is_array())
+            if (arg0.Type == JmesPathType.Array)
             {
-                return arg0;
+                result = arg0;
+                return true;
             }
             else
             {
-                auto result = resources.create_json(json_array_arg);
-                result->push_back(arg0);
-                return *result;
+                var list = new List<IValue>();
+                list.Add(arg0);
+                result = new ArrayValue(list);
                 return true;
             }
         }
 
-        std::string to_string(int = 0) const override
+        public override string ToString()
         {
-            return std::string("to_array_function\n");
+            return "to_array";
         }
     }
 
@@ -1216,10 +1197,8 @@ namespace JsonCons.JmesPath
         public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue);
+            Debug.Assert(args.Count == this.Arity.Value);
 
             var arg0 = args[0];
             switch (arg0.Type)
@@ -1253,7 +1232,6 @@ namespace JsonCons.JmesPath
                     return false;
             }
         }
-
         public override string ToString()
         {
             return "to_number";
@@ -1269,25 +1247,37 @@ namespace JsonCons.JmesPath
 
         public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
         {
+            Debug.Assert(this.Arity.HasValue);
             Debug.Assert(args.Count == this.Arity.Value);
 
-            if (!args[0].is_value())
+            if (args[0].Type == JmesPathType.Expression)
             {
                 result = JsonConstants.Null;
                 return false;
             }
 
             var arg0 = args[0];
-            return *resources.create_json(arg0.template as<string_type>());
+            switch (arg0.Type)
+            {
+                case JmesPathType.String:
+                    result = arg0;
+                    return true;
+                case JmesPathType.Expression:
+                    result = JsonConstants.Null;
+                    return false;
+                default:
+                    result = new StringValue(arg0.ToString());
+                    return true;
+            }
         }
 
-        std::string to_string(int = 0) const override
+        public override string ToString()
         {
-            return std::string("to_string_function\n");
+            return "to_string";
         }
     }
 
-    sealed class ValuesFunction final : BaseFunction
+    sealed class ValuesFunction : BaseFunction
     {
         internal ValuesFunction()
             : base(1)
@@ -1298,31 +1288,75 @@ namespace JsonCons.JmesPath
         {
             Debug.Assert(args.Count == this.Arity.Value);
 
-            if (!args[0].is_value())
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
             var arg0 = args[0];
-            if (!arg0.is_object())
+            if (arg0.Type != JmesPathType.Object)
             {
                 result = JsonConstants.Null;
                 return false;
             }
 
-            auto result = resources.create_json(json_array_arg);
-            result->reserve(args.Count);
+            var list = new List<IValue>();
 
-            for (auto& item : arg0.object_range())
+            foreach (var item in arg0.EnumerateObject())
             {
-                result->emplace_back(item);
+                list.Add(item.Value);
             }
-            return *result;
+            result = new ArrayValue(list);
             return true;
         }
+
+        public override string ToString()
+        {
+            return "values";
+        }
     }
-*/
+
+    sealed class TypeFunction : BaseFunction
+    {
+        internal TypeFunction()
+            : base(1)
+        {
+        }
+
+        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
+        {
+            Debug.Assert(args.Count == this.Arity.Value);
+
+            var arg0 = args[0];
+
+            switch (arg0.Type)
+            {
+                case JmesPathType.Number:
+                    result = new StringValue("number");
+                    return true;
+                case JmesPathType.True:
+                case JmesPathType.False:
+                    result = new StringValue("boolean");
+                    return true;
+                case JmesPathType.String:
+                    result = new StringValue("string");
+                    return true;
+                case JmesPathType.Object:
+                    result = new StringValue("object");
+                    return true;
+                case JmesPathType.Array:
+                    result = new StringValue("array");
+                    return true;
+                case JmesPathType.Null:
+                    result = new StringValue("null");
+                    return true;
+                default:
+                    result = JsonConstants.Null;
+                    return false;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "type";
+        }
+    }
+
     sealed class BuiltInFunctions 
     {
         internal static BuiltInFunctions Instance {get;} = new BuiltInFunctions();
@@ -1332,21 +1366,27 @@ namespace JsonCons.JmesPath
         internal BuiltInFunctions()
         {
             _functions.Add("abs", new AbsFunction());
-            /*_functions.Add("contains", new ContainsFunction());
+            _functions.Add("avg", new AvgFunction());
+            _functions.Add("ceil", new CeilFunction());
+            _functions.Add("contains", new ContainsFunction());
             _functions.Add("ends_with", new EndsWithFunction());
+            _functions.Add("floor", new FloorFunction());
+            _functions.Add("join", new JoinFunction());
+            _functions.Add("keys", new KeysFunction());
+            _functions.Add("length", new LengthFunction());
+            _functions.Add("max", new MaxFunction());
+            _functions.Add("merge", new MergeFunction());
+            _functions.Add("min", new MinFunction());
+            _functions.Add("not_null", new NotNullFunction());
+            _functions.Add("reverse", new ReverseFunction());
+            _functions.Add("sort", new SortFunction());
             _functions.Add("starts_with", new StartsWithFunction());
             _functions.Add("sum", new SumFunction());
-            _functions.Add("avg", new AvgFunction());
-            _functions.Add("prod", new ProdFunction());
-            _functions.Add("tokenize", new TokenizeFunction());
-            _functions.Add("ceil", new CeilFunction());
-            _functions.Add("floor", new FloorFunction());
+            _functions.Add("to_array", new ToArrayFunction());
             _functions.Add("to_number", new ToNumberFunction());
-            _functions.Add("min", new MinFunction());
-            _functions.Add("max", new MaxFunction());
-            _functions.Add("length", new LengthFunction());
-            _functions.Add("keys", new KeysFunction());
-*/
+            _functions.Add("to_string", new ToStringFunction());
+            _functions.Add("type", new TypeFunction());
+            _functions.Add("values", new ValuesFunction());
         }
 
         internal bool TryGetFunction(string name, out IFunction func)

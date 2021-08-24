@@ -429,9 +429,10 @@ namespace JsonCons.JmesPath
                             case '(':
                             {
                                 IFunction func; 
-                                if (!BuiltInFunctions.Instance.TryGetFunction(buffer.ToString(), out func))
+                                string functionName = buffer.ToString();
+                                if (!BuiltInFunctions.Instance.TryGetFunction(functionName, out func))
                                 {
-                                    throw new JmesPathParseException("Function not found", _line, _column);
+                                    throw new JmesPathParseException($"Function '{functionName}' not found", _line, _column);
                                 }
                                 buffer.Clear();
                                 PushToken(new Token(func));
@@ -1631,13 +1632,14 @@ namespace JsonCons.JmesPath
                         {
                             throw new JmesPathParseException("Expected parentheses", _line, _column);
                         }
+                        _outputStack.Pop(); // JmesPathTokenKind.BeginArguments
                         if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
                         {
                             tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
                         }
                         if (tokens[0].GetFunction().Arity != null && argCount != tokens[0].GetFunction().Arity)
                         {
-                            throw new JmesPathParseException("Invalid function arity", _line, _column);
+                            throw new JmesPathParseException($"Invalid arity calling function '{tokens[0].GetFunction()}', expected {tokens[0].GetFunction().Arity}, found {argCount}", _line, _column);
                         }
 
                         if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 

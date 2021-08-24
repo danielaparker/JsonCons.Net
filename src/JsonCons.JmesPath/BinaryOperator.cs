@@ -219,7 +219,7 @@ namespace JsonCons.JmesPath
             }
             else if (lhs.Type == JmesPathType.String && rhs.Type == JmesPathType.String)
             {
-                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) <= 0 ? JsonConstants.True : JsonConstants.False;
             }
             else
             {
@@ -267,7 +267,7 @@ namespace JsonCons.JmesPath
             }
             else if (lhs.Type == JmesPathType.String && rhs.Type == JmesPathType.String)
             {
-                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) > 0 ? JsonConstants.True : JsonConstants.False;
             }
             else
             {
@@ -314,7 +314,7 @@ namespace JsonCons.JmesPath
             }
             else if (lhs.Type == JmesPathType.String && rhs.Type == JmesPathType.String)
             {
-                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) < 0 ? JsonConstants.True : JsonConstants.False;
+                result = String.CompareOrdinal(lhs.GetString(), rhs.GetString()) >= 0 ? JsonConstants.True : JsonConstants.False;
             }
             else
             {
