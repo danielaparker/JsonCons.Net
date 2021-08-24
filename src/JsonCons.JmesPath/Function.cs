@@ -1331,8 +1331,8 @@ namespace JsonCons.JmesPath
 
         internal BuiltInFunctions()
         {
-/*            _functions.Add("abs", new AbsFunction());
-            _functions.Add("contains", new ContainsFunction());
+            _functions.Add("abs", new AbsFunction());
+            /*_functions.Add("contains", new ContainsFunction());
             _functions.Add("ends_with", new EndsWithFunction());
             _functions.Add("starts_with", new StartsWithFunction());
             _functions.Add("sum", new SumFunction());
