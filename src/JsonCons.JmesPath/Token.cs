@@ -27,7 +27,8 @@ namespace JsonCons.JmesPath
         BinaryOperator,
         UnaryOperator,
         Function,
-        EndFunction,
+        BeginArguments,
+        EndArguments,
         Argument,
         BeginExpressionType,
         EndExpressionType,
@@ -233,8 +234,8 @@ namespace JsonCons.JmesPath
                     return $"UnaryOperator {_expr}";
                 case JmesPathTokenKind.Function:
                     return $"Function {_expr}";
-                case JmesPathTokenKind.EndFunction:
-                    return "EndFunction";
+                case JmesPathTokenKind.EndArguments:
+                    return "EndArguments";
                 case JmesPathTokenKind.Argument:
                     return "Argument";
                 case JmesPathTokenKind.BeginExpressionType:

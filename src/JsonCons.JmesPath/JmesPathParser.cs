@@ -466,7 +466,7 @@ namespace JsonCons.JmesPath
                                 break;
                             case ')':
                             {
-                                PushToken(new Token(JmesPathTokenKind.EndFunction));
+                                PushToken(new Token(JmesPathTokenKind.EndArguments));
                                 _stateStack.Pop(); 
                                 ++_index;
                                 ++_column;
@@ -1617,12 +1617,14 @@ namespace JsonCons.JmesPath
                         UnwindRightParen();
                         break;
                     }
-                case JmesPathTokenKind.EndFunction:
+                case JmesPathTokenKind.EndArguments:
                     {
                         UnwindRightParen();
                         int argCount = 0;
                         var tokens = new List<Token>();
-                        while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JmesPathTokenKind.Function)
+                        Debug.Assert(_operatorStack.Count > 0 && _operatorStack.Peek().TokenKind == JmesPathTokenKind.Function);
+                        tokens.Add(_operatorStack.Pop()); // Function
+                        while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginArguments)
                         {
                             if (_outputStack.Peek().TokenKind == JmesPathTokenKind.Argument)
                             {
@@ -1634,16 +1636,15 @@ namespace JsonCons.JmesPath
                         {
                             throw new JmesPathParseException("Expected parentheses", _line, _column);
                         }
-                        if (_outputStack.Peek().GetFunction().Arity != null && argCount != _outputStack.Peek().GetFunction().Arity)
-                        {
-                            throw new JmesPathParseException("Invalid function arity", _line, _column);
-                        }
                         if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
                         {
                             tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
                         }
+                        if (tokens[0].GetFunction().Arity != null && argCount != tokens[0].GetFunction().Arity)
+                        {
+                            throw new JmesPathParseException("Invalid function arity", _line, _column);
+                        }
                         tokens.Reverse();
-                        tokens.Add(_outputStack.Pop()); // Function
 
                         if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
                             (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
@@ -1710,7 +1711,8 @@ namespace JsonCons.JmesPath
                     _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
                     break;
                 case JmesPathTokenKind.Function:
-                    _outputStack.Push(tok);
+                    _outputStack.Push(new Token(JmesPathTokenKind.BeginArguments));
+                    _operatorStack.Push(tok);
                     _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
                     break;
                 case JmesPathTokenKind.CurrentNode:
