@@ -85,7 +85,7 @@ namespace JsonCons.JmesPath.Tests
         {
             try
             {
-/*                RunJmesPathTests(@".\test_files\basic.json");
+                RunJmesPathTests(@".\test_files\basic.json");
                 RunJmesPathTests(@".\test_files\benchmarks.json");
                 RunJmesPathTests(@".\test_files\boolean.json");
                 RunJmesPathTests(@".\test_files\current.json");
@@ -100,7 +100,7 @@ namespace JsonCons.JmesPath.Tests
                 RunJmesPathTests(@".\test_files\unicode.json");
                 RunJmesPathTests(@".\test_files\syntax.json");
                 RunJmesPathTests(@".\test_files\wildcard.json");
-*/
+
                 RunJmesPathTests(@".\test_files\functions.json");              
                 
                //RunJmesPathTests(@".\test_files\test.json");              

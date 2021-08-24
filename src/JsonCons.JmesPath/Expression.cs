@@ -637,7 +637,7 @@ namespace JsonCons.JmesPath
 
             IValue root_ptr = current;
 
-            for (int i = 0; i < _tokens.Length; ++i)
+            for (int i = _tokens.Length-1; i >= 0; --i)
             {
                 var token = _tokens[i];
                 switch (token.TokenKind)

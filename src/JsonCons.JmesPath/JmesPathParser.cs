@@ -1402,7 +1402,6 @@ namespace JsonCons.JmesPath
             PushToken(new Token(JmesPathTokenKind.EndOfExpression));
 
             var a = _outputStack.ToArray();
-            Array.Reverse(a);
 
             return new JsonSearcher(new Expression(a));
         }
@@ -1465,7 +1464,6 @@ namespace JsonCons.JmesPath
                     {
                         tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
                     }
-                    tokens.Reverse();
                     _outputStack.Pop();
 
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
@@ -1500,7 +1498,6 @@ namespace JsonCons.JmesPath
                         {
                             tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
                         }
-                        tokens.Reverse();
                         expressions.Add(new Expression(tokens.ToArray()));
                     }
                     if (_outputStack.Count == 0)
@@ -1548,7 +1545,6 @@ namespace JsonCons.JmesPath
                         {
                             tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
                         }
-                        tokens.Reverse();
                         keyExprPairs.Add(new KeyExpressionPair(key, new Expression(tokens.ToArray())));
                     }
                     if (_outputStack.Count == 0)
@@ -1585,7 +1581,6 @@ namespace JsonCons.JmesPath
                     {
                         tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
                     }
-                    tokens.Reverse();
                     _outputStack.Push(new Token(new FunctionExpression(new Expression(tokens.ToArray()))));
                     break;
                 }
@@ -1644,7 +1639,6 @@ namespace JsonCons.JmesPath
                         {
                             throw new JmesPathParseException("Invalid function arity", _line, _column);
                         }
-                        tokens.Reverse();
 
                         if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
                             (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
