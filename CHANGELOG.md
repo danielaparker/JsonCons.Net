@@ -1,3 +1,14 @@
+v1.1.0
+
+Enhancements:
+
+- Added JsonCons.JmesPath library that implements JMESPath
+
+Bugs fixed:
+
+- Fixed issue with JsonPath filter comparison operators
+`>`, `>=`, and `<=` when applied to strings.
+
 v1.0.0
 
 Move from prerelease to release
