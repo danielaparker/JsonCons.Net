@@ -50,10 +50,7 @@ public static class JsonPathExamples
 
         Console.WriteLine("Select values");
         IList<JsonElement> values = selector.Select(doc.RootElement);
-        foreach (var value in values)
-        {
-            Console.WriteLine(JsonSerializer.Serialize(value, serializerOptions));
-        }
+        Console.WriteLine(JsonSerializer.Serialize(values, serializerOptions));
         Console.WriteLine();
 
         Console.WriteLine("Select paths");
@@ -162,8 +159,8 @@ public static class JsonPathExamples
         Console.WriteLine(JsonSerializer.Serialize(results8, serializerOptions));
         Console.WriteLine();
 
-        Console.WriteLine(@"(9) Filter all books with prices between 10 and 20");
-        IList<JsonElement> results9 = JsonSelector.Select(doc.RootElement, "$..book[?(@.price >= 10 && @.price < 20)]");
+        Console.WriteLine(@"(9) Filter all books with prices between 5 and 10");
+        IList<JsonElement> results9 = JsonSelector.Select(doc.RootElement, "$..book[?(@.price >= 5 && @.price < 10)]");
         Console.WriteLine(JsonSerializer.Serialize(results9, serializerOptions));
         Console.WriteLine();
 

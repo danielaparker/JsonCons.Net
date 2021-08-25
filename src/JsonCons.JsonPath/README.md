@@ -2,14 +2,155 @@
 
 The JsonCons.JsonPath library complements the functionality of the 
 [System.Text.Json namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1)
-with an implementation of JSONPath. It provides support for querying
+with an implementation of JSONPath. It targets .Net Standard 2.1.
+
+The JsonCons.JsonPath library provides support for querying
 JsonDocument/JsonElement instances with code like this:
 ```csharp
-var selector = JsonSelector.Parse("$.books[?(@.price >= 22 && @.price < 30)]");
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
+using JsonCons.JsonPath;
 
-IList<JsonElement> elements = selector.Select(doc.RootElement);
+public static class JsonPathExamples
+{
+
+    public static void SelectValuesPathsAndNodes()
+    {
+        string jsonString = @"
+{
+    ""books"":
+    [
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""A Wild Sheep Chase"",
+            ""author"" : ""Haruki Murakami"",
+            ""price"" : 22.72
+        },
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""The Night Watch"",
+            ""author"" : ""Sergei Lukyanenko"",
+            ""price"" : 23.58
+        },
+        {
+            ""category"": ""fiction"",
+            ""title"" : ""The Comedians"",
+            ""author"" : ""Graham Greene"",
+            ""price"" : 21.99
+        },
+        {
+            ""category"": ""memoir"",
+            ""title"" : ""The Night Watch"",
+            ""author"" : ""David Atlee Phillips"",
+            ""price"" : 260.90
+        }
+    ]
+}
+        ";
+
+        using JsonDocument doc = JsonDocument.Parse(jsonString);
+
+        var serializerOptions = new JsonSerializerOptions() {WriteIndented = true};
+
+        // Selector of titles from union of all books with category 'memoir' 
+        // and all books with price > 23
+        var selector = JsonSelector.Parse("$.books[?@.category=='memoir',?@.price > 23].title");
+
+        Console.WriteLine("Select values");
+        IList<JsonElement> values = selector.Select(doc.RootElement);
+        Console.WriteLine(JsonSerializer.Serialize(values, serializerOptions));
+        Console.WriteLine();
+
+        Console.WriteLine("Select paths");
+        IList<NormalizedPath> paths = selector.SelectPaths(doc.RootElement);
+        foreach (var path in paths)
+        {
+            Console.WriteLine(path);
+        }
+        Console.WriteLine();
+
+        Console.WriteLine("Select nodes");
+        IList<PathValuePair> nodes = selector.SelectNodes(doc.RootElement);
+        foreach (var node in nodes)
+        {
+            Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, serializerOptions)}");
+        }
+        Console.WriteLine();
+
+        Console.WriteLine("Remove duplicate nodes");
+        IList<PathValuePair> uniqueNodes = selector.SelectNodes(doc.RootElement, 
+                                                       new JsonSelectorOptions{NoDuplicates=true});
+        foreach (var node in uniqueNodes)
+        {
+            Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, serializerOptions)}");
+        }
+        Console.WriteLine();
+    }
+
+    public static void StoreExample()
+    {
+        string jsonString = @"
+{ ""store"": {
+    ""book"": [ 
+      { ""category"": ""reference"",
+        ""author"": ""Nigel Rees"",
+        ""title"": ""Sayings of the Century"",
+        ""price"": 8.95
+      },
+      { ""category"": ""fiction"",
+        ""author"": ""Evelyn Waugh"",
+        ""title"": ""Sword of Honour"",
+        ""price"": 12.99
+      },
+      { ""category"": ""fiction"",
+        ""author"": ""Herman Melville"",
+        ""title"": ""Moby Dick"",
+        ""isbn"": ""0-553-21311-3"",
+        ""price"": 8.99
+      },
+      { ""category"": ""fiction"",
+        ""author"": ""J. R. R. Tolkien"",
+        ""title"": ""The Lord of the Rings"",
+        ""isbn"": ""0-395-19395-8"",
+        ""price"": 22.99
+      }
+    ],
+    ""bicycle"": {
+      ""color"": ""red"",
+      ""price"": 19.95
+    }
+  }
+}
+        ";
+
+        using JsonDocument doc = JsonDocument.Parse(jsonString);
+
+        IList<JsonElement> results = JsonSelector.Select(doc.RootElement, "$..book[?(@.price >= 5 && @.price < 10)]");
+
+        var serializerOptions = new JsonSerializerOptions() {WriteIndented = true};        
+        Console.WriteLine(JsonSerializer.Serialize(results, serializerOptions));
+    }
+}
 ```
-It targets .Net Standard 2.1.
+Output:
+```json
+[
+  {
+    "category": "reference",
+    "author": "Nigel Rees",
+    "title": "Sayings of the Century",
+    "price": 8.95
+  },
+  {
+    "category": "fiction",
+    "author": "Herman Melville",
+    "title": "Moby Dick",
+    "isbn": "0-553-21311-3",
+    "price": 8.99
+  }
+]
+```
 
 JSONPath is a loosely standardized syntax for querying JSON. The original JavaScript JSONPath is a creation
 of Stefan Goessner and is described [here](https://goessner.net/articles/JsonPath/). Since
