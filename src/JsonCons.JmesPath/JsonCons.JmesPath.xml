@@ -113,7 +113,8 @@
             It is the users responsibilty to properly Dispose the returned <see cref="T:System.Text.Json.JsonDocument"/> value
             </remarks>
             <param name="doc">The provided JSON document.</param>
-            <returns>The transformed JSON document.</returns>
+            <returns>The transformed JSON document. If a type error is detected in a function call,
+            a JSON null value is returned.</returns>
         </member>
         <member name="M:JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement,System.String)">
             <summary>
@@ -127,6 +128,12 @@
             <param name="doc">The provided JSON document.</param>
             <param name="jmesPath">A JMESPath string.</param>
             <returns>The transformed JSON document.</returns>
+            <exception cref="T:JsonCons.JmesPath.JmesPathParseException">
+              The <paramref name="jmesPath"/> parameter is not a valid JMESPath expression.
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+              The <paramref name="jmesPath"/> is <see langword="null"/>.
+            </exception>
         </member>
         <member name="T:JsonCons.JmesPath.ValueComparer">
             <summary>

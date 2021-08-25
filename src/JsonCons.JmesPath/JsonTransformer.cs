@@ -114,7 +114,8 @@ namespace JsonCons.JmesPath
         /// It is the users responsibilty to properly Dispose the returned <see cref="JsonDocument"/> value
         /// </remarks>
         /// <param name="doc">The provided JSON document.</param>
-        /// <returns>The transformed JSON document.</returns>
+        /// <returns>The transformed JSON document. If a type error is detected in a function call,
+        /// a JSON null value is returned.</returns>
         
         public JsonDocument Transform(JsonElement doc)
         {
@@ -135,6 +136,12 @@ namespace JsonCons.JmesPath
         /// <param name="doc">The provided JSON document.</param>
         /// <param name="jmesPath">A JMESPath string.</param>
         /// <returns>The transformed JSON document.</returns>
+        /// <exception cref="JmesPathParseException">
+        ///   The <paramref name="jmesPath"/> parameter is not a valid JMESPath expression.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///   The <paramref name="jmesPath"/> is <see langword="null"/>.
+        /// </exception>
 
         public static JsonDocument Transform(JsonElement doc, string jmesPath)
         {
