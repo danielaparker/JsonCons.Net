@@ -1956,7 +1956,7 @@ namespace JsonCons.JsonPath
             }
         }
 
-        void UnwindRParen()
+        void UnwindRightParen()
         {
             while (_operatorStack.Count > 1 && _operatorStack.Peek().TokenKind != JsonPathTokenKind.LeftParen)
             {
@@ -1979,7 +1979,7 @@ namespace JsonCons.JsonPath
                     break;
                 case JsonPathTokenKind.EndFilter:
                 {
-                    UnwindRParen();
+                    UnwindRightParen();
                     var tokens = new List<Token>();
                     while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginFilter)
                     {
@@ -1990,7 +1990,6 @@ namespace JsonCons.JsonPath
                         throw new JsonPathParseException("Unbalanced parentheses", _line, _column);
                     }
                     _outputStack.Pop(); // JsonPathTokenKind.LeftParen
-                    tokens.Reverse();
                     if (_outputStack.Count > 1 && _outputStack.Peek().TokenKind == JsonPathTokenKind.Selector)
                     {
                         _outputStack.Peek().GetSelector().AppendSelector(new FilterSelector(new Expression(tokens)));
@@ -2061,7 +2060,7 @@ namespace JsonCons.JsonPath
                     break;
                 case JsonPathTokenKind.RightParen:
                 {
-                    UnwindRParen();
+                    UnwindRightParen();
                     break;
                 }
                 case JsonPathTokenKind.UnaryOperator:
@@ -2104,7 +2103,7 @@ namespace JsonCons.JsonPath
                     break;
                 case JsonPathTokenKind.EndArguments:
                 {
-                    UnwindRParen();
+                    UnwindRightParen();
 
                     Int32 argCount = 0;
                     var tokens = new List<Token>();
@@ -2127,14 +2126,12 @@ namespace JsonCons.JsonPath
                     {
                         throw new JsonPathParseException($"Invalid arity calling function '{tokens[0].GetFunction()}', expected {tokens[0].GetFunction().Arity}, found {argCount}", _line, _column);
                     }
-                    tokens.Reverse();
-
                     _outputStack.Push(new Token(new Expression(tokens)));
                     break;
                 }
                 case JsonPathTokenKind.EndArgument:
                 {
-                    UnwindRParen();
+                    UnwindRightParen();
                     var tokens = new List<Token>();
                     while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginArgument)
                     {
@@ -2144,7 +2141,6 @@ namespace JsonCons.JsonPath
                     {
                         throw new JsonPathParseException("Unbalanced parentheses", _line, _column);
                     }
-                    tokens.Reverse();
                     _outputStack.Pop(); // JsonPathTokenKind.BeginArgument
                     _outputStack.Push(new Token(new Expression(tokens)));
                     break;

@@ -76,8 +76,9 @@ namespace JsonCons.JsonPath
             Stack<IValue> stack = new Stack<IValue>();
             IList<IValue> argStack = new List<IValue>();
 
-            foreach (var token in _tokens)
+            for (int i = _tokens.Count-1; i >= 0; --i)
             {
+                var token = _tokens[i];
                 switch (token.TokenKind)
                 {
                     case JsonPathTokenKind.Value:
