@@ -70,7 +70,6 @@ Note that each element in the result - `true`, `false`, `true` - corresponds to 
 at a specific location in the original JSON document. This is a feature of JSONPath.
 
 JMESPath allows you to select the `KeyOfInterest` values like this:
-```
 ```csharp
 JsonDocument result = JsonTransformer.Transform(doc.RootElement, 
                                                 "Data[*].KeyOfInterest");
