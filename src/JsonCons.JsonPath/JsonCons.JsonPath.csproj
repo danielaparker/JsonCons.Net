@@ -18,7 +18,7 @@ System.Text.Json namespace with support for JsonPath. It provides support for qu
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\danie\source\repos\JsonCons.Net\src\JsonCons.JsonPath\JsonCons.JsonPath.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

@@ -71,6 +71,12 @@ references:
   isSpec: "True"
   fullName: JsonCons.JmesPath.JsonSearcher.Parse
   nameWithType: JsonSearcher.Parse
+- uid: JsonCons.JmesPath.JsonSearcher.Search(System.String,System.Text.Json.JsonElement)
+  name: Search(String, JsonElement)
+  href: ref/JsonCons.JmesPath.JsonSearcher.html#JsonCons_JmesPath_JsonSearcher_Search_System_String_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.JmesPath.JsonSearcher.Search(System.String,System.Text.Json.JsonElement)
+  fullName: JsonCons.JmesPath.JsonSearcher.Search(System.String, System.Text.Json.JsonElement)
+  nameWithType: JsonSearcher.Search(String, JsonElement)
 - uid: JsonCons.JmesPath.JsonSearcher.Search(System.Text.Json.JsonElement)
   name: Search(JsonElement)
   href: ref/JsonCons.JmesPath.JsonSearcher.html#JsonCons_JmesPath_JsonSearcher_Search_System_Text_Json_JsonElement_

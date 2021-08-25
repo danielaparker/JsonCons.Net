@@ -437,7 +437,7 @@ namespace JsonCons.JsonPath
                                 string functionName = buffer.ToString();
                                 if (!BuiltInFunctions.Instance.TryGetFunction(functionName, out func))
                                 {
-                                    throw new JmesPathParseException($"Function '{functionName}' not found", _line, _column);
+                                    throw new JsonPathParseException($"Function '{functionName}' not found", _line, _column);
                                 }
                                 buffer.Clear();
                                 PushToken(new Token(func));

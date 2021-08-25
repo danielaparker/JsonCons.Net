@@ -8,6 +8,7 @@ The JsonCons.Net libraries include classes that complement the functionality of 
 [System.Text.Json namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1),
 offering support for:
 
+- JMESPath as defined in [JMESPath Specification](https://jmespath.org/specification.html)
 - JSON Pointer as defined in [RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901)
 - JSON Patch as defined in [RFC 6902](https://datatracker.ietf.org/doc/html/rfc6902)
 - JSON Merge Patch as defined in [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396)
@@ -65,22 +66,5 @@ Code examples may be found at:
 [JSON Merge Patch examples](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonMergePatch.Examples/JsonMergePatchExamples.cs)
 
 [JSONPath examples](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPath.Examples/JsonPathExamples.cs)
-
-## Acknowledgements
-
-- Credit to [Stefan Goessner's JsonPath](https://goessner.net/articles/JsonPath/),
-the original JSONPath. While not a formal specification, it was enormously
-influential.
-
-- The specification of JsonCons.JsonPath draws heavily on Christoph Burgmer's 
-[JSONPath Comparison](https://cburgmer.github.io/json-path-comparison/).
-Many of the test cases and some of the examples are borrowed from this resource.
-
-- The specification of JsonCons.JsonPath filter expressions is greatly influenced by
-James Saryerwinnie's [JMESPath](https://jmespath.org/specification.html),
-and largely follows JMSPath with regards to truthiness, comparator syntax and semantics,
-and function syntax and semantics. In Stefan Goessner's original article, filter
-expressions were left unspecified, and in their original implementations, they were
-simply Javascript or PHP. 
 
 

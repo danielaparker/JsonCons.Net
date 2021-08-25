@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\JsonCons.JmesPath\JsonCons.JmesPath.csproj" />
+    <ProjectReference Include="..\..\src\JsonCons.Utilities\JsonCons.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

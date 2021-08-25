@@ -42,6 +42,13 @@ namespace JsonCons.JmesPath
         {
             _expr = expr;
         }
+
+        /// <summary>
+        /// Applies a JMESPath expression to a provided JSON document to transform it
+        /// into another Json document.
+        /// </summary>
+        /// <param name="root">The provided JSON document.</param>
+        /// <returns>The transformed JSON document.</returns>
         
         public JsonDocument Search(JsonElement doc)
         {
@@ -51,18 +58,19 @@ namespace JsonCons.JmesPath
             return JsonDocument.Parse(temp.ToString());
         }
 
-        public bool TrySearch(JsonElement doc, out JsonDocument result)
+        /// <summary>
+        /// Applies a JMESPath expression to a provided JSON document to transform it
+        /// into another Json document.
+        /// This method parses and applies the expression in one operation.
+        /// </summary>
+        /// <param name="jmesPath">A JMESPath string.</param>
+        /// <param name="root">The provided JSON document.</param>
+        /// <returns>The transformed JSON document.</returns>
+
+        public static JsonDocument Search(string jmesPath, JsonElement doc)
         {
-            var resources = new DynamicResources();
-            IValue temp;
-            if (!_expr.TryEvaluate(resources, new JsonElementValue(doc), out temp))
-            {
-                result = JsonDocument.Parse("null");
-                return false;
-            }
-            result = JsonDocument.Parse(temp.ToString());
-            return true;
-        }
-        
+            var searcher = JsonSearcher.Parse(jmesPath); 
+            return searcher.Search(doc);
+        }       
     }
 }
