@@ -88,7 +88,7 @@ see Christoph Burgmer's [JSONPath comparison](https://cburgmer.github.io/json-pa
 The JsonCons implementation attempts to preseve the essential flavor of JSONPath. Where
 implementations differ, it generally takes into account the consensus as established in
 the [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/). It supports
-the familar queries against [Stefan Goessner's store](https://goessner.net/articles/JsonPath/index.html#e3):
+the familar queries against Stefan Goessner's store:
 
 JSONPath	                | Result
 ---------------------------|----------------------------------------
