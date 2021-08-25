@@ -65,11 +65,9 @@ Output:
 
 Documentation and examples may be found here:
 
-- [JmesPath Tutorial](https://jmespath.org/tutorial.html)
+- [JMESPath](https://jmespath.org/)
 
-- [JmesPath Examples](https://jmespath.org/examples.html)
-
-- [JmesPath Reference](https://jmespath.org/specification.html)
+- [Reference](https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.JmesPath.html)
 
 - [Code examples](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JmesPath.Examples/JmesPathExamples.cs)
 
