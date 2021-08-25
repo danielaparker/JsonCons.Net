@@ -117,7 +117,7 @@ namespace JsonCons.JmesPath
             _operatorStack = new Stack<Token>();
         }
 
-        internal JsonSearcher Parse()
+        internal JsonTransformer Parse()
         {
             _stateStack.Clear();
             _outputStack.Clear();
@@ -1404,7 +1404,7 @@ namespace JsonCons.JmesPath
 
             var a = _outputStack.ToArray();
 
-            return new JsonSearcher(new Expression(a));
+            return new JsonTransformer(new Expression(a));
         }
 
         private void SkipWhiteSpace()

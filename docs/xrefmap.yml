@@ -52,44 +52,44 @@ references:
   isSpec: "True"
   fullName: JsonCons.JmesPath.JmesPathParseException.ToString
   nameWithType: JmesPathParseException.ToString
-- uid: JsonCons.JmesPath.JsonSearcher
-  name: JsonSearcher
-  href: ref/JsonCons.JmesPath.JsonSearcher.html
-  commentId: T:JsonCons.JmesPath.JsonSearcher
-  fullName: JsonCons.JmesPath.JsonSearcher
-  nameWithType: JsonSearcher
-- uid: JsonCons.JmesPath.JsonSearcher.Parse(System.String)
+- uid: JsonCons.JmesPath.JsonTransformer
+  name: JsonTransformer
+  href: ref/JsonCons.JmesPath.JsonTransformer.html
+  commentId: T:JsonCons.JmesPath.JsonTransformer
+  fullName: JsonCons.JmesPath.JsonTransformer
+  nameWithType: JsonTransformer
+- uid: JsonCons.JmesPath.JsonTransformer.Parse(System.String)
   name: Parse(String)
-  href: ref/JsonCons.JmesPath.JsonSearcher.html#JsonCons_JmesPath_JsonSearcher_Parse_System_String_
-  commentId: M:JsonCons.JmesPath.JsonSearcher.Parse(System.String)
-  fullName: JsonCons.JmesPath.JsonSearcher.Parse(System.String)
-  nameWithType: JsonSearcher.Parse(String)
-- uid: JsonCons.JmesPath.JsonSearcher.Parse*
+  href: ref/JsonCons.JmesPath.JsonTransformer.html#JsonCons_JmesPath_JsonTransformer_Parse_System_String_
+  commentId: M:JsonCons.JmesPath.JsonTransformer.Parse(System.String)
+  fullName: JsonCons.JmesPath.JsonTransformer.Parse(System.String)
+  nameWithType: JsonTransformer.Parse(String)
+- uid: JsonCons.JmesPath.JsonTransformer.Parse*
   name: Parse
-  href: ref/JsonCons.JmesPath.JsonSearcher.html#JsonCons_JmesPath_JsonSearcher_Parse_
-  commentId: Overload:JsonCons.JmesPath.JsonSearcher.Parse
+  href: ref/JsonCons.JmesPath.JsonTransformer.html#JsonCons_JmesPath_JsonTransformer_Parse_
+  commentId: Overload:JsonCons.JmesPath.JsonTransformer.Parse
   isSpec: "True"
-  fullName: JsonCons.JmesPath.JsonSearcher.Parse
-  nameWithType: JsonSearcher.Parse
-- uid: JsonCons.JmesPath.JsonSearcher.Search(System.String,System.Text.Json.JsonElement)
-  name: Search(String, JsonElement)
-  href: ref/JsonCons.JmesPath.JsonSearcher.html#JsonCons_JmesPath_JsonSearcher_Search_System_String_System_Text_Json_JsonElement_
-  commentId: M:JsonCons.JmesPath.JsonSearcher.Search(System.String,System.Text.Json.JsonElement)
-  fullName: JsonCons.JmesPath.JsonSearcher.Search(System.String, System.Text.Json.JsonElement)
-  nameWithType: JsonSearcher.Search(String, JsonElement)
-- uid: JsonCons.JmesPath.JsonSearcher.Search(System.Text.Json.JsonElement)
-  name: Search(JsonElement)
-  href: ref/JsonCons.JmesPath.JsonSearcher.html#JsonCons_JmesPath_JsonSearcher_Search_System_Text_Json_JsonElement_
-  commentId: M:JsonCons.JmesPath.JsonSearcher.Search(System.Text.Json.JsonElement)
-  fullName: JsonCons.JmesPath.JsonSearcher.Search(System.Text.Json.JsonElement)
-  nameWithType: JsonSearcher.Search(JsonElement)
-- uid: JsonCons.JmesPath.JsonSearcher.Search*
-  name: Search
-  href: ref/JsonCons.JmesPath.JsonSearcher.html#JsonCons_JmesPath_JsonSearcher_Search_
-  commentId: Overload:JsonCons.JmesPath.JsonSearcher.Search
+  fullName: JsonCons.JmesPath.JsonTransformer.Parse
+  nameWithType: JsonTransformer.Parse
+- uid: JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement)
+  name: Transform(JsonElement)
+  href: ref/JsonCons.JmesPath.JsonTransformer.html#JsonCons_JmesPath_JsonTransformer_Transform_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement)
+  fullName: JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement)
+  nameWithType: JsonTransformer.Transform(JsonElement)
+- uid: JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement,System.String)
+  name: Transform(JsonElement, String)
+  href: ref/JsonCons.JmesPath.JsonTransformer.html#JsonCons_JmesPath_JsonTransformer_Transform_System_Text_Json_JsonElement_System_String_
+  commentId: M:JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement,System.String)
+  fullName: JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement, System.String)
+  nameWithType: JsonTransformer.Transform(JsonElement, String)
+- uid: JsonCons.JmesPath.JsonTransformer.Transform*
+  name: Transform
+  href: ref/JsonCons.JmesPath.JsonTransformer.html#JsonCons_JmesPath_JsonTransformer_Transform_
+  commentId: Overload:JsonCons.JmesPath.JsonTransformer.Transform
   isSpec: "True"
-  fullName: JsonCons.JmesPath.JsonSearcher.Search
-  nameWithType: JsonSearcher.Search
+  fullName: JsonCons.JmesPath.JsonTransformer.Transform
+  nameWithType: JsonTransformer.Transform
 - uid: JsonCons.JsonPath
   name: JsonCons.JsonPath
   href: ref/JsonCons.JsonPath.html

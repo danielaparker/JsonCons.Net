@@ -47,17 +47,17 @@ namespace JsonCons.JmesPath.Tests
                         if (testCase.TryGetProperty("error", out expected))
                         {
                             string msg = expected.GetString();
-                            Debug.WriteLine($"message: {msg}");
-                            if (msg.Equals("syntax") || msg.Equals("invalid-arity") || msg.Equals("unknown-function"))
+                            //Debug.WriteLine($"message: {msg}");
+                            if (msg.Equals("syntax") || msg.Equals("invalid-arity") || msg.Equals("unknown-function") || msg.Equals("invalid-value"))
                             {
-                                Assert.ThrowsException<JmesPathParseException>(() => JsonSearcher.Parse(exprElement.ToString()));
+                                Assert.ThrowsException<JmesPathParseException>(() => JsonTransformer.Parse(exprElement.ToString()));
                             }
                             else
                             {
-                                var expr = JsonSearcher.Parse(exprElement.ToString());
+                                var expr = JsonTransformer.Parse(exprElement.ToString());
                                 try
                                 {
-                                    JsonDocument result = expr.Search(given);
+                                    JsonDocument result = expr.Transform(given);
                                     using var nullValue = JsonDocument.Parse("null");
                                     bool success = comparer.Equals(result.RootElement, nullValue.RootElement);
                                     Assert.IsTrue(success);
@@ -68,8 +68,8 @@ namespace JsonCons.JmesPath.Tests
                         }
                         else if (testCase.TryGetProperty("result", out expected))
                         {
-                            var expr = JsonSearcher.Parse(exprElement.ToString());
-                            JsonDocument result = expr.Search(given);
+                            var expr = JsonTransformer.Parse(exprElement.ToString());
+                            JsonDocument result = expr.Transform(given);
                             bool success = comparer.Equals(result.RootElement, expected);
                             if (!success)
                             {

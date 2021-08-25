@@ -985,7 +985,7 @@ namespace JsonCons.JmesPath
 
         public override string ToString()
         {
-            return "min_by_function";
+            return "min_by";
         }
     }
 
@@ -1436,7 +1436,7 @@ namespace JsonCons.JmesPath
             _functions.Add("max_by", new MaxByFunction());
             _functions.Add("merge", new MergeFunction());
             _functions.Add("min", new MinFunction());
-            _functions.Add("min_by", new MinFunction());
+            _functions.Add("min_by", new MinByFunction());
             _functions.Add("not_null", new NotNullFunction());
             _functions.Add("reverse", new ReverseFunction());
             _functions.Add("sort", new SortFunction());

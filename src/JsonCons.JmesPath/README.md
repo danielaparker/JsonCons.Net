@@ -5,7 +5,7 @@ The JsonCons.JmesPath library complements the functionality of the
 with an implementation of JMESPath. It provides support for querying
 JsonDocument/JsonElement instances with code like this:
 ```csharp
-var searcher = JsonSearcher.Parse("people[?age > `20`].[name, age]");
+var searcher = JsonTransformer.Parse("people[?age > `20`].[name, age]");
 
 JsonDocument result = searcher.Search(doc.RootElement);
 ```
