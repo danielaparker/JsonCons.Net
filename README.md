@@ -19,10 +19,10 @@ The JsonCons.Net libraries offer support for:
 ## JSONPath and JMESPath
 
 JSONPath allows you to select from a [JsonDocument](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsondocument?view=net-5.0) 
-instance a list of [JsonElement](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement?view=net-5.0) instances
+a list of [JsonElement](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement?view=net-5.0) instances
 that belong to it. JMESPath allows you to transform a [JsonDocument](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsondocument?view=net-5.0) 
-instance into another 
-[JsonDocument](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsondocument?view=net-5.0) instance.
+into another 
+[JsonDocument](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsondocument?view=net-5.0).
 
 For example, consider the JSON data
 ```json
