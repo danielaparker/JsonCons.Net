@@ -1,8 +1,8 @@
 # JsonCons.Net
 
 |JsonCons.Utilities|JsonCons.JsonPath|
-|:-:|:-:|:-:|
-|<a href="https://www.nuget.org/packages/JsonCons.Utilities/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonCons.Utilities.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonCons.Utilities.svg?svg=true"></img></a>|<a href="https://www.nuget.org/packages/JsonCons.JsonPath/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonCons.JsonPath.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonCons.JsonPath.svg?svg=true"></img></a>|<a href="https://www.nuget.org/packages/JsonCons.JmesPath/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonCons.JmesPath.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonCons.JmesPath.svg?svg=true"></img></a>|
+|:-:|:-:|
+|<a href="https://www.nuget.org/packages/JsonCons.Utilities/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonCons.Utilities.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonCons.Utilities.svg?svg=true"></img></a>|<a href="https://www.nuget.org/packages/JsonCons.JsonPath/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonCons.JsonPath.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonCons.JsonPath.svg?svg=true"></img></a>|
 
 The JsonCons.Net libraries include classes that complement the functionality of the 
 [System.Text.Json namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1).
