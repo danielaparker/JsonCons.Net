@@ -12,83 +12,10 @@ using System.Collections.Generic;
 using System.Text.Json;
 using JsonCons.JsonPath;
 
-public static class JsonPathExamples
+public static class Example
 {
 
-    public static void SelectValuesPathsAndNodes()
-    {
-        string jsonString = @"
-{
-    ""books"":
-    [
-        {
-            ""category"": ""fiction"",
-            ""title"" : ""A Wild Sheep Chase"",
-            ""author"" : ""Haruki Murakami"",
-            ""price"" : 22.72
-        },
-        {
-            ""category"": ""fiction"",
-            ""title"" : ""The Night Watch"",
-            ""author"" : ""Sergei Lukyanenko"",
-            ""price"" : 23.58
-        },
-        {
-            ""category"": ""fiction"",
-            ""title"" : ""The Comedians"",
-            ""author"" : ""Graham Greene"",
-            ""price"" : 21.99
-        },
-        {
-            ""category"": ""memoir"",
-            ""title"" : ""The Night Watch"",
-            ""author"" : ""David Atlee Phillips"",
-            ""price"" : 260.90
-        }
-    ]
-}
-        ";
-
-        using JsonDocument doc = JsonDocument.Parse(jsonString);
-
-        var serializerOptions = new JsonSerializerOptions() {WriteIndented = true};
-
-        // Selector of titles from union of all books with category 'memoir' 
-        // and all books with price > 23
-        var selector = JsonSelector.Parse("$.books[?@.category=='memoir',?@.price > 23].title");
-
-        Console.WriteLine("Select values");
-        IList<JsonElement> values = selector.Select(doc.RootElement);
-        Console.WriteLine(JsonSerializer.Serialize(values, serializerOptions));
-        Console.WriteLine();
-
-        Console.WriteLine("Select paths");
-        IList<NormalizedPath> paths = selector.SelectPaths(doc.RootElement);
-        foreach (var path in paths)
-        {
-            Console.WriteLine(path);
-        }
-        Console.WriteLine();
-
-        Console.WriteLine("Select nodes");
-        IList<PathValuePair> nodes = selector.SelectNodes(doc.RootElement);
-        foreach (var node in nodes)
-        {
-            Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, serializerOptions)}");
-        }
-        Console.WriteLine();
-
-        Console.WriteLine("Remove duplicate nodes");
-        IList<PathValuePair> uniqueNodes = selector.SelectNodes(doc.RootElement, 
-                                                       new JsonSelectorOptions{NoDuplicates=true});
-        foreach (var node in uniqueNodes)
-        {
-            Console.WriteLine($"{node.Path} => {JsonSerializer.Serialize(node.Value, serializerOptions)}");
-        }
-        Console.WriteLine();
-    }
-
-    public static void StoreExample()
+    public static void Main(string[] args)
     {
         string jsonString = @"
 { ""store"": {
