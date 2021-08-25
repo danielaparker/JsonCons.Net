@@ -72,13 +72,13 @@ at a specific location in the original JSON document. This is a feature of JSONP
 JMESPath allows you to select the `KeyOfInterest` values like this:
 ```csharp
 JsonDocument result = JsonTransformer.Transform(doc.RootElement, 
-                                                "Data[*].KeyOfInterest");
+                                           "Data[*].KeyOfInterest");
 ```
 and the union of `KeyOfInterest` and `AnotherKey` values like this:
 ```csharp
 JsonDocument result = JsonTransformer.Transform(doc.RootElement, 
-                                                "Data[*].{\"Key of Interest\" : KeyOfInterest, \"Another Key\": AnotherKey}");
-```.
+                                           "Data[*].{\"Key of Interest\" : KeyOfInterest, \"Another Key\": AnotherKey}");
+```
 The first query produces
 ```json
 [true,false,true]
@@ -99,7 +99,7 @@ and the second
     "Another Key": true
   }
 ]
-```.
+```
 
 Unlike JSONPath, JMESPath can create new elements that are not in the original document.
 JMESPath can transform, while JsonPath can only select.
