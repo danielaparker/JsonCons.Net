@@ -49,44 +49,42 @@ using JsonDocument doc = JsonDocument.Parse(jsonString);
 ```
 
 JSONPath allows you to select the `KeyOfInterest` values like this:
-```
 ```csharp
 IList<JsonElement> results = JsonSelector.Select(doc.RootElement,
                                                  "$.Data[*].KeyOfInterest");
-
-Console.WriteLine(JsonSerializer.Serialize(results));
 ```
-producing
-```json
-[true,false,true]
-```
-And the union of `KeyOfInterest` and `AnotherKey` values like this:
+and the union of `KeyOfInterest` and `AnotherKey` values like this:
 ```csharp
 IList<JsonElement> results = JsonSelector.Select(doc.RootElement,
                                                  "$.Data[*]['KeyOfInterest', 'AnotherKey']");
 ```
-producing
+The first query produces
+```json
+[true,false,true]
+```
+and the second
 ```json
 [true,true,false,true,true,true]
-```.
+```           
+Note that each element in the result - `true`, `false`, `true` - corresponds to an element 
+at a specific location in the original JSON document. This is a feature of JSONPath.
+
 JMESPath allows you to select the `KeyOfInterest` values like this:
 ```
 ```csharp
 JsonDocument result = JsonTransformer.Transform(doc.RootElement, 
                                                 "Data[*].KeyOfInterest");
-
-Console.WriteLine(JsonSerializer.Serialize(result));
 ```
-producing
-```json
-[true,false,true]
-```
-And the union of `KeyOfInterest` and `AnotherKey` values like this:
+and the union of `KeyOfInterest` and `AnotherKey` values like this:
 ```csharp
 JsonDocument result = JsonTransformer.Transform(doc.RootElement, 
                                                 "Data[*].{\"Key of Interest\" : KeyOfInterest, \"Another Key\": AnotherKey}");
+```.
+The first query produces
+```json
+[true,false,true]
 ```
-producing
+and the second
 ```json
 [
   {
@@ -103,6 +101,9 @@ producing
   }
 ]
 ```.
+
+Unlike JSONPath, JMESPath can create new elements that are not in the original document.
+JMESPath can transform, while JsonPath can only select.
 
 Reference documentation is available [here](https://danielaparker.github.io/JsonCons.Net/ref/)
 
