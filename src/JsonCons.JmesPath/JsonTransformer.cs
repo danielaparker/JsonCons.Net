@@ -56,9 +56,7 @@ namespace JsonCons.JmesPath
     ///    using JsonDocument result = transformer.Transform(doc.RootElement);
     /// 
     ///    var serializerOptions = new JsonSerializerOptions() {WriteIndented = true};
-    ///    Console.WriteLine("Filters and Multiselect Lists");
     ///    Console.WriteLine(JsonSerializer.Serialize(result.RootElement, serializerOptions));
-    ///    Console.WriteLine();
     /// }
     /// </code>
     /// Output:
