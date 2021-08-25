@@ -101,7 +101,7 @@ and the second
 ]
 ```
 
-Unlike JSONPath, JMESPath can create new elements that are not in the original document.
+JMESPath, unlike JSONPath, can create new elements that are not in the original document.
 JMESPath can transform, while JsonPath can only select.
 
 ## Documentation and Examples
