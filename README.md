@@ -50,13 +50,13 @@ using JsonDocument doc = JsonDocument.Parse(jsonString);
 
 JSONPath allows you to select the `KeyOfInterest` values like this:
 ```csharp
-IList<JsonElement> results = JsonSelector.Select(doc.RootElement,
-                                                 "$.Data[*].KeyOfInterest");
+string path = "$.Data[*].KeyOfInterest";
+IList<JsonElement> results = JsonSelector.Select(doc.RootElement, path);
 ```
 and the union of `KeyOfInterest` and `AnotherKey` values like this:
 ```csharp
-IList<JsonElement> results = JsonSelector.Select(doc.RootElement,
-                                                 "$.Data[*]['KeyOfInterest', 'AnotherKey']");
+string path = "$.Data[*]['KeyOfInterest', 'AnotherKey']";
+IList<JsonElement> results = JsonSelector.Select(doc.RootElement, path);
 ```
 The first query produces
 ```json
@@ -71,13 +71,13 @@ at a specific location in the original JSON document. This is a feature of JSONP
 
 JMESPath allows you to select the `KeyOfInterest` values like this:
 ```csharp
-JsonDocument result = JsonTransformer.Transform(doc.RootElement, 
-                                           "Data[*].KeyOfInterest");
+string expr = Data[*].KeyOfInterest;
+JsonDocument result = JsonTransformer.Transform(doc.RootElement, expr);
 ```
-and the union of `KeyOfInterest` and `AnotherKey` values like this:
+and a multiselect hash of `KeyOfInterest` and `AnotherKey` values like this:
 ```csharp
-JsonDocument result = JsonTransformer.Transform(doc.RootElement, 
-                                           "Data[*].{\"Key of Interest\" : KeyOfInterest, \"Another Key\": AnotherKey}");
+string expr = "Data[*].{\"Key of Interest\" : KeyOfInterest, \"Another Key\": AnotherKey}";
+JsonDocument result = JsonTransformer.Transform(doc.RootElement, expr);
 ```
 The first query produces
 ```json
