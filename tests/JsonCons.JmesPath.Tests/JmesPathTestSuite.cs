@@ -119,9 +119,9 @@ namespace JsonCons.JmesPath.Tests
                 RunJmesPathTests(@".\test_files\syntax.json");
                 RunJmesPathTests(@".\test_files\wildcard.json");
 */
-                RunJmesPathTests(@".\test_files\functions.json");              
+                //RunJmesPathTests(@".\test_files\functions.json");              
                 
-               //RunJmesPathTests(@".\test_files\test.json");              
+                RunJmesPathTests(@".\test_files\test.json");              
             }
             catch (Exception e)
             {

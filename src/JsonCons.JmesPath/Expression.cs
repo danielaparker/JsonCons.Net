@@ -649,8 +649,8 @@ namespace JsonCons.JmesPath
                     }
                     case JmesPathTokenKind.BeginExpressionType:
                     {
-                        Debug.Assert(i+1 < _tokens.Length);
-                        token = _tokens[i+1];
+                        Debug.Assert(i>0);
+                        token = _tokens[--i];
                         Debug.Assert(token.TokenKind == JmesPathTokenKind.Expression);
                         Debug.Assert(stack.Count != 0);
                         stack.Pop();

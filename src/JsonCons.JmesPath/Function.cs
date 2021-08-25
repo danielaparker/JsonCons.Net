@@ -12,6 +12,63 @@ using System;
 
 namespace JsonCons.JmesPath
 {
+    sealed class SortByComparer : IComparer<IValue>, System.Collections.IComparer
+    {
+        DynamicResources _resources;
+        IExpression _expr;
+
+        internal bool IsValid { get; set; } = true;
+
+        internal SortByComparer(DynamicResources resources,
+                                IExpression expr)
+        {
+            _resources = resources;
+            _expr = expr;
+        }
+
+        public int Compare(IValue lhs, IValue rhs)
+        {
+            var comparer = ValueComparer.Instance;
+
+            if (!IsValid)
+            {
+                return 0;
+            }
+            IValue key1;
+            if (!_expr.TryEvaluate(_resources, lhs, out key1))
+            {
+                IsValid = false;
+                return 0;
+            }
+            bool isNumber1 = key1.Type == JmesPathType.Number;
+            bool isString1 = key1.Type == JmesPathType.String;
+            if (!(isNumber1 || isString1))
+            {
+                IsValid = false;
+                return 0;
+            }
+            IValue key2;
+            if (!_expr.TryEvaluate(_resources, rhs, out key2))
+            {
+                IsValid = false;
+                return 0;
+            }
+            bool isNumber2 = key2.Type == JmesPathType.Number;
+            bool isString2 = key2.Type == JmesPathType.String;
+            if (!(isNumber2 == isNumber1 && isString2 == isString1))
+            {
+                IsValid = false;
+                return 0;
+            }
+            return comparer.Compare(key1, key2);
+        }
+
+        int System.Collections.IComparer.Compare(Object x, Object y)
+        {
+            return this.Compare((IValue)x, (IValue)y);
+        }        
+    }
+
     interface IFunction 
     {
         int? Arity {get;}
@@ -121,7 +178,7 @@ namespace JsonCons.JmesPath
 
         public override string ToString()
         {
-            return "to_string";
+            return "avg";
         }
     };
 
@@ -590,13 +647,14 @@ namespace JsonCons.JmesPath
                     return false;
                 }
                 IValue value;
-                if (!greater.TryEvaluate(arg0[i], arg0[index], out value))
+                if (!greater.TryEvaluate(key2, key1, out value))
                 {
                     result = JsonConstants.Null;
                     return false;
                 }
                 if (value.Type == JmesPathType.True )
                 {
+                    key1 = key2;
                     index = i;
                 }
             }
@@ -607,7 +665,7 @@ namespace JsonCons.JmesPath
 
         public override string ToString()
         {
-            return "max_by_function";
+            return "max_by";
         }
     }
 
@@ -809,7 +867,6 @@ namespace JsonCons.JmesPath
         }
     }
 
-/*
     sealed class MapFunction : BaseFunction
     {
         internal MapFunction()
@@ -821,40 +878,34 @@ namespace JsonCons.JmesPath
         {
             Debug.Assert(args.Count == this.Arity.Value);
 
-            if (!(args[0].is_expression() && args[1].is_value()))
+            if (!(args[0].Type == JmesPathType.Expression && args[1].Type == JmesPathType.Array))
             {
                 result = JsonConstants.Null;
                 return false;
             }
             var expr = args[0].GetExpression();
-
             var arg0 = args[1];
-            if (arg0.Type != JmesPathType.Array)
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
 
-            auto result = resources.create_json(json_array_arg);
+            var list = new List<IValue>();
 
             foreach (var item in arg0.EnumerateArray())
             {
-                auto& j = expr.evaluate(item, resources, ec);
-                if (ec)
+                IValue val;
+                if (!expr.TryEvaluate(resources, item, out val))
                 {
                     result = JsonConstants.Null;
                     return false;
                 }
-                result->emplace_back(json_const_pointer_arg, std::addressof(j));
+                list.Add(val);
             }
 
-            return *result;
+            result = new ArrayValue(list);
             return true;
         }
 
-        std::string to_string(int = 0) const override
+        public override string ToString()
         {
-            return std::string("map_function\n");
+            return "map";
         }
     }
 
@@ -869,27 +920,27 @@ namespace JsonCons.JmesPath
         {
             Debug.Assert(args.Count == this.Arity.Value);
 
-            if (!(args[0].is_value() && args[1].is_expression()))
+            if (!(args[0].Type == JmesPathType.Array && args[1].Type == JmesPathType.Expression))
             {
                 result = JsonConstants.Null;
                 return false;
             }
 
             var arg0 = args[0];
-            if (arg0.Type != JmesPathType.Array)
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
             if (arg0.GetArrayLength() == 0)
             {
                 result = JsonConstants.Null;
+                return true;
             }
 
             var expr = args[1].GetExpression();
 
-            std::error_code ec2;
-            IValue key1 = expr.evaluate(arg0[0], resources, ec2); 
+            IValue key1;
+            if (!expr.TryEvaluate(resources, arg0[0], out key1))
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
 
             bool isNumber1 = key1.Type == JmesPathType.Number;
             bool isString1 = key1.Type == JmesPathType.String;
@@ -899,88 +950,45 @@ namespace JsonCons.JmesPath
                 return false;
             }
 
+            var lessor = LtOperator.Instance;
             int index = 0;
             for (int i = 1; i < arg0.GetArrayLength(); ++i)
             {
-                var key2 = expr.evaluate(arg0[i], resources, ec2); 
-                if (!(key2.isNumber1() == isNumber1 && key2.isString1() == isString1))
+                IValue key2;
+                if (!expr.TryEvaluate(resources, arg0[i], out key2))
                 {
                     result = JsonConstants.Null;
                     return false;
                 }
-                if (key2 < key1)
+                bool isNumber2 = key2.Type == JmesPathType.Number;
+                bool isString2 = key2.Type == JmesPathType.String;
+                if (!(isNumber2 == isNumber1 && isString2 == isString1))
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+                IValue value;
+                if (!lessor.TryEvaluate(key2, key1, out value))
+                {
+                    result = JsonConstants.Null;
+                    return false;
+                }
+                if (value.Type == JmesPathType.True )
                 {
                     key1 = key2;
                     index = i;
                 }
             }
 
-            return arg0.at(index);
+            result = arg0[index];
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "min_by_function";
         }
     }
-
-    sealed class SortByFunction : BaseFunction
-    {
-        internal SortByFunction()
-            : base(2)
-        {
-        }
-
-        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
-        {
-            Debug.Assert(args.Count == this.Arity.Value);
-
-            if (!(args[0].is_value() && args[1].is_expression()))
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-
-            var arg0 = args[0];
-            if (arg0.Type != JmesPathType.Array)
-            {
-                result = JsonConstants.Null;
-                return false;
-            }
-            if (arg0.GetArrayLength() <= 1)
-            {
-                return arg0;
-            }
-
-            var expr = args[1].GetExpression();
-
-            auto v = resources.create_json(arg0);
-            std::stable_sort((v->EnumerateArray()).begin(), (v->EnumerateArray()).end(),
-                [&expr,&resources,&ec](var lhs, var rhs) -> bool
-            {
-                std::error_code ec2;
-                var key1 = expr.evaluate(lhs, resources, ec2);
-                bool isNumber1 = key1.Type == JmesPathType.Number;
-                bool isString1 = key1.Type == JmesPathType.String;
-                if (!(isNumber1 || isString1))
-                {
-                    result = JsonConstants.Null;
-                    return false;
-                }
-
-                var key2 = expr.evaluate(rhs, resources, ec2);
-                if (!(key2.isNumber1() == isNumber1 && key2.isString1() == isString1))
-                {
-                    result = JsonConstants.Null;
-                    return false;
-                }
-
-                return key1 < key2;
-            });
-            return ec ? resources.null_value() : *v;
-        }
-
-        std::string to_string(int = 0) const override
-        {
-            return std::string("sort_by_function\n");
-        }
-    }
-*/
 
     sealed class SortFunction : BaseFunction
     {
@@ -1036,6 +1044,56 @@ namespace JsonCons.JmesPath
         public override string ToString()
         {
             return "sort";
+        }
+    }
+
+    sealed class SortByFunction : BaseFunction
+    {
+        internal SortByFunction()
+            : base(2)
+        {
+        }
+
+        public override bool TryEvaluate(DynamicResources resources, IList<IValue> args, out IValue result)
+        {
+            Debug.Assert(args.Count == this.Arity.Value);
+
+            if (!(args[0].Type == JmesPathType.Array && args[1].Type == JmesPathType.Expression))
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+
+            var arg0 = args[0];
+            if (arg0.GetArrayLength() <= 1)
+            {
+                result = arg0;
+                return true;
+            }
+            var expr = args[1].GetExpression();
+
+            var list = new List<IValue>();
+            foreach (var item in arg0.EnumerateArray())
+            {
+                list.Add(item);
+            }
+            var comparer = new SortByComparer(resources, expr);
+            list.Sort(comparer);
+            if (comparer.IsValid)
+            {
+                result = new ArrayValue(list);
+                return true;
+            }
+            else
+            {
+                result = JsonConstants.Null;
+                return false;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "sort_by";
         }
     }
 
@@ -1374,12 +1432,16 @@ namespace JsonCons.JmesPath
             _functions.Add("join", new JoinFunction());
             _functions.Add("keys", new KeysFunction());
             _functions.Add("length", new LengthFunction());
+            _functions.Add("map", new MapFunction());
             _functions.Add("max", new MaxFunction());
+            _functions.Add("max_by", new MaxByFunction());
             _functions.Add("merge", new MergeFunction());
             _functions.Add("min", new MinFunction());
+            _functions.Add("min_by", new MinFunction());
             _functions.Add("not_null", new NotNullFunction());
             _functions.Add("reverse", new ReverseFunction());
             _functions.Add("sort", new SortFunction());
+            _functions.Add("sort_by", new SortByFunction());
             _functions.Add("starts_with", new StartsWithFunction());
             _functions.Add("sum", new SumFunction());
             _functions.Add("to_array", new ToArrayFunction());
