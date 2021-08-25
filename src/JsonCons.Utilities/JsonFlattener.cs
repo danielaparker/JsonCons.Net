@@ -187,7 +187,7 @@ namespace JsonCons.Utilities
         /// number, true, false, null, empty object, or empty array. 
         /// </summary>
         /// <remarks>
-        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// It is the users responsibilty to properly Dispose the returned <see cref="JsonDocument"/> value
         /// </remarks>
         /// <param name="value">The value to be flattened.</param>
         /// <returns>The flattened value</returns>
@@ -206,7 +206,7 @@ namespace JsonCons.Utilities
         /// parameter can be used to recover objects with integer names instead.
         /// </summary>
         /// <remarks>
-        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// It is the users responsibilty to properly Dispose the returned <see cref="JsonDocument"/> value
         /// </remarks>
         /// <param name="flattenedValue">The flattened value, which must be a JSON object of name-value pairs, such that 
         /// the names are JSON Pointer strings, and the values are either string,

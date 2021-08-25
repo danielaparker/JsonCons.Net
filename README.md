@@ -5,8 +5,10 @@
 |<a href="https://www.nuget.org/packages/JsonCons.Utilities/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonCons.Utilities.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonCons.Utilities.svg?svg=true"></img></a>|<a href="https://www.nuget.org/packages/JsonCons.JsonPath/"><img alt="NuGet version" src="https://img.shields.io/nuget/v/JsonCons.JsonPath.svg?svg=true"></img><br><img alt="NuGet version" src="https://img.shields.io/nuget/dt/JsonCons.JsonPath.svg?svg=true"></img></a>|
 
 The JsonCons.Net libraries include classes that complement the functionality of the 
-[System.Text.Json namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1),
-offering support for:
+[System.Text.Json namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1).
+The libraries target .Net Standard 2.1. 
+
+The JsonCons.Net libraries offer support for:
 
 - JSON Pointer as defined in [RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901)
 - JSON Patch as defined in [RFC 6902](https://datatracker.ietf.org/doc/html/rfc6902)
@@ -14,48 +16,95 @@ offering support for:
 - JSONPath as defined in [JsonCons JsonPath](https://danielaparker.github.io/JsonCons.Net/articles/JsonPath/Specification.html)
 - JMESPath as defined in [JMESPath Specification](https://jmespath.org/specification.html)
 
-For example, given a [system.text.json.JsonDocument](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsondocument?view=net-5.0)
-obtained as
-```
+## JSONPath and JMESPath
+
+JSONPath allows you to select from a [JsonDocument](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsondocument?view=net-5.0) 
+instance a list of [JsonElement](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement?view=net-5.0) instances
+that belong to it. JMESPath allows you to transform a [JsonDocument](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsondocument?view=net-5.0) 
+instance into another 
+[JsonDocument](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsondocument?view=net-5.0) instance.
+
+For example, consider the JSON data
+```json
 string jsonString = @"
 {
-    ""books"":
-    [
+    ""Data"":[
         {
-            ""title"" : ""A Wild Sheep Chase"",
-            ""author"" : ""Haruki Murakami"",
-            ""price"" : 22.72
+            ""KeyOfInterest"":true,
+            ""AnotherKey"":true
         },
         {
-            ""title"" : ""The Night Watch"",
-            ""author"" : ""Sergei Lukyanenko"",
-            ""price"" : 23.58
+            ""KeyOfInterest"":false,
+            ""AnotherKey"":true
         },
         {
-            ""title"" : ""The Comedians"",
-            ""author"" : ""Graham Greene"",
-            ""price"" : 21.99
-        },
-        {
-            ""title"" : ""The Night Watch"",
-            ""author"" : ""David Atlee Phillips"",
-            ""price"" : 260.90
+            ""KeyOfInterest"":true,
+            ""AnotherKey"":true
         }
     ]
-}";
+}
+        ";
 
 using JsonDocument doc = JsonDocument.Parse(jsonString);
 ```
-the [JsonCons.JsonPath.JsonSelector](https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.JsonPath.JsonSelector.html) 
-class provides functionality to select elements in the JSON document with code like this:
 
+JSONPath allows you to select the `KeyOfInterest` values like this:
 ```
-var selector = JsonSelector.Parse("$.books[?(@.price >= 22 && @.price < 30)]");
+```csharp
+IList<JsonElement> results = JsonSelector.Select(doc.RootElement,
+                                                 "$.Data[*].KeyOfInterest");
 
-IList<JsonElement> elements = selector.Select(doc.RootElement);
+Console.WriteLine(JsonSerializer.Serialize(results));
 ```
+producing
+```json
+[true,false,true]
+```
+And the union of `KeyOfInterest` and `AnotherKey` values like this:
+```csharp
+IList<JsonElement> results = JsonSelector.Select(doc.RootElement,
+                                                 "$.Data[*]['KeyOfInterest', 'AnotherKey']");
+```
+producing
+```json
+[true,true,false,true,true,true]
+```.
+JMESPath allows you to select the `KeyOfInterest` values like this:
+```
+```csharp
+JsonDocument result = JsonTransformer.Transform(doc.RootElement, 
+                                                "Data[*].KeyOfInterest");
 
-The JsonCons.Net libraries target .Net Standard 2.1. Reference documentation is available [here](https://danielaparker.github.io/JsonCons.Net/ref/)
+Console.WriteLine(JsonSerializer.Serialize(result));
+```
+producing
+```json
+[true,false,true]
+```
+And the union of `KeyOfInterest` and `AnotherKey` values like this:
+```csharp
+JsonDocument result = JsonTransformer.Transform(doc.RootElement, 
+                                                "Data[*].{\"Key of Interest\" : KeyOfInterest, \"Another Key\": AnotherKey}");
+```
+producing
+```json
+[
+  {
+    "Key of Interest": true,
+    "Another Key": true
+  },
+  {
+    "Key of Interest": false,
+    "Another Key": true
+  },
+  {
+    "Key of Interest": true,
+    "Another Key": true
+  }
+]
+```.
+
+Reference documentation is available [here](https://danielaparker.github.io/JsonCons.Net/ref/)
 
 Code examples may be found at:
 

@@ -132,7 +132,7 @@ namespace JsonCons.Utilities
         /// to a source JSON value.
         /// </summary>
         /// <remarks>
-        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// It is the users responsibilty to properly Dispose the returned <see cref="JsonDocument"/> value
         /// </remarks>
         /// <param name="source">The source JSON value.</param>
         /// <param name="patch">The patch to be applied to the source JSON value.</param>
@@ -311,7 +311,7 @@ namespace JsonCons.Utilities
         /// given two JSON values, a source and a target.
         /// </summary>
         /// <remarks>
-        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// It is the users responsibilty to properly Dispose the returned <see cref="JsonDocument"/> value
         /// </remarks>
         /// <param name="source">The source JSON value.</param>
         /// <param name="target">The target JSON value.</param>

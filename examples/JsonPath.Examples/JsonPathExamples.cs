@@ -476,6 +476,43 @@ public static class JsonPathExamples
         Console.WriteLine();
     }
 
+    public static void KeyOfInterest()
+    {
+        string jsonString = @"
+{
+    ""Data"":[
+        {
+            ""KeyOfInterest"":true,
+            ""AnotherKey"":true
+        },
+        {
+            ""KeyOfInterest"":false,
+            ""AnotherKey"":true
+        },
+        {
+            ""KeyOfInterest"":true,
+            ""AnotherKey"":true
+        }
+    ]
+}
+        ";
+
+        using JsonDocument doc = JsonDocument.Parse(jsonString);
+
+        IList<JsonElement> results1 = JsonSelector.Select(doc.RootElement,
+                                                          "$.Data[*].KeyOfInterest");
+
+        IList<JsonElement> results2 = JsonSelector.Select(doc.RootElement,
+                                                          "$.Data[*]['KeyOfInterest', 'AnotherKey']");
+
+        Console.WriteLine("Key of Interest");
+        Console.WriteLine("(1)");
+        Console.WriteLine(JsonSerializer.Serialize(results1));
+        Console.WriteLine("(2)");
+        Console.WriteLine(JsonSerializer.Serialize(results2));
+        Console.WriteLine();
+    }
+
     public static void Main(string[] args)
     {
         SelectValuesPathsAndNodes();
@@ -485,6 +522,7 @@ public static class JsonPathExamples
         SelectNodesWithVariousOptions();
         UsingTheParentOperator();
         ProcessingUnionsSequentiallyAndInParallel();
+        KeyOfInterest();
     }
 }
 

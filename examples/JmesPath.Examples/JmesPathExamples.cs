@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using JsonCons.JmesPath;
 
@@ -230,6 +229,43 @@ public static class JmesPathExamples
         Console.WriteLine();
     }
 
+    public static void KeyOfInterest()
+    {
+        string jsonString = @"
+{
+    ""Data"":[
+        {
+            ""KeyOfInterest"":true,
+            ""AnotherKey"":true
+        },
+        {
+            ""KeyOfInterest"":false,
+            ""AnotherKey"":true
+        },
+        {
+            ""KeyOfInterest"":true,
+            ""AnotherKey"":true
+        }
+    ]
+}
+        ";
+
+        using JsonDocument doc = JsonDocument.Parse(jsonString);
+
+        JsonDocument result1 = JsonTransformer.Transform(doc.RootElement, 
+                                                         "Data[*].KeyOfInterest");
+        JsonDocument result2 = JsonTransformer.Transform(doc.RootElement, 
+                                                         "Data[*].{\"Key of Interest\" : KeyOfInterest, \"Another Key\": AnotherKey}");
+
+        var serializerOptions = new JsonSerializerOptions() {WriteIndented = true};
+        Console.WriteLine("Key of Interest");
+        Console.WriteLine("(1)");
+        Console.WriteLine(JsonSerializer.Serialize(result1));
+        Console.WriteLine("(2)");
+        Console.WriteLine(JsonSerializer.Serialize(result2, serializerOptions));
+        Console.WriteLine();
+    }
+
     static void Main(string[] args)
     {
         FiltersAndMultiselectLists();
@@ -237,6 +273,7 @@ public static class JmesPathExamples
         WorkingWithNestedData();
         FilteringAndSelectingNestedData();
         UsingFunctions();
+        KeyOfInterest();
     }
 }
 

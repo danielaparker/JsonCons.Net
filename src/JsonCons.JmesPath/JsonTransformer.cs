@@ -112,6 +112,9 @@ namespace JsonCons.JmesPath
         /// Applies a JMESPath expression to a JSON document to transform it
         /// into another Json document.
         /// </summary>
+        /// <remarks>
+        /// It is the users responsibilty to properly Dispose the returned <see cref="JsonDocument"/> value
+        /// </remarks>
         /// <param name="doc">The provided JSON document.</param>
         /// <returns>The transformed JSON document.</returns>
         
@@ -128,6 +131,9 @@ namespace JsonCons.JmesPath
         /// into another Json document.
         /// This method parses and applies the expression in one operation.
         /// </summary>
+        /// <remarks>
+        /// It is the users responsibilty to properly Dispose the returned <see cref="JsonDocument"/> value
+        /// </remarks>
         /// <param name="doc">The provided JSON document.</param>
         /// <param name="jmesPath">A JMESPath string.</param>
         /// <returns>The transformed JSON document.</returns>
