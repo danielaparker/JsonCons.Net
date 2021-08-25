@@ -23,8 +23,9 @@ namespace JsonCons.JsonPath
         Separator,
         Value,
         Selector,
+        BeginArguments,
         Function,
-        EndFunction,
+        EndArguments,
         Argument,
         EndArgument,
         UnaryOperator,
@@ -183,6 +184,8 @@ namespace JsonCons.JsonPath
         {
             switch(_type)
             {
+                case JsonPathTokenKind.BeginArguments:
+                    return "BeginArguments";
                 case JsonPathTokenKind.RootNode:
                     return "RootNode";
                 case JsonPathTokenKind.CurrentNode:
@@ -205,8 +208,8 @@ namespace JsonCons.JsonPath
                     return $"BinaryOperator {_expr}";
                 case JsonPathTokenKind.Function:
                     return $"Function {_expr}";
-                case JsonPathTokenKind.EndFunction:
-                    return "EndFunction";
+                case JsonPathTokenKind.EndArguments:
+                    return "EndArguments";
                 case JsonPathTokenKind.Argument:
                     return "Argument";
                 case JsonPathTokenKind.EndArgument:

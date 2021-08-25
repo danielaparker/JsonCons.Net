@@ -1360,7 +1360,7 @@ namespace JsonCons.JsonPath
                                 break;
                             case ')':
                             {
-                                PushToken(new Token(JsonPathTokenKind.EndFunction));
+                                PushToken(new Token(JsonPathTokenKind.EndArguments));
                                 _stateStack.Pop(); 
                                 ++_index;
                                 ++_column;
@@ -2095,19 +2095,22 @@ namespace JsonCons.JsonPath
                     _outputStack.Push(token);
                     break;
                 case JsonPathTokenKind.Function:
-                    _outputStack.Push(token);
+                    _outputStack.Push(new Token(JsonPathTokenKind.BeginArguments));
+                    _operatorStack.Push(token);
                     _operatorStack.Push(new Token(JsonPathTokenKind.LeftParen));
                     break;
                 case JsonPathTokenKind.Argument:
                     _outputStack.Push(token);
                     break;
-                case JsonPathTokenKind.EndFunction:
+                case JsonPathTokenKind.EndArguments:
                 {
                     UnwindRParen();
 
                     Int32 argCount = 0;
                     var tokens = new List<Token>();
-                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.Function)
+                    Debug.Assert(_operatorStack.Count > 0 && _operatorStack.Peek().TokenKind == JsonPathTokenKind.Function);
+                    tokens.Add(_operatorStack.Pop()); // Function
+                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginArguments)
                     {
                         if (_outputStack.Peek().TokenKind == JsonPathTokenKind.Argument)
                         {
@@ -2119,13 +2122,12 @@ namespace JsonCons.JsonPath
                     {
                         throw new JsonPathParseException("Unbalanced parentheses", _line, _column);
                     }
-                    tokens.Reverse();
-
-                    if (_outputStack.Peek().GetFunction().Arity.HasValue && _outputStack.Peek().GetFunction().Arity.Value != argCount)
+                    _outputStack.Pop(); // JsonPathTokenKind.BeginArguments
+                    if (tokens[0].GetFunction().Arity != null && argCount != tokens[0].GetFunction().Arity)
                     {
-                        throw new JsonPathParseException("Invalid arity", _line, _column);
+                        throw new JsonPathParseException($"Invalid arity calling function '{tokens[0].GetFunction()}', expected {tokens[0].GetFunction().Arity}, found {argCount}", _line, _column);
                     }
-                    tokens.Add(_outputStack.Pop()); // Function
+                    tokens.Reverse();
 
                     _outputStack.Push(new Token(new Expression(tokens)));
                     break;

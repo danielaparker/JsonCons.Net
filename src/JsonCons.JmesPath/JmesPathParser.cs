@@ -1445,9 +1445,9 @@ namespace JsonCons.JmesPath
             _operatorStack.Pop(); // JsonPathTokenKind.LeftParen
         }
 
-        void PushToken(Token tok)
+        void PushToken(Token token)
         {
-            switch (tok.TokenKind)
+            switch (token.TokenKind)
             {
                 case JmesPathTokenKind.EndFilter:
                 {
@@ -1468,8 +1468,8 @@ namespace JsonCons.JmesPath
                     _outputStack.Pop();
 
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
-                        (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
-                        (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
+                        (token.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
+                        (token.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && token.IsRightAssociative)))
                     {
                         _outputStack.Peek().GetExpression().AddExpression(new FilterExpression(new Expression(tokens.ToArray())));
                     }
@@ -1509,8 +1509,8 @@ namespace JsonCons.JmesPath
                     expressions.Reverse();
 
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
-                        (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
-                        (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
+                        (token.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
+                        (token.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && token.IsRightAssociative)))
                     {
                         _outputStack.Peek().GetExpression().AddExpression(new MultiSelectList(expressions));
                     }
@@ -1556,8 +1556,8 @@ namespace JsonCons.JmesPath
                     _outputStack.Pop(); // JmesPathTokenKind.BeginMultiSelectHash
                  
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
-                        (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
-                        (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
+                        (token.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
+                        (token.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && token.IsRightAssociative)))
                     {
                         _outputStack.Peek().GetExpression().AddExpression(new MultiSelectHash(keyExprPairs));
                     }
@@ -1589,23 +1589,23 @@ namespace JsonCons.JmesPath
                     if (_outputStack.Count != 0 && _outputStack.Peek().TokenKind == JmesPathTokenKind.CurrentNode)
                     {
                         _outputStack.Pop();
-                        _outputStack.Push(tok);
+                        _outputStack.Push(token);
                     }
                     else
                     {
-                        _outputStack.Push(tok);
+                        _outputStack.Push(token);
                     }
                     break;
                 case JmesPathTokenKind.Expression:
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
-                        (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
-                        (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
+                        (token.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
+                        (token.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && token.IsRightAssociative)))
                     {
-                        _outputStack.Peek().GetExpression().AddExpression(tok.GetExpression());
+                        _outputStack.Peek().GetExpression().AddExpression(token.GetExpression());
                     }
                     else
                     {
-                        _outputStack.Push(tok);
+                        _outputStack.Push(token);
                     }
                     break;
                 case JmesPathTokenKind.RightParen:
@@ -1643,8 +1643,8 @@ namespace JsonCons.JmesPath
                         }
 
                         if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
-                            (tok.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
-                            (tok.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
+                            (token.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
+                            (token.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && token.IsRightAssociative)))
                         {
                             _outputStack.Peek().GetExpression().AddExpression(new FunctionExpression(new Expression(tokens.ToArray())));
                         }
@@ -1667,61 +1667,61 @@ namespace JsonCons.JmesPath
                 {
                     if (_operatorStack.Count == 0 || _operatorStack.Peek().TokenKind == JmesPathTokenKind.LeftParen)
                     {
-                        _operatorStack.Push(tok);
+                        _operatorStack.Push(token);
                     }
-                    else if (tok.PrecedenceLevel > _operatorStack.Peek().PrecedenceLevel
-                             || (tok.PrecedenceLevel == _operatorStack.Peek().PrecedenceLevel && tok.IsRightAssociative))
+                    else if (token.PrecedenceLevel > _operatorStack.Peek().PrecedenceLevel
+                             || (token.PrecedenceLevel == _operatorStack.Peek().PrecedenceLevel && token.IsRightAssociative))
                     {
-                        _operatorStack.Push(tok);
+                        _operatorStack.Push(token);
                     }
                     else
                     {
                         while (_operatorStack.Count > 0 && _operatorStack.Peek().IsOperator
-                               && (_operatorStack.Peek().PrecedenceLevel > tok.PrecedenceLevel
-                             || (tok.PrecedenceLevel == _operatorStack.Peek().PrecedenceLevel && tok.IsRightAssociative)))
+                               && (_operatorStack.Peek().PrecedenceLevel > token.PrecedenceLevel
+                             || (token.PrecedenceLevel == _operatorStack.Peek().PrecedenceLevel && token.IsRightAssociative)))
                         {
                             _outputStack.Push(_operatorStack.Pop());
                         }
 
-                        _operatorStack.Push(tok);
+                        _operatorStack.Push(token);
                     }
                     break;
                 }
                 case JmesPathTokenKind.Separator:
                 {
                     UnwindRightParen();
-                    _outputStack.Push(tok);
+                    _outputStack.Push(token);
                     _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
                     break;
                 }
                 case JmesPathTokenKind.BeginFilter:
-                    _outputStack.Push(tok);
+                    _outputStack.Push(token);
                     _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
                     break;
                 case JmesPathTokenKind.BeginMultiSelectList:
-                    _outputStack.Push(tok);
+                    _outputStack.Push(token);
                     _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
                     break;
                 case JmesPathTokenKind.BeginMultiSelectHash:
-                    _outputStack.Push(tok);
+                    _outputStack.Push(token);
                     _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
                     break;
                 case JmesPathTokenKind.Function:
                     _outputStack.Push(new Token(JmesPathTokenKind.BeginArguments));
-                    _operatorStack.Push(tok);
+                    _operatorStack.Push(token);
                     _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
                     break;
                 case JmesPathTokenKind.CurrentNode:
-                    _outputStack.Push(tok);
+                    _outputStack.Push(token);
                     break;
                 case JmesPathTokenKind.Key:
                 case JmesPathTokenKind.Pipe:
                 case JmesPathTokenKind.Argument:
                 case JmesPathTokenKind.BeginExpressionType:
-                    _outputStack.Push(tok);
+                    _outputStack.Push(token);
                     break;
                 case JmesPathTokenKind.LeftParen:
-                    _operatorStack.Push(tok);
+                    _operatorStack.Push(token);
                     break;
                 default:
                     break;
