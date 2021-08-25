@@ -104,6 +104,8 @@ and the second
 Unlike JSONPath, JMESPath can create new elements that are not in the original document.
 JMESPath can transform, while JsonPath can only select.
 
+## Documentation and Examples
+
 Reference documentation is available [here](https://danielaparker.github.io/JsonCons.Net/ref/)
 
 Code examples may be found at:
