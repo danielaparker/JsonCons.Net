@@ -557,7 +557,7 @@ namespace JsonCons.JsonPath
                    accumulator,
                    options,
                    0);   
-            results = new ArrayJsonValue(elements);
+            results = new ArrayValue(elements);
             return true;
         }
 
@@ -624,7 +624,7 @@ namespace JsonCons.JsonPath
                    accumulator,
                    options,
                    0);   
-            results = new ArrayJsonValue(elements);
+            results = new ArrayValue(elements);
             return true;
         }
 
@@ -684,7 +684,7 @@ namespace JsonCons.JsonPath
                    accumulator,
                    options,
                    0);   
-            results = new ArrayJsonValue(elements);
+            results = new ArrayValue(elements);
             return true;
         }
 
@@ -765,7 +765,7 @@ namespace JsonCons.JsonPath
                    accumulator,
                    options,
                    0);   
-            results = new ArrayJsonValue(elements);
+            results = new ArrayValue(elements);
             return true;
         }
 
@@ -848,7 +848,7 @@ namespace JsonCons.JsonPath
                    accumulator,
                    options,
                    0);   
-            results = new ArrayJsonValue(elements);
+            results = new ArrayValue(elements);
             return true;
         }
 

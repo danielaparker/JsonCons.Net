@@ -433,7 +433,7 @@ namespace JsonCons.JsonPath
                 values.Add(new StringValue(s));
             }
 
-            result = new ArrayJsonValue(values);
+            result = new ArrayValue(values);
             return true;
         }
 
@@ -803,7 +803,7 @@ namespace JsonCons.JsonPath
             {
                 values.Add(new StringValue(property.Name));
             }
-            result = new ArrayJsonValue(values);
+            result = new ArrayValue(values);
             return true;
         }
 

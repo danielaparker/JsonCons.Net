@@ -144,9 +144,9 @@ public class Example
     var options = new JsonSerializerOptions() { WriteIndented = true };
 
     Console.WriteLine(&quot;The original document:\n&quot;);
-    Console.WriteLine($&quot;{JsonSerializer.Serialize(doc.RootElement, options)}\n&quot;);
+    Console.WriteLine($&quot;{JsonSerializer.Serialize(doc, options)}\n&quot;);
     Console.WriteLine(&quot;The patch:\n&quot;);
-    Console.WriteLine($&quot;{JsonSerializer.Serialize(patch.RootElement, options)}\n&quot;);
+    Console.WriteLine($&quot;{JsonSerializer.Serialize(patch, options)}\n&quot;);
     Console.WriteLine(&quot;The result:\n&quot;);
     Console.WriteLine($&quot;{JsonSerializer.Serialize(result, options)}\n&quot;);
        &quot;);
@@ -244,7 +244,7 @@ to a source JSON value.</p>
     </tbody>
   </table>
   <h5 id="JsonCons_Utilities_JsonPatch_ApplyPatch_System_Text_Json_JsonElement_System_Text_Json_JsonElement__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It is the users responsibilty to properly Dispose the returned JSONDocument value</p>
+  <div class="markdown level1 remarks"><p>It is the users responsibilty to properly Dispose the returned <span class="xref">System.Text.Json.JsonDocument</span> value</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -319,13 +319,13 @@ given two JSON values, a source and a target.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Text.Json.JsonDocument</span></td>
-        <td><p>A patch to convert the source JSON value to the target JSON value</p>
+        <td><p>A JSON Merge Patch to convert the source JSON value to the target JSON value</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="JsonCons_Utilities_JsonPatch_FromDiff_System_Text_Json_JsonElement_System_Text_Json_JsonElement__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It is the users responsibilty to properly Dispose the returned JSONDocument value</p>
+  <div class="markdown level1 remarks"><p>It is the users responsibilty to properly Dispose the returned <span class="xref">System.Text.Json.JsonDocument</span> value</p>
 </div>
 </article>
           </div>

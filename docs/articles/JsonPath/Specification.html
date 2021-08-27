@@ -70,29 +70,28 @@
 <h1 id="jsoncons-jsonpath-specification">JsonCons JsonPath Specification</h1>
 
 <h2 id="grammar">Grammar</h2>
-<pre><code class="lang-text">jsonpath = &quot;$&quot; [relative-location]
-jsonpath = &quot;@&quot; [relative-location]
+<pre><code class="lang-text">jsonpath = root [relative-location]
+jsonpath = current-node [relative-location]
 
 relative-location = &quot;.&quot; relative-path
-relative-location =/ &quot;..&quot; relative-path
-relative-location =/ &quot;..&quot; bracket-expression [relative-location]
-relative-location =/ &quot;^&quot; [relative-location]
+relative-location =/ recursive-descent relative-path
+relative-location =/ recursive-descent bracket-expression [relative-location]
+relative-location =/ parent [relative-location]
 
 relative-path = identifier [relative-location]
 relative-path =/ wildcard [relative-location]
-
-bracket-expression = &quot;[&quot; bracketed-element *(&quot;,&quot; bracketed-element) &quot;]&quot;
+</code></pre>
+<pre><code class="lang-text">bracket-expression = &quot;[&quot; bracketed-element *(&quot;,&quot; bracketed-element) &quot;]&quot;
 
 bracketed-element = index / slice-expression / single-quoted-string / double-quoted-string
 bracketed-element =/ wildcard / filter-expression / jsonpath
+</code></pre>
 
-filter-expression = &quot;?&quot; expression
-
-slice-expression  = [integer] &quot;:&quot; [integer] [ &quot;:&quot; [integer] ]
-
-integer            = [&quot;-&quot;]1*digit
-
-identifier = unquoted-string / single-quoted-string / double-quoted-string
+<pre><code class="lang-text">root              = &quot;$&quot;
+current-node      = &quot;@&quot;
+parent            = &quot;^&quot;
+</code></pre>
+<pre><code class="lang-text">identifier = unquoted-string / single-quoted-string / double-quoted-string
 
 unquoted-string   =     %x30-39  /  ; 0-9
                         %x41-5A  /  ; A-Z
@@ -100,13 +99,25 @@ unquoted-string   =     %x30-39  /  ; 0-9
                         %x61-7A  /  ; a-z
                         %x80-10FFFF ; U+0080 ...    
 
+single-quoted-string     = single-quote 
+                           1*(unescaped-char / double-quote / 
+                              escaped-char / escaped-single-quote) 
+                           single-quote
+
 double-quoted-string     = double-quote 
-                           1*(unescaped-char / single-quote / escaped-char / escaped-double-quote) 
+                           1*(unescaped-char / single-quote / 
+                              escaped-char / escaped-double-quote) 
                            double-quote
 
+escaped-single-quote      = escape single-quote    ; '    single quote  U+002c
+escaped-double-quote      = escape double-quote    ; &quot;    double quote  U+0022
+
+single-quote             = %x2c                    ; Single quote: &quot;'&quot;
+double-quote             = %x22                    ; Double quote: '&quot;'
+
 unescaped-char    = %x20-21 / %x23-2b / %x2d-5B / %x5D-10FFFF
-Escape            = %x5C   ; Back slash: \
-escaped-char      = Escape (
+escape            = %x5C                ; Back slash: \
+escaped-char      = escape (
                         %x5C /          ; \    reverse solidus U+005C
                         %x2F /          ; /    solidus         U+002F
                         %x62 /          ; b    backspace       U+0008
@@ -115,18 +126,19 @@ escaped-char      = Escape (
                         %x72 /          ; r    carriage return U+000D
                         %x74 /          ; t    tab             U+0009
                         %x75 4HEXDIG )  ; uXXXX                U+XXXX
+</code></pre>
 
-single-quote             = %x2c   ; Single quote: &quot;'&quot;
-double-quote             = %x22   ; Double quote: '&quot;'
-escaped-double-quote      = Escape %x22          ; &quot;    double quote  U+0022
-escaped-single-quote      = Escape %x2c          ; '    single quote  U+002c
+<pre><code class="lang-text">index             = integer 
+slice             = [integer] &quot;:&quot; [integer] [ &quot;:&quot; [integer] ]
+recursive-descent = &quot;..&quot;
+wildcard          = &quot;*&quot;
 
-single-quoted-string     = single-quote 
-                           1*(unescaped-char / double-quote / escaped-char / escaped-single-quote) 
-                           single-quote
+integer = [&quot;-&quot;]1*digit
+</code></pre>
+<pre><code class="lang-text">filter-expression = &quot;?&quot; expression
 
 expression = single-quoted-string 
-expression =/ json-literal
+expression =/ json-literal ; any valid JSON value
 expression =/ jsonpath 
 expression =/ unary-expression / binary-expression / regex-expression / paren-expression 
 paren-expression  = &quot;(&quot; expression &quot;)&quot;
@@ -136,8 +148,6 @@ regex-expression = expression regex-operator &quot;/&quot; regex &quot;/&quot; [
 unary-operator = &quot;!&quot; / &quot;-&quot;
 binary-operator  = &quot;*&quot; / &quot;/&quot; / &quot;%&quot; / &quot;+&quot; / &quot;-&quot; / &quot;&amp;&amp;&quot; / &quot;||&quot; / &lt;&quot; / &quot;&lt;=&quot; / &quot;==&quot; / &quot;&gt;=&quot; / &quot;&gt;&quot; / &quot;!=&quot; 
 regex-operator = &quot;=~&quot;
-
-; &quot;json-literal&quot; is any valid JSON value.  
 ;
 ; &quot;regex&quot; represents regular expression characters
 
@@ -147,7 +157,6 @@ function-expression = unquoted-string  (
 no-args             = &quot;(&quot; &quot;)&quot;
 one-or-more-args    = &quot;(&quot; ( function-arg *( &quot;,&quot; function-arg ) ) &quot;)&quot;
 function-arg        = expression
-
 </code></pre>
 <h2 id="selectors">Selectors</h2>
 <p>After tokenization, a JSONPath string is transformed into a null terminated
@@ -201,16 +210,22 @@ in the list will add its provided value to the output list.</p>
 </code></pre>
 <div id="Selector1"></div> 
 <h3 id="root-selector">Root selector</h3>
+<pre><code class="lang-text">root = &quot;$&quot;
+</code></pre>
 <p>The symbol &quot;$&quot; represents the root JSON value, the JSON document to be evaluated.
 The root selector selects this value.</p>
 <div id="Selector2"></div> 
 <h3 id="current-node-selector">Current node selector</h3>
+<pre><code class="lang-text">current-node = &quot;@&quot;
+</code></pre>
 <p>The symbol &quot;@&quot; represents the &quot;current node&quot;. At the start of an expression,
 the current node is the document to be evaluated, and as the expression
 is evaluated, it changes to reflect the node currently being processed.<br>
 The current node selector selects this value.</p>
 <div id="Selector3"></div> 
 <h3 id="parent-selector">Parent selector</h3>
+<pre><code class="lang-text">parent = &quot;^&quot;
+</code></pre>
 <p>The symbol &quot;^&quot; represents the parent of the current node.</p>
 <p>Consider the JSON document</p>
 <pre><code>[
@@ -306,10 +321,58 @@ that allows you to select book objects based on criteria applied to descendent v
 </code></pre>
 <div id="Selector4"></div> 
 <h3 id="identifier-selector">Identifier selector</h3>
+<pre><code class="lang-text">identifier = unquoted-string / single-quoted-string / double-quoted-string
+
+unquoted-string   =     %x30-39  /  ; 0-9
+                        %x41-5A  /  ; A-Z
+                        %x5F     /  ; _
+                        %x61-7A  /  ; a-z
+                        %x80-10FFFF ; U+0080 ...    
+
+single-quoted-string     = single-quote 
+                           1*(unescaped-char / double-quote / 
+                              escaped-char / escaped-single-quote) 
+                           single-quote
+
+double-quoted-string     = double-quote 
+                           1*(unescaped-char / single-quote / 
+                              escaped-char / escaped-double-quote) 
+                           double-quote
+
+escaped-single-quote      = escape single-quote    ; '    single quote  U+002c
+escaped-double-quote      = escape double-quote    ; &quot;    double quote  U+0022
+
+single-quote             = %x2c                    ; Single quote: &quot;'&quot;
+double-quote             = %x22                    ; Double quote: '&quot;'
+
+unescaped-char    = %x20-21 / %x23-2b / %x2d-5B / %x5D-10FFFF
+escape            = %x5C                ; Back slash: \
+escaped-char      = escape (
+                        %x5C /          ; \    reverse solidus U+005C
+                        %x2F /          ; /    solidus         U+002F
+                        %x62 /          ; b    backspace       U+0008
+                        %x66 /          ; f    form feed       U+000C
+                        %x6E /          ; n    line feed       U+000A
+                        %x72 /          ; r    carriage return U+000D
+                        %x74 /          ; t    tab             U+0009
+                        %x75 4HEXDIG )  ; uXXXX                U+XXXX
+</code></pre>
+
+<p>An identifier selector selects zero or one values from a JSON value,
+depending on whether it is an object that has a member with a
+corresponding name.</p>
 <div id="Selector5"></div> 
 <h3 id="index-selector">Index selector</h3>
+<pre><code class="lang-text">index   = integer
+</code></pre>
+<p>An index selector selects zero or one values from a JSON value,
+depending on whether it is an array with an element at a
+corresponding index. Indexing is zero-based. A negative index
+indicates that indexing is relative to the end of the array.</p>
 <div id="Selector6"></div> 
-<h3 id="slices">Slices</h3>
+<h3 id="slice-selector">Slice selector</h3>
+<pre><code class="lang-text">slice   = [integer] &quot;:&quot; [integer] [ &quot;:&quot; [integer] ]
+</code></pre>
 <p>JsonCons jsonpath slices have the same semantics as Python slices</p>
 <p>The syntax for a slice is</p>
 <pre><code>[start:stop:step]
@@ -395,7 +458,9 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 </tbody>
 </table>
 <div id="Selector7"></div> 
-<h3 id="recursive-descent-selector-">Recursive descent selector (..)</h3>
+<h3 id="recursive-descent-selector">Recursive descent selector</h3>
+<pre><code class="lang-text">recursive-descent = &quot;..&quot;
+</code></pre>
 <p>The recursive descent selector performs a select operation
 on a provided JSON value as follows:</p>
 <ul>
@@ -431,12 +496,20 @@ operation on each property's value.</p>
 <pre><code>[&quot;baz&quot;,&quot;qux&quot;]
 </code></pre>
 <div id="Selector8"></div> 
-<h3 id="wildcard-selector-">Wildcard selector (*)</h3>
+<h3 id="wildcard-selector">Wildcard selector</h3>
+<pre><code class="lang-text">wildcard = &quot;*&quot;
+</code></pre>
 <p>The wildcard selector can select multiple items. If provided with an array,
 it will select all the array's elements, and if provided with an object,
 it will select the value part of all the object's name-value pairs.</p>
 <div id="Selector9"></div> 
 <h3 id="unions">Unions</h3>
+<pre><code class="lang-text">bracket-expression = &quot;[&quot; bracketed-element *(&quot;,&quot; bracketed-element) &quot;]&quot;
+
+bracketed-element = index / slice-expression / single-quoted-string / double-quoted-string
+bracketed-element =/ wildcard / filter-expression / jsonpath
+</code></pre>
+
 <p>In JsonCons, a JSONPath union element can be</p>
 <ul>
 <li>an index or slice expression</li>
@@ -453,6 +526,30 @@ the last, and the third from <a href="https://goessner.net/articles/JsonPath/ind
 </code></pre>
 <div id="Selector10"></div> 
 <h3 id="filter-selector">Filter selector</h3>
+<pre><code class="lang-text">filter-expression = &quot;?&quot; expression
+
+expression = single-quoted-string 
+expression =/ json-literal ; any valid JSON value
+expression =/ jsonpath 
+expression =/ unary-expression / binary-expression / regex-expression / paren-expression 
+paren-expression  = &quot;(&quot; expression &quot;)&quot;
+unary-expression=unary-operator expression
+binary-expression = expression binary-operator expression
+regex-expression = expression regex-operator &quot;/&quot; regex &quot;/&quot; [i]
+unary-operator = &quot;!&quot; / &quot;-&quot;
+binary-operator  = &quot;*&quot; / &quot;/&quot; / &quot;%&quot; / &quot;+&quot; / &quot;-&quot; / &quot;&amp;&amp;&quot; / &quot;||&quot; / &lt;&quot; / &quot;&lt;=&quot; / &quot;==&quot; / &quot;&gt;=&quot; / &quot;&gt;&quot; / &quot;!=&quot; 
+regex-operator = &quot;=~&quot;
+;
+; &quot;regex&quot; represents regular expression characters
+
+function-expression = unquoted-string  (
+                        no-args  /
+                        one-or-more-args )
+no-args             = &quot;(&quot; &quot;)&quot;
+one-or-more-args    = &quot;(&quot; ( function-arg *( &quot;,&quot; function-arg ) ) &quot;)&quot;
+function-arg        = expression
+</code></pre>
+
 <p>JSONPath uses filter expressions <code>[?&lt;expr&gt;]</code> to restrict the set of nodes
 returned by a path, e.g. <code>$..book[?(@.price&lt;10)]</code> returns the books with
 prices less than 10. Filter expressions are applied to each element in a
@@ -479,7 +576,43 @@ if true, the array element, or value part of an object member, is selected.</p>
 <li>null.</li>
 </ul>
 <p>A true value is any value that is not false</p>
+<h2 id="operands">Operands</h2>
+<p>The operands in an expression may be a jsonpath</p>
+<pre><code>jsonpath = &quot;$&quot; [relative-location]
+jsonpath = &quot;@&quot; [relative-location]
+</code></pre>
+<p>a <code>single-quoted-string</code>, or a <code>json-literal</code>.</p>
+<p>For example, given a JSON document</p>
+<pre><code>[[1, 2, 3], [1], [2, 3], &quot;1&quot;, &quot;2&quot;]
+</code></pre>
+<p>the four queries below are all valid</p>
+<pre><code>$[?@ == '2']
+
+$[?@ == [1,2,3]]    
+
+$[?@[0:1]==[1]]     
+
+$[?$[2] == [2,3]]   
+</code></pre>
+<p>and produce the results</p>
+<pre><code class="lang-json">[&quot;2&quot;]   
+
+[[1,2, 3]]    
+
+[[1, 2, 3], [1]]  
+
+[[1, 2, 3], [1], [2, 3], &quot;1&quot;, &quot;2&quot;]
+</code></pre>
+<p>In an expression, a <code>jsonpath</code> is not evaluated as a
+collection of matching JSON values, but rather, as a single JSON value.
+The slice, recursive descent, wildcard, union and filter selectors,
+which can evaluate to zero, one, or many items, are wrapped
+in a Json array. The others - root, current node, parent node,
+identifier, and index selectors - evaluate to a single value if
+matched, otherwise a null value.</p>
 <h3 id="operator-precedence">Operator Precedence</h3>
+<p>The table below lists operators in descending order of precedence
+(upper rows bind tighter than lower ones.)</p>
 <table>
 <thead>
 <tr>
@@ -490,42 +623,42 @@ if true, the array element, or value part of an object member, is selected.</p>
 </thead>
 <tbody>
 <tr>
-<td>1</td>
+<td>8</td>
 <td><code>!</code> unary <code>-</code></td>
 <td>Right</td>
 </tr>
 <tr>
-<td>2</td>
+<td>7</td>
 <td><code>=~</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>3</td>
+<td>6</td>
 <td><code>*</code> <code>/</code>  <code>%</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>4</td>
+<td>5</td>
 <td><code>+</code> <code>-</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>5</td>
+<td>4</td>
 <td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>6</td>
+<td>3</td>
 <td><code>==</code> <code>!=</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>7</td>
+<td>2</td>
 <td><code>&amp;&amp;</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>8</td>
+<td>1</td>
 <td><code>||</code></td>
 <td>Left</td>
 </tr>

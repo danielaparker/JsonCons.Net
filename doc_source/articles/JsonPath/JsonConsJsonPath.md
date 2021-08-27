@@ -1,26 +1,52 @@
 # JsonCons JSONPath
 
-[JSONPath](http://goessner.net/articles/JsonPath/) is a loosely standardized syntax for querying JSON. 
-There are many implementations and they differ in significant ways, see Christoph Burgmer's 
-[JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
+The JsonCons.JsonPath library complements the functionality of the 
+[System.Text.Json namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1)
+with an implementation of JSONPath. It provides support for querying  
+JsonDocument/JsonElement instances with code like this:
+```csharp
+var selector = JsonSelector.Parse("$.books[?(@.price >= 22 && @.price < 30)]");
 
-The JsonCons implementation is described in an [ABNF grammar](Specification.md) (in progress.)
-It explicitly implements a state machine that corresponds to this grammar. 
+IList<JsonElement> elements = selector.Select(doc.RootElement);
+```
+It targets .Net Standard 2.1.
 
-The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:
+JSONPath is a loosely standardized syntax for querying JSON. The original JavaScript JSONPath is a creation
+of Stefan Goessner and is described [here](https://goessner.net/articles/JsonPath/). Since
+the original, there have been many implementations in multiple languages, 
+implementations that differ in significant ways. For an exhaustive comparison of differences, 
+see Christoph Burgmer's [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
 
-- Stefan Goessner's implemention returns `false` in case of no match, but in a note he suggests an alternative is to return an empty array. 
-  The `JsonCons` implementation returns an empty array in case of no match.
-- Names in the dot notation may be unquoted (no spaces), single-quoted, or double-quoted.
+The JsonCons implementation attempts to preseve the essential flavor of JSONPath. Where
+implementations differ, it generally takes into account the consensus as established in
+the [JSONPath comparison](https://cburgmer.github.io/json-path-comparison/).
+
+In addition, the JsonCons incorporates some generalizations and tightening of syntax introduced
+in the more innovative and formally specified implementations.
+
+- Unquoted names follow the same rules for the selector and in filter
+expressions, and forbid characters such as hyphens that cause difficulties
+in expressions.
+
+- Names in the dot notation may be unquoted, single-quoted, or double-quoted.
+
 - Names in the square bracket notation may be single-quoted or double-quoted.
-- Wildcards are allowed in the dot notation
-- Unions of separate JSONPath expressions are allowed, e.g.
+
+- Like [PaesslerAG/jsonpath/ajson](https://github.com/PaesslerAG/jsonpath), filter expressions 
+may omit the parentheses around the expression, as in `$..book[?@.price<10]`. 
+
+- Unions may have separate JSONPath selectors, e.g.
 
     $..[@.firstName,@.address.city]
 
-- Fiter expressions, e.g. `$..book[?(@.price<10)]`, may omit the enclosing parentheses, like so `$..book[?@.price<10]`. 
-- A parent operator `^` provides access to the parent node.
-- Options are provided to exclude results corresponding to duplicate paths, and to sort results according to paths.
+- A parent selector `^`, borrowed from [JSONPath Plus](https://www.npmjs.com/package/jsonpath-plus), 
+provides access to the parent node.
+
+- Options are provided to exclude results corresponding to duplicate paths, and to 
+sort results by paths.
+
+The JsonCons implementation is described in an [ABNF grammar](Specification.md) with specification.
+It explicitly implements a state machine that corresponds to this grammar. 
 
 [Paths](#S1) 
 
@@ -103,6 +129,8 @@ simply stating that expressions can be anything that the underlying script
 engine can handle. `JsonCons` expressions support the following comparision 
 and arithmetic operators. 
 
+[!include[Operands](./Operands.md)]
+
 ### Binary operators
 
 Operator| Expression |      Description
@@ -136,16 +164,19 @@ The unary minus operator is only valid if right is a number.
 
 ### Operator precedence
 
+The table below lists operators in descending order of precedence 
+(upper rows bind tighter than lower ones.)
+
 Precedence|Operator|Associativity
 ----------|--------|-----------
-1 |`!` unary `-`    |Right
-2 |`=~`             |Left
-3 |`*` `/`  `%`     |Left 
-4 |`+` `-`          |Left 
-5 |`<` `>` `<=` `>=`|Left 
-6 |`==` `!=`        |Left 
-7 |`&&`             |Left 
-8 |<code>&#124;&#124;</code> |Left 
+8 |`!` unary `-`    |Right
+7 |`=~`             |Left
+6 |`*` `/`  `%`     |Left 
+5 |`+` `-`          |Left 
+4 |`<` `>` `<=` `>=`|Left 
+3 |`==` `!=`        |Left 
+2 |`&&`             |Left 
+1 |<code>&#124;&#124;</code> |Left 
 
 The precedence rules may be overriden with explicit parentheses, e.g. (a || b) && c.
 

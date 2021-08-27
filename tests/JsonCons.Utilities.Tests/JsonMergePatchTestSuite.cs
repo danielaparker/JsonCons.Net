@@ -50,6 +50,10 @@ namespace JsonCons.Utilities.Tests
                         {
                             using JsonDocument result = JsonMergePatch.ApplyMergePatch(given, patch);
                             Assert.IsTrue(comparer.Equals(result.RootElement,expected));
+
+                            using JsonDocument patch2 = JsonMergePatch.FromDiff(given,result.RootElement);
+                            using JsonDocument result2 = JsonMergePatch.ApplyMergePatch(given, patch2.RootElement);
+                            Assert.IsTrue(comparer.Equals(result2.RootElement,expected));
                         }
                     }
                     catch (Exception e)
@@ -68,13 +72,13 @@ namespace JsonCons.Utilities.Tests
         }
 
         [TestMethod]
-        [DeploymentItem("TestFiles")]
+        [DeploymentItem("test_files")]
         public void Test()
         {
             try
             {
-                RunJsonMergePatchTests(@".\TestFiles\rfc7396-test-cases.json");
-                //RunJsonMergePatchTests(@".\TestFiles\test.json");
+                RunJsonMergePatchTests(@".\test_files\rfc7396-test-cases.json");
+                //RunJsonMergePatchTests(@".\test_files\test.json");
             }
             catch (Exception e)
             {

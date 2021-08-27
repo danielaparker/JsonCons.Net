@@ -2,34 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>1.0.0-preview.2</Version>
+    <Version>1.1.0</Version>
     <Authors>Daniel Parker</Authors>
     <PackageId>JsonCons.JsonPath</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>The JsonCons.JsonPath library includes classes that complement the functionality of the 
-System.Text.Json namespace with support for JsonPath.</Description>
+System.Text.Json namespace with support for JsonPath. It provides support for selecting from a JsonDocument a list of JsonElement instances that belong to it.</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/danielaparker/JsonCons.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/danielaparker/JsonCons.Net</RepositoryUrl>
     <PackageTags>jsonpath json-path</PackageTags>
-    <PackageReleaseNotes>Changes:
-
-- class JsonPathOptions renamed to JsonSelectorOptions
-- property JsonSelectorOptions.SortBy replaced by 
-JsonSelectorOptions.Sort, which is a boolean value that indicates 
-whether to sort results by normalized paths
-- JsonPathExecutionMode renamed to PathExecutionMode
-
-Defect fixes:
-
-- Unquoted strings now allow all characters in the range
-%x80-10FFFF, as per specification.</PackageReleaseNotes>
+    <PackageReleaseNotes>Move from preview to release 1.0.0</PackageReleaseNotes>
     <Copyright>Daniel Parker</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\danie\source\repos\JsonCons.Net\src\JsonCons.JsonPath\JsonCons.JsonPath.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\danie\source\repos\Jsoncons.Net\src\JsonCons.JsonPath\JsonCons.JsonPath.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

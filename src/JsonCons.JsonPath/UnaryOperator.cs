@@ -37,7 +37,7 @@ namespace JsonCons.JsonPath
         internal static NotOperator Instance { get; } = new NotOperator();
 
         internal NotOperator()
-            : base(1, true)
+            : base(8, true)
         {}
 
         public override bool TryEvaluate(IValue val, out IValue result)
@@ -57,7 +57,7 @@ namespace JsonCons.JsonPath
         internal static UnaryMinusOperator Instance { get; } = new UnaryMinusOperator();
 
         internal UnaryMinusOperator()
-            : base(1, true)
+            : base(8, true)
         {}
 
         public override bool TryEvaluate(IValue val, out IValue result)
@@ -99,7 +99,7 @@ namespace JsonCons.JsonPath
         Regex _regex;
 
         internal RegexOperator(Regex regex)
-            : base(2, true)
+            : base(7, true)
         {
             _regex = regex;
         }

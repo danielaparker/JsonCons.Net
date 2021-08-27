@@ -48,7 +48,7 @@ namespace JsonCons.JsonPath.Tests
                     }
                     if (testCase.TryGetProperty("sort", out element) && element.ValueKind == JsonValueKind.True)
                     {
-                        options.SortByPath = true;
+                        options.Sort = true;
                     }
 
                     var exprElement = testCase.GetProperty("expression");
@@ -83,7 +83,7 @@ namespace JsonCons.JsonPath.Tests
                                 {
                                     Debug.WriteLine("nodups");
                                 }
-                                if (options.SortByPath)
+                                if (options.Sort)
                                 {
                                     Debug.WriteLine("sort");
                                 }
@@ -114,24 +114,25 @@ namespace JsonCons.JsonPath.Tests
         }
 
         [TestMethod]
-        [DeploymentItem("TestFiles")]
+        [DeploymentItem("test_files")]
         public void Test()
         {
             try
             {
-                RunJsonPathTests(@".\TestFiles\dot-notation.json");
-                RunJsonPathTests(@".\TestFiles\filters.json");
-                RunJsonPathTests(@".\TestFiles\functions.json");              
-                RunJsonPathTests(@".\TestFiles\identifiers.json");
-                RunJsonPathTests(@".\TestFiles\indices.json");
-                RunJsonPathTests(@".\TestFiles\regex.json");
-                RunJsonPathTests(@".\TestFiles\slice.json");
-                RunJsonPathTests(@".\TestFiles\syntax.json");
-                RunJsonPathTests(@".\TestFiles\union.json");
-                RunJsonPathTests(@".\TestFiles\wildcard.json");
-                RunJsonPathTests(@".\TestFiles\parent-operator.json");
+                RunJsonPathTests(@".\test_files\dot-notation.json");
+                RunJsonPathTests(@".\test_files\filters.json");
+                RunJsonPathTests(@".\test_files\functions.json");              
+                RunJsonPathTests(@".\test_files\identifiers.json");
+                RunJsonPathTests(@".\test_files\indices.json");
+                RunJsonPathTests(@".\test_files\regex.json");
+                RunJsonPathTests(@".\test_files\slice.json");
+                RunJsonPathTests(@".\test_files\syntax.json");
+                RunJsonPathTests(@".\test_files\union.json");
+                RunJsonPathTests(@".\test_files\wildcard.json");
+                RunJsonPathTests(@".\test_files\parent-operator.json");
+                RunJsonPathTests(@".\test_files\recursive-descent.json");
                 
-                RunJsonPathTests(@".\TestFiles\test.json");              
+                RunJsonPathTests(@".\test_files\test.json");              
             }
             catch (Exception e)
             {

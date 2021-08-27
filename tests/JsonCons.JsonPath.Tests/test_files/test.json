@@ -1,0 +1,12 @@
+[
+   {
+        "given" :  [0,1,2,3,4,5],
+        "cases" : [
+            {
+                "comment" : "Non-associatvity of subtraction (1)",
+                "expression" : "$[?($[5] - $[3])-$[2] == 0]",
+                "result" : [0,1,2,3,4,5]
+            }
+        ]
+   }
+]

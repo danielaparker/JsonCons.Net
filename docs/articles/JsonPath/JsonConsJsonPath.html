@@ -62,32 +62,49 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="jsoncons-jsonpath">JsonCons JSONPath</h1>
 
-<p><a href="http://goessner.net/articles/JsonPath/">JSONPath</a> is a loosely standardized syntax for querying JSON.
-There are many implementations and they differ in significant ways, see Christoph Burgmer's
-<a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.</p>
-<p>The JsonCons implementation is described in an <a href="Specification.html">ABNF grammar</a> (in progress.)
-It explicitly implements a state machine that corresponds to this grammar.</p>
-<p>The JsonCons implementation differs from Stefan Goessner's original JavaScript implementation in the following respects:</p>
+<p>The JsonCons.JsonPath library complements the functionality of the
+<a href="https://docs.microsoft.com/en-us/dotnet/api/system.text.json?view=netcore-3.1">System.Text.Json namespace</a>
+with an implementation of JSONPath. It provides support for querying<br>
+JsonDocument/JsonElement instances with code like this:</p>
+<pre><code class="lang-csharp">var selector = JsonSelector.Parse(&quot;$.books[?(@.price &gt;= 22 &amp;&amp; @.price &lt; 30)]&quot;);
+
+IList&lt;JsonElement&gt; elements = selector.Select(doc.RootElement);
+</code></pre>
+<p>It targets .Net Standard 2.1.</p>
+<p>JSONPath is a loosely standardized syntax for querying JSON. The original JavaScript JSONPath is a creation
+of Stefan Goessner and is described <a href="https://goessner.net/articles/JsonPath/">here</a>. Since
+the original, there have been many implementations in multiple languages,
+implementations that differ in significant ways. For an exhaustive comparison of differences,
+see Christoph Burgmer's <a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.</p>
+<p>The JsonCons implementation attempts to preseve the essential flavor of JSONPath. Where
+implementations differ, it generally takes into account the consensus as established in
+the <a href="https://cburgmer.github.io/json-path-comparison/">JSONPath comparison</a>.</p>
+<p>In addition, the JsonCons incorporates some generalizations and tightening of syntax introduced
+in the more innovative and formally specified implementations.</p>
 <ul>
-<li><p>Stefan Goessner's implemention returns <code>false</code> in case of no match, but in a note he suggests an alternative is to return an empty array.
-The <code>JsonCons</code> implementation returns an empty array in case of no match.</p>
+<li><p>Unquoted names follow the same rules for the selector and in filter
+expressions, and forbid characters such as hyphens that cause difficulties
+in expressions.</p>
 </li>
-<li><p>Names in the dot notation may be unquoted (no spaces), single-quoted, or double-quoted.</p>
+<li><p>Names in the dot notation may be unquoted, single-quoted, or double-quoted.</p>
 </li>
 <li><p>Names in the square bracket notation may be single-quoted or double-quoted.</p>
 </li>
-<li><p>Wildcards are allowed in the dot notation</p>
+<li><p>Like <a href="https://github.com/PaesslerAG/jsonpath">PaesslerAG/jsonpath/ajson</a>, filter expressions
+may omit the parentheses around the expression, as in <code>$..book[?@.price&lt;10]</code>.</p>
 </li>
-<li><p>Unions of separate JSONPath expressions are allowed, e.g.</p>
+<li><p>Unions may have separate JSONPath selectors, e.g.</p>
 <p>$..[@.firstName,@.address.city]</p>
 </li>
-<li><p>Fiter expressions, e.g. <code>$..book[?(@.price&lt;10)]</code>, may omit the enclosing parentheses, like so <code>$..book[?@.price&lt;10]</code>.</p>
+<li><p>A parent selector <code>^</code>, borrowed from <a href="https://www.npmjs.com/package/jsonpath-plus">JSONPath Plus</a>,
+provides access to the parent node.</p>
 </li>
-<li><p>A parent operator <code>^</code> provides access to the parent node.</p>
-</li>
-<li><p>Options are provided to exclude results corresponding to duplicate paths, and to sort results according to paths.</p>
+<li><p>Options are provided to exclude results corresponding to duplicate paths, and to
+sort results by paths.</p>
 </li>
 </ul>
+<p>The JsonCons implementation is described in an <a href="Specification.html">ABNF grammar</a> with specification.
+It explicitly implements a state machine that corresponds to this grammar.</p>
 <p><a href="#S1">Paths</a></p>
 <p><a href="#S2">Selectors</a></p>
 <p><a href="#S3">Filter expressions</a></p>
@@ -231,16 +248,22 @@ in the list will add its provided value to the output list.</p>
 </code></pre>
 <div id="Selector1"></div> 
 <h3 id="root-selector">Root selector</h3>
+<pre><code class="lang-text">root = &quot;$&quot;
+</code></pre>
 <p>The symbol &quot;$&quot; represents the root JSON value, the JSON document to be evaluated.
 The root selector selects this value.</p>
 <div id="Selector2"></div> 
 <h3 id="current-node-selector">Current node selector</h3>
+<pre><code class="lang-text">current-node = &quot;@&quot;
+</code></pre>
 <p>The symbol &quot;@&quot; represents the &quot;current node&quot;. At the start of an expression,
 the current node is the document to be evaluated, and as the expression
 is evaluated, it changes to reflect the node currently being processed.<br>
 The current node selector selects this value.</p>
 <div id="Selector3"></div> 
 <h3 id="parent-selector">Parent selector</h3>
+<pre><code class="lang-text">parent = &quot;^&quot;
+</code></pre>
 <p>The symbol &quot;^&quot; represents the parent of the current node.</p>
 <p>Consider the JSON document</p>
 <pre><code>[
@@ -336,10 +359,58 @@ that allows you to select book objects based on criteria applied to descendent v
 </code></pre>
 <div id="Selector4"></div> 
 <h3 id="identifier-selector">Identifier selector</h3>
+<pre><code class="lang-text">identifier = unquoted-string / single-quoted-string / double-quoted-string
+
+unquoted-string   =     %x30-39  /  ; 0-9
+                        %x41-5A  /  ; A-Z
+                        %x5F     /  ; _
+                        %x61-7A  /  ; a-z
+                        %x80-10FFFF ; U+0080 ...    
+
+single-quoted-string     = single-quote 
+                           1*(unescaped-char / double-quote / 
+                              escaped-char / escaped-single-quote) 
+                           single-quote
+
+double-quoted-string     = double-quote 
+                           1*(unescaped-char / single-quote / 
+                              escaped-char / escaped-double-quote) 
+                           double-quote
+
+escaped-single-quote      = escape single-quote    ; '    single quote  U+002c
+escaped-double-quote      = escape double-quote    ; &quot;    double quote  U+0022
+
+single-quote             = %x2c                    ; Single quote: &quot;'&quot;
+double-quote             = %x22                    ; Double quote: '&quot;'
+
+unescaped-char    = %x20-21 / %x23-2b / %x2d-5B / %x5D-10FFFF
+escape            = %x5C                ; Back slash: \
+escaped-char      = escape (
+                        %x5C /          ; \    reverse solidus U+005C
+                        %x2F /          ; /    solidus         U+002F
+                        %x62 /          ; b    backspace       U+0008
+                        %x66 /          ; f    form feed       U+000C
+                        %x6E /          ; n    line feed       U+000A
+                        %x72 /          ; r    carriage return U+000D
+                        %x74 /          ; t    tab             U+0009
+                        %x75 4HEXDIG )  ; uXXXX                U+XXXX
+</code></pre>
+
+<p>An identifier selector selects zero or one values from a JSON value,
+depending on whether it is an object that has a member with a
+corresponding name.</p>
 <div id="Selector5"></div> 
 <h3 id="index-selector">Index selector</h3>
+<pre><code class="lang-text">index   = integer
+</code></pre>
+<p>An index selector selects zero or one values from a JSON value,
+depending on whether it is an array with an element at a
+corresponding index. Indexing is zero-based. A negative index
+indicates that indexing is relative to the end of the array.</p>
 <div id="Selector6"></div> 
-<h3 id="slices">Slices</h3>
+<h3 id="slice-selector">Slice selector</h3>
+<pre><code class="lang-text">slice   = [integer] &quot;:&quot; [integer] [ &quot;:&quot; [integer] ]
+</code></pre>
 <p>JsonCons jsonpath slices have the same semantics as Python slices</p>
 <p>The syntax for a slice is</p>
 <pre><code>[start:stop:step]
@@ -425,7 +496,9 @@ is positive, or the beginning of the array if <code>step</code> is negative.</p>
 </tbody>
 </table>
 <div id="Selector7"></div> 
-<h3 id="recursive-descent-selector-">Recursive descent selector (..)</h3>
+<h3 id="recursive-descent-selector">Recursive descent selector</h3>
+<pre><code class="lang-text">recursive-descent = &quot;..&quot;
+</code></pre>
 <p>The recursive descent selector performs a select operation
 on a provided JSON value as follows:</p>
 <ul>
@@ -461,12 +534,20 @@ operation on each property's value.</p>
 <pre><code>[&quot;baz&quot;,&quot;qux&quot;]
 </code></pre>
 <div id="Selector8"></div> 
-<h3 id="wildcard-selector-">Wildcard selector (*)</h3>
+<h3 id="wildcard-selector">Wildcard selector</h3>
+<pre><code class="lang-text">wildcard = &quot;*&quot;
+</code></pre>
 <p>The wildcard selector can select multiple items. If provided with an array,
 it will select all the array's elements, and if provided with an object,
 it will select the value part of all the object's name-value pairs.</p>
 <div id="Selector9"></div> 
 <h3 id="unions">Unions</h3>
+<pre><code class="lang-text">bracket-expression = &quot;[&quot; bracketed-element *(&quot;,&quot; bracketed-element) &quot;]&quot;
+
+bracketed-element = index / slice-expression / single-quoted-string / double-quoted-string
+bracketed-element =/ wildcard / filter-expression / jsonpath
+</code></pre>
+
 <p>In JsonCons, a JSONPath union element can be</p>
 <ul>
 <li>an index or slice expression</li>
@@ -483,6 +564,30 @@ the last, and the third from <a href="https://goessner.net/articles/JsonPath/ind
 </code></pre>
 <div id="Selector10"></div> 
 <h3 id="filter-selector">Filter selector</h3>
+<pre><code class="lang-text">filter-expression = &quot;?&quot; expression
+
+expression = single-quoted-string 
+expression =/ json-literal ; any valid JSON value
+expression =/ jsonpath 
+expression =/ unary-expression / binary-expression / regex-expression / paren-expression 
+paren-expression  = &quot;(&quot; expression &quot;)&quot;
+unary-expression=unary-operator expression
+binary-expression = expression binary-operator expression
+regex-expression = expression regex-operator &quot;/&quot; regex &quot;/&quot; [i]
+unary-operator = &quot;!&quot; / &quot;-&quot;
+binary-operator  = &quot;*&quot; / &quot;/&quot; / &quot;%&quot; / &quot;+&quot; / &quot;-&quot; / &quot;&amp;&amp;&quot; / &quot;||&quot; / &lt;&quot; / &quot;&lt;=&quot; / &quot;==&quot; / &quot;&gt;=&quot; / &quot;&gt;&quot; / &quot;!=&quot; 
+regex-operator = &quot;=~&quot;
+;
+; &quot;regex&quot; represents regular expression characters
+
+function-expression = unquoted-string  (
+                        no-args  /
+                        one-or-more-args )
+no-args             = &quot;(&quot; &quot;)&quot;
+one-or-more-args    = &quot;(&quot; ( function-arg *( &quot;,&quot; function-arg ) ) &quot;)&quot;
+function-arg        = expression
+</code></pre>
+
 <p>JSONPath uses filter expressions <code>[?&lt;expr&gt;]</code> to restrict the set of nodes
 returned by a path, e.g. <code>$..book[?(@.price&lt;10)]</code> returns the books with
 prices less than 10. Filter expressions are applied to each element in a
@@ -505,6 +610,40 @@ does not provide any specification for the allowable filter expressions,
 simply stating that expressions can be anything that the underlying script
 engine can handle. <code>JsonCons</code> expressions support the following comparision
 and arithmetic operators.</p>
+<h2 id="operands">Operands</h2>
+<p>The operands in an expression may be a jsonpath</p>
+<pre><code>jsonpath = &quot;$&quot; [relative-location]
+jsonpath = &quot;@&quot; [relative-location]
+</code></pre>
+<p>a <code>single-quoted-string</code>, or a <code>json-literal</code>.</p>
+<p>For example, given a JSON document</p>
+<pre><code>[[1, 2, 3], [1], [2, 3], &quot;1&quot;, &quot;2&quot;]
+</code></pre>
+<p>the four queries below are all valid</p>
+<pre><code>$[?@ == '2']
+
+$[?@ == [1,2,3]]    
+
+$[?@[0:1]==[1]]     
+
+$[?$[2] == [2,3]]   
+</code></pre>
+<p>and produce the results</p>
+<pre><code class="lang-json">[&quot;2&quot;]   
+
+[[1,2, 3]]    
+
+[[1, 2, 3], [1]]  
+
+[[1, 2, 3], [1], [2, 3], &quot;1&quot;, &quot;2&quot;]
+</code></pre>
+<p>In an expression, a <code>jsonpath</code> is not evaluated as a
+collection of matching JSON values, but rather, as a single JSON value.
+The slice, recursive descent, wildcard, union and filter selectors,
+which can evaluate to zero, one, or many items, are wrapped
+in a Json array. The others - root, current node, parent node,
+identifier, and index selectors - evaluate to a single value if
+matched, otherwise a null value.</p>
 <h3 id="binary-operators">Binary operators</h3>
 <table>
 <thead>
@@ -613,6 +752,8 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 </table>
 <p>The unary minus operator is only valid if right is a number.</p>
 <h3 id="operator-precedence">Operator precedence</h3>
+<p>The table below lists operators in descending order of precedence
+(upper rows bind tighter than lower ones.)</p>
 <table>
 <thead>
 <tr>
@@ -623,42 +764,42 @@ or if both left and right are strings. Otherwise the item will be excluded from 
 </thead>
 <tbody>
 <tr>
-<td>1</td>
+<td>8</td>
 <td><code>!</code> unary <code>-</code></td>
 <td>Right</td>
 </tr>
 <tr>
-<td>2</td>
+<td>7</td>
 <td><code>=~</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>3</td>
+<td>6</td>
 <td><code>*</code> <code>/</code>  <code>%</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>4</td>
+<td>5</td>
 <td><code>+</code> <code>-</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>5</td>
+<td>4</td>
 <td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>6</td>
+<td>3</td>
 <td><code>==</code> <code>!=</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>7</td>
+<td>2</td>
 <td><code>&amp;&amp;</code></td>
 <td>Left</td>
 </tr>
 <tr>
-<td>8</td>
+<td>1</td>
 <td><code>||</code></td>
 <td>Left</td>
 </tr>

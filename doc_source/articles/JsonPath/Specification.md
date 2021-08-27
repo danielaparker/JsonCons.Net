@@ -1,12 +1,14 @@
 # JsonCons JsonPath Specification
 
-[!include[Grammar](./Grammar.md)]
+[!include[Grammar](./grammar/Grammar.md)]
 
 [!include[Selectors](./Selectors.md)]
 
 ## Filter Expressions
 
 [!include[True and False Values](./TrueAndFalseValues.md)]
+
+[!include[Operands](./Operands.md)]
 
 [!include[Operator Precedence](./operators/OperatorPrecedence.md)]
 

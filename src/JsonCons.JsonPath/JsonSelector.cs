@@ -118,7 +118,7 @@ namespace JsonCons.JsonPath
     /// using System;
     /// using System.Diagnostics;
     /// using System.Text.Json;
-    /// using JsonCons.Utilities;
+    /// using JsonCons.JsonPath;
     /// 
     /// public class Example
     /// {

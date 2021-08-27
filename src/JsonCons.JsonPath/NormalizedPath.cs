@@ -52,13 +52,13 @@ namespace JsonCons.JsonPath
         private readonly Int32 _index;
 
         /// <summary>
-        /// Gets a root node 
+        /// Gets an instance of <see cref="NormalizedPathNode"/> that represents the root value ($) 
         ///
         /// </summary>
         public static NormalizedPathNode Root {get;} = new NormalizedPathNode(NormalizedPathNodeKind.Root, "$");
 
         /// <summary>
-        /// Gets a current node 
+        /// Gets an instance of <see cref="NormalizedPathNode"/> that represents the current node (@)
         ///
         /// </summary>
         public static NormalizedPathNode Current { get;} = new NormalizedPathNode(NormalizedPathNodeKind.Root, "@");
@@ -123,7 +123,7 @@ namespace JsonCons.JsonPath
         }
 
         /// <summary>
-        /// Gets the value of this NormalizedPathNode as a name.
+        /// Gets the value of this <see cref="NormalizedPathNode"/> as a name.
         ///
         /// </summary>
         public string GetName()
@@ -132,7 +132,7 @@ namespace JsonCons.JsonPath
         }
 
         /// <summary>
-        /// Gets the value of this NormalizedPathNode as an index.
+        /// Gets the value of this <see cref="NormalizedPathNode"/> as an index.
         ///
         /// </summary>
         public Int32 GetIndex()
@@ -140,9 +140,9 @@ namespace JsonCons.JsonPath
             return _index;
         }
         /// <summary>
-        /// Compares this instance with a specified NormalizedPathNode object and indicates 
+        /// Compares this instance with a specified <see cref="NormalizedPathNode"/> object and indicates 
         /// whether this instance precedes, follows, or appears in the same 
-        /// position in the sort order as the specified NormalizedPathNode.
+        /// position in the sort order as the specified <see cref="NormalizedPathNode"/>.
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
@@ -175,7 +175,7 @@ namespace JsonCons.JsonPath
             return diff;
         }
         /// <summary>
-        /// Returns the hash code for this NormalizedPathNode.
+        /// Returns the hash code for this <see cref="NormalizedPathNode"/>.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
@@ -333,9 +333,9 @@ namespace JsonCons.JsonPath
             return buffer.ToString();
         }
         /// <summary>
-        /// Determines whether this instance and another specified NormalizedPath object have the same value.
+        /// Determines whether this instance and another specified <see cref="NormalizedPath"/> object have the same value.
         /// </summary>
-        /// <param name="other">The NormalizedPath to compare to this instance.</param>
+        /// <param name="other">The <see cref="NormalizedPath"/> to compare to this instance.</param>
         /// <returns>true if the value of other is the same as the value of this instance; otherwise, false. If other is null, the method returns false.</returns>
         public bool Equals(NormalizedPath other)
         {
@@ -347,10 +347,10 @@ namespace JsonCons.JsonPath
             return CompareTo(other) == 0;
         }
         /// <summary>
-        /// Determines whether this instance and a specified object, which must also be a NormalizedPath object, have the same value.
+        /// Determines whether this instance and a specified object, which must also be a <see cref="NormalizedPath"/> object, have the same value.
         /// </summary>
-        /// <param name="other">The NormalizedPath to compare to this instance.</param>
-        /// <returns>true if other is a NormalizedPath and its value is the same as this instance; otherwise, false. If other is null, the method returns false.</returns>
+        /// <param name="other">The <see cref="NormalizedPath"/> to compare to this instance.</param>
+        /// <returns>true if other is a <see cref="NormalizedPath"/> and its value is the same as this instance; otherwise, false. If other is null, the method returns false.</returns>
         public override bool Equals(Object other)
         {
             if (other == null)
@@ -361,11 +361,11 @@ namespace JsonCons.JsonPath
             return Equals(other as NormalizedPathNode);
         }
         /// <summary>
-        /// Compares this instance with a specified NormalizedPath object and indicates 
+        /// Compares this instance with a specified <see cref="NormalizedPath"/> object and indicates 
         /// whether this instance precedes, follows, or appears in the same 
-        /// position in the sort order as the specified NormalizedPath.
+        /// position in the sort order as the specified <see cref="NormalizedPath"/>.
         /// </summary>
-        /// <param name="other">The NormalizedPath to compare with this instance.</param>
+        /// <param name="other">The <see cref="NormalizedPath"/> to compare with this instance.</param>
         /// <returns>A 32-bit signed integer that indicates whether this instance precedes, 
         /// follows, or appears in the same position in the sort order as other.</returns>
         public int CompareTo(NormalizedPath other)
@@ -384,7 +384,7 @@ namespace JsonCons.JsonPath
             return _components.Count - other._components.Count;
         }
         /// <summary>
-        /// Returns the hash code for this NormalizedPath.
+        /// Returns the hash code for this <see cref="NormalizedPath"/>.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()

@@ -1,6 +1,95 @@
 ### YamlMime:XRefMap
 sorted: true
 references:
+- uid: JsonCons.JmesPath
+  name: JsonCons.JmesPath
+  href: ref/JsonCons.JmesPath.html
+  commentId: N:JsonCons.JmesPath
+  fullName: JsonCons.JmesPath
+  nameWithType: JsonCons.JmesPath
+- uid: JsonCons.JmesPath.JmesPathParseException
+  name: JmesPathParseException
+  href: ref/JsonCons.JmesPath.JmesPathParseException.html
+  commentId: T:JsonCons.JmesPath.JmesPathParseException
+  fullName: JsonCons.JmesPath.JmesPathParseException
+  nameWithType: JmesPathParseException
+- uid: JsonCons.JmesPath.JmesPathParseException.ColumnNumber
+  name: ColumnNumber
+  href: ref/JsonCons.JmesPath.JmesPathParseException.html#JsonCons_JmesPath_JmesPathParseException_ColumnNumber
+  commentId: P:JsonCons.JmesPath.JmesPathParseException.ColumnNumber
+  fullName: JsonCons.JmesPath.JmesPathParseException.ColumnNumber
+  nameWithType: JmesPathParseException.ColumnNumber
+- uid: JsonCons.JmesPath.JmesPathParseException.ColumnNumber*
+  name: ColumnNumber
+  href: ref/JsonCons.JmesPath.JmesPathParseException.html#JsonCons_JmesPath_JmesPathParseException_ColumnNumber_
+  commentId: Overload:JsonCons.JmesPath.JmesPathParseException.ColumnNumber
+  isSpec: "True"
+  fullName: JsonCons.JmesPath.JmesPathParseException.ColumnNumber
+  nameWithType: JmesPathParseException.ColumnNumber
+- uid: JsonCons.JmesPath.JmesPathParseException.LineNumber
+  name: LineNumber
+  href: ref/JsonCons.JmesPath.JmesPathParseException.html#JsonCons_JmesPath_JmesPathParseException_LineNumber
+  commentId: P:JsonCons.JmesPath.JmesPathParseException.LineNumber
+  fullName: JsonCons.JmesPath.JmesPathParseException.LineNumber
+  nameWithType: JmesPathParseException.LineNumber
+- uid: JsonCons.JmesPath.JmesPathParseException.LineNumber*
+  name: LineNumber
+  href: ref/JsonCons.JmesPath.JmesPathParseException.html#JsonCons_JmesPath_JmesPathParseException_LineNumber_
+  commentId: Overload:JsonCons.JmesPath.JmesPathParseException.LineNumber
+  isSpec: "True"
+  fullName: JsonCons.JmesPath.JmesPathParseException.LineNumber
+  nameWithType: JmesPathParseException.LineNumber
+- uid: JsonCons.JmesPath.JmesPathParseException.ToString
+  name: ToString()
+  href: ref/JsonCons.JmesPath.JmesPathParseException.html#JsonCons_JmesPath_JmesPathParseException_ToString
+  commentId: M:JsonCons.JmesPath.JmesPathParseException.ToString
+  fullName: JsonCons.JmesPath.JmesPathParseException.ToString()
+  nameWithType: JmesPathParseException.ToString()
+- uid: JsonCons.JmesPath.JmesPathParseException.ToString*
+  name: ToString
+  href: ref/JsonCons.JmesPath.JmesPathParseException.html#JsonCons_JmesPath_JmesPathParseException_ToString_
+  commentId: Overload:JsonCons.JmesPath.JmesPathParseException.ToString
+  isSpec: "True"
+  fullName: JsonCons.JmesPath.JmesPathParseException.ToString
+  nameWithType: JmesPathParseException.ToString
+- uid: JsonCons.JmesPath.JsonTransformer
+  name: JsonTransformer
+  href: ref/JsonCons.JmesPath.JsonTransformer.html
+  commentId: T:JsonCons.JmesPath.JsonTransformer
+  fullName: JsonCons.JmesPath.JsonTransformer
+  nameWithType: JsonTransformer
+- uid: JsonCons.JmesPath.JsonTransformer.Parse(System.String)
+  name: Parse(String)
+  href: ref/JsonCons.JmesPath.JsonTransformer.html#JsonCons_JmesPath_JsonTransformer_Parse_System_String_
+  commentId: M:JsonCons.JmesPath.JsonTransformer.Parse(System.String)
+  fullName: JsonCons.JmesPath.JsonTransformer.Parse(System.String)
+  nameWithType: JsonTransformer.Parse(String)
+- uid: JsonCons.JmesPath.JsonTransformer.Parse*
+  name: Parse
+  href: ref/JsonCons.JmesPath.JsonTransformer.html#JsonCons_JmesPath_JsonTransformer_Parse_
+  commentId: Overload:JsonCons.JmesPath.JsonTransformer.Parse
+  isSpec: "True"
+  fullName: JsonCons.JmesPath.JsonTransformer.Parse
+  nameWithType: JsonTransformer.Parse
+- uid: JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement)
+  name: Transform(JsonElement)
+  href: ref/JsonCons.JmesPath.JsonTransformer.html#JsonCons_JmesPath_JsonTransformer_Transform_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement)
+  fullName: JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement)
+  nameWithType: JsonTransformer.Transform(JsonElement)
+- uid: JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement,System.String)
+  name: Transform(JsonElement, String)
+  href: ref/JsonCons.JmesPath.JsonTransformer.html#JsonCons_JmesPath_JsonTransformer_Transform_System_Text_Json_JsonElement_System_String_
+  commentId: M:JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement,System.String)
+  fullName: JsonCons.JmesPath.JsonTransformer.Transform(System.Text.Json.JsonElement, System.String)
+  nameWithType: JsonTransformer.Transform(JsonElement, String)
+- uid: JsonCons.JmesPath.JsonTransformer.Transform*
+  name: Transform
+  href: ref/JsonCons.JmesPath.JsonTransformer.html#JsonCons_JmesPath_JsonTransformer_Transform_
+  commentId: Overload:JsonCons.JmesPath.JsonTransformer.Transform
+  isSpec: "True"
+  fullName: JsonCons.JmesPath.JsonTransformer.Transform
+  nameWithType: JsonTransformer.Transform
 - uid: JsonCons.JsonPath
   name: JsonCons.JsonPath
   href: ref/JsonCons.JsonPath.html
@@ -778,6 +867,19 @@ references:
   isSpec: "True"
   fullName: JsonCons.Utilities.JsonMergePatch.ApplyMergePatch
   nameWithType: JsonMergePatch.ApplyMergePatch
+- uid: JsonCons.Utilities.JsonMergePatch.FromDiff(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  name: FromDiff(JsonElement, JsonElement)
+  href: ref/JsonCons.Utilities.JsonMergePatch.html#JsonCons_Utilities_JsonMergePatch_FromDiff_System_Text_Json_JsonElement_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.Utilities.JsonMergePatch.FromDiff(System.Text.Json.JsonElement,System.Text.Json.JsonElement)
+  fullName: JsonCons.Utilities.JsonMergePatch.FromDiff(System.Text.Json.JsonElement, System.Text.Json.JsonElement)
+  nameWithType: JsonMergePatch.FromDiff(JsonElement, JsonElement)
+- uid: JsonCons.Utilities.JsonMergePatch.FromDiff*
+  name: FromDiff
+  href: ref/JsonCons.Utilities.JsonMergePatch.html#JsonCons_Utilities_JsonMergePatch_FromDiff_
+  commentId: Overload:JsonCons.Utilities.JsonMergePatch.FromDiff
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonMergePatch.FromDiff
+  nameWithType: JsonMergePatch.FromDiff
 - uid: JsonCons.Utilities.JsonPatch
   name: JsonPatch
   href: ref/JsonCons.Utilities.JsonPatch.html

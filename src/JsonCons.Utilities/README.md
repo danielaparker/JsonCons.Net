@@ -10,7 +10,7 @@ with support for
 
 The JsonCons.Utilities library targets .Net Standard 2.1. Reference documentation is available [here](https://danielaparker.github.io/JsonCons.Net/ref/JsonCons.Utilities.html)
 
-Code examples may be found at:
+Code examples may be found at 
 
 [JSON Pointer examples](https://github.com/danielaparker/JsonCons.Net/blob/main/examples/JsonPointer.Examples/JsonPointerExamples.cs)
 

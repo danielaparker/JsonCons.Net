@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>1.0.0-preview.1</Version>
+    <Version>1.0.0</Version>
     <Authors>Daniel Parker</Authors>
     <Description>The JsonCons.Utilities library includes classes that complement the functionality of the 
 System.Text.Json namespace with support for JSON Pointer, JSON Patch, and JSON Merge Patch.</Description>
@@ -12,12 +12,17 @@ System.Text.Json namespace with support for JSON Pointer, JSON Patch, and JSON M
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/danielaparker/JsonCons.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/danielaparker/JsonCons.Net</RepositoryUrl>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes>Move from preview to release 1.0.0
+</PackageReleaseNotes>
     <PackageTags>jsonpointer json-pointer jsonpatch json-patch json-merge-patch</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>C:\Users\danie\source\repos\JsonCons.Net\src\JsonCons.Utilities\JsonCons.Utilities.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\danie\source\repos\Jsoncons.Net\src\JsonCons.Utilities\JsonCons.Utilities.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

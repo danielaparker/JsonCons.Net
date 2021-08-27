@@ -74,9 +74,9 @@ namespace JsonCons.Utilities
     ///     var options = new JsonSerializerOptions() { WriteIndented = true };
     /// 
     ///     Console.WriteLine("The original document:\n");
-    ///     Console.WriteLine($"{JsonSerializer.Serialize(doc.RootElement, options)}\n");
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(doc, options)}\n");
     ///     Console.WriteLine("The patch:\n");
-    ///     Console.WriteLine($"{JsonSerializer.Serialize(patch.RootElement, options)}\n");
+    ///     Console.WriteLine($"{JsonSerializer.Serialize(patch, options)}\n");
     ///     Console.WriteLine("The result:\n");
     ///     Console.WriteLine($"{JsonSerializer.Serialize(result, options)}\n");
     ///        ");
@@ -132,7 +132,7 @@ namespace JsonCons.Utilities
         /// to a source JSON value.
         /// </summary>
         /// <remarks>
-        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// It is the users responsibilty to properly Dispose the returned <see cref="JsonDocument"/> value
         /// </remarks>
         /// <param name="source">The source JSON value.</param>
         /// <param name="patch">The patch to be applied to the source JSON value.</param>
@@ -311,28 +311,28 @@ namespace JsonCons.Utilities
         /// given two JSON values, a source and a target.
         /// </summary>
         /// <remarks>
-        /// It is the users responsibilty to properly Dispose the returned JSONDocument value
+        /// It is the users responsibilty to properly Dispose the returned <see cref="JsonDocument"/> value
         /// </remarks>
         /// <param name="source">The source JSON value.</param>
         /// <param name="target">The target JSON value.</param>
-        /// <returns>A patch to convert the source JSON value to the target JSON value</returns>
+        /// <returns>A JSON Merge Patch to convert the source JSON value to the target JSON value</returns>
         public static JsonDocument FromDiff(JsonElement source, 
                                             JsonElement target)
         {
-            return FromDiff(source, target, "").ToJsonDocument();
+            return _FromDiff(source, target, "").ToJsonDocument();
         }
 
-        static JsonDocumentBuilder FromDiff(JsonElement source, 
+        static JsonDocumentBuilder _FromDiff(JsonElement source, 
                                             JsonElement target, 
                                             string path)
         {
-            var resultBuilder = new JsonDocumentBuilder(JsonValueKind.Array);
+            var builder = new JsonDocumentBuilder(JsonValueKind.Array);
 
             JsonElementEqualityComparer comparer = JsonElementEqualityComparer.Instance;
 
             if (comparer.Equals(source,target))
             {
-                return resultBuilder;
+                return builder;
             }
 
             if (source.ValueKind == JsonValueKind.Array && target.ValueKind == JsonValueKind.Array)
@@ -343,10 +343,10 @@ namespace JsonCons.Utilities
                     var buffer = new StringBuilder(path); 
                     buffer.Append("/");
                     buffer.Append(i.ToString());
-                    var temp_diff = FromDiff(source[i], target[i], buffer.ToString());
+                    var temp_diff = _FromDiff(source[i], target[i], buffer.ToString());
                     foreach (var item in temp_diff.EnumerateArray())
                     {
-                        resultBuilder.AddArrayItem(item);
+                        builder.AddArrayItem(item);
                     }
                 }
                 // Element in source, not in target - remove
@@ -358,7 +358,7 @@ namespace JsonCons.Utilities
                     var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
                     valBuilder.AddProperty("op", new JsonDocumentBuilder("remove"));
                     valBuilder.AddProperty("path", new JsonDocumentBuilder(buffer.ToString()));
-                    resultBuilder.AddArrayItem(valBuilder);
+                    builder.AddArrayItem(valBuilder);
                 }
                 // Element in target, not in source - add, 
                 for (int i = source.GetArrayLength(); i < target.GetArrayLength(); ++i)
@@ -371,7 +371,7 @@ namespace JsonCons.Utilities
                     valBuilder.AddProperty("op", new JsonDocumentBuilder("add"));
                     valBuilder.AddProperty("path", new JsonDocumentBuilder(buffer.ToString()));
                     valBuilder.AddProperty("value", new JsonDocumentBuilder(a));
-                    resultBuilder.AddArrayItem(valBuilder);
+                    builder.AddArrayItem(valBuilder);
                 }
             }
             else if (source.ValueKind == JsonValueKind.Object && target.ValueKind == JsonValueKind.Object)
@@ -385,10 +385,10 @@ namespace JsonCons.Utilities
                     JsonElement element;
                     if (target.TryGetProperty(a.Name, out element))
                     { 
-                        var temp_diff = FromDiff(a.Value, element, buffer.ToString());
+                        var temp_diff = _FromDiff(a.Value, element, buffer.ToString());
                         foreach (var item in temp_diff.EnumerateArray())
                         {
-                            resultBuilder.AddArrayItem(item);
+                            builder.AddArrayItem(item);
                         }
                     }
                     else
@@ -396,7 +396,7 @@ namespace JsonCons.Utilities
                         var valBuilder = new JsonDocumentBuilder(JsonValueKind.Object);
                         valBuilder.AddProperty("op", new JsonDocumentBuilder("remove"));
                         valBuilder.AddProperty("path", new JsonDocumentBuilder(buffer.ToString()));
-                        resultBuilder.AddArrayItem(valBuilder);
+                        builder.AddArrayItem(valBuilder);
                     }
                 }
                 foreach (var a in target.EnumerateObject())
@@ -411,7 +411,7 @@ namespace JsonCons.Utilities
                         valBuilder.AddProperty("op", new JsonDocumentBuilder("add"));
                         valBuilder.AddProperty("path", new JsonDocumentBuilder(buffer.ToString()));
                         valBuilder.AddProperty("value", new JsonDocumentBuilder(a.Value));
-                        resultBuilder.AddArrayItem(valBuilder);
+                        builder.AddArrayItem(valBuilder);
                     }
                 }
             }
@@ -421,10 +421,10 @@ namespace JsonCons.Utilities
                 valBuilder.AddProperty("op", new JsonDocumentBuilder("replace"));
                 valBuilder.AddProperty("path", new JsonDocumentBuilder(path));
                 valBuilder.AddProperty("value", new JsonDocumentBuilder(target));
-                resultBuilder.AddArrayItem(valBuilder);
+                builder.AddArrayItem(valBuilder);
             }
 
-            return resultBuilder;
+            return builder;
         }
     }
 
