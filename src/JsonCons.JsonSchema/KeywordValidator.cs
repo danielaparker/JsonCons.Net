@@ -64,6 +64,130 @@ namespace JsonCons.JsonSchema
                                           ErrorReporter reporter,
                                           ref JsonElement patch)
         {
+            string? content = null;
+            if (ContentEncoding != null)
+            {
+                if (ContentEncoding == "base64")
+                {
+                    string? s = instance.GetString();
+                    try
+                    {
+                        content = Convert.ToBase64String(Encoding.UTF8.GetBytes(s));
+                    }
+                    catch (Exception)
+                    {
+                        reporter.Error(new ValidationOutput("contentEncoding", 
+                                                            ContentEncodingLocation, 
+                                                            instanceLocation.ToString(), 
+                                                            "Content is not a base64 string"));
+                        if (reporter.FailEarly)
+                        {
+                            return;
+                        }
+                    }
+                }
+                else if (ContentEncoding.Length != 0)
+                {
+                    reporter.Error(new ValidationOutput("contentEncoding", 
+                                                    ContentEncodingLocation,
+                                                    instanceLocation.ToString(), 
+                                                    $"Unable to check for contentEncoding '{ContentEncoding}'"));
+                    if (reporter.FailEarly)
+                    {
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                content = instance.GetString();
+            }
+            if (content == null)
+            {
+                return;
+            }
+
+            if (ContentMediaType != null) 
+            {
+                if (ContentMediaType.Equals("application/Json"))
+                {
+                    try
+                    {
+                        using JsonDocument doc = JsonDocument.Parse(content);
+                    }
+                    catch (Exception e)
+                    {
+                        reporter.Error(new ValidationOutput("contentMediaType", 
+                                                            ContentMediaTypeLocation,
+                                                            instanceLocation.ToString(), 
+                                                            $"Content is not JSON: {e.Message}"));
+                    }
+                }
+            } 
+
+            if (instance.ValueKind != JsonValueKind.String) 
+            {
+                return; 
+            }
+
+            if (MinLength != null) 
+            {
+                byte[] bytes = Encoding.UTF32.GetBytes(content.ToCharArray());
+                int length = bytes.Length/4;
+                if (length < MinLength) 
+                {
+                    reporter.Error(new ValidationOutput("minLength", 
+                                                    MinLengthLocation, 
+                                                    instanceLocation.ToString(), 
+                                                    $"Expected minLength: {MinLength}, actual: {length}"));
+                    if (reporter.FailEarly)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            if (MaxLength != null) 
+            {
+                byte[] bytes = Encoding.UTF32.GetBytes(content.ToCharArray());
+                int length = bytes.Length/4;
+                if (length > MaxLength)
+                {
+                    reporter.Error(new ValidationOutput("maxLength", 
+                                                    MaxLengthLocation, 
+                                                    instanceLocation.ToString(), 
+                                                    $"Expected maxLength: {MaxLength}, actual: {length}"));
+                    if (reporter.FailEarly)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            if (Pattern != null)
+            {
+                var match = Pattern.Match(content);
+                if (match.Success)
+                {
+                    reporter.Error(new ValidationOutput("pattern", 
+                                                    PatternLocation, 
+                                                    instanceLocation.ToString(), 
+                                                    $"String '{content}' does not match pattern '{Pattern}'"));
+                    if (reporter.FailEarly)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            if (FormatValidator != null) 
+            {
+                FormatValidator.Validate(content, instanceLocation.ToString(), reporter);
+                if (reporter.ErrorCount > 0 && reporter.FailEarly)
+                {
+                    return;
+                }
+            }
         }
 
         internal static StringValidator Create(JsonElement schema, IList<SchemaLocation> uris)
@@ -126,7 +250,7 @@ namespace JsonCons.JsonSchema
                         formatValidator = new Ipv6Validator(formatLocation);
                         break;
                     case "regex":
-                        formatValidator = new RegexValidator(formatLocation, pattern);
+                        formatValidator = new RegexValidator(formatLocation);
                         break;
                     default:
                         break;

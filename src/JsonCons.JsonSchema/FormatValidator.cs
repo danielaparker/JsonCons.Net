@@ -20,24 +20,26 @@ namespace JsonCons.JsonSchema
     class RegexValidator : IFormatValidator
     {
         string _absoluteKeywordLocation;
-        Regex _pattern;
 
-        internal RegexValidator(string absoluteKeywordLocation, Regex pattern)
+        internal RegexValidator(string absoluteKeywordLocation)
         {
             _absoluteKeywordLocation = absoluteKeywordLocation;
-            _pattern = pattern;
         }
 
         public void Validate(string value,
                              string instanceLocation, 
                              ErrorReporter reporter) 
         {
-            if (!_pattern.IsMatch(value))        
+            try
+            {
+                new Regex(value);
+            }
+            catch (Exception)
             {
                 reporter.Error(new ValidationOutput("format", 
                                                     _absoluteKeywordLocation, 
                                                     instanceLocation, 
-                                                    $"'{value}' does not match regular expression '{_pattern}'"));
+                                                    $"'{value}' is not a regular expression"));
             }
         } 
     }
