@@ -10,58 +10,277 @@ using System.Text.RegularExpressions;
 
 namespace JsonCons.JsonSchema
 {
+    interface IFormatValidator
+    {
+        void Validate(string value,
+                      string instanceLocation, 
+                      ErrorReporter reporter);
+    }
+
+    class RegexValidator : IFormatValidator
+    {
+        string _absoluteKeywordLocation;
+        Regex _pattern;
+
+        internal RegexValidator(string absoluteKeywordLocation, Regex pattern)
+        {
+            _absoluteKeywordLocation = absoluteKeywordLocation;
+            _pattern = pattern;
+        }
+
+        public void Validate(string value,
+                             string instanceLocation, 
+                             ErrorReporter reporter) 
+        {
+            if (!_pattern.IsMatch(value))        
+            {
+                reporter.Error(new ValidationOutput("format", 
+                                                    _absoluteKeywordLocation, 
+                                                    instanceLocation, 
+                                                    $"'{value}' does not match regular expression '{_pattern}'"));
+            }
+        } 
+    }
+
+    class EmailValidator : IFormatValidator
+    {
+        string _absoluteKeywordLocation;
+
+        internal EmailValidator(string absoluteKeywordLocation)
+        {
+            _absoluteKeywordLocation = absoluteKeywordLocation;
+        }
+
+        public void Validate(string value,
+                             string instanceLocation, 
+                             ErrorReporter reporter) 
+        {
+            if (!Check(value))        
+            {
+                reporter.Error(new ValidationOutput("format", 
+                                                    _absoluteKeywordLocation, 
+                                                    instanceLocation, 
+                                                    $"'{value}' is not a valid email address as defined by RFC 5322"));
+            }
+        } 
+
+        static bool IsAText(char c)
+        {
+            switch (c)
+            {
+                case '!':
+                case '#':
+                case '$':
+                case '%':
+                case '&':
+                case '\'':
+                case '*':
+                case '+':
+                case '-':
+                case '/':
+                case '=':
+                case '?':
+                case '^':
+                case '_':
+                case '`':
+                case '{':
+                case '|':
+                case '}':
+                case '~':
+                    return true;
+                default:
+                    return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+            }
+        }
+
+        static bool IsDText( char c)
+        {
+            return (c >= 33 && c <= 90) || (c >= 94 && c <= 126);
+        }
+
+        //  RFC 5322, section 3.4.1
+        enum StateKind { LocalPart, Atom, DotAtom, QuotedString, Amp, Domain };
+
+        static bool Check(string s)
+        {
+            StateKind state = StateKind.LocalPart;
+            int partLength = 0;
+
+            foreach (char c in s)
+            {
+                switch (state)
+                {
+                    case StateKind.LocalPart:
+                    {
+                        if (IsAText(c))
+                        {
+                            state = StateKind.Atom;
+                        }
+                        else if (c == '"')
+                        {
+                            state = StateKind.QuotedString;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                        break;
+                    }
+                    case StateKind.DotAtom:
+                    {
+                        if (IsAText(c))
+                        {
+                            ++partLength;
+                            state = StateKind.Atom;
+                        }
+                        else
+                            return false;
+                        break;
+                    }
+                    case StateKind.Atom:
+                    {
+                        switch (c)
+                        {
+                            case '@':
+                                state = StateKind.Domain;
+                                partLength = 0;
+                                break;
+                            case '.':
+                                state = StateKind.DotAtom;
+                                ++partLength;
+                                break;
+                            default:
+                                if (IsAText(c))
+                                    ++partLength;
+                                else
+                                    return false;
+                                break;
+                        }
+                        break;
+                    }
+                    case StateKind.QuotedString:
+                    {
+                        if (c == '\"')
+                        {
+                            state = StateKind.Amp;
+                        }
+                        else
+                        {
+                            ++partLength;
+                        }
+                        break;
+                    }
+                    case StateKind.Amp:
+                    {
+                        if (c == '@')
+                        {
+                            state = StateKind.Domain;
+                            partLength = 0;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                        break;
+                    }
+                    case StateKind.Domain:
+                    {
+                        if (IsDText(c))
+                        {
+                            ++partLength;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            return state == StateKind.Domain && partLength > 0;
+        }
+    }
+
+    enum DateTimeKind {DateTime,Date,Time}
+
+    class DateValidator : IFormatValidator
+    {
+        string _absoluteKeywordLocation;
+
+        internal DateValidator(string absoluteKeywordLocation)
+        {
+            _absoluteKeywordLocation = absoluteKeywordLocation;
+        }
+
+        public void Validate(string instanceLocation, 
+                             string value,
+                             ErrorReporter reporter) 
+        {
+            if (!DateTimeValidation.Check(value, DateTimeKind.Date))        
+            {
+                reporter.Error(new ValidationOutput("format", 
+                                                    _absoluteKeywordLocation,
+                                                    instanceLocation, 
+                                                    $"'{value}' is not a valid email address as defined by RFC 5322"));
+            }
+        } 
+
+    }
+
+    class TimeValidator : IFormatValidator 
+    {
+        string _absoluteKeywordLocation;
+
+        internal TimeValidator(string absoluteKeywordLocation)
+        {
+            _absoluteKeywordLocation = absoluteKeywordLocation;
+        }
+
+        public void Validate(string instanceLocation, 
+                             string value,
+                             ErrorReporter reporter) 
+        {
+            if (!DateTimeValidation.Check(value, DateTimeKind.Time))        
+            {
+                reporter.Error(new ValidationOutput("format", 
+                                                    _absoluteKeywordLocation,
+                                                    instanceLocation, 
+                                                    $"'{value}' is not a valid email address as defined by RFC 5322"));
+            }
+        } 
+
+    }
+
+    class DateTimeValidator : IFormatValidator 
+    {
+        string _absoluteKeywordLocation;
+
+        internal DateTimeValidator(string absoluteKeywordLocation)
+        {
+            _absoluteKeywordLocation = absoluteKeywordLocation;
+        }
+
+        public void Validate(string instanceLocation, 
+                             string value,
+                             ErrorReporter reporter) 
+        {
+            if (!DateTimeValidation.Check(value, DateTimeKind.DateTime))        
+            {
+                reporter.Error(new ValidationOutput("format", 
+                                                    _absoluteKeywordLocation,
+                                                    instanceLocation, 
+                                                    $"'{value}' is not a valid email address as defined by RFC 5322"));
+            }
+        } 
+    }
+
     static class DateTimeValidation
     {
-        internal static void ValidateDate(string keyword,
-                                          string absoluteKeywordLocation,
-                                          string instanceLocation, 
-                                          string value,
-                                          ErrorReporter reporter) 
-        {
-            if (!Check(value, DateTimeKind.Date))        
-            {
-                reporter.Error(new ValidationOutput(keyword, 
-                                                    absoluteKeywordLocation,
-                                                    instanceLocation, 
-                                                    "\"" + value + "\" is not a valid email address as defined by RFC 5322"));
-            }
-        } 
-
-        internal static void ValidateTime(string keyword,
-                                          string absoluteKeywordLocation,
-                                          string instanceLocation, 
-                                          string value,
-                                          ErrorReporter reporter) 
-        {
-            if (!Check(value, DateTimeKind.Time))        
-            {
-                reporter.Error(new ValidationOutput(keyword, 
-                                                    absoluteKeywordLocation,
-                                                    instanceLocation, 
-                                                    "\"" + value + "\" is not a valid email address as defined by RFC 5322"));
-            }
-        } 
-
-        internal static void ValidateDateTime(string keyword,
-                                              string absoluteKeywordLocation,
-                                              string instanceLocation, 
-                                              string value,
-                                              ErrorReporter reporter) 
-        {
-            if (!Check(value, DateTimeKind.DateTime))        
-            {
-                reporter.Error(new ValidationOutput(keyword, 
-                                                    absoluteKeywordLocation,
-                                                    instanceLocation, 
-                                                    "\"" + value + "\" is not a valid email address as defined by RFC 5322"));
-            }
-        } 
-
-        enum DateTimeKind {DateTime,Date,Time}
         enum StateKind {FullYear,Month,MDay,Hour,Minute,Second,SecFrac,Z,OffsetHour,OffsetMinute}
 
         // RFC 3339, Section 5.6
-        static bool Check(string s, DateTimeKind type)
+        internal static bool Check(string s, DateTimeKind type)
         {
             int piece_length = 0;
             int year = 0;
@@ -218,7 +437,7 @@ namespace JsonCons.JsonSchema
                                     state = StateKind.OffsetHour;
                                     break;
                                 case 'Z':
-                                case 'Z':
+                                case 'z':
                                     state = StateKind.Z;
                                     break;
                                 default:
@@ -280,22 +499,27 @@ namespace JsonCons.JsonSchema
         }
     }
 
-    static class HostnameValidation
+    class HostnameValidator : IFormatValidator
     {
         // RFC 2673, Section 3.2
 
-        internal static void Validate(string keyword,
-                                      string absoluteKeywordLocation,
-                                      string instanceLocation, 
-                                      string value,
-                                      ErrorReporter reporter) 
+        string _absoluteKeywordLocation;
+
+        internal HostnameValidator(string absoluteKeywordLocation)
+        {
+            _absoluteKeywordLocation = absoluteKeywordLocation;
+        }
+
+        public void Validate(string value,
+                             string instanceLocation, 
+                             ErrorReporter reporter) 
         {
             if (!Check(value))        
             {
-                reporter.Error(new ValidationOutput(keyword, 
-                                                    absoluteKeywordLocation,
+                reporter.Error(new ValidationOutput("format", 
+                                                    _absoluteKeywordLocation,
                                                     instanceLocation, 
-                                                    "\"" + value + "\" is not a valid email address as defined by RFC 5322"));
+                                                    $"'{value}' is not a valid email address as defined by RFC 5322"));
             }
         } 
 
@@ -356,22 +580,27 @@ namespace JsonCons.JsonSchema
         }
     }
 
-    static class Ipv4Validation
+    class Ipv4Validator : IFormatValidator
     {
         // RFC 2673, Section 3.2
 
-        internal static void Validate(string keyword,
-                                      string absoluteKeywordLocation,
-                                      string instanceLocation, 
-                                      string value,
-                                      ErrorReporter reporter) 
+        string _absoluteKeywordLocation;
+
+        internal Ipv4Validator(string absoluteKeywordLocation)
+        {
+            _absoluteKeywordLocation = absoluteKeywordLocation;
+        }
+
+        public void Validate(string value,
+                             string instanceLocation, 
+                             ErrorReporter reporter) 
         {
             if (!Check(value))        
             {
-                reporter.Error(new ValidationOutput(keyword, 
-                                                    absoluteKeywordLocation,
+                reporter.Error(new ValidationOutput("format", 
+                                                    _absoluteKeywordLocation,
                                                     instanceLocation, 
-                                                    "\"" + value + "\" is not a valid email address as defined by RFC 5322"));
+                                                    $"'{value}' is not a valid email address as defined by RFC 5322"));
             }
         } 
 
@@ -533,20 +762,25 @@ namespace JsonCons.JsonSchema
         }
     }
 
-    static class Ipv6Validation
+    class Ipv6Validator : IFormatValidator
     {
-        internal static void Validate(string keyword,
-                                      string absoluteKeywordLocation,
-                                      string instanceLocation, 
-                                      string value,
-                                      ErrorReporter reporter) 
+        string _absoluteKeywordLocation;
+
+        internal Ipv6Validator(string absoluteKeywordLocation)
+        {
+            _absoluteKeywordLocation = absoluteKeywordLocation;
+        }
+
+        public void Validate(string value,
+                             string instanceLocation, 
+                             ErrorReporter reporter) 
         {
             if (!Check(value))        
             {
-                reporter.Error(new ValidationOutput(keyword, 
-                                                    absoluteKeywordLocation,
+                reporter.Error(new ValidationOutput("format", 
+                                                    _absoluteKeywordLocation,
                                                     instanceLocation, 
-                                                    "\"" + value + "\" is not a valid email address as defined by RFC 5322"));
+                                                    $"'{value}' is not a valid email address as defined by RFC 5322"));
             }
         } 
 
@@ -747,86 +981,6 @@ namespace JsonCons.JsonSchema
                     return false;
             }
         }
-    }
- 
-    // Rfc5322
-
-    static class FormatCheckers
-    {
-/*
-
-
-        // format checkers
-        using format_checker = std::function<void(string absoluteKeywordLocation,
-                                                  SchemaLocation instanceLocation, 
-                                                  string, 
-                                                  ErrorReporter reporter)>;
-
-
-        void email_check(string absoluteKeywordLocation,
-                         SchemaLocation instanceLocation, 
-                         string value,
-                         ErrorReporter reporter) 
-        {
-            if (!ValidateEmailRfc5322(value))        
-            {
-                reporter.error(validation_output(instanceLocation.ToString(), "\"" + value + "\" is not a valid email address as defined by RFC 5322", "email", 
-                                                absoluteKeywordLocation));
-            }
-        } 
-
-        void hostname_check(string absoluteKeywordLocation,
-                            SchemaLocation instanceLocation, 
-                            string value,
-                            ErrorReporter reporter) 
-        {
-            if (!validate_hostname_rfc1034(value))
-            {
-                reporter.error(validation_output(instanceLocation.ToString(), "\"" + value + "\" is not a valid hostname as defined by RFC 3986 Appendix A", "hostname", 
-                                                 absoluteKeywordLocation));
-            }
-        } 
-
-        void ipv4_check(string absoluteKeywordLocation,
-                        SchemaLocation instanceLocation, 
-                        string value,
-                        ErrorReporter reporter) 
-        {
-            if (!validate_ipv4_rfc2673(value))
-            {
-                reporter.error(validation_output(instanceLocation.ToString(), "\"" + value + "\" is not a valid IPv4 address as defined by RFC 2673", "ipv4", 
-                                                absoluteKeywordLocation));
-            }
-        } 
-
-        void ipv6_check(string absoluteKeywordLocation,
-                        SchemaLocation instanceLocation, 
-                        string value,
-                        ErrorReporter reporter) 
-        {
-            if (!validate_ipv6_rfc2373(value))
-            {
-                reporter.error(validation_output(instanceLocation.ToString(), "\"" + value + "\" is not a valid IPv6 address as defined by RFC 2373", "ipv6", 
-                                                absoluteKeywordLocation));
-            }
-        } 
-
-        void regex_check(string absoluteKeywordLocation,
-                         SchemaLocation instanceLocation, 
-                         string value,
-                         ErrorReporter reporter) 
-        {
-            try 
-            {
-                std::regex re(value, std::regex::ECMAScript);
-            } 
-            catch (const std::exception& e) 
-            {
-                reporter.error(validation_output(instanceLocation.ToString(), "\"" + value + "\" is not a valid ECMAScript regular expression. " + e.what(), "pattern", 
-                                                absoluteKeywordLocation));
-            }
-        } 
-*/
     }
 
 } // namespace JsonCons.JsonSchema

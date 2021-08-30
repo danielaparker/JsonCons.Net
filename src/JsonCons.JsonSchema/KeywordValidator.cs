@@ -32,8 +32,7 @@ namespace JsonCons.JsonSchema
         internal string? PatternLocation {get;} = null;
 
         IFormatValidator? FormatValidator {get;} = null; 
-        internal string? FormatLocation {get;} = null;
-
+        
         internal string? ContentEncoding {get;} = null;
         internal string? ContentEncodingLocation {get;} = null;
 
@@ -43,7 +42,7 @@ namespace JsonCons.JsonSchema
         internal StringValidator(int? maxLength, string? maxLengthLocation,
                                  int? minLength, string? minLengthLocation,
                                  Regex? pattern, string? patternLocation,
-                                 IFormatValidator? formatValidator, string? formatLocation,
+                                 IFormatValidator? formatValidator, 
                                  string? contentEncoding, string? contentEncodingLocation,
                                  string? contentMediaType, string? contentMediaTypeLocation)
         {
@@ -54,7 +53,6 @@ namespace JsonCons.JsonSchema
             Pattern = pattern;
             PatternLocation = patternLocation;
             FormatValidator = formatValidator;
-            FormatLocation = formatLocation;
             ContentEncoding = contentEncoding;
             ContentEncodingLocation = contentEncodingLocation;
             ContentMediaType = contentMediaType;
@@ -77,7 +75,6 @@ namespace JsonCons.JsonSchema
             Regex? pattern = null;
             string? patternLocation = null;
             IFormatValidator? formatValidator = null; 
-            string? formatLocation = null;
             string? contentEncoding = null;
             string? contentEncodingLocation = null;
             string? contentMediaType = null;
@@ -104,31 +101,32 @@ namespace JsonCons.JsonSchema
             if (schema.TryGetProperty("format", out element))
             {   
                 string? format = element.GetString();
+                string formatLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "format");
                 switch (format)
                 {
                     case "date-time":
-                        formatValidator = DateTimeValidator.Instance;
+                        formatValidator = new DateTimeValidator(formatLocation);
                         break;
                     case "date":
-                        formatValidator = DateValidator.Instance;
+                        formatValidator = new DateValidator(formatLocation);
                         break;
                     case "time":
-                        formatValidator = TimeValidator.Instance;
+                        formatValidator = new TimeValidator(formatLocation);
                         break;
                     case "email":
-                        formatValidator = EmailValidator.Instance;
+                        formatValidator = new EmailValidator(formatLocation);
                         break;
                     case "hostname":
-                        formatValidator = HostnameValidator.Instance;
+                        formatValidator = new HostnameValidator(formatLocation);
                         break;
                     case "ipv4":
-                        formatValidator = Ipv4Validator.Instance;
+                        formatValidator = new Ipv4Validator(formatLocation);
                         break;
                     case "ipv6":
-                        formatValidator = Ipv6Validator.Instance;
+                        formatValidator = new Ipv6Validator(formatLocation);
                         break;
                     case "regex":
-                        formatValidator = new RegexValidator(pattern);
+                        formatValidator = new RegexValidator(formatLocation, pattern);
                         break;
                     default:
                         break;
@@ -148,7 +146,7 @@ namespace JsonCons.JsonSchema
             return new StringValidator(maxLength, maxLengthLocation,
                                        minLength, minLengthLocation,
                                        pattern, patternLocation,
-                                       formatValidator, formatLocation,
+                                       formatValidator,
                                        contentEncoding, contentEncodingLocation,
                                        contentMediaType, contentMediaTypeLocation);
         }
