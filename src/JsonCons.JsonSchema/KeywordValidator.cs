@@ -12,239 +12,146 @@ using System.Text.RegularExpressions;
 
 namespace JsonCons.JsonSchema
 {
-    class UriWrapper
+    abstract class KeywordValidator 
     {
-        Uri _uri;
-        string _identifier;
-    
-        internal UriWrapper(string uri)
+        internal abstract void OnValidate(JsonElement instance, 
+                                          SchemaLocation instanceLocation, 
+                                          ErrorReporter reporter,
+                                          ref JsonElement patch);
+    };
+
+    class StringValidator : KeywordValidator 
+    {
+        internal int? MaxLength {get;} = null;
+        internal string? MaxLengthLocation {get;} = null;
+
+        internal int? MinLength {get;} = null;
+        internal string? MinLengthLocation {get;} = null;
+
+        internal Regex? Pattern {get;} = null;
+        internal string? PatternLocation {get;} = null;
+
+        IFormatValidator? FormatValidator {get;} = null; 
+        internal string? FormatLocation {get;} = null;
+
+        internal string? ContentEncoding {get;} = null;
+        internal string? ContentEncodingLocation {get;} = null;
+
+        internal string? ContentMediaType {get;} = null;
+        internal string? ContentMediaTypeLocation {get;} = null;
+
+        internal StringValidator(int? maxLength, string? maxLengthLocation,
+                                 int? minLength, string? minLengthLocation,
+                                 Regex? pattern, string? patternLocation,
+                                 IFormatValidator? formatValidator, string? formatLocation,
+                                 string? contentEncoding, string? contentEncodingLocation,
+                                 string? contentMediaType, string? contentMediaTypeLocation)
         {
-            var pos = uri.LastIndexOf('#');
-            if (pos != -1)
-            {
-                _identifier = uri.Substring(pos + 1); 
-                UnescapePercent(_identifier);
+            MaxLength = maxLength;
+            MaxLengthLocation = maxLengthLocation;
+            MinLength = minLength;
+            MinLengthLocation = minLengthLocation;
+            Pattern = pattern;
+            PatternLocation = patternLocation;
+            FormatValidator = formatValidator;
+            FormatLocation = formatLocation;
+            ContentEncoding = contentEncoding;
+            ContentEncodingLocation = contentEncodingLocation;
+            ContentMediaType = contentMediaType;
+            ContentMediaTypeLocation = contentMediaTypeLocation;
+        }
+
+        internal override void OnValidate(JsonElement instance,
+                                          SchemaLocation instanceLocation,
+                                          ErrorReporter reporter,
+                                          ref JsonElement patch)
+        {
+        }
+
+        internal static StringValidator Create(JsonElement schema, IList<SchemaLocation> uris)
+        {
+            int? maxLength = null;
+            string? maxLengthLocation = null;
+            int? minLength = null;
+            string? minLengthLocation = null;
+            Regex? pattern = null;
+            string? patternLocation = null;
+            IFormatValidator? formatValidator = null; 
+            string? formatLocation = null;
+            string? contentEncoding = null;
+            string? contentEncodingLocation = null;
+            string? contentMediaType = null;
+            string? contentMediaTypeLocation = null;
+
+            JsonElement element;
+            if (schema.TryGetProperty("maxLength", out element))
+            {   
+                maxLength = element.GetInt32();
+                maxLengthLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "maxLength");
             }
-            _uri = new Uri(uri);
-        }
-
-        Uri uri() 
-        {
-            return _uri;
-        }
-
-        bool HasJsonPointer() 
-        {
-            return _identifier.Length != 0 && _identifier[0] == '/';
-        }
-
-        bool HasIdentifier() 
-        {
-            return _identifier.Length != 0 && _identifier[0] != '/';
-        }
-
-        string PathAndQuery 
-        {
-            get {return _uri.PathAndQuery;}
-        }
-
-        bool IsAbsoluteUri 
-        {
-            get {return _uri.IsAbsoluteUri;}
-        }
-
-        string GetPointer() 
-        {
-            return _identifier;
-        }
-
-        string GetIdentifier() 
-        {
-            return _identifier;
-        }
-
-        string GetFragment() 
-        {
-            return _identifier;
-        }
-
-        UriWrapper Resolve( UriWrapper& uri) 
-        {
-            UriWrapper new_uri = new UriWrapper();
-            new_uri._identifier = _identifier;
-            new_uri._uri = _uri.TryCreate(uri._uri);
-            return new_uri;
-        }
-
-        int Compare( UriWrapper& other) 
-        {
-            int result = _uri.compare(other._uri);
-            if (result != 0) 
-            {
-                return result;
+            if (schema.TryGetProperty("minLength", out element))
+            {   
+                minLength = element.GetInt32();
+                minLengthLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "minLength");
             }
-            return result; 
-        }
 
-        UriWrapper append(string field) 
-        {
-            if (HasIdentifier())
-                return *this;
-
-            jsoncons::jsonpointer::json_pointer pointer(string(_uri.GetFragment()));
-            pointer /= field;
-
-            Uri new_uri(_uri.scheme(),
-                                  _uri.userinfo(),
-                                  _uri.host(),
-                                  _uri.port(),
-                                  _uri.PathAndQuery,
-                                  _uri.query(),
-                                  pointer.to_string());
-
-            UriWrapper wrapper;
-            wrapper._uri = new_uri;
-            wrapper._identifier = pointer.to_string();
-
-            return wrapper;
-        }
-
-        UriWrapper append(std::size_t index) 
-        {
-            if (HasIdentifier())
-                return *this;
-
-            jsoncons::jsonpointer::json_pointer pointer(string(_uri.GetFragment()));
-            pointer /= index;
-
-            Uri new_uri(_uri.scheme(),
-                                  _uri.userinfo(),
-                                  _uri.host(),
-                                  _uri.port(),
-                                  _uri.PathAndQuery,
-                                  _uri.query(),
-                                  pointer.to_string());
-
-            UriWrapper wrapper;
-            wrapper._uri = new_uri;
-            wrapper._identifier = pointer.to_string();
-
-            return wrapper;
-        }
-
-        string string() 
-        {
-            string s = _uri.string();
-            return s;
-        }
-
-        friend bool operator==( UriWrapper& lhs,  UriWrapper& rhs)
-        {
-            return lhs.compare(rhs) == 0;
-        }
-
-        friend bool operator!=( UriWrapper& lhs,  UriWrapper& rhs)
-        {
-            return lhs.compare(rhs) != 0;
-        }
-
-        friend bool operator<( UriWrapper& lhs,  UriWrapper& rhs)
-        {
-            return lhs.compare(rhs) < 0;
-        }
-
-        friend bool operator<=( UriWrapper& lhs,  UriWrapper& rhs)
-        {
-            return lhs.compare(rhs) <= 0;
-        }
-
-        friend bool operator>( UriWrapper& lhs,  UriWrapper& rhs)
-        {
-            return lhs.compare(rhs) > 0;
-        }
-
-        friend bool operator>=( UriWrapper& lhs,  UriWrapper& rhs)
-        {
-            return lhs.compare(rhs) >= 0;
-        }
-    private:
-        static void UnescapePercent(string& s)
-        {
-            if (s.size() >= 3)
-            {
-                std::size_t pos = s.size() - 2;
-                while (pos-- >= 1)
+            if (schema.TryGetProperty("pattern", out element))
+            {   
+                string? patternString = element.GetString();
+                pattern = new Regex(patternString);
+                patternLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "pattern");
+            }
+            if (schema.TryGetProperty("format", out element))
+            {   
+                string? format = element.GetString();
+                switch (format)
                 {
-                    if (s[pos] == '%')
-                    {
-                        string hex = s.substr(pos + 1, 2);
-                        char ch = (char) std::strtoul(hex.c_str(), nullptr, 16);
-                        s.replace(pos, 3, 1, ch);
-                    }
+                    case "date-time":
+                        formatValidator = DateTimeValidator.Instance;
+                        break;
+                    case "date":
+                        formatValidator = DateValidator.Instance;
+                        break;
+                    case "time":
+                        formatValidator = TimeValidator.Instance;
+                        break;
+                    case "email":
+                        formatValidator = EmailValidator.Instance;
+                        break;
+                    case "hostname":
+                        formatValidator = HostnameValidator.Instance;
+                        break;
+                    case "ipv4":
+                        formatValidator = Ipv4Validator.Instance;
+                        break;
+                    case "ipv6":
+                        formatValidator = Ipv6Validator.Instance;
+                        break;
+                    case "regex":
+                        formatValidator = new RegexValidator(pattern);
+                        break;
+                    default:
+                        break;
                 }
+                formatLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "format");
             }
+            if (schema.TryGetProperty("contentEncoding", out element))
+            {   
+                contentEncoding = element.GetString();
+                contentEncodingLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "contentEncoding");
+            }
+            if (schema.TryGetProperty("contentMediaType", out element))
+            {   
+                contentMediaType = element.GetString();
+                contentMediaTypeLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "contentMediaType");
+            }
+            return new StringValidator(maxLength, maxLengthLocation,
+                                       minLength, minLengthLocation,
+                                       pattern, patternLocation,
+                                       formatValidator, formatLocation,
+                                       contentEncoding, contentEncodingLocation,
+                                       contentMediaType, contentMediaTypeLocation);
         }
-    };
-
-    // Interface for validation error handlers
-    class error_reporter
-    {
-        bool fail_early_;
-        std::size_t error_count_;
-    public:
-        error_reporter(bool fail_early = false)
-            : fail_early_(fail_early), error_count_(0)
-        {
-        }
-
-        virtual ~error_reporter() = default;
-
-        void error( validation_output& o)
-        {
-            ++error_count_;
-            do_error(o);
-        }
-
-        std::size_t error_count() 
-        {
-            return error_count_;
-        }
-
-        bool fail_early() 
-        {
-            return fail_early_;
-        }
-
-    private:
-        virtual void do_error( validation_output& /* e */) = 0;
-    };
-
-
-    interface IKeywordValidator 
-    {
-    };
-
-    class StringValidator : IKeywordValidator 
-    {
-        int? MaxLength {get;} = null;
-        string? AbsoluteMaxLengthLocation {get;} = null;
-
-        int? MinLength {get;} = null;
-        string? AbsoluteMinLengthLocation {get;} = null;
-
-        Regex? Pattern {get;} = null;
-        string? PatternString {get;} = null;
-        string? AbsolutePatternLocation {get;} = null;
-
-        Action<string,UriWrapper,string,ErrorReporter>? FormatChecker {get;} = null; 
-        string? AbsoluteFormatLocation {get;} = null;
-
-        string? ContentEncoding {get;} = null;
-        string? AbsoluteContentEncodingLocation {get;} = null;
-
-        string? ContentMediaType {get;} = null;
-        string? AbsoluteContentMediaTypeLocation {get;} = null;
-    };
-
+    }
 
 } // namespace JsonCons.JsonSchema

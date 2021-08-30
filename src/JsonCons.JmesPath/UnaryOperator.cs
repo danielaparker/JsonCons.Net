@@ -51,32 +51,5 @@ namespace JsonCons.JmesPath
         }
     };
 
-    sealed class RegexOperator : UnaryOperator
-    {
-        Regex _regex;
-
-        internal RegexOperator(Regex regex)
-            : base(Operator.Not)
-        {
-            _regex = regex;
-        }
-
-        public override bool TryEvaluate(IValue val, out IValue result)
-        {
-            if (!(val.Type == JmesPathType.String))
-            {
-                result = JsonConstants.Null;
-                return false; // type error
-            }
-            result = _regex.IsMatch(val.GetString()) ? JsonConstants.True : JsonConstants.False;
-            return true;
-        }
-
-        public override string ToString()
-        {
-            return "Regex";
-        }
-    };
-
 } // namespace JsonCons.JmesPath
 

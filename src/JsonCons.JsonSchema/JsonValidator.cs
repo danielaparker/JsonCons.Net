@@ -7,43 +7,14 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using JsonCons.Utilities;
 
-#nullable enable        
-
 namespace JsonCons.JsonSchema
 {
-
-    public sealed class ValidationOutput
+    public class ValidationException : Exception
     {
-        string InstanceLocation {get;}
-        string Message {get;}
-        string Keyword {get;}
-        string AbsoluteKeywordLocation {get;}
-        List<ValidationOutput> NestedErrors {get;}
-
-        public ValidationOutput(string instanceLocation,
-                                string message,
-                                string keyword,
-                                string absoluteKeywordLocation)
+        public ValidationException(string message)
+            : base(message)
         {
-            InstanceLocation = instanceLocation;
-            Message = message;
-            Keyword = keyword;
-            AbsoluteKeywordLocation = absoluteKeywordLocation;
         }
-
-        public ValidationOutput(string instanceLocation,
-                                string message,
-                                string keyword,
-                                string absoluteKeywordLocation,
-                                List<ValidationOutput> nestedErrors)
-        {
-            InstanceLocation = instanceLocation;
-            Message = message;
-            Keyword = keyword;
-            AbsoluteKeywordLocation = absoluteKeywordLocation;
-            NestedErrors = nestedErrors;
-        }
-
     }
 
     public sealed class JsonValidator
@@ -72,6 +43,7 @@ namespace JsonCons.JsonSchema
 
         void Validate(JsonElement instance, Action<ValidationOutput> reporter, out JsonDocument patch)
         {
+            patch = JsonDocument.Parse("null");
         }
     }
 
