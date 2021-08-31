@@ -102,10 +102,20 @@ namespace JsonCons.JsonSchema
             return Uri.GetComponents(UriComponents.PathAndQuery, UriFormat.UriEscaped);
         }
 
+        internal bool Equals(SchemaLocation uri)
+        {
+            return Uri.Equals(uri);
+        }
+
         internal int Compare(SchemaLocation uri)
         {
             return Uri.Compare(Uri, uri.Uri, UriComponents.AbsoluteUri, UriFormat.UriEscaped, 
                                StringComparison.Ordinal); 
+        }
+
+        public override int GetHashCode()
+        {
+            return Uri.GetHashCode();
         }
 
         static internal string CreateAbsoluteKeywordLocation(IList<SchemaLocation> uris, string keyword)

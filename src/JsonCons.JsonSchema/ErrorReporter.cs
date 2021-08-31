@@ -67,4 +67,16 @@ namespace JsonCons.JsonSchema
         internal abstract void OnError(ValidationOutput e); 
     }
 
+
+    class CollectingErrorReporter : ErrorReporter
+    {
+        internal IList<ValidationOutput> Errors {get; } = new List<ValidationOutput>();
+
+        internal override void OnError(ValidationOutput o) 
+        {
+            Errors.Add(o);
+        }
+    };
+
+
 } // namespace JsonCons.JsonSchema
