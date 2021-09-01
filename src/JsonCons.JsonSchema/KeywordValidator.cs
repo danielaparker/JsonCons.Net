@@ -259,7 +259,7 @@ namespace JsonCons.JsonSchema
 
         internal static StringValidator Create(JsonElement schema, IList<SchemaLocation> uris)
         {
-            string absoluteKeywordLocation = (uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "";
+            SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
             int? maxLength = null;
             string maxLengthLocation = "";
             int? minLength = null;
@@ -276,24 +276,24 @@ namespace JsonCons.JsonSchema
             if (schema.TryGetProperty("maxLength", out element))
             {   
                 maxLength = element.GetInt32();
-                maxLengthLocation = SchemaLocation.CreateKeywordLocation(uris, "maxLength");
+                maxLengthLocation = SchemaLocation.Append(absoluteKeywordLocation, "maxLength").ToString();
             }
             if (schema.TryGetProperty("minLength", out element))
             {   
                 minLength = element.GetInt32();
-                minLengthLocation = SchemaLocation.CreateKeywordLocation(uris, "minLength");
+                minLengthLocation = SchemaLocation.Append(absoluteKeywordLocation, "minLength").ToString();
             }
 
             if (schema.TryGetProperty("pattern", out element))
             {   
                 string patternString = element.GetString();
                 pattern = new Regex(patternString);
-                patternLocation = SchemaLocation.CreateKeywordLocation(uris, "pattern");
+                patternLocation = SchemaLocation.Append(absoluteKeywordLocation, "pattern").ToString();
             }
             if (schema.TryGetProperty("format", out element))
             {   
                 string format = element.GetString();
-                string formatLocation = SchemaLocation.CreateKeywordLocation(uris, "format");
+                string formatLocation = SchemaLocation.Append(absoluteKeywordLocation, "format").ToString();
                 switch (format)
                 {
                     case "date-time":
@@ -323,19 +323,19 @@ namespace JsonCons.JsonSchema
                     default:
                         break;
                 }
-                formatLocation = SchemaLocation.CreateKeywordLocation(uris, "format");
+                formatLocation = SchemaLocation.Append(absoluteKeywordLocation, "format").ToString();
             }
             if (schema.TryGetProperty("contentEncoding", out element))
             {   
                 contentEncoding = element.GetString();
-                contentEncodingLocation = SchemaLocation.CreateKeywordLocation(uris, "contentEncoding");
+                contentEncodingLocation = SchemaLocation.Append(absoluteKeywordLocation, "contentEncoding").ToString();
             }
             if (schema.TryGetProperty("contentMediaType", out element))
             {   
                 contentMediaType = element.GetString();
-                contentMediaTypeLocation = SchemaLocation.CreateKeywordLocation(uris, "contentMediaType");
+                contentMediaTypeLocation = SchemaLocation.Append(absoluteKeywordLocation, "contentMediaType").ToString();
             }
-            return new StringValidator(absoluteKeywordLocation,
+            return new StringValidator(absoluteKeywordLocation.ToString(),
                                        maxLength, maxLengthLocation,
                                        minLength, minLengthLocation,
                                        pattern, patternLocation,
@@ -359,12 +359,12 @@ namespace JsonCons.JsonSchema
                                             JsonElement schema, 
                                             IList<SchemaLocation> uris)
         {
-            string absoluteKeywordLocation = (uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "";
+            SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
 
             var keys = new List<string>();
             keys.Add("not");
             KeywordValidator rule = validatorFactory.CreateKeywordValidator(schema, uris, keys);
-            return new NotValidator(absoluteKeywordLocation, rule);
+            return new NotValidator(absoluteKeywordLocation.ToString(), rule);
         }
 
         internal override void OnValidate(JsonElement instance, 
@@ -483,7 +483,7 @@ namespace JsonCons.JsonSchema
                                                   IList<SchemaLocation> uris,
                                                   ICombiningCriterion criterion)
         {
-            string absoluteKeywordLocation = (uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "";
+            SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
 
             var validators = new List<KeywordValidator>();
             for (int i = 0; i < schema.GetArrayLength(); ++i)
@@ -494,7 +494,7 @@ namespace JsonCons.JsonSchema
                 validators.Add(validatorFactory.CreateKeywordValidator(schema[i], uris, keys));
             }
 
-            return new CombiningValidator(absoluteKeywordLocation, 
+            return new CombiningValidator(absoluteKeywordLocation.ToString(), 
                                                  criterion,
                                                  validators);
         }
@@ -621,7 +621,7 @@ namespace JsonCons.JsonSchema
                                                 IList<SchemaLocation> uris, 
                                                 ISet<string> keywords)
         {
-            string absoluteKeywordLocation = (uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "";
+            SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
             Int64? maximum = null;
             string maximumLocation = "";
             Int64? minimum = null;
@@ -636,7 +636,7 @@ namespace JsonCons.JsonSchema
             JsonElement element;
             if (sch.TryGetProperty("maximum", out element)) 
             {
-                maximumLocation = SchemaLocation.CreateKeywordLocation(uris,"maximum");
+                maximumLocation = SchemaLocation.Append(absoluteKeywordLocation,"maximum").ToString();
                 Int64 val;
                 if (!NumericUtilities.TryGetInt64(element, out val))
                 {
@@ -648,7 +648,7 @@ namespace JsonCons.JsonSchema
 
             if (sch.TryGetProperty("minimum", out element)) 
             {
-                minimumLocation = SchemaLocation.CreateKeywordLocation(uris,"minimum");
+                minimumLocation = SchemaLocation.Append(absoluteKeywordLocation,"minimum").ToString();
                 Int64 val;
                 if (!NumericUtilities.TryGetInt64(element, out val))
                 {
@@ -660,7 +660,7 @@ namespace JsonCons.JsonSchema
 
             if (sch.TryGetProperty("exclusiveMaximum", out element)) 
             {
-                exclusiveMaximumLocation = SchemaLocation.CreateKeywordLocation(uris,"exclusiveMaximum");
+                exclusiveMaximumLocation = SchemaLocation.Append(absoluteKeywordLocation,"exclusiveMaximum").ToString();
                 Int64 val;
                 if (!NumericUtilities.TryGetInt64(element, out val))
                 {
@@ -672,7 +672,7 @@ namespace JsonCons.JsonSchema
 
             if (sch.TryGetProperty("exclusiveMinimum", out element)) 
             {
-                exclusiveMinimumLocation = SchemaLocation.CreateKeywordLocation(uris,"exclusiveMinimum");
+                exclusiveMinimumLocation = SchemaLocation.Append(absoluteKeywordLocation,"exclusiveMinimum").ToString();
                 Int64 val;
                 if (!NumericUtilities.TryGetInt64(element, out val))
                 {
@@ -684,7 +684,7 @@ namespace JsonCons.JsonSchema
 
             if (sch.TryGetProperty("multipleOf", out element)) 
             {
-                multipleOfLocation = SchemaLocation.CreateKeywordLocation(uris, "multipleOf");
+                multipleOfLocation = SchemaLocation.Append(absoluteKeywordLocation, "multipleOf").ToString();
                 double val;
                 if (!NumericUtilities.TryGetDouble(element, out val))
                 {
@@ -693,7 +693,7 @@ namespace JsonCons.JsonSchema
                 multipleOf = val;
                 keywords.Add("multipleOf");
             }
-            return new IntegerValidator(absoluteKeywordLocation,
+            return new IntegerValidator(absoluteKeywordLocation.ToString(),
                                         maximum,
                                         maximumLocation,
                                         minimum,
@@ -842,7 +842,7 @@ namespace JsonCons.JsonSchema
                                                 IList<SchemaLocation> uris, 
                                                 ISet<string> keywords)
         {
-            string absoluteKeywordLocation = (uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "";
+            SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
             double? maximum = null;
             string maximumLocation = "";
             double? minimum = null;
@@ -857,7 +857,7 @@ namespace JsonCons.JsonSchema
             JsonElement element;
             if (sch.TryGetProperty("maximum", out element)) 
             {
-                maximumLocation = SchemaLocation.CreateKeywordLocation(uris,"maximum");
+                maximumLocation = SchemaLocation.Append(absoluteKeywordLocation,"maximum").ToString().ToString();
                 double val;
                 if (!NumericUtilities.TryGetDouble(element, out val))
                 {
@@ -869,7 +869,7 @@ namespace JsonCons.JsonSchema
 
             if (sch.TryGetProperty("minimum", out element)) 
             {
-                minimumLocation = SchemaLocation.CreateKeywordLocation(uris,"minimum");
+                minimumLocation = SchemaLocation.Append(absoluteKeywordLocation,"minimum").ToString();
                 double val;
                 if (!NumericUtilities.TryGetDouble(element, out val))
                 {
@@ -881,7 +881,7 @@ namespace JsonCons.JsonSchema
 
             if (sch.TryGetProperty("exclusiveMaximum", out element)) 
             {
-                exclusiveMaximumLocation = SchemaLocation.CreateKeywordLocation(uris,"exclusiveMaximum");
+                exclusiveMaximumLocation = SchemaLocation.Append(absoluteKeywordLocation,"exclusiveMaximum").ToString();
                 double val;
                 if (!NumericUtilities.TryGetDouble(element, out val))
                 {
@@ -893,7 +893,7 @@ namespace JsonCons.JsonSchema
 
             if (sch.TryGetProperty("exclusiveMinimum", out element)) 
             {
-                exclusiveMinimumLocation = SchemaLocation.CreateKeywordLocation(uris,"exclusiveMinimum");
+                exclusiveMinimumLocation = SchemaLocation.Append(absoluteKeywordLocation,"exclusiveMinimum").ToString();
                 double val;
                 if (!NumericUtilities.TryGetDouble(element, out val))
                 {
@@ -905,7 +905,7 @@ namespace JsonCons.JsonSchema
 
             if (sch.TryGetProperty("multipleOf", out element)) 
             {
-                multipleOfLocation = SchemaLocation.CreateKeywordLocation(uris, "multipleOf");
+                multipleOfLocation = SchemaLocation.Append(absoluteKeywordLocation, "multipleOf").ToString();
                 double val;
                 if (!NumericUtilities.TryGetDouble(element, out val))
                 {
@@ -914,7 +914,7 @@ namespace JsonCons.JsonSchema
                 multipleOf = val;
                 keywords.Add("multipleOf");
             }
-            return new DoubleValidator(absoluteKeywordLocation,
+            return new DoubleValidator(absoluteKeywordLocation.ToString(),
                                         maximum,
                                         maximumLocation,
                                         minimum,
@@ -1237,20 +1237,20 @@ namespace JsonCons.JsonSchema
             if (it != sch.EnumerateObject().end()) 
             {
                 max_properties_ = it.value().template as<int>();
-                absolute_max_properties_location_ = SchemaLocation.CreateKeywordLocation(uris, "maxProperties");
+                absolute_max_properties_location_ = SchemaLocation.Append(absoluteKeywordLocation, "maxProperties");
             }
 
             it = sch.find("minProperties");
             if (it != sch.EnumerateObject().end()) 
             {
                 min_properties_ = it.value().template as<int>();
-                absolute_min_properties_location_ = SchemaLocation.CreateKeywordLocation(uris, "minProperties");
+                absolute_min_properties_location_ = SchemaLocation.Append(absoluteKeywordLocation, "minProperties");
             }
 
             it = sch.find("required");
             if (it != sch.EnumerateObject().end()) 
             {
-                auto location = SchemaLocation.CreateKeywordLocation(uris, "required");
+                auto location = SchemaLocation.Append(absoluteKeywordLocation, "required");
                 required_ = required_KeywordValidator<Json>(location, 
                                                    it.value().template as<IList<string>>());
             }
@@ -1292,7 +1292,7 @@ namespace JsonCons.JsonSchema
                     {
                         case json_type::array_value:
                         {
-                            auto location = SchemaLocation.CreateKeywordLocation(uris, "required");
+                            auto location = SchemaLocation.Append(absoluteKeywordLocation, "required");
                             dependencies_.emplace(dep.key(),
                                                   validatorFactory.make_required_keyword({location},
                                                                                  dep.value().template as<IList<string>>()));
@@ -1449,7 +1449,7 @@ namespace JsonCons.JsonSchema
                 if (it != sch.EnumerateObject().end()) 
                 {
                     max_items_ = it.value().template as<int>();
-                    absolute_max_items_location_ = SchemaLocation.CreateKeywordLocation(uris, "maxItems");
+                    absolute_max_items_location_ = SchemaLocation.Append(absoluteKeywordLocation, "maxItems");
                 }
             }
 
@@ -1458,7 +1458,7 @@ namespace JsonCons.JsonSchema
                 if (it != sch.EnumerateObject().end()) 
                 {
                     min_items_ = it.value().template as<int>();
-                    absolute_min_items_location_ = SchemaLocation.CreateKeywordLocation(uris, "minItems");
+                    absolute_min_items_location_ = SchemaLocation.Append(absoluteKeywordLocation, "minItems");
                 }
             }
 

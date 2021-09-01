@@ -118,16 +118,16 @@ namespace JsonCons.JsonSchema
             return Uri.GetHashCode();
         }
 
-        internal static string CreateKeywordLocation(IList<SchemaLocation> uris, string keyword)
+        internal static SchemaLocation GetAbsoluteKeywordLocation(IList<SchemaLocation> uris)
         {
             foreach (var item in uris)
             {
                 if (!item.HasIdentifier && item.IsAbsoluteUri)
                 {
-                    return SchemaLocation.Append(item, keyword).ToString();
+                    return item;
                 }
             }
-            return "";
+            return new SchemaLocation("");
         }
         /*
 
