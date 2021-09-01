@@ -8,11 +8,8 @@ using System.Text.Json;
 using JsonCons.Utilities;
 using System.Text.RegularExpressions;
 
-#nullable enable        
-
 namespace JsonCons.JsonSchema
 {
-
     abstract class KeywordValidator 
     {
         static readonly JsonElement nullValue;
@@ -90,43 +87,43 @@ namespace JsonCons.JsonSchema
 
     class StringValidator : KeywordValidator 
     {
-        internal int? MaxLength {get;} = null;
-        internal string? MaxLengthLocation {get;} = null;
+        int? _maxLength;
+        string _maxLengthLocation;
 
-        internal int? MinLength {get;} = null;
-        internal string? MinLengthLocation {get;} = null;
+        int? _minLength;
+        string _minLengthLocation;
 
-        internal Regex? Pattern {get;} = null;
-        internal string? PatternLocation {get;} = null;
+        Regex _pattern;
+        string _patternLocation;
 
-        IFormatValidator? FormatValidator {get;} = null; 
+        IFormatValidator _formatValidator; 
         
-        internal string? ContentEncoding {get;} = null;
-        internal string? ContentEncodingLocation {get;} = null;
+        string _contentEncoding;
+        string _contentEncodingLocation;
 
-        internal string? ContentMediaType {get;} = null;
-        internal string? ContentMediaTypeLocation {get;} = null;
+        string _contentMediaType;
+        string _contentMediaTypeLocation;
 
         internal StringValidator(string absoluteKeywordLocation,
-                                 int? maxLength, string? maxLengthLocation,
-                                 int? minLength, string? minLengthLocation,
-                                 Regex? pattern, string? patternLocation,
-                                 IFormatValidator? formatValidator, 
-                                 string? contentEncoding, string? contentEncodingLocation,
-                                 string? contentMediaType, string? contentMediaTypeLocation)
+                                 int? maxLength, string maxLengthLocation,
+                                 int? minLength, string minLengthLocation,
+                                 Regex pattern, string patternLocation,
+                                 IFormatValidator formatValidator, 
+                                 string contentEncoding, string contentEncodingLocation,
+                                 string contentMediaType, string contentMediaTypeLocation)
             : base(absoluteKeywordLocation)
         {
-            MaxLength = maxLength;
-            MaxLengthLocation = maxLengthLocation;
-            MinLength = minLength;
-            MinLengthLocation = minLengthLocation;
-            Pattern = pattern;
-            PatternLocation = patternLocation;
-            FormatValidator = formatValidator;
-            ContentEncoding = contentEncoding;
-            ContentEncodingLocation = contentEncodingLocation;
-            ContentMediaType = contentMediaType;
-            ContentMediaTypeLocation = contentMediaTypeLocation;
+            _maxLength = maxLength;
+            _maxLengthLocation = maxLengthLocation;
+            _minLength = minLength;
+            _minLengthLocation = minLengthLocation;
+            _pattern = pattern;
+            _patternLocation = patternLocation;
+            _formatValidator = formatValidator;
+            _contentEncoding = contentEncoding;
+            _contentEncodingLocation = contentEncodingLocation;
+            _contentMediaType = contentMediaType;
+            _contentMediaTypeLocation = contentMediaTypeLocation;
         }
 
         internal override void OnValidate(JsonElement instance,
@@ -134,12 +131,12 @@ namespace JsonCons.JsonSchema
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch)
         {
-            string? content = null;
-            if (ContentEncoding != null)
+            string content = null;
+            if (_contentEncoding != null)
             {
-                if (ContentEncoding == "base64")
+                if (_contentEncoding == "base64")
                 {
-                    string? s = instance.GetString();
+                    string s = instance.GetString();
                     try
                     {
                         content = Convert.ToBase64String(Encoding.UTF8.GetBytes(s));
@@ -147,7 +144,7 @@ namespace JsonCons.JsonSchema
                     catch (Exception)
                     {
                         reporter.Error(new ValidationOutput("contentEncoding", 
-                                                            ContentEncodingLocation, 
+                                                            _contentEncodingLocation, 
                                                             instanceLocation.ToString(), 
                                                             "Content is not a base64 string"));
                         if (reporter.FailEarly)
@@ -156,12 +153,12 @@ namespace JsonCons.JsonSchema
                         }
                     }
                 }
-                else if (ContentEncoding.Length != 0)
+                else if (_contentEncoding.Length != 0)
                 {
                     reporter.Error(new ValidationOutput("contentEncoding", 
-                                                    ContentEncodingLocation,
+                                                    _contentEncodingLocation,
                                                     instanceLocation.ToString(), 
-                                                    $"Unable to check for contentEncoding '{ContentEncoding}'"));
+                                                    $"Unable to check for contentEncoding '{_contentEncoding}'"));
                     if (reporter.FailEarly)
                     {
                         return;
@@ -177,9 +174,9 @@ namespace JsonCons.JsonSchema
                 return;
             }
 
-            if (ContentMediaType != null) 
+            if (_contentMediaType != null) 
             {
-                if (ContentMediaType.Equals("application/Json"))
+                if (_contentMediaType.Equals("application/Json"))
                 {
                     try
                     {
@@ -188,7 +185,7 @@ namespace JsonCons.JsonSchema
                     catch (Exception e)
                     {
                         reporter.Error(new ValidationOutput("contentMediaType", 
-                                                            ContentMediaTypeLocation,
+                                                            _contentMediaTypeLocation,
                                                             instanceLocation.ToString(), 
                                                             $"Content is not JSON: {e.Message}"));
                     }
@@ -200,16 +197,16 @@ namespace JsonCons.JsonSchema
                 return; 
             }
 
-            if (MinLength != null) 
+            if (_minLength != null) 
             {
                 byte[] bytes = Encoding.UTF32.GetBytes(content.ToCharArray());
                 int length = bytes.Length/4;
-                if (length < MinLength) 
+                if (length < _minLength) 
                 {
                     reporter.Error(new ValidationOutput("minLength", 
-                                                    MinLengthLocation, 
+                                                    _minLengthLocation, 
                                                     instanceLocation.ToString(), 
-                                                    $"Expected minLength: {MinLength}, actual: {length}"));
+                                                    $"Expected minLength: {_minLength}, actual: {length}"));
                     if (reporter.FailEarly)
                     {
                         return;
@@ -217,16 +214,16 @@ namespace JsonCons.JsonSchema
                 }
             }
 
-            if (MaxLength != null) 
+            if (_maxLength != null) 
             {
                 byte[] bytes = Encoding.UTF32.GetBytes(content.ToCharArray());
                 int length = bytes.Length/4;
-                if (length > MaxLength)
+                if (length > _maxLength)
                 {
                     reporter.Error(new ValidationOutput("maxLength", 
-                                                    MaxLengthLocation, 
+                                                    _maxLengthLocation, 
                                                     instanceLocation.ToString(), 
-                                                    $"Expected maxLength: {MaxLength}, actual: {length}"));
+                                                    $"Expected maxLength: {_maxLength}, actual: {length}"));
                     if (reporter.FailEarly)
                     {
                         return;
@@ -234,15 +231,15 @@ namespace JsonCons.JsonSchema
                 }
             }
 
-            if (Pattern != null)
+            if (_pattern != null)
             {
-                var match = Pattern.Match(content);
+                var match = _pattern.Match(content);
                 if (match.Success)
                 {
                     reporter.Error(new ValidationOutput("pattern", 
-                                                    PatternLocation, 
+                                                    _patternLocation, 
                                                     instanceLocation.ToString(), 
-                                                    $"String '{content}' does not match pattern '{Pattern}'"));
+                                                    $"String '{content}' does not match pattern '{_pattern}'"));
                     if (reporter.FailEarly)
                     {
                         return;
@@ -250,9 +247,9 @@ namespace JsonCons.JsonSchema
                 }
             }
 
-            if (FormatValidator != null) 
+            if (_formatValidator != null) 
             {
-                FormatValidator.Validate(content, instanceLocation.ToString(), reporter);
+                _formatValidator.Validate(content, instanceLocation.ToString(), reporter);
                 if (reporter.ErrorCount > 0 && reporter.FailEarly)
                 {
                     return;
@@ -264,39 +261,39 @@ namespace JsonCons.JsonSchema
         {
             string absoluteKeywordLocation = (uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "";
             int? maxLength = null;
-            string? maxLengthLocation = null;
+            string maxLengthLocation = "";
             int? minLength = null;
-            string? minLengthLocation = null;
-            Regex? pattern = null;
-            string? patternLocation = null;
-            IFormatValidator? formatValidator = null; 
-            string? contentEncoding = null;
-            string? contentEncodingLocation = null;
-            string? contentMediaType = null;
-            string? contentMediaTypeLocation = null;
+            string minLengthLocation = "";
+            Regex pattern = null;
+            string patternLocation = "";
+            IFormatValidator formatValidator = null; 
+            string contentEncoding = null;
+            string contentEncodingLocation = "";
+            string contentMediaType = null;
+            string contentMediaTypeLocation = "";
 
             JsonElement element;
             if (schema.TryGetProperty("maxLength", out element))
             {   
                 maxLength = element.GetInt32();
-                maxLengthLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "maxLength");
+                maxLengthLocation = SchemaLocation.CreateKeywordLocation(uris, "maxLength");
             }
             if (schema.TryGetProperty("minLength", out element))
             {   
                 minLength = element.GetInt32();
-                minLengthLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "minLength");
+                minLengthLocation = SchemaLocation.CreateKeywordLocation(uris, "minLength");
             }
 
             if (schema.TryGetProperty("pattern", out element))
             {   
-                string? patternString = element.GetString();
+                string patternString = element.GetString();
                 pattern = new Regex(patternString);
-                patternLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "pattern");
+                patternLocation = SchemaLocation.CreateKeywordLocation(uris, "pattern");
             }
             if (schema.TryGetProperty("format", out element))
             {   
-                string? format = element.GetString();
-                string formatLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "format");
+                string format = element.GetString();
+                string formatLocation = SchemaLocation.CreateKeywordLocation(uris, "format");
                 switch (format)
                 {
                     case "date-time":
@@ -326,17 +323,17 @@ namespace JsonCons.JsonSchema
                     default:
                         break;
                 }
-                formatLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "format");
+                formatLocation = SchemaLocation.CreateKeywordLocation(uris, "format");
             }
             if (schema.TryGetProperty("contentEncoding", out element))
             {   
                 contentEncoding = element.GetString();
-                contentEncodingLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "contentEncoding");
+                contentEncodingLocation = SchemaLocation.CreateKeywordLocation(uris, "contentEncoding");
             }
             if (schema.TryGetProperty("contentMediaType", out element))
             {   
                 contentMediaType = element.GetString();
-                contentMediaTypeLocation = SchemaLocation.CreateAbsoluteKeywordLocation(uris, "contentMediaType");
+                contentMediaTypeLocation = SchemaLocation.CreateKeywordLocation(uris, "contentMediaType");
             }
             return new StringValidator(absoluteKeywordLocation,
                                        maxLength, maxLengthLocation,
@@ -531,180 +528,507 @@ namespace JsonCons.JsonSchema
             }
         }
     }
-/*
-    template <class T, class Json>
-    T get_number(JsonElement val, const string_view& keyword) 
+
+    static class NumericUtilities 
     {
-        if (!val.is_number())
+        internal static bool TryGetInt64(JsonElement element, out Int64 result)
         {
-            std::string message(keyword);
-            message.append(" must be a number value");
-            JSONCONS_THROW(schema_error(message));
+            if (element.ValueKind != JsonValueKind.Number)
+            {
+                result = 0;
+                return false;
+            }
+            if (!element.TryGetInt64(out result))
+            {
+                Decimal dec;
+                if (!element.TryGetDecimal(out dec))
+                {
+                    return false;
+                }
+                Decimal ceil = Decimal.Ceiling(dec);
+                if (ceil != dec)
+                {
+                    return false;
+                }
+                if (ceil < Int64.MinValue || ceil > Int64.MaxValue)
+                {
+                    return false;
+                }
+                result = Decimal.ToInt64(ceil);
+            }
+            return true;
         }
-        return val.template as<T>();
+
+        internal static bool TryGetDouble(JsonElement element, out double result)
+        {
+            if (element.ValueKind != JsonValueKind.Number)
+            {
+                result = 0;
+                return false;
+            }
+            if (!element.TryGetDouble(out result))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        internal static bool IsMultipleOf(double x, double multipleOf) 
+        {
+            return x >= multipleOf && multipleOf % x == 0;
+        }
     }
 
-    template <class Json,class T>
-    class numericic_type_validator : KeywordValidator
+    class IntegerValidator : KeywordValidator
     {
-        jsoncons::optional<T> maximum_;
-        std::string absolute_maximum_location_;
-        jsoncons::optional<T> minimum_;
-        std::string absolute_minimum_location_;
-        jsoncons::optional<T> exclusive_maximum_;
-        std::string absolute_exclusive_maximum_location_;
-        jsoncons::optional<T> exclusive_minimum_;
-        std::string absolute_exclusive_minimum_location_;
-        jsoncons::optional<double> multiple_of_;
-        std::string absolute_multiple_of_location_;
+        Int64? _maximum;
+        string _maximumLocation = "";
+        Int64? _minimum;
+        string _minimumLocation = "";
+        Int64? _exclusiveMaximum;
+        string _exclusiveMaximumLocation = "";
+        Int64? _exclusiveMinimum;
+        string _exclusiveMinimumLocation = "";
+        double? _multipleOf;
+        string _multipleOfLocation = "";
 
-    public:
-        numericic_type_validator(JsonElement sch, 
-                    List<SchemaLocation> uris, 
-                    std::set<std::string>& keywords)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), 
-              maximum_(), minimum_(),exclusive_maximum_(), exclusive_minimum_(), multiple_of_()
+        internal IntegerValidator(string absoluteKeywordLocation,
+                                  Int64? maximum,
+                                  string maximumLocation,
+                                  Int64? minimum,
+                                  string minimumLocation,
+                                  Int64? exclusiveMaximum,
+                                  string exclusiveMaximumLocation,
+                                  Int64? exclusiveMinimum,
+                                  string exclusiveMinimumLocation,
+                                  double? multipleOf,
+                                  string multipleOfLocation)
+            : base(absoluteKeywordLocation)
         {
-            auto it = sch.find("maximum");
-            if (it != sch.EnumerateObject().end()) 
-            {
-                maximum_ = get_number<T>(it.value(), "maximum");
-                absolute_maximum_location_ = make_absolute_keyword_location(uris,"maximum");
-                keywords.insert("maximum");
-            }
-
-            it = sch.find("minimum");
-            if (it != sch.EnumerateObject().end()) 
-            {
-                minimum_ = get_number<T>(it.value(), "minimum");
-                absolute_minimum_location_ = make_absolute_keyword_location(uris,"minimum");
-                keywords.insert("minimum");
-            }
-
-            it = sch.find("exclusiveMaximum");
-            if (it != sch.EnumerateObject().end()) 
-            {
-                exclusive_maximum_ = get_number<T>(it.value(), "exclusiveMaximum");
-                absolute_exclusive_maximum_location_ = make_absolute_keyword_location(uris,"exclusiveMaximum");
-                keywords.insert("exclusiveMaximum");
-            }
-
-            it = sch.find("exclusiveMinimum");
-            if (it != sch.EnumerateObject().end()) 
-            {
-                exclusive_minimum_ = get_number<T>(it.value(), "exclusiveMinimum");
-                absolute_exclusive_minimum_location_ = make_absolute_keyword_location(uris,"exclusiveMinimum");
-                keywords.insert("exclusiveMinimum");
-            }
-
-            it = sch.find("multipleOf");
-            if (it != sch.EnumerateObject().end()) 
-            {
-                multiple_of_ = get_number<double>(it.value(), "multipleOf");
-                absolute_multiple_of_location_ = make_absolute_keyword_location(uris,"multipleOf");
-                keywords.insert("multipleOf");
-            }
+            _maximum = maximum;
+            _maximumLocation = maximumLocation;
+            _minimum = minimum;
+            _minimumLocation = minimumLocation;
+            _exclusiveMaximum = exclusiveMaximum;
+            _exclusiveMaximumLocation = exclusiveMaximumLocation;
+            _exclusiveMinimum = exclusiveMinimum;
+            _exclusiveMinimumLocation = exclusiveMinimumLocation;
+            _multipleOf = multipleOf;
+            _multipleOfLocation = multipleOfLocation;
         }
 
-    protected:
-
-        void apply_kewords(T value,
-                           SchemaLocation instanceLocation, 
-                           JsonElement instance, 
-                           ErrorReporter reporter) const 
+        internal static IntegerValidator Create(JsonElement sch, 
+                                                IList<SchemaLocation> uris, 
+                                                ISet<string> keywords)
         {
-            if (multiple_of_ && value != 0) // exclude zero
+            string absoluteKeywordLocation = (uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "";
+            Int64? maximum = null;
+            string maximumLocation = "";
+            Int64? minimum = null;
+            string minimumLocation = "";
+            Int64? exclusiveMaximum = null;
+            string exclusiveMaximumLocation = "";
+            Int64? exclusiveMinimum = null;
+            string exclusiveMinimumLocation = "";
+            double? multipleOf = null;
+            string multipleOfLocation = "";
+
+            JsonElement element;
+            if (sch.TryGetProperty("maximum", out element)) 
             {
-                if (!is_multiple_of(value, *multiple_of_))
+                maximumLocation = SchemaLocation.CreateKeywordLocation(uris,"maximum");
+                Int64 val;
+                if (!NumericUtilities.TryGetInt64(element, out val))
+                {
+                    throw new JsonSchemaException("'maximum' must be an Int64", maximumLocation);
+                }
+                maximum = val;
+                keywords.Add("maximum");
+            }
+
+            if (sch.TryGetProperty("minimum", out element)) 
+            {
+                minimumLocation = SchemaLocation.CreateKeywordLocation(uris,"minimum");
+                Int64 val;
+                if (!NumericUtilities.TryGetInt64(element, out val))
+                {
+                    throw new JsonSchemaException("'minimum' must be an Int64", minimumLocation);
+                }
+                minimum = val;
+                keywords.Add("minimum");
+            }
+
+            if (sch.TryGetProperty("exclusiveMaximum", out element)) 
+            {
+                exclusiveMaximumLocation = SchemaLocation.CreateKeywordLocation(uris,"exclusiveMaximum");
+                Int64 val;
+                if (!NumericUtilities.TryGetInt64(element, out val))
+                {
+                    throw new JsonSchemaException("'exclusiveMaximum' must be an Int64", exclusiveMaximumLocation);
+                }
+                exclusiveMaximum = val;
+                keywords.Add("exclusiveMaximum");
+            }
+
+            if (sch.TryGetProperty("exclusiveMinimum", out element)) 
+            {
+                exclusiveMinimumLocation = SchemaLocation.CreateKeywordLocation(uris,"exclusiveMinimum");
+                Int64 val;
+                if (!NumericUtilities.TryGetInt64(element, out val))
+                {
+                    throw new JsonSchemaException("'exclusiveMinimum' must be an Int64", exclusiveMinimumLocation);
+                }
+                exclusiveMinimum = val;
+                keywords.Add("exclusiveMinimum");
+            }
+
+            if (sch.TryGetProperty("multipleOf", out element)) 
+            {
+                multipleOfLocation = SchemaLocation.CreateKeywordLocation(uris, "multipleOf");
+                double val;
+                if (!NumericUtilities.TryGetDouble(element, out val))
+                {
+                    throw new JsonSchemaException("'multipleOf' must be a number", multipleOfLocation);
+                }
+                multipleOf = val;
+                keywords.Add("multipleOf");
+            }
+            return new IntegerValidator(absoluteKeywordLocation,
+                                        maximum,
+                                        maximumLocation,
+                                        minimum,
+                                        minimumLocation,
+                                        exclusiveMaximum,
+                                        exclusiveMaximumLocation,
+                                        exclusiveMinimum,
+                                        exclusiveMinimumLocation,
+                                        multipleOf,
+                                        multipleOfLocation);
+        }
+
+        internal override void OnValidate(JsonElement instance, 
+                                          SchemaLocation instanceLocation, 
+                                          ErrorReporter reporter, 
+                                          IList<PatchElement> patch) 
+        {
+            Int64 value;
+            if (!NumericUtilities.TryGetInt64(instance, out value))
+            {
+                reporter.Error(new ValidationOutput("integer", 
+                                                    this.AbsoluteKeywordLocation, 
+                                                    instanceLocation.ToString(), 
+                                                    "Instance is not an integer"));
+                if (reporter.FailEarly)
+                {
+                    return;
+                }
+            }
+            if (_multipleOf.HasValue && value != 0) // exclude zero
+            {
+                if (!NumericUtilities.IsMultipleOf(value, (double)_multipleOf))
                 {
                     reporter.Error(new ValidationOutput("multipleOf", 
-                                                     absolute_multiple_of_location_, 
-                                                     instanceLocation.ToString(), 
-                                                     instance.template as<std::string>() + " is not a multiple of " + std::to_string(*multiple_of_)));
-                    if (reporter.fail_early())
+                                                        _multipleOfLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"{instance} is not a multiple of _multipleOf"));
+                    if (reporter.FailEarly)
                     {
                         return;
                     }
                 }
             }
 
-            if (maximum_)
+            if (_maximum.HasValue)
             {
-                if (value > *maximum_)
+                if (value > (Int64)_maximum)
                 {
                     reporter.Error(new ValidationOutput("maximum", 
-                                                     absolute_maximum_location_, 
-                                                     instanceLocation.ToString(), 
-                                                     instance.template as<std::string>() + " exceeds maximum of " + std::to_string(*maximum_)));
-                    if (reporter.fail_early())
+                                                        _maximumLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"{instance} exceeds maximum of + {_exclusiveMinimum}"));
+                    if (reporter.FailEarly)
                     {
                         return;
                     }
                 }
             }
 
-            if (minimum_)
+            if (_minimum != null)
             {
-                if (value < *minimum_)
+                if (value < _minimum)
                 {
                     reporter.Error(new ValidationOutput("minimum", 
-                                                     absolute_minimum_location_, 
-                                                     instanceLocation.ToString(), 
-                                                     instance.template as<std::string>() + " is below minimum of " + std::to_string(*minimum_)));
-                    if (reporter.fail_early())
+                                                        _minimumLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"{instance} is below minimum of + {_exclusiveMinimum}"));
+                    if (reporter.FailEarly)
                     {
                         return;
                     }
                 }
             }
 
-            if (exclusive_maximum_)
+            if (_exclusiveMaximum.HasValue)
             {
-                if (value >= *exclusive_maximum_)
+                if (value >= _exclusiveMaximum)
                 {
                     reporter.Error(new ValidationOutput("exclusiveMaximum", 
-                                                     absolute_exclusive_maximum_location_, 
-                                                     instanceLocation.ToString(), 
-                                                     instance.template as<std::string>() + " exceeds maximum of " + std::to_string(*exclusive_maximum_)));
-                    if (reporter.fail_early())
+                                                        _exclusiveMaximumLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"{instance} exceeds maximum of + {_exclusiveMinimum}"));
+                    if (reporter.FailEarly)
                     {
                         return;
                     }
                 }
             }
 
-            if (exclusive_minimum_)
+            if (_exclusiveMinimum.HasValue)
             {
-                if (value <= *exclusive_minimum_)
+                if (value <= _exclusiveMinimum)
                 {
                     reporter.Error(new ValidationOutput("exclusiveMinimum", 
-                                                     absolute_exclusive_minimum_location_, 
-                                                     instanceLocation.ToString(), 
-                                                     instance.template as<std::string>() + " is below minimum of " + std::to_string(*exclusive_minimum_)));
-                    if (reporter.fail_early())
+                                                        _exclusiveMinimumLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"{instance} is below minimum of + {_exclusiveMinimum}"));
+                    if (reporter.FailEarly)
                     {
                         return;
                     }
                 }
             }
-        }
-    private:
-        static bool is_multiple_of(T x, double multiple_of) 
-        {
-            double rem = std::remainder(x, multiple_of);
-            double eps = std::nextafter(x, 0) - x;
-            return std::fabs(rem) < std::fabs(eps);
         }
     }
 
-    template <class Json>
-    class integer_keyword : numericic_type_validator<Json,int64_t>
+    class DoubleValidator : KeywordValidator
+    {
+        double? _maximum;
+        string _maximumLocation = "";
+        double? _minimum;
+        string _minimumLocation = "";
+        double? _exclusiveMaximum;
+        string _exclusiveMaximumLocation = "";
+        double? _exclusiveMinimum;
+        string _exclusiveMinimumLocation = "";
+        double? _multipleOf;
+        string _multipleOfLocation = "";
+
+        internal DoubleValidator(string absoluteKeywordLocation,
+                                  double? maximum,
+                                  string maximumLocation,
+                                  double? minimum,
+                                  string minimumLocation,
+                                  double? exclusiveMaximum,
+                                  string exclusiveMaximumLocation,
+                                  double? exclusiveMinimum,
+                                  string exclusiveMinimumLocation,
+                                  double? multipleOf,
+                                  string multipleOfLocation)
+            : base(absoluteKeywordLocation)
+        {
+            _maximum = maximum;
+            _maximumLocation = maximumLocation;
+            _minimum = minimum;
+            _minimumLocation = minimumLocation;
+            _exclusiveMaximum = exclusiveMaximum;
+            _exclusiveMaximumLocation = exclusiveMaximumLocation;
+            _exclusiveMinimum = exclusiveMinimum;
+            _exclusiveMinimumLocation = exclusiveMinimumLocation;
+            _multipleOf = multipleOf;
+            _multipleOfLocation = multipleOfLocation;
+        }
+
+        internal static DoubleValidator Create(JsonElement sch, 
+                                                IList<SchemaLocation> uris, 
+                                                ISet<string> keywords)
+        {
+            string absoluteKeywordLocation = (uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "";
+            double? maximum = null;
+            string maximumLocation = "";
+            double? minimum = null;
+            string minimumLocation = "";
+            double? exclusiveMaximum = null;
+            string exclusiveMaximumLocation = "";
+            double? exclusiveMinimum = null;
+            string exclusiveMinimumLocation = "";
+            double? multipleOf = null;
+            string multipleOfLocation = "";
+
+            JsonElement element;
+            if (sch.TryGetProperty("maximum", out element)) 
+            {
+                maximumLocation = SchemaLocation.CreateKeywordLocation(uris,"maximum");
+                double val;
+                if (!NumericUtilities.TryGetDouble(element, out val))
+                {
+                    throw new JsonSchemaException("'maximum' must be an double", maximumLocation);
+                }
+                maximum = val;
+                keywords.Add("maximum");
+            }
+
+            if (sch.TryGetProperty("minimum", out element)) 
+            {
+                minimumLocation = SchemaLocation.CreateKeywordLocation(uris,"minimum");
+                double val;
+                if (!NumericUtilities.TryGetDouble(element, out val))
+                {
+                    throw new JsonSchemaException("'minimum' must be an double", minimumLocation);
+                }
+                minimum = val;
+                keywords.Add("minimum");
+            }
+
+            if (sch.TryGetProperty("exclusiveMaximum", out element)) 
+            {
+                exclusiveMaximumLocation = SchemaLocation.CreateKeywordLocation(uris,"exclusiveMaximum");
+                double val;
+                if (!NumericUtilities.TryGetDouble(element, out val))
+                {
+                    throw new JsonSchemaException("'exclusiveMaximum' must be an double", exclusiveMaximumLocation);
+                }
+                exclusiveMaximum = val;
+                keywords.Add("exclusiveMaximum");
+            }
+
+            if (sch.TryGetProperty("exclusiveMinimum", out element)) 
+            {
+                exclusiveMinimumLocation = SchemaLocation.CreateKeywordLocation(uris,"exclusiveMinimum");
+                double val;
+                if (!NumericUtilities.TryGetDouble(element, out val))
+                {
+                    throw new JsonSchemaException("'exclusiveMinimum' must be an double", exclusiveMinimumLocation);
+                }
+                exclusiveMinimum = val;
+                keywords.Add("exclusiveMinimum");
+            }
+
+            if (sch.TryGetProperty("multipleOf", out element)) 
+            {
+                multipleOfLocation = SchemaLocation.CreateKeywordLocation(uris, "multipleOf");
+                double val;
+                if (!NumericUtilities.TryGetDouble(element, out val))
+                {
+                    throw new JsonSchemaException("'multipleOf' must be a number", multipleOfLocation);
+                }
+                multipleOf = val;
+                keywords.Add("multipleOf");
+            }
+            return new DoubleValidator(absoluteKeywordLocation,
+                                        maximum,
+                                        maximumLocation,
+                                        minimum,
+                                        minimumLocation,
+                                        exclusiveMaximum,
+                                        exclusiveMaximumLocation,
+                                        exclusiveMinimum,
+                                        exclusiveMinimumLocation,
+                                        multipleOf,
+                                        multipleOfLocation);
+        }
+
+        internal override void OnValidate(JsonElement instance, 
+                                          SchemaLocation instanceLocation, 
+                                          ErrorReporter reporter, 
+                                          IList<PatchElement> patch) 
+        {
+            double value;
+            if (!NumericUtilities.TryGetDouble(instance, out value))
+            {
+                reporter.Error(new ValidationOutput("integer", 
+                                                    this.AbsoluteKeywordLocation, 
+                                                    instanceLocation.ToString(), 
+                                                    "Instance is not an integer"));
+                if (reporter.FailEarly)
+                {
+                    return;
+                }
+            }
+            if (_multipleOf.HasValue && value != 0) // exclude zero
+            {
+                if (!NumericUtilities.IsMultipleOf(value, (double)_multipleOf))
+                {
+                    reporter.Error(new ValidationOutput("multipleOf", 
+                                                        _multipleOfLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"{instance} is not a multiple of _multipleOf"));
+                    if (reporter.FailEarly)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            if (_maximum.HasValue)
+            {
+                if (value > (double)_maximum)
+                {
+                    reporter.Error(new ValidationOutput("maximum", 
+                                                        _maximumLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"{instance} exceeds maximum of + {_exclusiveMinimum}"));
+                    if (reporter.FailEarly)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            if (_minimum != null)
+            {
+                if (value < _minimum)
+                {
+                    reporter.Error(new ValidationOutput("minimum", 
+                                                        _minimumLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"{instance} is below minimum of + {_exclusiveMinimum}"));
+                    if (reporter.FailEarly)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            if (_exclusiveMaximum.HasValue)
+            {
+                if (value >= _exclusiveMaximum)
+                {
+                    reporter.Error(new ValidationOutput("exclusiveMaximum", 
+                                                        _exclusiveMaximumLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"{instance} exceeds maximum of + {_exclusiveMinimum}"));
+                    if (reporter.FailEarly)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            if (_exclusiveMinimum.HasValue)
+            {
+                if (value <= _exclusiveMinimum)
+                {
+                    reporter.Error(new ValidationOutput("exclusiveMinimum", 
+                                                        _exclusiveMinimumLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"{instance} is below minimum of + {_exclusiveMinimum}"));
+                    if (reporter.FailEarly)
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+/*    template <class Json>
+    class IntegerValidator : BaseNumericValidator<Json,int64_t>
     {
     public:
-        integer_keyword(JsonElement sch, 
+        IntegerValidator(JsonElement sch, 
                           List<SchemaLocation> uris, 
-                          std::set<std::string>& keywords)
-            : numericic_type_validator<Json, int64_t>(sch, uris, keywords)
+                          ISet<string> keywords)
+            : BaseNumericValidator<Json, int64_t>(sch, uris, keywords)
         {
         }
     private:
@@ -719,24 +1043,24 @@ namespace JsonCons.JsonSchema
                                                  this.AbsoluteKeywordLocation, 
                                                  instanceLocation.ToString(), 
                                                  "Instance is not an integer"));
-                if (reporter.fail_early())
+                if (reporter.FailEarly)
                 {
                     return;
                 }
             }
             int64_t value = instance.template as<int64_t>(); 
-            this.apply_kewords(value, instanceLocation, instance, reporter);
+            this.ApplyKeywords(value, instanceLocation, instance, reporter);
         }
     }
 
     template <class Json>
-    class number_validator : numericic_type_validator<Json,double>
+    class NumberValidator : BaseNumericValidator<Json,double>
     {
     public:
-        number_validator(JsonElement sch,
+        NumberValidator(JsonElement sch,
                           List<SchemaLocation> uris, 
-                          std::set<std::string>& keywords)
-            : numericic_type_validator<Json, double>(sch, uris, keywords)
+                          ISet<string> keywords)
+            : BaseNumericValidator<Json, double>(sch, uris, keywords)
         {
         }
     private:
@@ -751,13 +1075,13 @@ namespace JsonCons.JsonSchema
                                                  this.AbsoluteKeywordLocation, 
                                                  instanceLocation.ToString(), 
                                                  "Instance is not a number"));
-                if (reporter.fail_early())
+                if (reporter.FailEarly)
                 {
                     return;
                 }
             }
             double value = instance.template as<double>(); 
-            this.apply_kewords(value, instanceLocation, instance, reporter);
+            this.ApplyKeywords(value, instanceLocation, instance, reporter);
         }
     }
 
@@ -844,13 +1168,13 @@ namespace JsonCons.JsonSchema
     template <class Json>
     class required_KeywordValidator : KeywordValidator
     {
-        IList<std::string> items_;
+        IList<string> _items;
 
     public:
         required_KeywordValidator(List<SchemaLocation> uris,
-                         const IList<std::string>& items)
+                         const IList<string>& items)
             : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), items_(items) {}
-        required_KeywordValidator(string absolute_keyword_location, const IList<std::string>& items)
+        required_KeywordValidator(string absolute_keyword_location, const IList<string>& items)
             : base(absolute_keyword_location), items_(items) {}
 
         required_KeywordValidator(const required_KeywordValidator&) = delete;
@@ -872,7 +1196,7 @@ namespace JsonCons.JsonSchema
                                                      this.AbsoluteKeywordLocation, 
                                                      instanceLocation.ToString(), 
                                                      "Required property \"" + key + "\" not found"));
-                    if (reporter.fail_early())
+                    if (reporter.FailEarly)
                     {
                         return;
                     }
@@ -884,21 +1208,21 @@ namespace JsonCons.JsonSchema
     template <class Json>
     class object_validator : KeywordValidator
     {
-        jsoncons::optional<int> max_properties_;
-        std::string absolute_max_properties_location_;
-        jsoncons::optional<int> min_properties_;
-        std::string absolute_min_properties_location_;
-        jsoncons::optional<required_KeywordValidator<Json>> required_;
+        jsoncons::optional<int> _max_properties;
+        string _absolute_max_properties_location;
+        jsoncons::optional<int> _min_properties;
+        string _absolute_min_properties_location;
+        jsoncons::optional<required_KeywordValidator<Json>> _required;
 
-        std::map<std::string, KeywordValidator> properties_;
+        std::map<string, KeywordValidator> _properties;
     #if defined(JSONCONS_HAS_STD_REGEX)
-        IList<std::pair<std::regex, KeywordValidator>> pattern_properties_;
+        IList<std::pair<std::regex, KeywordValidator>> _pattern_properties;
     #endif
-        KeywordValidator additional_properties_;
+        KeywordValidator _additional_properties;
 
-        std::map<std::string, KeywordValidator> dependencies_;
+        std::map<string, KeywordValidator> _dependencies;
 
-        KeywordValidator property_names_;
+        KeywordValidator _property_names;
 
     public:
         object_validator(IKeywordValidatorFactory validatorFactory,
@@ -913,22 +1237,22 @@ namespace JsonCons.JsonSchema
             if (it != sch.EnumerateObject().end()) 
             {
                 max_properties_ = it.value().template as<int>();
-                absolute_max_properties_location_ = make_absolute_keyword_location(uris, "maxProperties");
+                absolute_max_properties_location_ = SchemaLocation.CreateKeywordLocation(uris, "maxProperties");
             }
 
             it = sch.find("minProperties");
             if (it != sch.EnumerateObject().end()) 
             {
                 min_properties_ = it.value().template as<int>();
-                absolute_min_properties_location_ = make_absolute_keyword_location(uris, "minProperties");
+                absolute_min_properties_location_ = SchemaLocation.CreateKeywordLocation(uris, "minProperties");
             }
 
             it = sch.find("required");
             if (it != sch.EnumerateObject().end()) 
             {
-                auto location = make_absolute_keyword_location(uris, "required");
+                auto location = SchemaLocation.CreateKeywordLocation(uris, "required");
                 required_ = required_KeywordValidator<Json>(location, 
-                                                   it.value().template as<IList<std::string>>());
+                                                   it.value().template as<IList<string>>());
             }
 
             it = sch.find("properties");
@@ -968,10 +1292,10 @@ namespace JsonCons.JsonSchema
                     {
                         case json_type::array_value:
                         {
-                            auto location = make_absolute_keyword_location(uris, "required");
+                            auto location = SchemaLocation.CreateKeywordLocation(uris, "required");
                             dependencies_.emplace(dep.key(),
                                                   validatorFactory.make_required_keyword({location},
-                                                                                 dep.value().template as<IList<std::string>>()));
+                                                                                 dep.value().template as<IList<string>>()));
                             break;
                         }
                         default:
@@ -999,13 +1323,13 @@ namespace JsonCons.JsonSchema
         {
             if (max_properties_ && instance.Count > *max_properties_)
             {
-                std::string message("Maximum properties: " + std::to_string(*max_properties_));
+                string message("Maximum properties: " + std::to_string(*max_properties_));
                 message.append(", found: " + std::to_string(instance.Count));
                 reporter.Error(new ValidationOutput("maxProperties", 
                                                  absolute_max_properties_location_, 
                                                  instanceLocation.ToString(), 
                                                  std::move(message)));
-                if (reporter.fail_early())
+                if (reporter.FailEarly)
                 {
                     return;
                 }
@@ -1013,13 +1337,13 @@ namespace JsonCons.JsonSchema
 
             if (min_properties_ && instance.Count < *min_properties_)
             {
-                std::string message("Minimum properties: " + std::to_string(*min_properties_));
+                string message("Minimum properties: " + std::to_string(*min_properties_));
                 message.append(", found: " + std::to_string(instance.Count));
                 reporter.Error(new ValidationOutput("minProperties", 
                                                  absolute_min_properties_location_, 
                                                  instanceLocation.ToString(), 
                                                  std::move(message)));
-                if (reporter.fail_early())
+                if (reporter.FailEarly)
                 {
                     return;
                 }
@@ -1065,7 +1389,7 @@ namespace JsonCons.JsonSchema
                                                          additional_properties_.AbsoluteKeywordLocation, 
                                                          instanceLocation.ToString(), 
                                                          "Additional property \"" + property.key() + "\" found but was invalid."));
-                        if (reporter.fail_early())
+                        if (reporter.FailEarly)
                         {
                             return;
                         }
@@ -1103,15 +1427,15 @@ namespace JsonCons.JsonSchema
     template <class Json>
     class array_validator : KeywordValidator
     {
-        jsoncons::optional<int> max_items_;
-        std::string absolute_max_items_location_;
-        jsoncons::optional<int> min_items_;
-        std::string absolute_min_items_location_;
+        jsoncons::optional<int> _max_items;
+        string _absolute_max_items_location;
+        jsoncons::optional<int> _min_items;
+        string _absolute_min_items_location;
         bool unique_items_ = false;
-        KeywordValidator items_schema_;
-        IList<KeywordValidator> items_;
-        KeywordValidator additional_items_;
-        KeywordValidator contains_;
+        KeywordValidator _items_schema;
+        IList<KeywordValidator> _items;
+        KeywordValidator _additional_items;
+        KeywordValidator _contains;
 
     public:
         array_validator(IKeywordValidatorFactory validatorFactory, 
@@ -1125,7 +1449,7 @@ namespace JsonCons.JsonSchema
                 if (it != sch.EnumerateObject().end()) 
                 {
                     max_items_ = it.value().template as<int>();
-                    absolute_max_items_location_ = make_absolute_keyword_location(uris, "maxItems");
+                    absolute_max_items_location_ = SchemaLocation.CreateKeywordLocation(uris, "maxItems");
                 }
             }
 
@@ -1134,7 +1458,7 @@ namespace JsonCons.JsonSchema
                 if (it != sch.EnumerateObject().end()) 
                 {
                     min_items_ = it.value().template as<int>();
-                    absolute_min_items_location_ = make_absolute_keyword_location(uris, "minItems");
+                    absolute_min_items_location_ = SchemaLocation.CreateKeywordLocation(uris, "minItems");
                 }
             }
 
@@ -1192,13 +1516,13 @@ namespace JsonCons.JsonSchema
             {
                 if (instance.Count > *max_items_)
                 {
-                    std::string message("Expected maximum item count: " + std::to_string(*max_items_));
+                    string message("Expected maximum item count: " + std::to_string(*max_items_));
                     message.append(", found: " + std::to_string(instance.Count));
                     reporter.Error(new ValidationOutput("maxItems", 
                                                      absolute_max_items_location_, 
                                                      instanceLocation.ToString(), 
                                                      std::move(message)));
-                    if (reporter.fail_early())
+                    if (reporter.FailEarly)
                     {
                         return;
                     }
@@ -1209,13 +1533,13 @@ namespace JsonCons.JsonSchema
             {
                 if (instance.Count < *min_items_)
                 {
-                    std::string message("Expected minimum item count: " + std::to_string(*min_items_));
+                    string message("Expected minimum item count: " + std::to_string(*min_items_));
                     message.append(", found: " + std::to_string(instance.Count));
                     reporter.Error(new ValidationOutput("minItems", 
                                                      absolute_min_items_location_, 
                                                      instanceLocation.ToString(), 
                                                      std::move(message)));
-                    if (reporter.fail_early())
+                    if (reporter.FailEarly)
                     {
                         return;
                     }
@@ -1230,7 +1554,7 @@ namespace JsonCons.JsonSchema
                                                      this.AbsoluteKeywordLocation, 
                                                      instanceLocation.ToString(), 
                                                      "Array items are not unique"));
-                    if (reporter.fail_early())
+                    if (reporter.FailEarly)
                     {
                         return;
                     }
@@ -1253,7 +1577,7 @@ namespace JsonCons.JsonSchema
                 {
                     KeywordValidator item_validator = nullptr;
                     if (item == items_.cend())
-                        item_validator = additional_items_;
+                        item_validator = _additional_items;
                     else 
                     {
                         item_validator = *item;
@@ -1288,7 +1612,7 @@ namespace JsonCons.JsonSchema
                                                      instanceLocation.ToString(), 
                                                      "Expected at least one array item to match \"contains\" schema", 
                                                      localReporter.Errors));
-                    if (reporter.fail_early())
+                    if (reporter.FailEarly)
                     {
                         return;
                     }
@@ -1315,9 +1639,9 @@ namespace JsonCons.JsonSchema
     template <class Json>
     class conditional_keyword : base
     {
-        KeywordValidator if_;
-        KeywordValidator then_;
-        KeywordValidator else_;
+        KeywordValidator _if;
+        KeywordValidator _then;
+        KeywordValidator _else;
 
     public:
         conditional_keyword(IKeywordValidatorFactory validatorFactory,
@@ -1374,7 +1698,7 @@ namespace JsonCons.JsonSchema
     template <class Json>
     class enum_keyword : base
     {
-        Json enum_;
+        Json _enum;
 
     public:
         enum_keyword(JsonElement sch,
@@ -1403,8 +1727,8 @@ namespace JsonCons.JsonSchema
                 reporter.Error(new ValidationOutput("enum", 
                                                  this.AbsoluteKeywordLocation, 
                                                  instanceLocation.ToString(), 
-                                                 instance.template as<std::string>() + " is not a valid enum value"));
-                if (reporter.fail_early())
+                                                 instance.template as<string>() + " is not a valid enum value"));
+                if (reporter.FailEarly)
                 {
                     return;
                 }
@@ -1417,7 +1741,7 @@ namespace JsonCons.JsonSchema
     template <class Json>
     class const_keyword : base
     {
-        Json const_;
+        Json _const;
 
     public:
         const_keyword(JsonElement sch, List<SchemaLocation> uris)
@@ -1441,13 +1765,13 @@ namespace JsonCons.JsonSchema
     template <class Json>
     class type_keyword : base
     {
-        Json default_value_;
-        IList<KeywordValidator> type_mapping_;
-        jsoncons::optional<enum_keyword<Json>> enum_;
-        jsoncons::optional<const_keyword<Json>> const_;
-        IList<KeywordValidator> combined_;
-        jsoncons::optional<conditional_keyword<Json>> conditional_;
-        IList<std::string> expected_types_;
+        Json _default_value;
+        IList<KeywordValidator> _type_mapping;
+        jsoncons::optional<enum_keyword<Json>> _enum;
+        jsoncons::optional<const_keyword<Json>> _const;
+        IList<KeywordValidator> _combined;
+        jsoncons::optional<conditional_keyword<Json>> _conditional;
+        IList<string> _expected_types;
 
     public:
         type_keyword(const type_keyword&) = delete;
@@ -1468,7 +1792,7 @@ namespace JsonCons.JsonSchema
             //    std::cout << uri.ToString() << ", ";
             //}
             //std::cout << "\n";
-            std::set<std::string> known_keywords;
+            std::set<string> known_keywords;
 
             auto it = sch.find("type");
             if (it == sch.EnumerateObject().end()) 
@@ -1481,7 +1805,7 @@ namespace JsonCons.JsonSchema
                 { 
                     case json_type::string_value: 
                     {
-                        auto type = it.value().template as<std::string>();
+                        auto type = it.value().template as<string>();
                         initialize_type_mapping(validatorFactory, type, sch, uris, known_keywords);
                         expected_types_.emplace_back(std::move(type));
                         break;
@@ -1491,7 +1815,7 @@ namespace JsonCons.JsonSchema
                     {
                         foreach (var item : it.value().array_range())
                         {
-                            auto type = item.template as<std::string>();
+                            auto type = item.template as<string>();
                             initialize_type_mapping(validatorFactory, type, sch, uris, known_keywords);
                             expected_types_.emplace_back(std::move(type));
                         }
@@ -1583,7 +1907,7 @@ namespace JsonCons.JsonSchema
                                                  this.AbsoluteKeywordLocation, 
                                                  instanceLocation.ToString(), 
                                                  ss.str()));
-                if (reporter.fail_early())
+                if (reporter.FailEarly)
                 {
                     return;
                 }
@@ -1592,7 +1916,7 @@ namespace JsonCons.JsonSchema
             if (enum_)
             { 
                 enum_.Validate(instanceLocation, instance, reporter, patch);
-                if (reporter.Error_count() > 0 && reporter.fail_early())
+                if (reporter.Error_count() > 0 && reporter.FailEarly)
                 {
                     return;
                 }
@@ -1601,7 +1925,7 @@ namespace JsonCons.JsonSchema
             if (const_)
             { 
                 const_.Validate(instanceLocation, instance, reporter, patch);
-                if (reporter.Error_count() > 0 && reporter.fail_early())
+                if (reporter.Error_count() > 0 && reporter.FailEarly)
                 {
                     return;
                 }
@@ -1610,7 +1934,7 @@ namespace JsonCons.JsonSchema
             foreach (var l : combined_)
             {
                 l.Validate(instanceLocation, instance, reporter, patch);
-                if (reporter.Error_count() > 0 && reporter.fail_early())
+                if (reporter.Error_count() > 0 && reporter.FailEarly)
                 {
                     return;
                 }
@@ -1620,7 +1944,7 @@ namespace JsonCons.JsonSchema
             if (conditional_)
             { 
                 conditional_.Validate(instanceLocation, instance, reporter, patch);
-                if (reporter.Error_count() > 0 && reporter.fail_early())
+                if (reporter.Error_count() > 0 && reporter.FailEarly)
                 {
                     return;
                 }
@@ -1631,14 +1955,14 @@ namespace JsonCons.JsonSchema
                                                    JsonElement,
                                                    ErrorReporter)
         {
-            return default_value_;
+            return _default_value;
         }
 
         void initialize_type_mapping(IKeywordValidatorFactory validatorFactory,
                                      string type,
                                      JsonElement sch,
                                      List<SchemaLocation> uris,
-                                     std::set<std::string>& keywords)
+                                     ISet<string> keywords)
         {
             if (type.Count != 0 || type == "null")
             {

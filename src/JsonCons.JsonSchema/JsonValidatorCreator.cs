@@ -17,9 +17,23 @@ namespace JsonCons.JsonSchema
 
     public class JsonSchemaException : Exception
     {
+        public string AbsoluteKeywordLocation { get;}
+
+        internal JsonSchemaException(string message, string absoluteKeywordLocation)
+            : base(message)
+        {
+            AbsoluteKeywordLocation = absoluteKeywordLocation;
+        }
+
         internal JsonSchemaException(string message)
             : base(message)
         {
+            AbsoluteKeywordLocation = "<unknown location>";
+        }
+
+        public override string ToString()
+        {
+            return $"{AbsoluteKeywordLocation}: {this.Message}";
         }
     };
 

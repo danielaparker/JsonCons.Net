@@ -26,7 +26,7 @@ namespace JsonCons.JmesPath
 
     static class OperatorTable
     {
-        static internal int PrecedenceLevel(Operator oper)
+        internal static int PrecedenceLevel(Operator oper)
         {
             switch (oper)
             {
@@ -53,7 +53,7 @@ namespace JsonCons.JmesPath
             }
         }
 
-        static internal bool IsRightAssociative(Operator oper)
+        internal static bool IsRightAssociative(Operator oper)
         {
             switch (oper)
             {

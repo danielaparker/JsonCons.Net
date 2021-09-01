@@ -12,9 +12,9 @@ using System.Text.RegularExpressions;
 
 namespace JsonCons.JsonSchema
 {
-    static class KeywordValidatorBuilder 
+    class KeywordValidatorFactory : IKeywordValidatorFactory
     {
-        static IList<SchemaLocation> UpdateUris(JsonElement schema,
+        IList<SchemaLocation> UpdateUris(JsonElement schema,
                                                 IList<SchemaLocation> uris,
                                                 IList<string> keys)
         {
@@ -54,7 +54,7 @@ namespace JsonCons.JsonSchema
             return newUris;
         }
 
-        static internal KeywordValidator Build(JsonElement schema,
+        public KeywordValidator CreateKeywordValidator(JsonElement schema,
                                                IList<SchemaLocation> uris,
                                                IList<string> keys) 
         {

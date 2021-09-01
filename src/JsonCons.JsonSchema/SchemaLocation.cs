@@ -56,7 +56,7 @@ namespace JsonCons.JsonSchema
             return new SchemaLocation(newUri);
         }
 
-        static internal SchemaLocation Append(SchemaLocation uri, string field) 
+        internal static SchemaLocation Append(SchemaLocation uri, string field) 
         {
             if (uri.HasIdentifier)
                 return new SchemaLocation(uri.Uri);
@@ -74,7 +74,7 @@ namespace JsonCons.JsonSchema
             return new SchemaLocation(newUri);
         }
 
-        static internal SchemaLocation Append(SchemaLocation uri, int index) 
+        internal static SchemaLocation Append(SchemaLocation uri, int index) 
         {
             if (uri.HasIdentifier)
                 return new SchemaLocation(uri.Uri);
@@ -118,7 +118,7 @@ namespace JsonCons.JsonSchema
             return Uri.GetHashCode();
         }
 
-        static internal string CreateAbsoluteKeywordLocation(IList<SchemaLocation> uris, string keyword)
+        internal static string CreateKeywordLocation(IList<SchemaLocation> uris, string keyword)
         {
             foreach (var item in uris)
             {

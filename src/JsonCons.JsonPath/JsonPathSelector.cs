@@ -9,7 +9,7 @@ namespace JsonCons.JsonPath
 {
     static class PathGenerator 
     {
-        static internal NormalizedPathNode Generate(NormalizedPathNode last, 
+        internal static NormalizedPathNode Generate(NormalizedPathNode last, 
                                           Int32 index, 
                                           ProcessingFlags options) 
         {
@@ -23,7 +23,7 @@ namespace JsonCons.JsonPath
             }
         }
 
-        static internal NormalizedPathNode Generate(NormalizedPathNode last, 
+        internal static NormalizedPathNode Generate(NormalizedPathNode last, 
                                           string identifier, 
                                           ProcessingFlags options) 
         {
