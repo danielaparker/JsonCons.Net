@@ -10,7 +10,6 @@ using System.Text.RegularExpressions;
 
 namespace JsonCons.JsonSchema
 {
-
     class SchemaLocation
     {
         internal SchemaLocation(string uri)
@@ -129,58 +128,6 @@ namespace JsonCons.JsonSchema
             }
             return new SchemaLocation("");
         }
-        /*
-
-                string PathAndQuery 
-                {
-                    get {return _uri.PathAndQuery;}
-                }
-
-                int Compare( SchemaLocation& other) 
-                {
-                    int result = _uri.compare(other._uri);
-                    if (result != 0) 
-                    {
-                        return result;
-                    }
-                    return result; 
-                }
-
-                string string() 
-                {
-                    string s = _uri.string();
-                    return s;
-                }
-
-                friend bool operator==( SchemaLocation& lhs,  SchemaLocation& rhs)
-                {
-                    return lhs.compare(rhs) == 0;
-                }
-
-                friend bool operator!=( SchemaLocation& lhs,  SchemaLocation& rhs)
-                {
-                    return lhs.compare(rhs) != 0;
-                }
-
-                friend bool operator<( SchemaLocation& lhs,  SchemaLocation& rhs)
-                {
-                    return lhs.compare(rhs) < 0;
-                }
-
-                friend bool operator<=( SchemaLocation& lhs,  SchemaLocation& rhs)
-                {
-                    return lhs.compare(rhs) <= 0;
-                }
-
-                friend bool operator>( SchemaLocation& lhs,  SchemaLocation& rhs)
-                {
-                    return lhs.compare(rhs) > 0;
-                }
-
-                friend bool operator>=( SchemaLocation& lhs,  SchemaLocation& rhs)
-                {
-                    return lhs.compare(rhs) >= 0;
-                }*/
     }
 
 } // namespace JsonCons.JsonSchema

@@ -1021,181 +1021,116 @@ namespace JsonCons.JsonSchema
         }
     }
 
-/*    template <class Json>
-    class IntegerValidator : BaseNumericValidator<Json,int64_t>
-    {
-    public:
-        IntegerValidator(JsonElement sch, 
-                          List<SchemaLocation> uris, 
-                          ISet<string> keywords)
-            : BaseNumericValidator<Json, int64_t>(sch, uris, keywords)
-        {
-        }
-    private:
-        internal override void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
-                                          ErrorReporter reporter, 
-                                          IList<PatchElement> patch) 
-        {
-            if (!(instance.template is_integer<int64_t>() || (instance.is_double() && static_cast<double>(instance.template as<int64_t>()) == instance.template as<double>())))
-            {
-                reporter.Error(new ValidationOutput("integer", 
-                                                 this.AbsoluteKeywordLocation, 
-                                                 instanceLocation.ToString(), 
-                                                 "Instance is not an integer"));
-                if (reporter.FailEarly)
-                {
-                    return;
-                }
-            }
-            int64_t value = instance.template as<int64_t>(); 
-            this.ApplyKeywords(value, instanceLocation, instance, reporter);
-        }
-    }
+    // NullValidator
 
-    template <class Json>
-    class NumberValidator : BaseNumericValidator<Json,double>
+    class NullValidator : KeywordValidator
     {
-    public:
-        NumberValidator(JsonElement sch,
-                          List<SchemaLocation> uris, 
-                          ISet<string> keywords)
-            : BaseNumericValidator<Json, double>(sch, uris, keywords)
+        internal NullValidator(string absoluteKeywordLocation)
+            : base(absoluteKeywordLocation)
         {
         }
-    private:
-        internal override void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
-                                          ErrorReporter reporter, 
-                                          IList<PatchElement> patch) 
-        {
-            if (!(instance.template is_integer<int64_t>() || instance.is_double()))
-            {
-                reporter.Error(new ValidationOutput("number", 
-                                                 this.AbsoluteKeywordLocation, 
-                                                 instanceLocation.ToString(), 
-                                                 "Instance is not a number"));
-                if (reporter.FailEarly)
-                {
-                    return;
-                }
-            }
-            double value = instance.template as<double>(); 
-            this.ApplyKeywords(value, instanceLocation, instance, reporter);
-        }
-    }
 
-    // null_validator
-
-    template <class Json>
-    class null_validator : KeywordValidator
-    {
-    public:
-        null_validator(List<SchemaLocation> uris)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "")
+        internal static NullValidator Create(IList<SchemaLocation> uris)
         {
+            SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
+            return new NullValidator(absoluteKeywordLocation.ToString());
         }
-    private:
+
         internal override void OnValidate(JsonElement instance,
                                           SchemaLocation instanceLocation,
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch) 
         {
-            if (!instance.is_null())
+            if (instance.ValueKind != JsonValueKind.Null)
             {
                 reporter.Error(new ValidationOutput("null", 
-                                                 this.AbsoluteKeywordLocation, 
-                                                 instanceLocation.ToString(), 
-                                                 "Expected to be null"));
+                                                    this.AbsoluteKeywordLocation, 
+                                                    instanceLocation.ToString(), 
+                                                    "Expected to be null"));
             }
         }
     }
 
-    template <class Json>
-    class boolean_validator : KeywordValidator
+    class TrueValidator : KeywordValidator
     {
-    public:
-        boolean_validator(List<SchemaLocation> uris)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "")
-        {
-        }
-    private:
-        internal override void OnValidate(JsonElement,
-                                          SchemaLocation,
-                                          ErrorReporter,
-                                          IList<PatchElement> patch) 
+        TrueValidator(string absoluteKeywordLocation)
+            : base(absoluteKeywordLocation)
         {
         }
 
-    }
-
-    template <class Json>
-    class true_validator : KeywordValidator
-    {
-        true_validator(List<SchemaLocation> uris)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "")
+        internal static TrueValidator Create(IList<SchemaLocation> uris)
         {
+            SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
+            return new TrueValidator(absoluteKeywordLocation.ToString());
         }
-    private:
-        internal override void OnValidate(JsonElement,
-                                          SchemaLocation,
-                                          ErrorReporter,
+
+        internal override void OnValidate(JsonElement instance,
+                                          SchemaLocation instanceLocation,
+                                          ErrorReporter reporter,
                                           IList<PatchElement> patch) 
         {
         }
     }
 
-    template <class Json>
-    class false_validator : KeywordValidator
+    class FalseValidator : KeywordValidator
     {
-        false_validator(List<SchemaLocation> uris)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : "")
+        FalseValidator(string absoluteKeywordLocation)
+            : base(absoluteKeywordLocation)
         {
         }
-    private:
-        internal override void OnValidate(SchemaLocation instanceLocation,
-                                          JsonElement,
+
+        internal static FalseValidator Create(IList<SchemaLocation> uris)
+        {
+            SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
+            return new FalseValidator(absoluteKeywordLocation.ToString());
+        }
+
+        internal override void OnValidate(JsonElement instance,
+                                          SchemaLocation instanceLocation,
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch) 
         {
             reporter.Error(new ValidationOutput("false", 
-                                             this.AbsoluteKeywordLocation, 
-                                             instanceLocation.ToString(), 
-                                             "False schema always fails"));
+                                                this.AbsoluteKeywordLocation, 
+                                                instanceLocation.ToString(), 
+                                                "False schema always fails"));
         }
     }
 
-    template <class Json>
-    class required_KeywordValidator : KeywordValidator
+    class RequiredValidator : KeywordValidator
     {
         IList<string> _items;
 
-    public:
-        required_KeywordValidator(List<SchemaLocation> uris,
-                         const IList<string>& items)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), items_(items) {}
-        required_KeywordValidator(string absolute_keyword_location, const IList<string>& items)
-            : base(absolute_keyword_location), items_(items) {}
+        internal RequiredValidator(string absoluteKeywordLocation, 
+                                   IList<string> items)
+            : base(absoluteKeywordLocation)
+        {
+            _items = items; 
+        }
 
-        required_KeywordValidator(const required_KeywordValidator&) = delete;
-        required_KeywordValidator(required_KeywordValidator&&) = default;
-        required_KeywordValidator& operator=(const required_KeywordValidator&) = delete;
-        required_KeywordValidator& operator=(required_KeywordValidator&&) = default;
-    private:
+
+        internal static RequiredValidator Create(IList<SchemaLocation> uris,
+                                                 IList<string> items)
+        {
+            SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
+            return new RequiredValidator(absoluteKeywordLocation.ToString(), items);
+        }
+
 
         internal override void OnValidate(JsonElement instance,
                                           SchemaLocation instanceLocation, 
                                           ErrorReporter reporter,
-                                          IList<PatchElement> patch)  final
+                                          IList<PatchElement> patch)
         {
-            foreach (var key : items_)
+            JsonElement element;
+            foreach (var key in _items)
             {
-                if (instance.find(key) == instance.object_range().end())
+                if (!instance.TryGetProperty(key, out element))
                 {
                     reporter.Error(new ValidationOutput("required", 
-                                                     this.AbsoluteKeywordLocation, 
-                                                     instanceLocation.ToString(), 
-                                                     "Required property \"" + key + "\" not found"));
+                                                        this.AbsoluteKeywordLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"Required property '{key}' not found"));
                     if (reporter.FailEarly)
                     {
                         return;
@@ -1205,30 +1140,27 @@ namespace JsonCons.JsonSchema
         }
     }
 
-    template <class Json>
-    class object_validator : KeywordValidator
+/*
+    class ObjectValidator : KeywordValidator
     {
         jsoncons::optional<int> _max_properties;
         string _absolute_max_properties_location;
         jsoncons::optional<int> _min_properties;
         string _absolute_min_properties_location;
-        jsoncons::optional<required_KeywordValidator<Json>> _required;
+        jsoncons::optional<RequiredValidator<Json>> _required;
 
         std::map<string, KeywordValidator> _properties;
-    #if defined(JSONCONS_HAS_STD_REGEX)
         IList<std::pair<std::regex, KeywordValidator>> _pattern_properties;
-    #endif
         KeywordValidator _additional_properties;
 
         std::map<string, KeywordValidator> _dependencies;
 
         KeywordValidator _property_names;
 
-    public:
-        object_validator(IKeywordValidatorFactory validatorFactory,
+        ObjectValidator(IKeywordValidatorFactory validatorFactory,
                     JsonElement sch,
                     List<SchemaLocation> uris)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), 
+            : KeywordValidator((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), 
               max_properties_(), min_properties_(), 
               additional_properties_(nullptr),
               property_names_(nullptr)
@@ -1251,31 +1183,29 @@ namespace JsonCons.JsonSchema
             if (it != sch.EnumerateObject().end()) 
             {
                 auto location = SchemaLocation.Append(absoluteKeywordLocation, "required");
-                required_ = required_KeywordValidator<Json>(location, 
+                required_ = RequiredValidator<Json>(location, 
                                                    it.value().template as<IList<string>>());
             }
 
             it = sch.find("properties");
             if (it != sch.EnumerateObject().end()) 
             {
-                foreach (var prop : it.value().object_range())
+                foreach (var prop : it.value().EnumerateObject())
                     properties_.emplace(
                         std::make_pair(
                             prop.key(),
                             validatorFactory.CreateKeywordValidator(prop.value(), uris, {"properties", prop.key()})));
             }
 
-    #if defined(JSONCONS_HAS_STD_REGEX)
             it = sch.find("patternProperties");
             if (it != sch.EnumerateObject().end()) 
             {
-                foreach (var prop : it.value().object_range())
+                foreach (var prop : it.value().EnumerateObject())
                     pattern_properties_.emplace_back(
                         std::make_pair(
                             std::regex(prop.key(), std::regex::ECMAScript),
                             validatorFactory.CreateKeywordValidator(prop.value(), uris, {prop.key()})));
             }
-    #endif
 
             it = sch.find("additionalProperties");
             if (it != sch.EnumerateObject().end()) 
@@ -1286,7 +1216,7 @@ namespace JsonCons.JsonSchema
             it = sch.find("dependencies");
             if (it != sch.EnumerateObject().end()) 
             {
-                foreach (var dep : it.value().object_range())
+                foreach (var dep : it.value().EnumerateObject())
                 {
                     switch (dep.value().type()) 
                     {
@@ -1314,7 +1244,6 @@ namespace JsonCons.JsonSchema
                 property_names_ = validatorFactory.CreateKeywordValidator(property_names_it.value(), uris, {"propertyNames"});
             }
         }
-    private:
 
         internal override void OnValidate(JsonElement instance, 
                                           SchemaLocation instanceLocation, 
@@ -1352,7 +1281,7 @@ namespace JsonCons.JsonSchema
             if (required_)
                 required_.Validate(instanceLocation, instance, reporter, patch);
 
-            foreach (var property : instance.object_range()) 
+            foreach (var property : instance.EnumerateObject()) 
             {
                 if (property_names_)
                     property_names_.Validate(instanceLocation, property.key(), reporter, patch);
@@ -1367,8 +1296,6 @@ namespace JsonCons.JsonSchema
                     properties_it.second.Validate(instanceLocation.append(property.key()), property.value(), reporter, patch);
                 }
 
-    #if defined(JSONCONS_HAS_STD_REGEX)
-
                 // check all matching "patternProperties"
                 for (var schema_pp : pattern_properties_)
                     if (std::regex_search(property.key(), schema_pp.first)) 
@@ -1376,8 +1303,6 @@ namespace JsonCons.JsonSchema
                         a_prop_or_pattern_matched = true;
                         schema_pp.second.Validate(instanceLocation.append(property.key()), property.value(), reporter, patch);
                     }
-    #endif
-
                 // finally, check "additionalProperties" 
                 if (!a_prop_or_pattern_matched && additional_properties_) 
                 {
@@ -1401,7 +1326,7 @@ namespace JsonCons.JsonSchema
             for (auto const& prop : properties_) 
             {
                 const auto finding = instance.find(prop.first);
-                if (finding == instance.object_range().end()) 
+                if (finding == instance.EnumerateObject().end()) 
                 { 
                     // If property is not in instance
                     auto default_value = prop.second.TryGetDefaultValue(instanceLocation, instance, reporter);
@@ -1416,16 +1341,15 @@ namespace JsonCons.JsonSchema
             foreach (var dep : dependencies_) 
             {
                 auto prop = instance.find(dep.first);
-                if (prop != instance.object_range().end()) // if dependency-property is present in instance
+                if (prop != instance.EnumerateObject().end()) // if dependency-property is present in instance
                     dep.second.Validate(instanceLocation.append(dep.first), instance, reporter, patch); // Validate
             }
         }
     }
 
-    // array_validator
+    // ArrayValidator
 
-    template <class Json>
-    class array_validator : KeywordValidator
+    class ArrayValidator : KeywordValidator
     {
         jsoncons::optional<int> _max_items;
         string _absolute_max_items_location;
@@ -1437,11 +1361,10 @@ namespace JsonCons.JsonSchema
         KeywordValidator _additional_items;
         KeywordValidator _contains;
 
-    public:
-        array_validator(IKeywordValidatorFactory validatorFactory, 
+        ArrayValidator(IKeywordValidatorFactory validatorFactory, 
                    JsonElement sch, 
                    List<SchemaLocation> uris)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), 
+            : KeywordValidator((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), 
               max_items_(), min_items_(), items_schema_(nullptr), additional_items_(nullptr), contains_(nullptr)
         {
             {
@@ -1479,7 +1402,7 @@ namespace JsonCons.JsonSchema
                     {
                         int c = 0;
                         foreach (var subsch in it.value().array_range())
-                            items_.Add(validatorFactory.CreateKeywordValidator(subsch, uris, {"items", std::to_string(c++)}));
+                            _items.Add(validatorFactory.CreateKeywordValidator(subsch, uris, {"items", std::to_string(c++)}));
 
                         auto attr_add = sch.find("additionalItems");
                         if (attr_add != sch.EnumerateObject().end()) 
@@ -1505,7 +1428,6 @@ namespace JsonCons.JsonSchema
                 }
             }
         }
-    private:
 
         internal override void OnValidate(JsonElement instance, 
                                           SchemaLocation instanceLocation, 
@@ -1572,11 +1494,11 @@ namespace JsonCons.JsonSchema
             }
             else 
             {
-                auto item = items_.cbegin();
+                auto item = _items.cbegin();
                 foreach (var i : instance.array_range()) 
                 {
                     KeywordValidator item_validator = nullptr;
-                    if (item == items_.cend())
+                    if (item == _items.cend())
                         item_validator = _additional_items;
                     else 
                     {
@@ -1636,19 +1558,17 @@ namespace JsonCons.JsonSchema
         }
     }
 
-    template <class Json>
-    class conditional_keyword : base
+    class ConditionalValidator : KeywordValidator
     {
         KeywordValidator _if;
         KeywordValidator _then;
         KeywordValidator _else;
 
-    public:
-        conditional_keyword(IKeywordValidatorFactory validatorFactory,
+        ConditionalValidator(IKeywordValidatorFactory validatorFactory,
                          JsonElement sch_if,
                          JsonElement sch,
                          List<SchemaLocation> uris)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), if_(nullptr), then_(nullptr), else_(nullptr)
+            : KeywordValidator((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), if_(nullptr), then_(nullptr), else_(nullptr)
         {
             auto then_it = sch.find("then");
             auto else_it = sch.find("else");
@@ -1668,7 +1588,7 @@ namespace JsonCons.JsonSchema
                 }
             }
         }
-    private:
+ 
         internal override void OnValidate(JsonElement instance, 
                                           SchemaLocation instanceLocation, 
                                           ErrorReporter reporter, 
@@ -1695,18 +1615,15 @@ namespace JsonCons.JsonSchema
 
     // enum_keyword
 
-    template <class Json>
-    class enum_keyword : base
+    class EnumValidator : KeywordValidator
     {
         Json _enum;
 
-    public:
-        enum_keyword(JsonElement sch,
+        internal EnumValidator(JsonElement sch,
                   List<SchemaLocation> uris)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), enum_(sch)
+            : KeywordValidator((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), enum_(sch)
         {
         }
-    private:
         internal override void OnValidate(SchemaLocation instanceLocation, 
                                           JsonElement instance, 
                                           ErrorReporter reporter,
@@ -1736,19 +1653,17 @@ namespace JsonCons.JsonSchema
         }
     }
 
-    // const_keyword
+    // ConstValidator
 
-    template <class Json>
-    class const_keyword : base
+    class ConstValidator : KeywordValidator
     {
         Json _const;
 
-    public:
-        const_keyword(JsonElement sch, List<SchemaLocation> uris)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), const_(sch)
+        internal ConstValidator(JsonElement sch, List<SchemaLocation> uris)
+            : KeywordValidator((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), const_(sch)
         {
         }
-    private:
+ 
         internal override void OnValidate(JsonElement instance, 
                                           SchemaLocation instanceLocation, 
                                           ErrorReporter reporter,
@@ -1762,27 +1677,20 @@ namespace JsonCons.JsonSchema
         }
     }
 
-    template <class Json>
-    class type_keyword : base
+    class TypeValidator : KeywordValidator
     {
         Json _default_value;
         IList<KeywordValidator> _type_mapping;
-        jsoncons::optional<enum_keyword<Json>> _enum;
-        jsoncons::optional<const_keyword<Json>> _const;
+        jsoncons::optional<EnumValidator<Json>> _enum;
+        jsoncons::optional<ConstValidator<Json>> _const;
         IList<KeywordValidator> _combined;
-        jsoncons::optional<conditional_keyword<Json>> _conditional;
+        jsoncons::optional<ConditionalValidator<Json>> _conditional;
         IList<string> _expected_types;
 
-    public:
-        type_keyword(const type_keyword&) = delete;
-        type_keyword& operator=(const type_keyword&) = delete;
-        type_keyword(type_keyword&&) = default;
-        type_keyword& operator=(type_keyword&&) = default;
-
-        type_keyword(IKeywordValidatorFactory validatorFactory,
+        TypeValidator(IKeywordValidatorFactory validatorFactory,
                      JsonElement sch,
                      List<SchemaLocation> uris)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), default_value_(jsoncons::null_type()), 
+            : KeywordValidator((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), default_value_(jsoncons::null_type()), 
               type_mapping_((uint8_t)(json_type::object_value)+1), 
               enum_(), const_()
         {
@@ -1835,13 +1743,13 @@ namespace JsonCons.JsonSchema
             it = sch.find("enum");
             if (it != sch.EnumerateObject().end()) 
             {
-                enum_ = enum_keyword<Json >(it.value(), uris);
+                enum_ = EnumValidator<Json >(it.value(), uris);
             }
 
             it = sch.find("const");
             if (it != sch.EnumerateObject().end()) 
             {
-                const_ = const_keyword<Json>(it.value(), uris);
+                const_ = ConstValidator<Json>(it.value(), uris);
             }
 
             it = sch.find("not");
@@ -1871,10 +1779,9 @@ namespace JsonCons.JsonSchema
             it = sch.find("if");
             if (it != sch.EnumerateObject().end()) 
             {
-                conditional_ = conditional_keyword<Json>(validatorFactory, it.value(), sch, uris);
+                conditional_ = ConditionalValidator<Json>(validatorFactory, it.value(), sch, uris);
             }
         }
-    private:
 
         internal override void OnValidate(JsonElement instance, 
                                           SchemaLocation instanceLocation, 
