@@ -1474,8 +1474,10 @@ namespace JsonCons.JsonSchema
                     // If property is not in instance
                     if (prop.Value.TryGetDefaultValue(instanceLocation, instance, reporter, out element))
                     { 
-                        // If default value is available, update patch
-                        patch.Add(new PatchElement(instanceLocation.ToString(), element));
+                        SchemaLocation loc = SchemaLocation.Append(instanceLocation, prop.Key);
+                        string pointer;
+                        loc.TryGetPointer(out pointer);
+                        patch.Add(new PatchElement(pointer, element));
                     }
                 }
             }
