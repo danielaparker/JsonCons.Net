@@ -966,6 +966,25 @@ references:
   isSpec: "True"
   fullName: JsonCons.Utilities.JsonPointer.JsonPointer
   nameWithType: JsonPointer.JsonPointer
+- uid: JsonCons.Utilities.JsonPointer.Append(JsonCons.Utilities.JsonPointer,System.Int32)
+  name: Append(JsonPointer, Int32)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Append_JsonCons_Utilities_JsonPointer_System_Int32_
+  commentId: M:JsonCons.Utilities.JsonPointer.Append(JsonCons.Utilities.JsonPointer,System.Int32)
+  fullName: JsonCons.Utilities.JsonPointer.Append(JsonCons.Utilities.JsonPointer, System.Int32)
+  nameWithType: JsonPointer.Append(JsonPointer, Int32)
+- uid: JsonCons.Utilities.JsonPointer.Append(JsonCons.Utilities.JsonPointer,System.String)
+  name: Append(JsonPointer, String)
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Append_JsonCons_Utilities_JsonPointer_System_String_
+  commentId: M:JsonCons.Utilities.JsonPointer.Append(JsonCons.Utilities.JsonPointer,System.String)
+  fullName: JsonCons.Utilities.JsonPointer.Append(JsonCons.Utilities.JsonPointer, System.String)
+  nameWithType: JsonPointer.Append(JsonPointer, String)
+- uid: JsonCons.Utilities.JsonPointer.Append*
+  name: Append
+  href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_Append_
+  commentId: Overload:JsonCons.Utilities.JsonPointer.Append
+  isSpec: "True"
+  fullName: JsonCons.Utilities.JsonPointer.Append
+  nameWithType: JsonPointer.Append
 - uid: JsonCons.Utilities.JsonPointer.ContainsValue(System.Text.Json.JsonElement)
   name: ContainsValue(JsonElement)
   href: ref/JsonCons.Utilities.JsonPointer.html#JsonCons_Utilities_JsonPointer_ContainsValue_System_Text_Json_JsonElement_

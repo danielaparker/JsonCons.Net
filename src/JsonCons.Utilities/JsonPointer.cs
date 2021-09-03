@@ -104,7 +104,7 @@ namespace JsonCons.Utilities
         /// fragment identifier (starts with <c>#</c>) into a <see cref="JsonPointer"/>.
         /// </summary>
         /// <param name="input">A JSON Pointer represented as a string or a fragment identifier.</param>
-        /// <param name="pointer">The JSONPointer.</param>
+        /// <param name="pointer">The JsonPointer.</param>
         /// <returns><c>true</c> if the input string can be parsed into a list of reference tokens, <c>false</c> otherwise.</returns>
         /// <exception cref="ArgumentNullException">
         ///   The <paramref name="input"/> is <see langword="null"/>.
@@ -323,11 +323,11 @@ namespace JsonCons.Utilities
         /// <summary>
         /// Returns <c>true</c> if the provided <see cref="JsonElement"/> contains a value at the referenced location.
         /// </summary>
-        /// <param name="target"></param>
+        /// <param name="root">The root <see cref="JsonElement"/> that is to be queried.</param>
         /// <returns><c>true</c> if the provided <see cref="JsonElement"/> contains a value at the referenced location, otherwise <c>false</c>.</returns>
-        public bool ContainsValue(JsonElement target)
+        public bool ContainsValue(JsonElement root)
         {
-            JsonElement value = target;
+            JsonElement value = root;
 
             foreach (var token in Tokens)
             {
@@ -367,13 +367,13 @@ namespace JsonCons.Utilities
         /// <summary>
         /// Returns <c>true</c> if the provided <see cref="JsonElement"/> contains a value at the referenced location.
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="pointer"></param>
+        /// <param name="root">The root <see cref="JsonElement"/> that is to be queried.</param>
+        /// <param name="pointer">The JSON string or URI Fragment representation of the JSON pointer.</param>
         /// <returns><c>true</c> if the provided <see cref="JsonElement"/> contains a value at the referenced location, otherwise <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException">
         ///   The <paramref name="pointer"/> is <see langword="null"/>.
         /// </exception>
-        public static bool ContainsValue(JsonElement target, string pointer)
+        public static bool ContainsValue(JsonElement root, string pointer)
         {
             if (pointer == null)
             {
@@ -384,7 +384,7 @@ namespace JsonCons.Utilities
             {
                 return false;
             }
-            JsonElement value = target;
+            JsonElement value = root;
 
             foreach (var token in location.Tokens)
             {
@@ -424,12 +424,12 @@ namespace JsonCons.Utilities
         /// <summary>
         /// Gets the value at the referenced location in the provided <see cref="JsonElement"/>.
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="value"></param>
+        /// <param name="root">The root <see cref="JsonElement"/> that is to be queried.</param>
+        /// <param name="value">Contains the value at the referenced location, if found.</param>
         /// <returns><c>true</c> if the value was found at the referenced location, otherwise <c>false</c>.</returns>
-        public bool TryGetValue(JsonElement target, out JsonElement value)
+        public bool TryGetValue(JsonElement root, out JsonElement value)
         {
-            value = target;
+            value = root;
 
             foreach (var token in Tokens)
             {
@@ -467,16 +467,42 @@ namespace JsonCons.Utilities
         }
 
         /// <summary>
+        /// Creates a new JsonPointer by appending a name token to the provided JsonPointer.
+        /// </summary>
+        /// <param name="pointer">The provided JsonPointer</param>
+        /// <param name="token">A name token</param>
+        /// <returns>A new JsonPointer</returns>
+        public static JsonPointer Append(JsonPointer pointer, string token)
+        {
+            var tokens = new List<string>(pointer.Tokens);
+            tokens.Add(token);
+            return new JsonPointer(tokens);
+        }
+
+        /// <summary>
+        /// Creates a new JsonPointer by appending an index token to the provided JsonPointer.
+        /// </summary>
+        /// <param name="pointer">The provided JsonPointer</param>
+        /// <param name="token">An index token</param>
+        /// <returns>A new JsonPointer</returns>
+        public static JsonPointer Append(JsonPointer pointer, int token)
+        {
+            var tokens = new List<string>(pointer.Tokens);
+            tokens.Add(token.ToString());
+            return new JsonPointer(tokens);
+        }
+
+        /// <summary>
         /// Gets the value at the referenced location in the provided <see cref="JsonElement"/>.
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="pointer"></param>
-        /// <param name="value"></param>
+        /// <param name="root">The root <see cref="JsonElement"/> that is to be queried.</param>
+        /// <param name="pointer">The JSON string or URI Fragment representation of the JSON pointer.</param>
+        /// <param name="value">Contains the value at the referenced location, if found.</param>
         /// <returns><c>true</c> if the value was found at the referenced location, otherwise <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException">
         ///   The <paramref name="pointer"/> is <see langword="null"/>.
         /// </exception>
-        public static bool TryGetValue(JsonElement target, string pointer, out JsonElement value)
+        public static bool TryGetValue(JsonElement root, string pointer, out JsonElement value)
         {
             if (pointer == null)
             {
@@ -485,11 +511,11 @@ namespace JsonCons.Utilities
             JsonPointer location;
             if (!TryParse(pointer, out location))
             {
-                value = target;
+                value = root;
                 return false;
             }
 
-            return location.TryGetValue(target, out value);
+            return location.TryGetValue(root, out value);
         }
 
         /// <summary>
