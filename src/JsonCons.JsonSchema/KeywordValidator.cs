@@ -28,7 +28,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal void Validate(JsonElement instance, 
-                               SchemaLocation instanceLocation, 
+                               JsonPointer instanceLocation, 
                                ErrorReporter reporter,
                                IList<PatchElement> patch)
         {
@@ -36,11 +36,11 @@ namespace JsonCons.JsonSchema
         }
 
         internal abstract void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
+                                          JsonPointer instanceLocation, 
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch);
 
-        internal virtual bool TryGetDefaultValue(SchemaLocation instanceLocation, 
+        internal virtual bool TryGetDefaultValue(JsonPointer instanceLocation, 
                                                   JsonElement instance, 
                                                   ErrorReporter reporter,
                                                   out JsonElement defaultValue)
@@ -211,21 +211,23 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance,
-                                          SchemaLocation instanceLocation,
+                                          JsonPointer instanceLocation,
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch)
         {
             if (instance.ValueKind != JsonValueKind.String)
             {
-                throw new JsonSchemaException("Instance must be a string", 
-                                              instanceLocation.ToString());
+                reporter.Error(new ValidationOutput("", 
+                                                    this.AbsoluteKeywordLocation, 
+                                                    instanceLocation.ToString(), 
+                                                    "Instance must be a string"));
             }
             string str = instance.GetString();
             ValidateString(str, instanceLocation, reporter);
         }
 
         internal void ValidateString(string str,
-                                     SchemaLocation instanceLocation,
+                                     JsonPointer instanceLocation,
                                      ErrorReporter reporter)
         {
             string content = null;
@@ -372,7 +374,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
+                                          JsonPointer instanceLocation, 
                                           ErrorReporter reporter, 
                                           IList<PatchElement> patch) 
         {
@@ -388,7 +390,7 @@ namespace JsonCons.JsonSchema
             }
         }
 
-        internal override bool TryGetDefaultValue(SchemaLocation instanceLocation, 
+        internal override bool TryGetDefaultValue(JsonPointer instanceLocation, 
                                                   JsonElement instance, 
                                                   ErrorReporter reporter,
                                                   out JsonElement defaultValue)
@@ -402,7 +404,7 @@ namespace JsonCons.JsonSchema
         string Key {get;}
 
         bool IsComplete(JsonElement instance, 
-                        SchemaLocation instanceLocation, 
+                        JsonPointer instanceLocation, 
                         ErrorReporter reporter, 
                         CollectingErrorReporter localReporter, 
                         int count);
@@ -413,7 +415,7 @@ namespace JsonCons.JsonSchema
         public string Key {get {return "allOf";}}
 
         public bool IsComplete(JsonElement instance, 
-                               SchemaLocation instanceLocation, 
+                               JsonPointer instanceLocation, 
                                ErrorReporter reporter, 
                                CollectingErrorReporter localReporter, 
                                int count)
@@ -433,7 +435,7 @@ namespace JsonCons.JsonSchema
         public string Key {get {return "anyOf";}}
 
         public bool IsComplete(JsonElement instance, 
-                               SchemaLocation instanceLocation, 
+                               JsonPointer instanceLocation, 
                                ErrorReporter reporter, 
                                CollectingErrorReporter localReporter, 
                                int count)
@@ -447,7 +449,7 @@ namespace JsonCons.JsonSchema
         public string Key {get {return "oneOf";}}
 
         public bool IsComplete(JsonElement instance, 
-                               SchemaLocation instanceLocation, 
+                               JsonPointer instanceLocation, 
                                ErrorReporter reporter, 
                                CollectingErrorReporter localReporter, 
                                int count)
@@ -504,7 +506,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
+                                          JsonPointer instanceLocation, 
                                           ErrorReporter reporter, 
                                           IList<PatchElement> patch) 
         {
@@ -768,7 +770,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
+                                          JsonPointer instanceLocation, 
                                           ErrorReporter reporter, 
                                           IList<PatchElement> patch) 
         {
@@ -989,7 +991,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
+                                          JsonPointer instanceLocation, 
                                           ErrorReporter reporter, 
                                           IList<PatchElement> patch) 
         {
@@ -1098,7 +1100,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance,
-                                          SchemaLocation instanceLocation,
+                                          JsonPointer instanceLocation,
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch) 
         {
@@ -1126,7 +1128,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance,
-                                          SchemaLocation instanceLocation,
+                                          JsonPointer instanceLocation,
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch) 
         {
@@ -1147,7 +1149,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance,
-                                          SchemaLocation instanceLocation,
+                                          JsonPointer instanceLocation,
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch) 
         {
@@ -1177,7 +1179,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance,
-                                          SchemaLocation instanceLocation, 
+                                          JsonPointer instanceLocation, 
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch)
         {
@@ -1384,7 +1386,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
+                                          JsonPointer instanceLocation, 
                                           ErrorReporter reporter, 
                                           IList<PatchElement> patch)
         {
@@ -1432,7 +1434,7 @@ namespace JsonCons.JsonSchema
                 if (_properties.TryGetValue(property.Name, out validator))
                 {
                     aPropOrPatternMatched = true;
-                    SchemaLocation loc = SchemaLocation.Append(instanceLocation, property.Name);
+                    JsonPointer loc = JsonPointer.Append(instanceLocation, property.Name);
                     validator.Validate(property.Value, loc, reporter, patch);
                 }
 
@@ -1441,7 +1443,7 @@ namespace JsonCons.JsonSchema
                 {
                     pp.Pattern.Match(property.Name);
                     aPropOrPatternMatched = true;
-                    SchemaLocation loc = SchemaLocation.Append(instanceLocation, property.Name);
+                    JsonPointer loc = JsonPointer.Append(instanceLocation, property.Name);
                     pp.Validator.Validate(property.Value, loc, reporter, patch);
                 }
                 // finally, check "additionalProperties" 
@@ -1449,7 +1451,7 @@ namespace JsonCons.JsonSchema
                 {
                     CollectingErrorReporter localReporter = new CollectingErrorReporter();
                     _additionalProperties.Validate(property.Value, 
-                                                   SchemaLocation.Append(instanceLocation, property.Name), 
+                                                   JsonPointer.Append(instanceLocation, property.Name), 
                                                    localReporter, 
                                                    patch);
                     if (localReporter.Errors.Count != 0)
@@ -1474,10 +1476,8 @@ namespace JsonCons.JsonSchema
                     // If property is not in instance
                     if (prop.Value.TryGetDefaultValue(instanceLocation, instance, reporter, out element))
                     { 
-                        SchemaLocation loc = SchemaLocation.Append(instanceLocation, prop.Key);
-                        string pointer;
-                        loc.TryGetPointer(out pointer);
-                        patch.Add(new PatchElement(pointer, element));
+                        JsonPointer loc = JsonPointer.Append(instanceLocation, prop.Key);
+                        patch.Add(new PatchElement(loc.ToString(), element));
                     }
                 }
             }
@@ -1486,7 +1486,7 @@ namespace JsonCons.JsonSchema
             {
                 if (instance.TryGetProperty(dep.Key, out element))
                 {
-                    SchemaLocation loc = SchemaLocation.Append(instanceLocation, dep.Key);
+                    JsonPointer loc = JsonPointer.Append(instanceLocation, dep.Key);
                     dep.Value.Validate(instance, loc, reporter, patch); // Validate
                 }
             }
@@ -1588,7 +1588,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
+                                          JsonPointer instanceLocation, 
                                           ErrorReporter reporter, 
                                           IList<PatchElement> patch)
         {
@@ -1754,7 +1754,7 @@ namespace JsonCons.JsonSchema
         }
  
         internal override void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
+                                          JsonPointer instanceLocation, 
                                           ErrorReporter reporter, 
                                           IList<PatchElement> patch) 
         {
@@ -1788,7 +1788,7 @@ namespace JsonCons.JsonSchema
             : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), enum_(sch)
         {
         }
-        internal override void OnValidate(SchemaLocation instanceLocation, 
+        internal override void OnValidate(JsonPointer instanceLocation, 
                                           JsonElement instance, 
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch) 
@@ -1829,7 +1829,7 @@ namespace JsonCons.JsonSchema
         }
  
         internal override void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
+                                          JsonPointer instanceLocation, 
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch) 
         {
@@ -1948,7 +1948,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal override void OnValidate(JsonElement instance, 
-                                          SchemaLocation instanceLocation, 
+                                          JsonPointer instanceLocation, 
                                           ErrorReporter reporter, 
                                           IList<PatchElement> patch) 
         {
