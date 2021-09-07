@@ -365,7 +365,7 @@ namespace JsonCons.JsonPath
                 }
                 else
                 {
-                    value = JsonConstants.Null;
+                    value = JsonConstants.Undefined;
                     return true;
                 }
             }
@@ -382,7 +382,7 @@ namespace JsonCons.JsonPath
             }
             else
             {
-                value = JsonConstants.Null;
+                value = JsonConstants.Undefined;
                 return true;
             }
         }
