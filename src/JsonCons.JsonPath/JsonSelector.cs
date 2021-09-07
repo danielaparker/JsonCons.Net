@@ -173,7 +173,7 @@ namespace JsonCons.JsonPath
     ///         Console.WriteLine();
     ///         
     ///         Console.WriteLine("Select paths");
-    ///         IList&lt;NormalizedPath> paths = selector.SelectPaths(doc.RootElement);
+    ///         IList&lt;JsonLocation> paths = selector.SelectPaths(doc.RootElement);
     ///         foreach (var path in paths)
     ///         {
     ///             Console.WriteLine(path);
@@ -305,7 +305,7 @@ namespace JsonCons.JsonPath
                 }
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
-                                 NormalizedPathNode.Root, 
+                                 JsonLocationNode.Root, 
                                  new JsonElementValue(root), 
                                  accumulator, 
                                  flags,
@@ -354,7 +354,7 @@ namespace JsonCons.JsonPath
                 }
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
-                                 NormalizedPathNode.Root, 
+                                 JsonLocationNode.Root, 
                                  new JsonElementValue(root), 
                                  accumulator, 
                                  flags,
@@ -369,10 +369,10 @@ namespace JsonCons.JsonPath
         /// </summary>
         /// <param name="root">The root value.</param>
         /// <param name="options">Defines options for processing JSONPath queries.</param>
-        /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value matched by this JSONPath expression,
+        /// <returns>A list of <see cref="JsonLocation"/> identifying the values within the root value matched by this JSONPath expression,
         /// or an empty list if none were matched.</returns>
 
-        public IList<NormalizedPath> SelectPaths(JsonElement root, 
+        public IList<JsonLocation> SelectPaths(JsonElement root, 
                                                  JsonSelectorOptions? options = null)
         {
             DynamicResources resources;
@@ -394,7 +394,7 @@ namespace JsonCons.JsonPath
                 resources = new DynamicResources(JsonSelectorOptions.Default);
             }
 
-            var paths = new List<NormalizedPath>();
+            var paths = new List<JsonLocation>();
             INodeAccumulator accumulator = new PathAccumulator(paths);
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
@@ -402,7 +402,7 @@ namespace JsonCons.JsonPath
             }
             _selector.Select(resources, 
                              new JsonElementValue(root), 
-                             NormalizedPathNode.Root, 
+                             JsonLocationNode.Root, 
                              new JsonElementValue(root), 
                              accumulator, 
                              flags | ProcessingFlags.Path,
@@ -418,8 +418,8 @@ namespace JsonCons.JsonPath
                     }
                     if ((flags & ProcessingFlags.NoDups) != 0)
                     {
-                        var temp = new List<NormalizedPath>();
-                        var index = new HashSet<NormalizedPath>(paths);
+                        var temp = new List<JsonLocation>();
+                        var index = new HashSet<JsonLocation>(paths);
                         foreach (var path in paths)
                         {
                             if (index.Contains(path))
@@ -475,7 +475,7 @@ namespace JsonCons.JsonPath
             }
             _selector.Select(resources, 
                              new JsonElementValue(root), 
-                             NormalizedPathNode.Root, 
+                             JsonLocationNode.Root, 
                              new JsonElementValue(root), 
                              accumulator, 
                              flags | ProcessingFlags.Path,
@@ -546,7 +546,7 @@ namespace JsonCons.JsonPath
         /// <param name="root">The root value.</param>
         /// <param name="jsonPath">A JSONPath string.</param>
         /// <param name="options">Defines options for processing JSONPath queries.</param>
-        /// <returns>A list of <see cref="NormalizedPath"/> identifying the values within the root value matched by the provided JSONPath expression,
+        /// <returns>A list of <see cref="JsonLocation"/> identifying the values within the root value matched by the provided JSONPath expression,
         /// or an empty list if none were matched.</returns>
         /// <exception cref="JsonPathParseException">
         ///   The <paramref name="jsonPath"/> parameter is not a valid JSONPath expression.
@@ -558,7 +558,7 @@ namespace JsonCons.JsonPath
         ///   Maximum depth level exceeded in recursive descent selector.
         /// </exception>
 
-        public static IList<NormalizedPath> SelectPaths(JsonElement root, 
+        public static IList<JsonLocation> SelectPaths(JsonElement root, 
                                                         string jsonPath, 
                                                         JsonSelectorOptions? options = null)
         {

@@ -13,7 +13,7 @@ namespace JsonCons.JsonPath
     ///
     /// </summary>
 
-    public enum NormalizedPathNodeKind 
+    public enum JsonLocationNodeKind 
     {
         /// <summary>
         /// Indicates the root path node
@@ -30,40 +30,40 @@ namespace JsonCons.JsonPath
     };
 
     /// <summary>
-    /// Represents a node of a <see cref="NormalizedPath"/>.
+    /// Represents a node of a <see cref="JsonLocation"/>.
     ///
     /// </summary>
-    public sealed class NormalizedPathNode
+    public sealed class JsonLocationNode
     {
 
         /// <summary>
         /// Gets the parent of this path node.
         ///
         /// </summary>
-        public NormalizedPathNode Parent {get;}
+        public JsonLocationNode Parent {get;}
 
         /// <summary>
         /// Gets the type of this path node.
         ///
         /// </summary>
-        public NormalizedPathNodeKind ComponentKind {get;}
+        public JsonLocationNodeKind ComponentKind {get;}
 
         private readonly string _name;
         private readonly Int32 _index;
 
         /// <summary>
-        /// Gets an instance of <see cref="NormalizedPathNode"/> that represents the root value ($) 
+        /// Gets an instance of <see cref="JsonLocationNode"/> that represents the root value ($) 
         ///
         /// </summary>
-        public static NormalizedPathNode Root {get;} = new NormalizedPathNode(NormalizedPathNodeKind.Root, "$");
+        public static JsonLocationNode Root {get;} = new JsonLocationNode(JsonLocationNodeKind.Root, "$");
 
         /// <summary>
-        /// Gets an instance of <see cref="NormalizedPathNode"/> that represents the current node (@)
+        /// Gets an instance of <see cref="JsonLocationNode"/> that represents the current node (@)
         ///
         /// </summary>
-        public static NormalizedPathNode Current { get;} = new NormalizedPathNode(NormalizedPathNodeKind.Root, "@");
+        public static JsonLocationNode Current { get;} = new JsonLocationNode(JsonLocationNodeKind.Root, "@");
 
-        NormalizedPathNode(NormalizedPathNodeKind componentKind, string name)
+        JsonLocationNode(JsonLocationNodeKind componentKind, string name)
         {
             if (name == null)
             {
@@ -85,7 +85,7 @@ namespace JsonCons.JsonPath
         ///   <paramref name="name"/> is <see langword="null"/>.
         /// </exception>
 
-        public NormalizedPathNode(NormalizedPathNode parent, string name)
+        public JsonLocationNode(JsonLocationNode parent, string name)
         {
             if (parent == null)
             {
@@ -96,7 +96,7 @@ namespace JsonCons.JsonPath
                 throw new ArgumentNullException(nameof(name));
             }
             Parent = parent;
-            ComponentKind = NormalizedPathNodeKind.Name;
+            ComponentKind = JsonLocationNodeKind.Name;
             _name = name;
             _index = 0;
         }
@@ -110,20 +110,20 @@ namespace JsonCons.JsonPath
         ///   <paramref name="parent"/> is <see langword="null"/>.
         /// </exception>
 
-        public NormalizedPathNode(NormalizedPathNode parent, Int32 index)
+        public JsonLocationNode(JsonLocationNode parent, Int32 index)
         {
             if (parent == null)
             {
                 throw new ArgumentNullException(nameof(parent));
             }
             Parent = parent;
-            ComponentKind = NormalizedPathNodeKind.Index;
+            ComponentKind = JsonLocationNodeKind.Index;
             _name = null;
             _index = index;
         }
 
         /// <summary>
-        /// Gets the value of this <see cref="NormalizedPathNode"/> as a name.
+        /// Gets the value of this <see cref="JsonLocationNode"/> as a name.
         ///
         /// </summary>
         public string GetName()
@@ -132,7 +132,7 @@ namespace JsonCons.JsonPath
         }
 
         /// <summary>
-        /// Gets the value of this <see cref="NormalizedPathNode"/> as an index.
+        /// Gets the value of this <see cref="JsonLocationNode"/> as an index.
         ///
         /// </summary>
         public Int32 GetIndex()
@@ -140,13 +140,13 @@ namespace JsonCons.JsonPath
             return _index;
         }
         /// <summary>
-        /// Compares this instance with a specified <see cref="NormalizedPathNode"/> object and indicates 
+        /// Compares this instance with a specified <see cref="JsonLocationNode"/> object and indicates 
         /// whether this instance precedes, follows, or appears in the same 
-        /// position in the sort order as the specified <see cref="NormalizedPathNode"/>.
+        /// position in the sort order as the specified <see cref="JsonLocationNode"/>.
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public int CompareTo(NormalizedPathNode other)
+        public int CompareTo(JsonLocationNode other)
         {
             if (other == null)
             {
@@ -161,13 +161,13 @@ namespace JsonCons.JsonPath
             {
                 switch (ComponentKind)
                 {
-                    case NormalizedPathNodeKind.Root:
+                    case JsonLocationNodeKind.Root:
                         diff = string.Compare(_name, other._name);
                         break;
-                    case NormalizedPathNodeKind.Index:
+                    case JsonLocationNodeKind.Index:
                         diff = _index - other._index;
                         break;
-                    case NormalizedPathNodeKind.Name:
+                    case JsonLocationNodeKind.Name:
                         diff = string.Compare(_name, other._name);
                         break;
                 }
@@ -175,12 +175,12 @@ namespace JsonCons.JsonPath
             return diff;
         }
         /// <summary>
-        /// Returns the hash code for this <see cref="NormalizedPathNode"/>.
+        /// Returns the hash code for this <see cref="JsonLocationNode"/>.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
         {
-            int hashCode = ComponentKind == NormalizedPathNodeKind.Index ? _index.GetHashCode() : _name.GetHashCode();
+            int hashCode = ComponentKind == JsonLocationNodeKind.Index ? _index.GetHashCode() : _name.GetHashCode();
 
             return hashCode;
         }
@@ -191,18 +191,18 @@ namespace JsonCons.JsonPath
     ///
     /// </summary>
 
-    public sealed class NormalizedPath : IEquatable<NormalizedPath>, IComparable<NormalizedPath>, IEnumerable<NormalizedPathNode>
+    public sealed class JsonLocation : IEquatable<JsonLocation>, IComparable<JsonLocation>, IEnumerable<JsonLocationNode>
     {
-        readonly IReadOnlyList<NormalizedPathNode> _components;
+        readonly IReadOnlyList<JsonLocationNode> _components;
 
         /// <summary>
-        /// Constructs a normalized path from the last path node.
+        /// Constructs a normalized path from the last location node.
         ///
         /// </summary>
-        public NormalizedPath(NormalizedPathNode last)
+        public JsonLocation(JsonLocationNode lastNode)
         {
-            var nodes = new List<NormalizedPathNode>();
-            NormalizedPathNode node = last;
+            var nodes = new List<JsonLocationNode>();
+            JsonLocationNode node = lastNode;
             do
             {
                 nodes.Add(node);
@@ -216,18 +216,18 @@ namespace JsonCons.JsonPath
         }
 
         /// <summary>
-        /// Gets the last node of the normalized path. 
+        /// Gets the last node of the <see cref="JsonLocation"/>. 
         ///
         /// </summary>
 
-        public NormalizedPathNode Last { get { return _components[_components.Count - 1]; } }
+        public JsonLocationNode Last { get { return _components[_components.Count - 1]; } }
 
         /// <summary>
         /// Returns an enumerator that iterates through the components of the normalized path. 
         ///
         /// </summary>
 
-        public IEnumerator<NormalizedPathNode> GetEnumerator()
+        public IEnumerator<JsonLocationNode> GetEnumerator()
         {
             return _components.GetEnumerator();
         }
@@ -253,10 +253,10 @@ namespace JsonCons.JsonPath
             {
                 switch (item.ComponentKind)
                 {
-                    case NormalizedPathNodeKind.Root:
+                    case JsonLocationNodeKind.Root:
                         buffer.Append(item.GetName());
                         break;
-                    case NormalizedPathNodeKind.Name:
+                    case JsonLocationNodeKind.Name:
                         buffer.Append('[');
                         buffer.Append('\'');
                         if (item.GetName().Contains('\''))
@@ -270,7 +270,7 @@ namespace JsonCons.JsonPath
                         buffer.Append('\'');
                         buffer.Append(']');
                         break;
-                    case NormalizedPathNodeKind.Index:
+                    case JsonLocationNodeKind.Index:
                         buffer.Append('[');
                         buffer.Append(item.GetIndex().ToString());
                         buffer.Append(']');
@@ -296,11 +296,11 @@ namespace JsonCons.JsonPath
             {
                 switch (node.ComponentKind)
                 {
-                    case NormalizedPathNodeKind.Root:
+                    case JsonLocationNodeKind.Root:
                     {
                         break;
                     }
-                    case NormalizedPathNodeKind.Name:
+                    case JsonLocationNodeKind.Name:
                     {
                         buffer.Append('/');
                         foreach (var c in node.GetName())
@@ -322,7 +322,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     }
-                    case NormalizedPathNodeKind.Index:
+                    case JsonLocationNodeKind.Index:
                     {
                         buffer.Append('/');
                         buffer.Append(node.GetIndex().ToString());
@@ -333,11 +333,11 @@ namespace JsonCons.JsonPath
             return buffer.ToString();
         }
         /// <summary>
-        /// Determines whether this instance and another specified <see cref="NormalizedPath"/> object have the same value.
+        /// Determines whether this instance and another specified <see cref="JsonLocation"/> object have the same value.
         /// </summary>
-        /// <param name="other">The <see cref="NormalizedPath"/> to compare to this instance.</param>
+        /// <param name="other">The <see cref="JsonLocation"/> to compare to this instance.</param>
         /// <returns>true if the value of other is the same as the value of this instance; otherwise, false. If other is null, the method returns false.</returns>
-        public bool Equals(NormalizedPath other)
+        public bool Equals(JsonLocation other)
         {
             if (other == null)
             {
@@ -347,10 +347,10 @@ namespace JsonCons.JsonPath
             return CompareTo(other) == 0;
         }
         /// <summary>
-        /// Determines whether this instance and a specified object, which must also be a <see cref="NormalizedPath"/> object, have the same value.
+        /// Determines whether this instance and a specified object, which must also be a <see cref="JsonLocation"/> object, have the same value.
         /// </summary>
-        /// <param name="other">The <see cref="NormalizedPath"/> to compare to this instance.</param>
-        /// <returns>true if other is a <see cref="NormalizedPath"/> and its value is the same as this instance; otherwise, false. If other is null, the method returns false.</returns>
+        /// <param name="other">The <see cref="JsonLocation"/> to compare to this instance.</param>
+        /// <returns>true if other is a <see cref="JsonLocation"/> and its value is the same as this instance; otherwise, false. If other is null, the method returns false.</returns>
         public override bool Equals(Object other)
         {
             if (other == null)
@@ -358,17 +358,17 @@ namespace JsonCons.JsonPath
                return false;
             }
 
-            return Equals(other as NormalizedPathNode);
+            return Equals(other as JsonLocationNode);
         }
         /// <summary>
-        /// Compares this instance with a specified <see cref="NormalizedPath"/> object and indicates 
+        /// Compares this instance with a specified <see cref="JsonLocation"/> object and indicates 
         /// whether this instance precedes, follows, or appears in the same 
-        /// position in the sort order as the specified <see cref="NormalizedPath"/>.
+        /// position in the sort order as the specified <see cref="JsonLocation"/>.
         /// </summary>
-        /// <param name="other">The <see cref="NormalizedPath"/> to compare with this instance.</param>
+        /// <param name="other">The <see cref="JsonLocation"/> to compare with this instance.</param>
         /// <returns>A 32-bit signed integer that indicates whether this instance precedes, 
         /// follows, or appears in the same position in the sort order as other.</returns>
-        public int CompareTo(NormalizedPath other)
+        public int CompareTo(JsonLocation other)
         {
             int i = 0;
 
@@ -384,7 +384,7 @@ namespace JsonCons.JsonPath
             return _components.Count - other._components.Count;
         }
         /// <summary>
-        /// Returns the hash code for this <see cref="NormalizedPath"/>.
+        /// Returns the hash code for this <see cref="JsonLocation"/>.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
@@ -414,7 +414,7 @@ namespace JsonCons.JsonPath
             element = root;
             foreach (var node in _components)
             {
-                if (node.ComponentKind == NormalizedPathNodeKind.Index)
+                if (node.ComponentKind == JsonLocationNodeKind.Index)
                 {
                     if (element.ValueKind != JsonValueKind.Array || node.GetIndex() >= element.GetArrayLength())
                     {
@@ -422,7 +422,7 @@ namespace JsonCons.JsonPath
                     }
                     element = element[node.GetIndex()];
                 }
-                else if (node.ComponentKind == NormalizedPathNodeKind.Name)
+                else if (node.ComponentKind == JsonLocationNodeKind.Name)
                 {
                     if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(node.GetName(), out element))
                     {
@@ -447,7 +447,7 @@ namespace JsonCons.JsonPath
             JsonElement element = root;
             foreach (var node in _components)
             {
-                if (node.ComponentKind == NormalizedPathNodeKind.Index)
+                if (node.ComponentKind == JsonLocationNodeKind.Index)
                 {
                     if (element.ValueKind != JsonValueKind.Array || node.GetIndex() >= element.GetArrayLength())
                     {
@@ -455,7 +455,7 @@ namespace JsonCons.JsonPath
                     }
                     element = element[node.GetIndex()];
                 }
-                else if (node.ComponentKind == NormalizedPathNodeKind.Name)
+                else if (node.ComponentKind == JsonLocationNodeKind.Name)
                 {
                     if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(node.GetName(), out element))
                     {

@@ -130,7 +130,7 @@ namespace JsonCons.JsonPath
                         IValue val = stack.Peek();
                         stack.Pop();
                         IValue value;
-                        if (token.GetSelector().TryEvaluate(resources, root, NormalizedPathNode.Current, val, options, out value))
+                        if (token.GetSelector().TryEvaluate(resources, root, JsonLocationNode.Current, val, options, out value))
                         {
                             stack.Push(value);
                         }

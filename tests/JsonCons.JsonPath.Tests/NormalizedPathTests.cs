@@ -4,59 +4,59 @@ using JsonCons.JsonPath;
 namespace JsonPath.Tests
 {
     [TestClass]
-    public class PathNodeTests
+    public class JsonLocationNodeTests
     {
         [TestMethod]
-        public void TestNormalizedPathEquals()
+        public void TestJsonLocationEquals()
         {
-            NormalizedPathNode node1 = NormalizedPathNode.Root;
-            NormalizedPathNode node2 = new NormalizedPathNode(node1,"foo");
-            NormalizedPathNode node3 = new NormalizedPathNode(node2,"bar");
-            NormalizedPathNode node4 = new NormalizedPathNode(node3,0);
+            JsonLocationNode node1 = JsonLocationNode.Root;
+            JsonLocationNode node2 = new JsonLocationNode(node1,"foo");
+            JsonLocationNode node3 = new JsonLocationNode(node2,"bar");
+            JsonLocationNode node4 = new JsonLocationNode(node3,0);
 
-            NormalizedPathNode node11 = NormalizedPathNode.Root;
-            NormalizedPathNode node12 = new NormalizedPathNode(node11,"foo");
-            NormalizedPathNode node13 = new NormalizedPathNode(node12,"bar");
-            NormalizedPathNode node14 = new NormalizedPathNode(node13,0);
+            JsonLocationNode node11 = JsonLocationNode.Root;
+            JsonLocationNode node12 = new JsonLocationNode(node11,"foo");
+            JsonLocationNode node13 = new JsonLocationNode(node12,"bar");
+            JsonLocationNode node14 = new JsonLocationNode(node13,0);
 
 
-            NormalizedPath path1 = new NormalizedPath(node4);
-            NormalizedPath path2 = new NormalizedPath(node14);
+            JsonLocation path1 = new JsonLocation(node4);
+            JsonLocation path2 = new JsonLocation(node14);
 
             Assert.IsTrue(path1.Equals(path2));
         }
 
         [TestMethod]
-        public void TestNormalizedPathToString()
+        public void TestJsonLocationToString()
         {
-            NormalizedPathNode node1 = NormalizedPathNode.Root;
-            NormalizedPathNode node2 = new NormalizedPathNode(node1,"foo");
-            NormalizedPathNode node3 = new NormalizedPathNode(node2,"bar");
-            NormalizedPathNode node4 = new NormalizedPathNode(node3,0);
+            JsonLocationNode node1 = JsonLocationNode.Root;
+            JsonLocationNode node2 = new JsonLocationNode(node1,"foo");
+            JsonLocationNode node3 = new JsonLocationNode(node2,"bar");
+            JsonLocationNode node4 = new JsonLocationNode(node3,0);
 
-            NormalizedPath path1 = new NormalizedPath(node4);
+            JsonLocation path1 = new JsonLocation(node4);
             Assert.IsTrue(path1.ToString().Equals(@"$['foo']['bar'][0]"));
         }
 
         [TestMethod]
-        public void TestNormalizedPathWithSolidusToString()
+        public void TestJsonLocationWithSolidusToString()
         {
-            NormalizedPathNode node1 = NormalizedPathNode.Root;
-            NormalizedPathNode node2 = new NormalizedPathNode(node1,"foo's");
-            NormalizedPathNode node3 = new NormalizedPathNode(node2,"bar");
-            NormalizedPathNode node4 = new NormalizedPathNode(node3,0);
+            JsonLocationNode node1 = JsonLocationNode.Root;
+            JsonLocationNode node2 = new JsonLocationNode(node1,"foo's");
+            JsonLocationNode node3 = new JsonLocationNode(node2,"bar");
+            JsonLocationNode node4 = new JsonLocationNode(node3,0);
 
-            NormalizedPath path = new NormalizedPath(node4);
+            JsonLocation path = new JsonLocation(node4);
             Assert.IsTrue(path.ToString().Equals(@"$['foo\'s']['bar'][0]"));
         }
 
         [TestMethod]
-        public void TestNormalizedPathToJsonPointer()
+        public void TestJsonLocationToJsonPointer()
         {
-            NormalizedPathNode node1 = NormalizedPathNode.Root;
-            NormalizedPathNode node2 = new NormalizedPathNode(node1,"a/b");
+            JsonLocationNode node1 = JsonLocationNode.Root;
+            JsonLocationNode node2 = new JsonLocationNode(node1,"a/b");
 
-            NormalizedPath path = new NormalizedPath(node2);
+            JsonLocation path = new JsonLocation(node2);
             Assert.IsTrue(path.ToJsonPointer().Equals(@"/a~1b"));
         }
     }

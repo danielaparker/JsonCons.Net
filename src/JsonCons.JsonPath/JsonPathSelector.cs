@@ -9,31 +9,31 @@ namespace JsonCons.JsonPath
 {
     static class PathGenerator 
     {
-        static internal NormalizedPathNode Generate(NormalizedPathNode last, 
-                                          Int32 index, 
-                                          ProcessingFlags options) 
+        static internal JsonLocationNode Generate(JsonLocationNode lastNode, 
+                                                  Int32 index, 
+                                                  ProcessingFlags options) 
         {
             if ((options & ProcessingFlags.Path) != 0)
             {
-                return new NormalizedPathNode(last, index);
+                return new JsonLocationNode(lastNode, index);
             }
             else
             {
-                return last;
+                return lastNode;
             }
         }
 
-        static internal NormalizedPathNode Generate(NormalizedPathNode last, 
-                                          string identifier, 
-                                          ProcessingFlags options) 
+        static internal JsonLocationNode Generate(JsonLocationNode lastNode, 
+                                                  string identifier, 
+                                                  ProcessingFlags options) 
         {
             if ((options & ProcessingFlags.Path) != 0)
             {
-                return new NormalizedPathNode(last, identifier);
+                return new JsonLocationNode(lastNode, identifier);
             }
             else
             {
-                return last;
+                return lastNode;
             }
         }
     };
@@ -42,7 +42,7 @@ namespace JsonCons.JsonPath
     {
         void Select(DynamicResources resources,
                     IValue root,
-                    NormalizedPathNode last,
+                    JsonLocationNode lastNode,
                     IValue current, 
                     INodeAccumulator accumulator,
                     ProcessingFlags options,
@@ -50,7 +50,7 @@ namespace JsonCons.JsonPath
 
         bool TryEvaluate(DynamicResources resources, 
                          IValue root,
-                         NormalizedPathNode last, 
+                         JsonLocationNode lastNode, 
                          IValue current, 
                          ProcessingFlags options,
                          out IValue value);
@@ -66,7 +66,7 @@ namespace JsonCons.JsonPath
 
         public abstract void Select(DynamicResources resources,
                                     IValue root, 
-                                    NormalizedPathNode last,
+                                    JsonLocationNode lastNode,
                                     IValue current,
                                     INodeAccumulator accumulator,
                                     ProcessingFlags options,
@@ -74,7 +74,7 @@ namespace JsonCons.JsonPath
 
         public abstract bool TryEvaluate(DynamicResources resources, 
                                          IValue root, 
-                                         NormalizedPathNode last, 
+                                         JsonLocationNode lastNode, 
                                          IValue current,
                                          ProcessingFlags options,
                                          out IValue value);
@@ -93,7 +93,7 @@ namespace JsonCons.JsonPath
 
         protected void TailSelect(DynamicResources resources, 
                                   IValue root, 
-                                  NormalizedPathNode last,
+                                  JsonLocationNode lastNode,
                                   IValue current,
                                   INodeAccumulator accumulator,
                                   ProcessingFlags options,
@@ -101,17 +101,17 @@ namespace JsonCons.JsonPath
         {
             if (Tail == null)
             {
-                accumulator.Add(last, current);
+                accumulator.Add(lastNode, current);
             }
             else
             {
-                Tail.Select(resources, root, last, current, accumulator, options, depth);
+                Tail.Select(resources, root, lastNode, current, accumulator, options, depth);
             }
         }
 
         protected bool TryEvaluateTail(DynamicResources resources, 
                                        IValue root, 
-                                       NormalizedPathNode last, 
+                                       JsonLocationNode lastNode, 
                                        IValue current,
                                        ProcessingFlags options,
                                        out IValue value)
@@ -123,7 +123,7 @@ namespace JsonCons.JsonPath
             }
             else
             {
-                return Tail.TryEvaluate(resources, root, last, current, options, out value);
+                return Tail.TryEvaluate(resources, root, lastNode, current, options, out value);
             }
         }
 
@@ -144,17 +144,17 @@ namespace JsonCons.JsonPath
 
         public override void Select(DynamicResources resources, 
                                     IValue root, 
-                                    NormalizedPathNode last,
+                                    JsonLocationNode lastNode,
                                     IValue current,
                                     INodeAccumulator accumulator,
                                     ProcessingFlags options,
                                     int depth)
         {
-            this.TailSelect(resources, root, last, root, accumulator, options, depth);        
+            this.TailSelect(resources, root, lastNode, root, accumulator, options, depth);        
         }
         public override bool TryEvaluate(DynamicResources resources, 
                                          IValue root, 
-                                         NormalizedPathNode last, 
+                                         JsonLocationNode lastNode, 
                                          IValue current,
                                          ProcessingFlags options,
                                          out IValue result)
@@ -165,7 +165,7 @@ namespace JsonCons.JsonPath
             }
             else
             {
-                if (!this.TryEvaluateTail(resources, root, last, root, options, out result))
+                if (!this.TryEvaluateTail(resources, root, lastNode, root, options, out result))
                 {
                     result = JsonConstants.Null;
                     return false;
@@ -190,21 +190,21 @@ namespace JsonCons.JsonPath
     {
         public override void Select(DynamicResources resources, 
                                     IValue root, 
-                                    NormalizedPathNode last,
+                                    JsonLocationNode lastNode,
                                     IValue current,
                                     INodeAccumulator accumulator,
                                     ProcessingFlags options,
                                     int depth)
         {
-            this.TailSelect(resources, root, last, current, accumulator, options, depth);        
+            this.TailSelect(resources, root, lastNode, current, accumulator, options, depth);        
         }
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
-                                         NormalizedPathNode last, 
+                                         JsonLocationNode lastNode, 
                                          IValue current,
                                          ProcessingFlags options,
                                          out IValue value)
         {
-            return this.TryEvaluateTail(resources, root, last, current, options, out value);        
+            return this.TryEvaluateTail(resources, root, lastNode, current, options, out value);        
         }
 
         public override bool IsRoot()
@@ -229,13 +229,13 @@ namespace JsonCons.JsonPath
 
         public override void Select(DynamicResources resources, 
                                     IValue root, 
-                                    NormalizedPathNode last,
+                                    JsonLocationNode lastNode,
                                     IValue current,
                                     INodeAccumulator accumulator,
                                     ProcessingFlags options,
                                     int depth)
         {
-            NormalizedPathNode ancestor = last;
+            JsonLocationNode ancestor = lastNode;
             int index = 0;
             while (ancestor != null && index < _ancestorDepth)
             {
@@ -245,7 +245,7 @@ namespace JsonCons.JsonPath
 
             if (ancestor != null)
             {
-                NormalizedPath path = new NormalizedPath(ancestor);
+                JsonLocation path = new JsonLocation(ancestor);
                 IValue value;
                 if (TryGetValue(root, path, out value))
                 {
@@ -254,12 +254,12 @@ namespace JsonCons.JsonPath
             }
         }
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
-                                         NormalizedPathNode last, 
+                                         JsonLocationNode lastNode, 
                                          IValue current,
                                          ProcessingFlags options,
                                          out IValue result)
         {
-            NormalizedPathNode ancestor = last;
+            JsonLocationNode ancestor = lastNode;
             int index = 0;
             while (ancestor != null && index < _ancestorDepth)
             {
@@ -269,7 +269,7 @@ namespace JsonCons.JsonPath
 
             if (ancestor != null)
             {
-                NormalizedPath path = new NormalizedPath(ancestor);
+                JsonLocation path = new JsonLocation(ancestor);
                 IValue value;
                 if (TryGetValue(root, path, out value))
                 {
@@ -289,12 +289,12 @@ namespace JsonCons.JsonPath
             }
         }
 
-        bool TryGetValue(IValue root, NormalizedPath path, out IValue element)
+        bool TryGetValue(IValue root, JsonLocation path, out IValue element)
         {
             element = root;
             foreach (var pathComponent in path)
             {
-                if (pathComponent.ComponentKind == NormalizedPathNodeKind.Index)
+                if (pathComponent.ComponentKind == JsonLocationNodeKind.Index)
                 {
                     if (element.ValueKind != JsonValueKind.Array || pathComponent.GetIndex() >= element.GetArrayLength())
                     {
@@ -302,7 +302,7 @@ namespace JsonCons.JsonPath
                     }
                     element = element[pathComponent.GetIndex()];
                 }
-                else if (pathComponent.ComponentKind == NormalizedPathNodeKind.Name)
+                else if (pathComponent.ComponentKind == JsonLocationNodeKind.Name)
                 {
                     if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(pathComponent.GetName(), out element))
                     {
@@ -330,7 +330,7 @@ namespace JsonCons.JsonPath
 
         public override void Select(DynamicResources resources, 
                                     IValue root, 
-                                    NormalizedPathNode last,
+                                    JsonLocationNode lastNode,
                                     IValue current,
                                     INodeAccumulator accumulator,
                                     ProcessingFlags options,
@@ -342,14 +342,14 @@ namespace JsonCons.JsonPath
                 if (current.TryGetProperty(_identifier, out value))
                 {
                     this.TailSelect(resources, root, 
-                                      PathGenerator.Generate(last, _identifier, options), 
+                                      PathGenerator.Generate(lastNode, _identifier, options), 
                                       value, accumulator, options, depth);
                 }
             }
         }
 
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
-                                         NormalizedPathNode last, 
+                                         JsonLocationNode lastNode, 
                                          IValue current,
                                          ProcessingFlags options,
                                          out IValue value)
@@ -360,7 +360,7 @@ namespace JsonCons.JsonPath
                 if (current.TryGetProperty(_identifier, out element))
                 {
                     return this.TryEvaluateTail(resources, root, 
-                                                PathGenerator.Generate(last, _identifier, options), 
+                                                PathGenerator.Generate(lastNode, _identifier, options), 
                                                 element, options, out value);
                 }
                 else
@@ -404,7 +404,7 @@ namespace JsonCons.JsonPath
 
         public override void Select(DynamicResources resources, 
                                     IValue root, 
-                                    NormalizedPathNode last,
+                                    JsonLocationNode lastNode,
                                     IValue current,
                                     INodeAccumulator accumulator,
                                     ProcessingFlags options,
@@ -415,7 +415,7 @@ namespace JsonCons.JsonPath
                 if (_index >= 0 && _index < current.GetArrayLength())
                 {
                     this.TailSelect(resources, root, 
-                                      PathGenerator.Generate(last, _index, options), 
+                                      PathGenerator.Generate(lastNode, _index, options), 
                                       current[_index], accumulator, options, depth);
                 }
                 else
@@ -424,7 +424,7 @@ namespace JsonCons.JsonPath
                     if (index >= 0 && index < current.GetArrayLength())
                     {
                         this.TailSelect(resources, root, 
-                                          PathGenerator.Generate(last, _index, options), 
+                                          PathGenerator.Generate(lastNode, _index, options), 
                                           current[index], accumulator, options, depth);
                     }
                 }
@@ -432,7 +432,7 @@ namespace JsonCons.JsonPath
         }
 
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
-                                         NormalizedPathNode last,
+                                         JsonLocationNode lastNode,
                                          IValue current,
                                          ProcessingFlags options,
                                          out IValue value)
@@ -442,7 +442,7 @@ namespace JsonCons.JsonPath
                 if (_index >= 0 && _index < current.GetArrayLength())
                 {
                     return this.TryEvaluateTail(resources, root, 
-                                                PathGenerator.Generate(last, _index, options), 
+                                                PathGenerator.Generate(lastNode, _index, options), 
                                                 current[_index], options, out value);
                 }
                 else
@@ -451,7 +451,7 @@ namespace JsonCons.JsonPath
                     if (index >= 0 && index < current.GetArrayLength())
                     {
                         return this.TryEvaluateTail(resources, root, 
-                                                    PathGenerator.Generate(last, _index, options), 
+                                                    PathGenerator.Generate(lastNode, _index, options), 
                                                     current[index], options, out value);
                     }
                     else
@@ -485,7 +485,7 @@ namespace JsonCons.JsonPath
 
         public override void Select(DynamicResources resources, 
                                     IValue root,
-                                    NormalizedPathNode last,
+                                    JsonLocationNode lastNode,
                                     IValue current,
                                     INodeAccumulator accumulator,
                                     ProcessingFlags options,
@@ -510,7 +510,7 @@ namespace JsonCons.JsonPath
                     for (Int32 i = start; i < end; i += step)
                     {
                         this.TailSelect(resources, root, 
-                                          PathGenerator.Generate(last, i, options), 
+                                          PathGenerator.Generate(lastNode, i, options), 
                                           current[i], accumulator, options, depth);
                     }
                 }
@@ -529,7 +529,7 @@ namespace JsonCons.JsonPath
                         if (i < current.GetArrayLength())
                         {
                             this.TailSelect(resources, root, 
-                                              PathGenerator.Generate(last, i, options), 
+                                              PathGenerator.Generate(lastNode, i, options), 
                                               current[i], accumulator, options, depth);
                         }
                     }
@@ -539,7 +539,7 @@ namespace JsonCons.JsonPath
 
         public override bool TryEvaluate(DynamicResources resources, 
                                          IValue root,
-                                         NormalizedPathNode last,
+                                         JsonLocationNode lastNode,
                                          IValue current,
                                          ProcessingFlags options,
                                          out IValue results) 
@@ -552,7 +552,7 @@ namespace JsonCons.JsonPath
             }
             Select(resources, 
                    root, 
-                   last, 
+                   lastNode, 
                    current,
                    accumulator,
                    options,
@@ -571,7 +571,7 @@ namespace JsonCons.JsonPath
     {
         public override void Select(DynamicResources resources, 
                                     IValue root, 
-                                    NormalizedPathNode last,
+                                    JsonLocationNode lastNode,
                                     IValue current,
                                     INodeAccumulator accumulator,
                                     ProcessingFlags options,
@@ -584,29 +584,29 @@ namespace JsonCons.JsonPath
 
             if (current.ValueKind == JsonValueKind.Array)
             {
-                this.TailSelect(resources, root, last, current, accumulator, options, depth+1);
+                this.TailSelect(resources, root, lastNode, current, accumulator, options, depth+1);
                 Int32 index = 0;
                 foreach (var item in current.EnumerateArray())
                 {
                     Select(resources, root, 
-                           PathGenerator.Generate(last, index, options), 
+                           PathGenerator.Generate(lastNode, index, options), 
                            item, accumulator, options, depth+1);
                     ++index;
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
-                this.TailSelect(resources, root, last, current, accumulator, options, depth+1);
+                this.TailSelect(resources, root, lastNode, current, accumulator, options, depth+1);
                 foreach (var prop in current.EnumerateObject())
                 {
                     Select(resources, root, 
-                           PathGenerator.Generate(last, prop.Name, options), 
+                           PathGenerator.Generate(lastNode, prop.Name, options), 
                            prop.Value, accumulator, options, depth+1);
                 }
             }
         }
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
-                                         NormalizedPathNode last,
+                                         JsonLocationNode lastNode,
                                          IValue current,
                                          ProcessingFlags options,
                                          out IValue results)
@@ -619,7 +619,7 @@ namespace JsonCons.JsonPath
             }
             Select(resources, 
                    root, 
-                   last, 
+                   lastNode, 
                    current,
                    accumulator,
                    options,
@@ -638,7 +638,7 @@ namespace JsonCons.JsonPath
     {
         public override void Select(DynamicResources resources, 
                                     IValue root, 
-                                    NormalizedPathNode last,
+                                    JsonLocationNode lastNode,
                                     IValue current,
                                     INodeAccumulator accumulator,
                                     ProcessingFlags options,
@@ -650,7 +650,7 @@ namespace JsonCons.JsonPath
                 foreach (var item in current.EnumerateArray())
                 {
                     this.TailSelect(resources, root, 
-                                    PathGenerator.Generate(last, index, options), 
+                                    PathGenerator.Generate(lastNode, index, options), 
                                     item, accumulator, options, depth);
                     ++index;
                 }
@@ -660,13 +660,13 @@ namespace JsonCons.JsonPath
                 foreach (var prop in current.EnumerateObject())
                 {
                     this.TailSelect(resources, root, 
-                                    PathGenerator.Generate(last, prop.Name, options), 
+                                    PathGenerator.Generate(lastNode, prop.Name, options), 
                                     prop.Value, accumulator, options, depth);
                 }
             }
         }
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
-                                         NormalizedPathNode last,
+                                         JsonLocationNode lastNode,
                                          IValue current,
                                          ProcessingFlags options,
                                          out IValue results)
@@ -679,7 +679,7 @@ namespace JsonCons.JsonPath
             }
             Select(resources, 
                    root, 
-                   last, 
+                   lastNode, 
                    current,
                    accumulator,
                    options,
@@ -723,7 +723,7 @@ namespace JsonCons.JsonPath
 
         public void Select(DynamicResources resources, 
                            IValue root, 
-                           NormalizedPathNode last,
+                           JsonLocationNode lastNode,
                            IValue current,
                            INodeAccumulator accumulator,
                            ProcessingFlags options,
@@ -733,21 +733,21 @@ namespace JsonCons.JsonPath
             {
                 foreach (var selector in _selectors)
                 {
-                    selector.Select(resources, root, last, current, accumulator, options, depth);
+                    selector.Select(resources, root, lastNode, current, accumulator, options, depth);
                 }
             }
             else
             {
                 Action<int> action = delegate(int i)
                 {
-                    _selectors[i].Select(resources, root, last, current, accumulator, options, depth);
+                    _selectors[i].Select(resources, root, lastNode, current, accumulator, options, depth);
                 };
                 Parallel.For(0, _selectors.Count, action);
             }
         }
 
         public bool TryEvaluate(DynamicResources resources, IValue root, 
-                                NormalizedPathNode last,
+                                JsonLocationNode lastNode,
                                 IValue current,
                                 ProcessingFlags options,
                                 out IValue results)
@@ -760,7 +760,7 @@ namespace JsonCons.JsonPath
             }
             Select(resources, 
                    root, 
-                   last, 
+                   lastNode, 
                    current,
                    accumulator,
                    options,
@@ -791,7 +791,7 @@ namespace JsonCons.JsonPath
 
         public override void Select(DynamicResources resources, 
                                     IValue root, 
-                                    NormalizedPathNode last,
+                                    JsonLocationNode lastNode,
                                     IValue current,
                                     INodeAccumulator accumulator,
                                     ProcessingFlags options,
@@ -807,7 +807,7 @@ namespace JsonCons.JsonPath
                         && Expression.IsTrue(val)) 
                     {
                         this.TailSelect(resources, root, 
-                                        PathGenerator.Generate(last, index, options), 
+                                        PathGenerator.Generate(lastNode, index, options), 
                                         item, accumulator, options, depth);
                     }
                     ++index;
@@ -822,7 +822,7 @@ namespace JsonCons.JsonPath
                         && Expression.IsTrue(val))
                     {
                         this.TailSelect(resources, root, 
-                                          PathGenerator.Generate(last, property.Name, options), 
+                                          PathGenerator.Generate(lastNode, property.Name, options), 
                                           property.Value, accumulator, options, depth);
                     }
                 }
@@ -830,7 +830,7 @@ namespace JsonCons.JsonPath
         }
 
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
-                                         NormalizedPathNode last,
+                                         JsonLocationNode lastNode,
                                          IValue current,
                                          ProcessingFlags options,
                                          out IValue results)
@@ -843,7 +843,7 @@ namespace JsonCons.JsonPath
             }
             Select(resources, 
                    root, 
-                   last, 
+                   lastNode, 
                    current,
                    accumulator,
                    options,
