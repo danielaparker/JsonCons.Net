@@ -12,14 +12,14 @@ namespace JsonCons.JsonSchema
 {
     abstract class KeywordValidator 
     {
-        static readonly JsonElement nullValue;
+        static internal readonly JsonElement NullValue;
 
         internal string AbsoluteKeywordLocation {get;}
 
         static KeywordValidator()
         {
             using JsonDocument doc = JsonDocument.Parse("null");
-            nullValue = doc.RootElement.Clone();
+            NullValue = doc.RootElement.Clone();
         }
 
         internal KeywordValidator(string absoluteKeywordLocation)
@@ -41,11 +41,11 @@ namespace JsonCons.JsonSchema
                                           IList<PatchElement> patch);
 
         internal virtual bool TryGetDefaultValue(JsonPointer instanceLocation, 
-                                                  JsonElement instance, 
-                                                  ErrorReporter reporter,
-                                                  out JsonElement defaultValue)
+                                                 JsonElement instance, 
+                                                 ErrorReporter reporter,
+                                                 out JsonElement defaultValue)
         {
-            defaultValue = nullValue;
+            defaultValue = NullValue;
             return false;
         }
     }
@@ -467,9 +467,9 @@ namespace JsonCons.JsonSchema
 
     sealed class CombiningValidator : KeywordValidator
     {
-        internal ICombiningCriterion AllOf = new AllOfCriterion();
-        internal ICombiningCriterion AnyOf = new AnyOfCriterion();
-        internal ICombiningCriterion OneOf = new OneOfCriterion();
+        internal static ICombiningCriterion AllOf = new AllOfCriterion();
+        internal static ICombiningCriterion AnyOf = new AnyOfCriterion();
+        internal static ICombiningCriterion OneOf = new OneOfCriterion();
 
         ICombiningCriterion _criterion; 
         IList<KeywordValidator> _validators;
@@ -1493,7 +1493,7 @@ namespace JsonCons.JsonSchema
                     if (prop.Value.TryGetDefaultValue(instanceLocation, instance, reporter, out element))
                     { 
                         JsonPointer loc = JsonPointer.Append(instanceLocation, prop.Key);
-                        patch.Add(new PatchElement(loc.ToString(), element));
+                        patch.Add(new PatchElement(loc.ToString(), element.Clone()));
                     }
                 }
             }
@@ -1849,21 +1849,21 @@ namespace JsonCons.JsonSchema
 
     class EnumValidator : KeywordValidator
     {
-        JsonElement _enum;
+        JsonElement _enumValue;
 
         internal EnumValidator(string absoluteKeywordLocation,
                                JsonElement value)
             : base(absoluteKeywordLocation)
         {
-            _enum = value;
+            _enumValue = value;
         }
 
-        internal EnumValidator Create(JsonElement sch,
-                                      List<SchemaLocation> uris)
+        internal static EnumValidator Create(JsonElement sch,
+                                             List<SchemaLocation> uris)
         {
             SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
 
-            return new EnumValidator(absoluteKeywordLocation.ToString(), sch);
+            return new EnumValidator(absoluteKeywordLocation.ToString(), sch.Clone());
         }
 
         internal override void OnValidate(JsonElement instance,
@@ -1872,7 +1872,7 @@ namespace JsonCons.JsonSchema
                                           IList<PatchElement> patch) 
         {
             bool in_range = false;
-            foreach (var item in _enum.EnumerateArray())
+            foreach (var item in _enumValue.EnumerateArray())
             {
                 if (JsonElementEqualityComparer.Instance.Equals(item, instance)) 
                 {
@@ -1908,12 +1908,12 @@ namespace JsonCons.JsonSchema
             _constValue = value;
     }
 
-        internal ConstValidator Create(JsonElement sch,
-                                      List<SchemaLocation> uris)
+        internal static ConstValidator Create(JsonElement sch,
+                                              List<SchemaLocation> uris)
         {
             SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
 
-            return new ConstValidator(absoluteKeywordLocation.ToString(), sch);
+            return new ConstValidator(absoluteKeywordLocation.ToString(), sch.Clone());
         }
 
  
@@ -1930,57 +1930,114 @@ namespace JsonCons.JsonSchema
         }
     }
 
-/*
+    class BooleanValidator : KeywordValidator
+    {
+        JsonElement _booleanValue;
+
+        internal BooleanValidator(string absoluteKeywordLocation,
+                               JsonElement value)
+            : base(absoluteKeywordLocation)
+        {
+            _booleanValue = value;
+    }
+
+        internal static BooleanValidator Create(JsonElement sch,
+                                                List<SchemaLocation> uris)
+        {
+            SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
+
+            return new BooleanValidator(absoluteKeywordLocation.ToString(), sch.Clone());
+        }
+
+
+        internal override void OnValidate(JsonElement instance, 
+                                          JsonPointer instanceLocation, 
+                                          ErrorReporter reporter,
+                                          IList<PatchElement> patch) 
+        {
+            switch (instance.ValueKind)
+            {
+                case JsonValueKind.True:
+                case JsonValueKind.False:
+                    break;
+                default:
+                    reporter.Error(new ValidationOutput("const", 
+                                                        this.AbsoluteKeywordLocation, 
+                                                        instanceLocation.ToString(), 
+                                                        $"{JsonSerializer.Serialize(instance)} is not a boolean"));
+                    break;
+            }
+        }
+    }
 
     class TypeValidator : KeywordValidator
     {
-        Json _default_value;
-        IList<KeywordValidator> _type_mapping;
-        jsoncons::optional<EnumValidator<Json>> _enum;
-        jsoncons::optional<ConstValidator<Json>> _const;
-        IList<KeywordValidator> _combined;
-        jsoncons::optional<ConditionalValidator<Json>> _conditional;
-        IList<string> _expected_types;
+        JsonElement? _defaultValue;
+        IList<KeywordValidator> _typeMapping;
+        EnumValidator _enumValidator;
+        ConstValidator _constValidator;
+        IList<KeywordValidator> _combinedValidators;
+        ConditionalValidator _conditionalValidator;
+        IList<string> _expectedTypes;
 
-        TypeValidator(IKeywordValidatorFactory validatorFactory,
-                     JsonElement sch,
-                     List<SchemaLocation> uris)
-            : base((uris.Count != 0 && uris[uris.Count-1].IsAbsoluteUri) ? uris[uris.Count-1].ToString() : ""), default_value_(jsoncons::null_type()), 
-              type_mapping_((uint8_t)(JsonValueKind.object_value)+1), 
-              enum_(), const_()
+        internal TypeValidator(string absoluteKeywordLocation,
+                               JsonElement? defaultValue,
+                               IList<KeywordValidator> typeMapping,
+                               EnumValidator enumValidator,
+                               ConstValidator constValidator,
+                               IList<KeywordValidator> combinedValidators,
+                               ConditionalValidator conditionalValidator,
+                               IList<string> expectedTypes)
+            : base(absoluteKeywordLocation)
         {
-            //std::cout << uris.Count << " uris: ";
-            //foreach (var uri : uris)
-            //{
-            //    std::cout << uri.ToString() << ", ";
-            //}
-            //std::cout << "\n";
-            std::set<string> known_keywords;
+            _defaultValue = defaultValue;
+            _typeMapping = typeMapping;
+            _enumValidator = enumValidator;
+            _constValidator = constValidator;
+            _combinedValidators = combinedValidators;
+            _conditionalValidator = conditionalValidator;
+            _expectedTypes = expectedTypes;
+        }
 
-            var it = sch.find("type");
-            if (it == sch.EnumerateObject().end()) 
+        internal static TypeValidator Create(IKeywordValidatorFactory validatorFactory,
+                                             JsonElement sch,
+                                             List<SchemaLocation> uris)
+        {
+            SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
+            JsonElement? defaultValue = null;
+            IList<KeywordValidator> typeMapping = new List<KeywordValidator>((int)Enum.GetValues(typeof(JsonValueKind)).Cast<JsonValueKind>().Max());
+            EnumValidator enumValidator = null;
+            ConstValidator constValidator = null;
+            IList<KeywordValidator> combinedValidators = new List<KeywordValidator>();
+            ConditionalValidator conditionalValidator = null;
+            IList<string> expectedTypes = new List<string>();
+
+            JsonElement element;
+            var knownKeywords = new HashSet<string>();
+
+            if (sch.TryGetProperty("type", out element))
             {
-                initialize_type_mapping(validatorFactory, "", sch, uris, known_keywords);
+                InitializeTypeMapping(validatorFactory, "", sch, uris, knownKeywords, typeMapping);
             }
             else 
             {
                 switch (element.ValueKind) 
                 { 
-                    case JsonValueKind.string_value: 
+                    case JsonValueKind.String: 
                     {
-                        var type = element.template as<string>();
-                        initialize_type_mapping(validatorFactory, type, sch, uris, known_keywords);
-                        expected_types_.emplace_back(std::move(type));
+                        var type = element.GetString();
+                        InitializeTypeMapping(validatorFactory, type, sch, uris, knownKeywords, typeMapping);
+                        expectedTypes.Add(type);
                         break;
                     } 
 
                     case JsonValueKind.Array: // "type": ["type1", "type2"]
                     {
-                        foreach (var item : element.EnumerateArray())
+                        foreach (var item in element.EnumerateArray())
                         {
-                            var type = item.template as<string>();
-                            initialize_type_mapping(validatorFactory, type, sch, uris, known_keywords);
-                            expected_types_.emplace_back(std::move(type));
+                            var type = item.GetString();
+                            InitializeTypeMapping(validatorFactory, type, sch, uris, knownKeywords, typeMapping);
+                            expectedTypes.Add(type);
                         }
                         break;
                     }
@@ -1989,53 +2046,54 @@ namespace JsonCons.JsonSchema
                 }
             }
 
-            const var default_it = sch.find("default");
-            if (default_it != sch.EnumerateObject().end()) 
+            if (sch.TryGetProperty("default", out element))
             {
-                default_value_ = default_it.value();
+                defaultValue = element.Clone();
             }
 
-            it = sch.find("enum");
-            if (it != sch.EnumerateObject().end()) 
+            if (sch.TryGetProperty("enum", out element))
             {
-                enum_ = EnumValidator<Json >(element, uris);
+                enumValidator = EnumValidator.Create(element, uris);
             }
 
-            it = sch.find("const");
-            if (it != sch.EnumerateObject().end()) 
+            if (sch.TryGetProperty("const", out element))
             {
-                const_ = ConstValidator<Json>(element, uris);
+                constValidator = ConstValidator.Create(element, uris);
             }
 
-            it = sch.find("not");
-            if (it != sch.EnumerateObject().end()) 
+            if (sch.TryGetProperty("not", out element))
             {
-                combined_.Add(validatorFactory.make_not_keyword(element, uris));
+                combinedValidators.Add(NotValidator.Create(validatorFactory, element, uris));
             }
 
-            it = sch.find("allOf");
-            if (it != sch.EnumerateObject().end()) 
+            if (sch.TryGetProperty("allOf", out element))
             {
-                combined_.Add(validatorFactory.make_all_of_keyword(element, uris));
+                combinedValidators.Add(CombiningValidator.Create(validatorFactory, sch, uris, CombiningValidator.AllOf));
             }
 
-            it = sch.find("anyOf");
-            if (it != sch.EnumerateObject().end()) 
+            if (sch.TryGetProperty("anyOf", out element))
             {
-                combined_.Add(validatorFactory.make_any_of_keyword(element, uris));
+                combinedValidators.Add(CombiningValidator.Create(validatorFactory, sch, uris, CombiningValidator.AnyOf));
             }
 
-            it = sch.find("oneOf");
-            if (it != sch.EnumerateObject().end()) 
+            if (sch.TryGetProperty("oneOf", out element))
             {
-                combined_.Add(validatorFactory.make_one_of_keyword(element, uris));
+                combinedValidators.Add(CombiningValidator.Create(validatorFactory, sch, uris, CombiningValidator.OneOf));
             }
 
-            it = sch.find("if");
-            if (it != sch.EnumerateObject().end()) 
+            if (sch.TryGetProperty("if", out element))
             {
-                conditional_ = ConditionalValidator<Json>(validatorFactory, element, sch, uris);
+                conditionalValidator = ConditionalValidator.Create(validatorFactory, element, sch, uris);
             }
+
+            return new TypeValidator(absoluteKeywordLocation.ToString(),
+                                     defaultValue,
+                                     typeMapping,
+                                     enumValidator,
+                                     constValidator,
+                                     combinedValidators,
+                                     conditionalValidator,
+                                     expectedTypes);
         }
 
         internal override void OnValidate(JsonElement instance, 
@@ -2043,125 +2101,141 @@ namespace JsonCons.JsonSchema
                                           ErrorReporter reporter, 
                                           IList<PatchElement> patch) 
         {
-            var type = type_mapping_[(uint8_t) instance.ValueKind];
+            var type = _typeMapping[(int)instance.ValueKind];
 
-            if (type)
+            if (type != null)
                 type.Validate(instance, instanceLocation, reporter, patch);
             else
             {
-                std::ostringstream ss;
-                ss << "Expected ";
-                for (int i = 0; i < expected_types_.Count; ++i)
+                var buffer = new StringBuilder("Expected ");
+                for (int i = 0; i < _expectedTypes.Count; ++i)
                 {
                         if (i > 0)
                         { 
-                            ss << ", ";
-                            if (i+1 == expected_types_.Count)
+                            buffer.Append(", ");
+                            if (i+1 == _expectedTypes.Count)
                             { 
-                                ss << "or ";
+                                buffer.Append("or ");
                             }
                         }
-                        ss << expected_types_[i];
+                        buffer.Append(_expectedTypes[i]);
                 }
-                ss << ", found " << instance.ValueKind;
+                buffer.Append(", found {Enum.ToString(instance.ValueKind)}");
 
                 reporter.Error(new ValidationOutput("type", 
-                                                 this.AbsoluteKeywordLocation, 
-                                                 instanceLocation.ToString(), 
-                                                 ss.str()));
+                                                    this.AbsoluteKeywordLocation, 
+                                                    instanceLocation.ToString(), 
+                                                    buffer.ToString()));
                 if (reporter.FailEarly)
                 {
                     return;
                 }
             }
 
-            if (enum_)
+            if (_enumValidator != null)
             { 
-                enum_.Validate(instance, instanceLocation, reporter, patch);
-                if (reporter.Error_count() > 0 && reporter.FailEarly)
+                _enumValidator.Validate(instance, instanceLocation, reporter, patch);
+                if (reporter.ErrorCount > 0 && reporter.FailEarly)
                 {
                     return;
                 }
             }
 
-            if (const_)
+            if (_constValidator != null)
             { 
-                const_.Validate(instance, instanceLocation, reporter, patch);
-                if (reporter.Error_count() > 0 && reporter.FailEarly)
+                _constValidator.Validate(instance, instanceLocation, reporter, patch);
+                if (reporter.ErrorCount > 0 && reporter.FailEarly)
                 {
                     return;
                 }
             }
 
-            foreach (var l : combined_)
+            foreach (var l in _combinedValidators)
             {
                 l.Validate(instance, instanceLocation, reporter, patch);
-                if (reporter.Error_count() > 0 && reporter.FailEarly)
+                if (reporter.ErrorCount > 0 && reporter.FailEarly)
                 {
                     return;
                 }
             }
 
 
-            if (conditional_)
-            { 
-                conditional_.Validate(instance, instanceLocation, reporter, patch);
-                if (reporter.Error_count() > 0 && reporter.FailEarly)
+            if (_conditionalValidator != null)
+            {
+                _conditionalValidator.Validate(instance, instanceLocation, reporter, patch);
+                if (reporter.ErrorCount > 0 && reporter.FailEarly)
                 {
                     return;
                 }
             }
         }
 
-        jsoncons::optional<Json> TryGetDefaultValue(SchemaLocation, 
-                                                   JsonElement,
-                                                   ErrorReporter)
+        internal override bool TryGetDefaultValue(JsonPointer instanceLocation, 
+                                                  JsonElement instance, 
+                                                  ErrorReporter reporter,
+                                                  out JsonElement defaultValue)
         {
-            return _default_value;
+            if (_defaultValue != null)
+            {
+                defaultValue = (JsonElement)_defaultValue;
+                return true;
+            }
+            else
+            {
+                defaultValue = KeywordValidator.NullValue;
+                return false;
+            }
         }
 
-        void initialize_type_mapping(IKeywordValidatorFactory validatorFactory,
-                                     string type,
-                                     JsonElement sch,
-                                     List<SchemaLocation> uris,
-                                     ISet<string> keywords)
+        static void InitializeTypeMapping(IKeywordValidatorFactory validatorFactory,
+                                                     string type,
+                                                     JsonElement sch,
+                                                     List<SchemaLocation> uris,
+                                                     ISet<string> keywords,
+                                                     IList<KeywordValidator> typeMapping)
         {
-            if (type.Count != 0 || type == "null")
+            switch (type)
             {
-                type_mapping_[(uint8_t)JsonValueKind.null_value] = validatorFactory.make_null_keyword(uris);
-            }
-            if (type.Count != 0 || type == "object")
-            {
-                type_mapping_[(uint8_t)JsonValueKind.object_value] = validatorFactory.make_object_keyword(sch, uris);
-            }
-            if (type.Count != 0 || type == "array")
-            {
-                type_mapping_[(uint8_t)JsonValueKind.Array] = validatorFactory.make_array_keyword(sch, uris);
-            }
-            if (type.Count != 0 || type == "string")
-            {
-                type_mapping_[(uint8_t)JsonValueKind.string_value] = validatorFactory.make_string_keyword(sch, uris);
-                // For binary types
-                type_mapping_[(uint8_t) JsonValueKind.byte_string_value] = type_mapping_[(uint8_t) JsonValueKind.string_value];
-            }
-            if (type.Count != 0 || type == "boolean")
-            {
-                type_mapping_[(uint8_t)JsonValueKind.bool_value] = validatorFactory.make_boolean_keyword(uris);
-            }
-            if (type.Count != 0 || type == "integer")
-            {
-                type_mapping_[(uint8_t)JsonValueKind.int64_value] = validatorFactory.make_integer_keyword(sch, uris, keywords);
-                type_mapping_[(uint8_t)JsonValueKind.uint64_value] = type_mapping_[(uint8_t)JsonValueKind.int64_value];
-                type_mapping_[(uint8_t)JsonValueKind.double_value] = type_mapping_[(uint8_t)JsonValueKind.int64_value];
-            }
-            if (type.Count != 0 || type == "number")
-            {
-                type_mapping_[(uint8_t)JsonValueKind.double_value] = validatorFactory.make_number_keyword(sch, uris, keywords);
-                type_mapping_[(uint8_t)JsonValueKind.int64_value] = type_mapping_[(uint8_t)JsonValueKind.double_value];
-                type_mapping_[(uint8_t)JsonValueKind.uint64_value] = type_mapping_[(uint8_t)JsonValueKind.double_value];
+                case "null":
+                {
+                    typeMapping[(int)JsonValueKind.Null] = NullValidator.Create(uris);
+                    break;
+                }
+                case "object":
+                {
+                    typeMapping[(int)JsonValueKind.Object] = ObjectValidator.Create(validatorFactory, sch, uris);
+                    break;
+                }
+                case "array":
+                {
+                    typeMapping[(int)JsonValueKind.Array] = ArrayValidator.Create(validatorFactory, sch, uris);
+                    break;
+                }
+                case "string":
+                {
+                    typeMapping[(int)JsonValueKind.String] = StringValidator.Create(sch, uris);
+                    break;
+                }
+                case "boolean":
+                {
+                    typeMapping[(int)JsonValueKind.True] = BooleanValidator.Create(sch, uris);
+                    typeMapping[(int)JsonValueKind.False] = BooleanValidator.Create(sch, uris);
+                    break;
+                }
+                case "integer":
+                {
+                    typeMapping[(int)JsonValueKind.Number] = IntegerValidator.Create(sch, uris, keywords);
+                    break;
+                }
+                case "number":
+                {
+                    typeMapping[(int)JsonValueKind.Number] = DoubleValidator.Create(sch, uris, keywords);
+                    break;
+                }
+                default:
+                    break;
             }
         }
     }
-    */
 
 } // namespace JsonCons.JsonSchema
