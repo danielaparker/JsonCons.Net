@@ -158,7 +158,6 @@ namespace JsonCons.JsonPath
             UInt32 cp = 0;
             UInt32 cp2 = 0;
             int jsonTextLevel = 0;
-            int mark = 0;
             bool pathsRequired = false;
             int ancestorDepth = 0;
 
@@ -1310,7 +1309,6 @@ namespace JsonCons.JsonPath
                                 _stateStack.Push(JsonPathState.JsonLiteral);
                                 _start = _current;
                                 _stateStack.Push(JsonPathState.JsonText);
-                                mark = _current;
                                 break;
                             default:
                             {
@@ -1449,7 +1447,6 @@ namespace JsonCons.JsonPath
                             case '{':
                             case '[':
                                 ++jsonTextLevel;
-                                buffer.Append(_span[_current]);
                                 ++_current;
                                 ++_column;
                                 break;
@@ -1460,30 +1457,25 @@ namespace JsonCons.JsonPath
                                 {
                                     _stateStack.Pop(); 
                                 }
-                                buffer.Append(_span[_current]);
                                 ++_current;
                                 ++_column;
                                 break;
                             case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
                                 _stateStack.Push(JsonPathState.Number);
-                                buffer.Append(_span[_current]);
                                 ++_current;
                                 ++_column;
                                 break;
                             case '\"':
                                 _stateStack.Push(JsonPathState.JsonTextString);
-                                buffer.Append(_span[_current]);
                                 ++_current;
                                 ++_column;
                                 break;
                             case ':':
-                                buffer.Append(_span[_current]);
                                 ++_current;
                                 ++_column;
                                 break;
                             default:
                                 _stateStack.Push(JsonPathState.UnquotedString);
-                                buffer.Append(_span[_current]);
                                 ++_current;
                                 ++_column;
                                 break;
