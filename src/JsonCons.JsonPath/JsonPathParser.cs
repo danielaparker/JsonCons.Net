@@ -118,8 +118,10 @@ namespace JsonCons.JsonPath
 
     ref struct JsonPathParser 
     {
+        ReadOnlyMemory<char> _source;
         ReadOnlySpan<char> _span;
-        int _index;
+        int _start;
+        int _current;
         int _column;
         int _line;
         Stack<JsonPathState> _stateStack;
@@ -128,8 +130,10 @@ namespace JsonCons.JsonPath
 
         internal JsonPathParser(string input)
         {
+            _source = input.AsMemory();
             _span = input.AsSpan();
-            _index = 0;
+            _start = 0;
+            _current = 0;
             _column = 1;
             _line = 1;
             _stateStack = new Stack<JsonPathState>();
@@ -140,7 +144,7 @@ namespace JsonCons.JsonPath
         internal JsonSelector Parse()
         {
             _stateStack = new Stack<JsonPathState>();
-            _index = 0;
+            _current = 0;
             _column = 1;
 
             _stateStack.Push(JsonPathState.Start);
@@ -158,13 +162,13 @@ namespace JsonCons.JsonPath
             bool pathsRequired = false;
             int ancestorDepth = 0;
 
-            while (_index < _span.Length)
+            while (_current < _span.Length)
             {
                 switch (_stateStack.Peek())
                 {
                     case JsonPathState.Start: 
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -176,7 +180,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop();
                                 _stateStack.Push(JsonPathState.ExpectedDotOrLeftBracketOrCaret);
                                 _stateStack.Push(JsonPathState.RelativeLocation);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
@@ -193,7 +197,7 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.RelativeLocation: 
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -201,13 +205,13 @@ namespace JsonCons.JsonPath
                             case '.':
                             {
                                 _stateStack.Push(JsonPathState.RelativePathOrRecursiveDescent);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
                             case '[':
                                 _stateStack.Push(JsonPathState.BracketExpression);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '^':
@@ -228,14 +232,14 @@ namespace JsonCons.JsonPath
                         PushToken(new Token(new ParentNodeSelector(ancestorDepth)));
                         pathsRequired = true;
                         ancestorDepth = 0;
-                        ++_index;
+                        ++_current;
                         ++_column;
                         _stateStack.Pop();
                         break;
                     }
                     case JsonPathState.AncestorDepth: 
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -243,7 +247,7 @@ namespace JsonCons.JsonPath
                             case '^':
                             {
                                 ++ancestorDepth;
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
@@ -256,11 +260,11 @@ namespace JsonCons.JsonPath
                         break;
                     }
                     case JsonPathState.RelativePathOrRecursiveDescent:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '.':
                                 PushToken(new Token(new RecursiveDescentSelector()));
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop();
                                 _stateStack.Push(JsonPathState.BracketExpressionOrRelativePath);
@@ -272,7 +276,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.BracketExpressionOrRelativePath: 
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -280,7 +284,7 @@ namespace JsonCons.JsonPath
                             case '[': // [ can follow ..
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.BracketExpression);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -291,7 +295,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.RelativePath: 
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -301,7 +305,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.Identifier);
                                 _stateStack.Push(JsonPathState.SingleQuotedString);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '\"':
@@ -309,24 +313,24 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.Identifier);
                                 _stateStack.Push(JsonPathState.DoubleQuotedString);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '*':
                                 // Wildcard
                                 PushToken(new Token(new WildcardSelector()));
                                 _stateStack.Pop();
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
-                                if (!char.IsSurrogate(_span[_index]))
+                                if (!char.IsSurrogate(_span[_current]))
                                 {
-                                    int codepoint = (int)(_span[_index]);
+                                    int codepoint = (int)(_span[_current]);
                                     if (IsUnquotedStringCodepoint(codepoint))
                                     {
-                                        buffer.Append (_span[_index]);
-                                        ++_index;
+                                        buffer.Append (_span[_current]);
+                                        ++_current;
                                         ++_column;
                                     }
                                     else
@@ -334,16 +338,16 @@ namespace JsonCons.JsonPath
                                         throw new JsonPathParseException("Expected unquoted string, or single or double quoted string, or index or '*'", _line, _column);
                                     }
                                 }
-                                else if (_index + 1 < _span.Length && char.IsSurrogatePair(_span[_index], _span[_index + 1]))
+                                else if (_current + 1 < _span.Length && char.IsSurrogatePair(_span[_current], _span[_current + 1]))
                                 {
-                                    int codepoint = char.ConvertToUtf32(_span[_index], _span[_index + 1]);
+                                    int codepoint = char.ConvertToUtf32(_span[_current], _span[_current + 1]);
                                     if (IsUnquotedStringCodepoint(codepoint))
                                     {
-                                        buffer.Append(_span[_index]);
-                                        ++_index;
+                                        buffer.Append(_span[_current]);
+                                        ++_current;
                                         ++_column;
-                                        buffer.Append(_span[_index]);
-                                        ++_index;
+                                        buffer.Append(_span[_current]);
+                                        ++_current;
                                         ++_column;
                                     }
                                     else
@@ -362,23 +366,23 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.RootOrCurrentNode: 
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
                                 break;
                             case '$':
                                 PushToken(new Token(JsonPathTokenKind.RootNode));
-                                PushToken(new Token(new RootSelector(_index)));
+                                PushToken(new Token(new RootSelector(_current)));
                                 _stateStack.Pop();
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '@':
                                 PushToken(new Token(JsonPathTokenKind.CurrentNode));
                                 PushToken(new Token(new CurrentNodeSelector()));
                                 _stateStack.Pop();
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -387,13 +391,13 @@ namespace JsonCons.JsonPath
                         break;
                     case JsonPathState.UnquotedString: 
                     {
-                        if (!char.IsSurrogate(_span[_index]))
+                        if (!char.IsSurrogate(_span[_current]))
                         {
-                            int codepoint = (int)(_span[_index]);
+                            int codepoint = (int)(_span[_current]);
                             if (IsUnquotedStringCodepoint(codepoint))
                             {
-                                buffer.Append (_span[_index]);
-                                ++_index;
+                                buffer.Append (_span[_current]);
+                                ++_current;
                                 ++_column;
                             }
                             else
@@ -401,16 +405,16 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); // UnquotedString
                             }
                         }
-                        else if (_index + 1 < _span.Length && char.IsSurrogatePair(_span[_index], _span[_index + 1]))
+                        else if (_current + 1 < _span.Length && char.IsSurrogatePair(_span[_current], _span[_current + 1]))
                         {
-                            int codepoint = char.ConvertToUtf32(_span[_index], _span[_index + 1]);
+                            int codepoint = char.ConvertToUtf32(_span[_current], _span[_current + 1]);
                             if (IsUnquotedStringCodepoint(codepoint))
                             {
-                                buffer.Append (_span[_index]);
-                                ++_index;
+                                buffer.Append (_span[_current]);
+                                ++_current;
                                 ++_column;
-                                buffer.Append (_span[_index]);
-                                ++_index;
+                                buffer.Append (_span[_current]);
+                                ++_current;
                                 ++_column;
                             }
                             else
@@ -426,7 +430,7 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.IdentifierOrFunctionExpr:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -444,7 +448,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.FunctionExpression);
                                 _stateStack.Push(JsonPathState.ZeroOrOneArguments);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
@@ -464,138 +468,138 @@ namespace JsonCons.JsonPath
                         _stateStack.Pop(); 
                         break;
                     case JsonPathState.SingleQuotedString:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '\'':
                                 _stateStack.Pop();
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '\\':
                                 _stateStack.Push(JsonPathState.QuotedStringEscapeChar);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
-                                buffer.Append (_span[_index]);
-                                ++_index;
+                                buffer.Append (_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                         };
                         break;
                     case JsonPathState.DoubleQuotedString: 
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '\"':
                                 _stateStack.Pop();
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '\\':
                                 _stateStack.Push(JsonPathState.QuotedStringEscapeChar);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
-                                buffer.Append (_span[_index]);
-                                ++_index;
+                                buffer.Append (_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                         };
                         break;
                     case JsonPathState.QuotedStringEscapeChar:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '\"':
                                 buffer.Append('\"');
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop();
                                 break;
                             case '\'':
                                 buffer.Append('\'');
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop();
                                 break;
                             case '\\': 
                                 buffer.Append('\\');
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop();
                                 break;
                             case '/':
                                 buffer.Append('/');
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop();
                                 break;
                             case 'b':
                                 buffer.Append('\b');
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop();
                                 break;
                             case 'f':
                                 buffer.Append('\f');
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop();
                                 break;
                             case 'n':
                                 buffer.Append('\n');
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop();
                                 break;
                             case 'r':
                                 buffer.Append('\r');
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop();
                                 break;
                             case 't':
                                 buffer.Append('\t');
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop();
                                 break;
                             case 'u':
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.EscapeU1);
                                 break;
                             default:
-                                throw new JsonPathParseException($"Illegal escape character '{_span[_index]}'", _line, _column);
+                                throw new JsonPathParseException($"Illegal escape character '{_span[_current]}'", _line, _column);
                         }
                         break;
                     case JsonPathState.EscapeU1:
-                        cp = AppendToCodepoint(0, _span[_index]);
-                        ++_index;
+                        cp = AppendToCodepoint(0, _span[_current]);
+                        ++_current;
                         ++_column;
                         _stateStack.Pop(); 
                         _stateStack.Push(JsonPathState.EscapeU2);
                         break;
                     case JsonPathState.EscapeU2:
-                        cp = AppendToCodepoint(cp, _span[_index]);
-                        ++_index;
+                        cp = AppendToCodepoint(cp, _span[_current]);
+                        ++_current;
                         ++_column;
                         _stateStack.Pop(); 
                         _stateStack.Push(JsonPathState.EscapeU3);
                         break;
                     case JsonPathState.EscapeU3:
-                        cp = AppendToCodepoint(cp, _span[_index]);
-                        ++_index;
+                        cp = AppendToCodepoint(cp, _span[_current]);
+                        ++_current;
                         ++_column;
                         _stateStack.Pop(); 
                         _stateStack.Push(JsonPathState.EscapeU4);
                         break;
                     case JsonPathState.EscapeU4:
-                        cp = AppendToCodepoint(cp, _span[_index]);
+                        cp = AppendToCodepoint(cp, _span[_current]);
                         if (Char.IsHighSurrogate((Char)cp))
                         {
-                            ++_index;
+                            ++_current;
                             ++_column;
                             _stateStack.Pop(); 
                             _stateStack.Push(JsonPathState.EscapeExpectSurrogatePair1);
@@ -603,16 +607,16 @@ namespace JsonCons.JsonPath
                         else
                         {
                             buffer.Append(Char.ConvertFromUtf32((int)cp));
-                            ++_index;
+                            ++_current;
                             ++_column;
                             _stateStack.Pop();
                         }
                         break;
                     case JsonPathState.EscapeExpectSurrogatePair1:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '\\': 
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.EscapeExpectSurrogatePair2);
@@ -622,10 +626,10 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.EscapeExpectSurrogatePair2:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case 'u': 
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.EscapeU5);
@@ -635,45 +639,45 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.EscapeU5:
-                        cp2 = AppendToCodepoint(0, _span[_index]);
-                        ++_index;
+                        cp2 = AppendToCodepoint(0, _span[_current]);
+                        ++_current;
                         ++_column;
                         _stateStack.Pop(); 
                         _stateStack.Push(JsonPathState.EscapeU6);
                         break;
                     case JsonPathState.EscapeU6:
-                        cp2 = AppendToCodepoint(cp2, _span[_index]);
-                        ++_index;
+                        cp2 = AppendToCodepoint(cp2, _span[_current]);
+                        ++_current;
                         ++_column;
                         _stateStack.Pop(); 
                         _stateStack.Push(JsonPathState.EscapeU7);
                         break;
                     case JsonPathState.EscapeU7:
-                        cp2 = AppendToCodepoint(cp2, _span[_index]);
-                        ++_index;
+                        cp2 = AppendToCodepoint(cp2, _span[_current]);
+                        ++_current;
                         ++_column;
                         _stateStack.Pop(); 
                         _stateStack.Push(JsonPathState.EscapeU8);
                         break;
                     case JsonPathState.EscapeU8:
                     {
-                        cp2 = AppendToCodepoint(cp2, _span[_index]);
+                        cp2 = AppendToCodepoint(cp2, _span[_current]);
                         UInt32 codepoint = 0x10000 + ((cp & 0x3FF) << 10) + (cp2 & 0x3FF);
                         buffer.Append(Char.ConvertFromUtf32((int)codepoint));
                         _stateStack.Pop();
-                        ++_index;
+                        ++_current;
                         ++_column;
                         break;
                     }
                     case JsonPathState.ExpectRightBracket:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
                                 break;
                             case ']':
                                 _stateStack.Pop();
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -681,13 +685,13 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.ExpectRightParen:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
                                 break;
                             case ')':
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 PushToken(new Token(JsonPathTokenKind.RightParen));
                                 _stateStack.Pop();
@@ -698,7 +702,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.BracketExpression:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -708,7 +712,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.IdentifierOrUnion);
                                 _stateStack.Push(JsonPathState.SingleQuotedString);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '\"':
@@ -716,7 +720,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.IdentifierOrUnion);
                                 _stateStack.Push(JsonPathState.DoubleQuotedString);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
@@ -734,7 +738,7 @@ namespace JsonCons.JsonPath
                                 // Wildcard
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.WildcardOrUnion);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '?': 
@@ -746,17 +750,17 @@ namespace JsonCons.JsonPath
                                 _stateStack.Push(JsonPathState.FilterExpression);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
                             case '$': // JsonPath
                                 PushToken(new Token(JsonPathTokenKind.BeginUnion));
-                                PushToken(new Token(new RootSelector(_index)));
+                                PushToken(new Token(new RootSelector(_current)));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
                                 _stateStack.Push(JsonPathState.RelativeLocation);                                
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '@': // JsonPath
@@ -765,7 +769,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
                                 _stateStack.Push(JsonPathState.RelativeLocation);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -773,7 +777,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.WildcardOrUnion:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -782,7 +786,7 @@ namespace JsonCons.JsonPath
                                 PushToken(new Token(new WildcardSelector()));
                                 buffer.Clear();
                                 _stateStack.Pop();
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case ',': 
@@ -793,7 +797,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); 
                                 _stateStack.Push(JsonPathState.UnionElement);                                
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -801,31 +805,31 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.UnionExpression:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
                                 break;
                             case '.':
                                 _stateStack.Push(JsonPathState.RelativePath);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '[':
                                 _stateStack.Push(JsonPathState.BracketExpression);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case ',': 
                                 PushToken(new Token(JsonPathTokenKind.Separator));
                                 _stateStack.Push(JsonPathState.UnionElement);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case ']': 
                                 PushToken(new Token(JsonPathTokenKind.EndUnion));
                                 _stateStack.Pop();
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -833,7 +837,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.UnionElement:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -854,7 +858,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Push(JsonPathState.FilterExpression);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
@@ -862,35 +866,35 @@ namespace JsonCons.JsonPath
                                 PushToken(new Token(new WildcardSelector()));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.RelativeLocation);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '$':
-                                PushToken(new Token(new RootSelector(_index)));
+                                PushToken(new Token(new RootSelector(_current)));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.RelativeLocation);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '@':
                                 PushToken(new Token(new CurrentNodeSelector()));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.RelativeLocation);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '\'':
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.Identifier);
                                 _stateStack.Push(JsonPathState.SingleQuotedString);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '\"':
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.Identifier);
                                 _stateStack.Push(JsonPathState.DoubleQuotedString);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -899,7 +903,7 @@ namespace JsonCons.JsonPath
                         break;
                     case JsonPathState.FilterExpression:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -917,7 +921,7 @@ namespace JsonCons.JsonPath
                         break;
                     }
                     case JsonPathState.IdentifierOrUnion:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -926,7 +930,7 @@ namespace JsonCons.JsonPath
                                 PushToken(new Token(new IdentifierSelector(buffer.ToString())));
                                 buffer.Clear();
                                 _stateStack.Pop();
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case ',': 
@@ -937,7 +941,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
                                 _stateStack.Push(JsonPathState.UnionElement);                                
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -945,7 +949,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.BracketedWildcard:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -963,7 +967,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.IndexOrSliceOrUnion:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -978,7 +982,7 @@ namespace JsonCons.JsonPath
                                 PushToken(new Token(new IndexSelector(n)));
                                 buffer.Clear();
                                 _stateStack.Pop(); // IndexOrSliceOrUnion
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
@@ -997,7 +1001,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
                                 _stateStack.Push(JsonPathState.UnionElement);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
@@ -1019,7 +1023,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
                                 _stateStack.Push(JsonPathState.SliceExpressionStop);
                                 _stateStack.Push(JsonPathState.Integer);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
@@ -1040,7 +1044,7 @@ namespace JsonCons.JsonPath
                             sliceStop = n;
                             buffer.Clear();
                         }
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -1057,7 +1061,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.SliceExpressionStep);
                                 _stateStack.Push(JsonPathState.Integer);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -1082,7 +1086,7 @@ namespace JsonCons.JsonPath
                             sliceStep = n;
                             buffer.Clear();
                         }
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -1102,7 +1106,7 @@ namespace JsonCons.JsonPath
                         break;
                     }
                     case JsonPathState.IndexOrSlice:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -1136,7 +1140,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.SliceExpressionStop);
                                 _stateStack.Push(JsonPathState.Integer);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
@@ -1157,12 +1161,12 @@ namespace JsonCons.JsonPath
                         break;
                     }
                     case JsonPathState.Integer:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
-                                buffer.Append (_span[_index]);
+                                buffer.Append (_span[_current]);
                                 _stateStack.Pop(); _stateStack.Push(JsonPathState.Digit);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -1171,11 +1175,11 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.Digit:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
-                                buffer.Append (_span[_index]);
-                                ++_index;
+                                buffer.Append (_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -1191,7 +1195,7 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.UnaryOperatorOrPathOrValueOrFunction: 
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -1204,7 +1208,7 @@ namespace JsonCons.JsonPath
                                 break;
                             case '(':
                             {
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 PushToken(new Token(JsonPathTokenKind.LeftParen));
                                 _stateStack.Pop();
@@ -1217,37 +1221,37 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.JsonStringValue);
                                 _stateStack.Push(JsonPathState.SingleQuotedString);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '\"':
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.JsonStringValue);
                                 _stateStack.Push(JsonPathState.DoubleQuotedString);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '!':
                             {
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 PushToken(new Token(NotOperator.Instance));
                                 break;
                             }
                             case '-':
                             {
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 PushToken(new Token(UnaryMinusOperator.Instance));
                                 break;
                             }
                             case 't':
                             {
-                                if (_index+4 <= _span.Length && _span[_index+1] == 'r' && _span[_index+2] == 'u' && _span[_index+3] == 'e')
+                                if (_current+4 <= _span.Length && _span[_current+1] == 'r' && _span[_current+2] == 'u' && _span[_current+3] == 'e')
                                 {
                                     PushToken(new Token(JsonConstants.True));
                                     _stateStack.Pop(); 
-                                    _index += 4;
+                                    _current += 4;
                                     _column += 4;
                                 }
                                 else
@@ -1260,11 +1264,11 @@ namespace JsonCons.JsonPath
                             }
                             case 'f':
                             {
-                                if (_index+5 <= _span.Length && _span[_index+1] == 'a' && _span[_index+2] == 'l' && _span[_index+3] == 's' && _span[_index+4] == 'e')
+                                if (_current+5 <= _span.Length && _span[_current+1] == 'a' && _span[_current+2] == 'l' && _span[_current+3] == 's' && _span[_current+4] == 'e')
                                 {
                                     PushToken(new Token(JsonConstants.False));
                                     _stateStack.Pop(); 
-                                    _index += 5;
+                                    _current += 5;
                                     _column += 5;
                                 }
                                 else
@@ -1277,11 +1281,11 @@ namespace JsonCons.JsonPath
                             }
                             case 'n':
                             {
-                                if (_index+4 <= _span.Length && _span[_index+1] == 'u' && _span[_index+2] == 'l' && _span[_index+3] == 'l')
+                                if (_current+4 <= _span.Length && _span[_current+1] == 'u' && _span[_current+2] == 'l' && _span[_current+3] == 'l')
                                 {
                                     PushToken(new Token(JsonConstants.Null));
                                     _stateStack.Pop(); 
-                                    _index += 4;
+                                    _current += 4;
                                     _column += 4;
                                 }
                                 else
@@ -1296,6 +1300,7 @@ namespace JsonCons.JsonPath
                             {
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.JsonLiteral);
+                                _start = _current;
                                 _stateStack.Push(JsonPathState.Number);
                                 break;
                             }
@@ -1303,8 +1308,9 @@ namespace JsonCons.JsonPath
                             case '[':
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.JsonLiteral);
+                                _start = _current;
                                 _stateStack.Push(JsonPathState.JsonText);
-                                mark = _index;
+                                mark = _current;
                                 break;
                             default:
                             {
@@ -1318,7 +1324,7 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.Function:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '(':
                             {
@@ -1332,7 +1338,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.FunctionExpression);
                                 _stateStack.Push(JsonPathState.ZeroOrOneArguments);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
@@ -1345,7 +1351,7 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.FunctionExpression:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -1355,14 +1361,14 @@ namespace JsonCons.JsonPath
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case ')':
                             {
                                 PushToken(new Token(JsonPathTokenKind.EndArguments));
                                 _stateStack.Pop(); 
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
@@ -1373,7 +1379,7 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.ZeroOrOneArguments:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -1394,7 +1400,7 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.OneOrMoreArguments:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -1407,7 +1413,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                         }
@@ -1415,7 +1421,7 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.Argument:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -1435,7 +1441,7 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.JsonText:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -1443,8 +1449,8 @@ namespace JsonCons.JsonPath
                             case '{':
                             case '[':
                                 ++jsonTextLevel;
-                                buffer.Append(_span[_index]);
-                                ++_index;
+                                buffer.Append(_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                             case '}':
@@ -1454,60 +1460,60 @@ namespace JsonCons.JsonPath
                                 {
                                     _stateStack.Pop(); 
                                 }
-                                buffer.Append(_span[_index]);
-                                ++_index;
+                                buffer.Append(_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                             case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
                                 _stateStack.Push(JsonPathState.Number);
-                                buffer.Append(_span[_index]);
-                                ++_index;
+                                buffer.Append(_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                             case '\"':
                                 _stateStack.Push(JsonPathState.JsonTextString);
-                                buffer.Append(_span[_index]);
-                                ++_index;
+                                buffer.Append(_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                             case ':':
-                                buffer.Append(_span[_index]);
-                                ++_index;
+                                buffer.Append(_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
                                 _stateStack.Push(JsonPathState.UnquotedString);
-                                buffer.Append(_span[_index]);
-                                ++_index;
+                                buffer.Append(_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                         }
                         break;
                     }
                     case JsonPathState.JsonTextString: 
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '\\':
-                                buffer.Append(_span[_index]);
-                                ++_index;
+                                buffer.Append(_span[_current]);
+                                ++_current;
                                 ++_column;
-                                if (_index == _span.Length)
+                                if (_current == _span.Length)
                                 {
                                     throw new JsonPathParseException("Unexpected end of input", _line, _column);
                                 }
-                                buffer.Append(_span[_index]);
-                                ++_index;
+                                buffer.Append(_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                             case '\"':
-                                buffer.Append(_span[_index]);
+                                buffer.Append(_span[_current]);
                                 _stateStack.Pop(); 
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
-                                buffer.Append(_span[_index]);
-                                ++_index;
+                                buffer.Append(_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                         };
@@ -1516,7 +1522,7 @@ namespace JsonCons.JsonPath
                     {
                         try
                         {
-                            using (var doc = JsonDocument.Parse(buffer.ToString()))
+                            using (var doc = JsonDocument.Parse(_source.Slice(_start,_current-_start)))
                             {            
                                 PushToken(new Token(new JsonElementValue(doc.RootElement.Clone())));
                                 buffer.Clear();
@@ -1537,12 +1543,12 @@ namespace JsonCons.JsonPath
                         break;
                     }
                     case JsonPathState.Number: 
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
                             case 'e':case 'E':case '.':
-                                buffer.Append (_span[_index]);
-                                ++_index;
+                                buffer.Append (_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -1551,19 +1557,19 @@ namespace JsonCons.JsonPath
                         };
                         break;
                     case JsonPathState.ExpressionRhs: 
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
                                 break;
                             case '.':
                                 _stateStack.Push(JsonPathState.RelativePathOrRecursiveDescent);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '[':
                                 _stateStack.Push(JsonPathState.BracketExpression);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case ')':
@@ -1572,13 +1578,13 @@ namespace JsonCons.JsonPath
                                 break;
                             }
                             case '|':
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 _stateStack.Push(JsonPathState.ExpectOr);
                                 break;
                             case '&':
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 _stateStack.Push(JsonPathState.ExpectAnd);
@@ -1592,13 +1598,13 @@ namespace JsonCons.JsonPath
                             case '=':
                             {
                                 _stateStack.Push(JsonPathState.EqOrRegex);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
                             case '!':
                             {
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 _stateStack.Push(JsonPathState.CmpNe);
@@ -1607,31 +1613,31 @@ namespace JsonCons.JsonPath
                             case '+':
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 PushToken(new Token(PlusOperator.Instance));
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '-':
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 PushToken(new Token(MinusOperator.Instance));
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '*':
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 PushToken(new Token(MultOperator.Instance));
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '/':
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 PushToken(new Token(DivOperator.Instance));
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case '%':
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 PushToken(new Token(ModulusOperator.Instance));
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             case ']':
@@ -1643,7 +1649,7 @@ namespace JsonCons.JsonPath
                         };
                         break;
                     case JsonPathState.EqOrRegex:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -1653,13 +1659,13 @@ namespace JsonCons.JsonPath
                                 PushToken(new Token(EqOperator.Instance));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
                             case '~':
                             {
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Push(JsonPathState.ExpectRegex);
                                 break;
@@ -1678,12 +1684,12 @@ namespace JsonCons.JsonPath
                         break;
                     case JsonPathState.ExpectOr:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '|':
                                 PushToken(new Token(OrOperator.Instance));
                                 _stateStack.Pop(); 
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -1693,12 +1699,12 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.ExpectAnd:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '&':
                                 PushToken(new Token(AndOperator.Instance));
                                 _stateStack.Pop(); // ExpectAnd
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -1707,20 +1713,20 @@ namespace JsonCons.JsonPath
                         break;
                     }
                     case JsonPathState.ComparatorExpression:
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
                                 break;
                             case '<':
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
                                 _stateStack.Push(JsonPathState.CmpLtOrLte);
                                 break;
                             case '>':
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
@@ -1739,7 +1745,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     case JsonPathState.ExpectRegex: 
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case ' ':case '\t':case '\r':case '\n':
                                 SkipWhiteSpace();
@@ -1749,7 +1755,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Push(JsonPathState.Regex);
                                 _stateStack.Push(JsonPathState.RegexOptions);
                                 _stateStack.Push(JsonPathState.RegexPattern);
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default: 
@@ -1776,18 +1782,18 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.RegexPattern: 
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {                   
                             case '/':
                             {
                                 _stateStack.Pop();
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             }
                             default: 
-                                buffer.Append(_span[_index]);
-                                ++_index;
+                                buffer.Append(_span[_current]);
+                                ++_current;
                                 ++_column;
                                 break;
                         }
@@ -1795,11 +1801,11 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.RegexOptions: 
                     {
-                        char c = _span[_index];
+                        char c = _span[_current];
                         if (c == 'i') // ignore case
                         {
                             buffer2.Append(c);
-                            ++_index;
+                            ++_current;
                             ++_column;
                         }
                         else
@@ -1810,12 +1816,12 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.CmpLtOrLte:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '=':
                                 PushToken(new Token(LteOperator.Instance));
                                 _stateStack.Pop();
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -1827,12 +1833,12 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.CmpGtOrGte:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '=':
                                 PushToken(new Token(GteOperator.Instance));
                                 _stateStack.Pop(); 
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -1845,12 +1851,12 @@ namespace JsonCons.JsonPath
                     }
                     case JsonPathState.CmpNe:
                     {
-                        switch (_span[_index])
+                        switch (_span[_current])
                         {
                             case '=':
                                 PushToken(new Token(NeOperator.Instance));
                                 _stateStack.Pop(); 
-                                ++_index;
+                                ++_current;
                                 ++_column;
                                 break;
                             default:
@@ -2172,23 +2178,23 @@ namespace JsonCons.JsonPath
 
         private void SkipWhiteSpace()
         {
-            switch (_span[_index])
+            switch (_span[_current])
             {
                 case ' ':case '\t':
-                    ++_index;
+                    ++_current;
                     ++_column;
                     break;
                 case '\r':
-                    if (_index+1 < _span.Length && _span[_index+1] == '\n')
-                        ++_index;
+                    if (_current+1 < _span.Length && _span[_current+1] == '\n')
+                        ++_current;
                     ++_line;
                     _column = 1;
-                    ++_index;
+                    ++_current;
                     break;
                 case '\n':
                     ++_line;
                     _column = 1;
-                    ++_index;
+                    ++_current;
                     break;
                 default:
                     break;
