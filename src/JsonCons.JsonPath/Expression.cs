@@ -15,13 +15,11 @@ namespace JsonCons.JsonPath
             True = new TrueValue();
             False = new FalseValue();
             Null = new NullValue();
-            Undefined = new UndefinedValue();
         }
 
         internal static IValue True {get;}
         internal static IValue False {get;}
         internal static IValue Null {get;}
-        internal static IValue Undefined {get;}
     }
 
     interface IExpression

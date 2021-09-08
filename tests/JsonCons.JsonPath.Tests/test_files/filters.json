@@ -823,7 +823,7 @@
             { 
                 "comment" : "Filter expression with equals null",
                 "expression" : "$[?(@.key==null)]",
-                "result" : [{"key": null}]
+                "result" : [{"some": "some value"},{"key": null}]
             }
         ]
     },
