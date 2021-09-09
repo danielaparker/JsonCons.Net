@@ -98,6 +98,7 @@ namespace JsonCons.JmesPath
 
     ref struct JmesPathParser
     {
+        ReadOnlyMemory<char> _source;
         ReadOnlySpan<char> _span;
         int _index;
         int _column;
@@ -108,6 +109,7 @@ namespace JsonCons.JmesPath
 
         internal JmesPathParser(string input)
         {
+            _source = input.AsMemory();
             _span = input.AsSpan();
             _index = 0;
             _column = 1;
@@ -133,7 +135,7 @@ namespace JsonCons.JmesPath
             UInt32 cp = 0;
             UInt32 cp2 = 0;
 
-            PushToken(new Token(JmesPathTokenKind.CurrentNode));
+            PushToken(new Token(TokenType.CurrentNode));
             _stateStack.Push(JmesPathState.Start);
 
             while (_index < _span.Length)
@@ -277,7 +279,7 @@ namespace JsonCons.JmesPath
                                 ++_column;
                                 break;
                             case '{':
-                                PushToken(new Token(JmesPathTokenKind.BeginMultiSelectHash));
+                                PushToken(new Token(TokenType.BeginMultiSelectHash));
                                 _stateStack.Pop();
                                 _stateStack.Push(JmesPathState.MultiSelectHash);
                                 ++_index;
@@ -293,7 +295,7 @@ namespace JsonCons.JmesPath
                             {
                                 ++_index;
                                 ++_column;
-                                PushToken(new Token(JmesPathTokenKind.LeftParen));
+                                PushToken(new Token(TokenType.LeftParen));
                                 _stateStack.Pop();
                                 _stateStack.Push(JmesPathState.ExpectRightParen);
                                 _stateStack.Push(JmesPathState.RhsExpression);
@@ -353,7 +355,7 @@ namespace JsonCons.JmesPath
                                 ++_column;
                                 break;
                             case '{':
-                                PushToken(new Token(JmesPathTokenKind.BeginMultiSelectHash));
+                                PushToken(new Token(TokenType.BeginMultiSelectHash));
                                 _stateStack.Pop();
                                 _stateStack.Push(JmesPathState.MultiSelectHash);
                                 ++_index;
@@ -390,7 +392,7 @@ namespace JsonCons.JmesPath
                         break;
                     }
                     case JmesPathState.KeyExpr:
-                        PushToken(new Token(JmesPathTokenKind.Key, buffer.ToString()));
+                        PushToken(new Token(TokenType.Key, buffer.ToString()));
                         buffer.Clear(); 
                         _stateStack.Pop(); 
                         break;
@@ -406,7 +408,7 @@ namespace JsonCons.JmesPath
                                 SkipWhiteSpace();
                                 break;
                             case '&':
-                                PushToken(new Token(JmesPathTokenKind.BeginExpressionType));
+                                PushToken(new Token(TokenType.BeginExpressionType));
                                 _stateStack.Pop();
                                 _stateStack.Push(JmesPathState.ExpressionType);
                                 _stateStack.Push(JmesPathState.RhsExpression);
@@ -460,14 +462,14 @@ namespace JsonCons.JmesPath
                                 SkipWhiteSpace();
                                 break;
                             case ',':
-                                PushToken(new Token(JmesPathTokenKind.CurrentNode));
+                                PushToken(new Token(TokenType.CurrentNode));
                                 _stateStack.Push(JmesPathState.ExpressionOrExpressionType);
                                 ++_index;
                                 ++_column;
                                 break;
                             case ')':
                             {
-                                PushToken(new Token(JmesPathTokenKind.EndArguments));
+                                PushToken(new Token(TokenType.EndArguments));
                                 _stateStack.Pop(); 
                                 ++_index;
                                 ++_column;
@@ -479,13 +481,13 @@ namespace JsonCons.JmesPath
                         break;
 
                     case JmesPathState.Argument:
-                        PushToken(new Token(JmesPathTokenKind.Argument));
+                        PushToken(new Token(TokenType.Argument));
                         _stateStack.Pop();
                         break;
 
                     case JmesPathState.ExpressionType:
-                        PushToken(new Token(JmesPathTokenKind.EndExpressionType));
-                        PushToken(new Token(JmesPathTokenKind.Argument));
+                        PushToken(new Token(TokenType.EndExpressionType));
+                        PushToken(new Token(TokenType.Argument));
                         _stateStack.Pop();
                         break;
 
@@ -828,7 +830,7 @@ namespace JsonCons.JmesPath
                                 ++_column;
                                 break;
                             case '?':
-                                PushToken(new Token(JmesPathTokenKind.BeginFilter));
+                                PushToken(new Token(TokenType.BeginFilter));
                                 _stateStack.Pop();
                                 _stateStack.Push(JmesPathState.Filter);
                                 _stateStack.Push(JmesPathState.RhsExpression);
@@ -868,7 +870,7 @@ namespace JsonCons.JmesPath
                                 }
                                 else
                                 {
-                                    PushToken(new Token(JmesPathTokenKind.BeginMultiSelectList));
+                                    PushToken(new Token(TokenType.BeginMultiSelectList));
                                     _stateStack.Pop();
                                     _stateStack.Push(JmesPathState.MultiSelectList);
                                     _stateStack.Push(JmesPathState.LhsExpression);                                
@@ -882,7 +884,7 @@ namespace JsonCons.JmesPath
                                 _stateStack.Push(JmesPathState.BracketSpecifier);
                                 break;
                             default:
-                                PushToken(new Token(JmesPathTokenKind.BeginMultiSelectList));
+                                PushToken(new Token(TokenType.BeginMultiSelectList));
                                 _stateStack.Pop();
                                 _stateStack.Push(JmesPathState.MultiSelectList);
                                 _stateStack.Push(JmesPathState.LhsExpression);
@@ -906,7 +908,7 @@ namespace JsonCons.JmesPath
                                 ++_column;
                                 break;
                             default:
-                                PushToken(new Token(JmesPathTokenKind.BeginMultiSelectList));
+                                PushToken(new Token(TokenType.BeginMultiSelectList));
                                 _stateStack.Pop();
                                 _stateStack.Push(JmesPathState.MultiSelectList);
                                 _stateStack.Push(JmesPathState.LhsExpression);
@@ -1068,7 +1070,7 @@ namespace JsonCons.JmesPath
                             case ')':
                                 ++_index;
                                 ++_column;
-                                PushToken(new Token(JmesPathTokenKind.RightParen));
+                                PushToken(new Token(TokenType.RightParen));
                                 _stateStack.Pop();
                                 _stateStack.Push(JmesPathState.RhsExpression);
                                 break;
@@ -1123,14 +1125,14 @@ namespace JsonCons.JmesPath
                         {
                             case '=':
                                 PushToken(new Token(LteOperator.Instance));
-                                PushToken(new Token(JmesPathTokenKind.CurrentNode));
+                                PushToken(new Token(TokenType.CurrentNode));
                                 _stateStack.Pop();
                                 ++_index;
                                 ++_column;
                                 break;
                             default:
                                 PushToken(new Token(LtOperator.Instance));
-                                PushToken(new Token(JmesPathTokenKind.CurrentNode));
+                                PushToken(new Token(TokenType.CurrentNode));
                                 _stateStack.Pop();
                                 break;
                         }
@@ -1142,14 +1144,14 @@ namespace JsonCons.JmesPath
                         {
                             case '=':
                                 PushToken(new Token(GteOperator.Instance));
-                                PushToken(new Token(JmesPathTokenKind.CurrentNode));
+                                PushToken(new Token(TokenType.CurrentNode));
                                 _stateStack.Pop(); 
                                 ++_index;
                                 ++_column;
                                 break;
                             default:
                                 PushToken(new Token(GtOperator.Instance));
-                                PushToken(new Token(JmesPathTokenKind.CurrentNode));
+                                PushToken(new Token(TokenType.CurrentNode));
                                 _stateStack.Pop(); 
                                 break;
                         }
@@ -1161,7 +1163,7 @@ namespace JsonCons.JmesPath
                         {
                             case '=':
                                 PushToken(new Token(EqOperator.Instance));
-                                PushToken(new Token(JmesPathTokenKind.CurrentNode));
+                                PushToken(new Token(TokenType.CurrentNode));
                                 _stateStack.Pop(); 
                                 ++_index;
                                 ++_column;
@@ -1177,7 +1179,7 @@ namespace JsonCons.JmesPath
                         {
                             case '=':
                                 PushToken(new Token(NeOperator.Instance));
-                                PushToken(new Token(JmesPathTokenKind.CurrentNode));
+                                PushToken(new Token(TokenType.CurrentNode));
                                 _stateStack.Pop(); 
                                 ++_index;
                                 ++_column;
@@ -1210,13 +1212,13 @@ namespace JsonCons.JmesPath
                         {
                             case '|':
                                 PushToken(new Token(OrOperator.Instance));
-                                PushToken(new Token(JmesPathTokenKind.CurrentNode));
+                                PushToken(new Token(TokenType.CurrentNode));
                                 _stateStack.Pop(); 
                                 ++_index;
                                 ++_column;
                                 break;
                             default:
-                                PushToken(new Token(JmesPathTokenKind.Pipe));
+                                PushToken(new Token(TokenType.Pipe));
                                 _stateStack.Pop(); 
                                 break;
                         }
@@ -1228,7 +1230,7 @@ namespace JsonCons.JmesPath
                         {
                             case '&':
                                 PushToken(new Token(AndOperator.Instance));
-                                PushToken(new Token(JmesPathTokenKind.CurrentNode));
+                                PushToken(new Token(TokenType.CurrentNode));
                                 _stateStack.Pop(); // expectAnd
                                 ++_index;
                                 ++_column;
@@ -1246,7 +1248,7 @@ namespace JsonCons.JmesPath
                                 SkipWhiteSpace();
                                 break;
                             case ',':
-                                PushToken(new Token(JmesPathTokenKind.Separator));
+                                PushToken(new Token(TokenType.Separator));
                                 _stateStack.Push(JmesPathState.LhsExpression);
                                 ++_index;
                                 ++_column;
@@ -1269,7 +1271,7 @@ namespace JsonCons.JmesPath
                             }
                             case ']':
                             {
-                                PushToken(new Token(JmesPathTokenKind.EndMultiSelectList));
+                                PushToken(new Token(TokenType.EndMultiSelectList));
                                 _stateStack.Pop();
 
                                 ++_index;
@@ -1290,7 +1292,7 @@ namespace JsonCons.JmesPath
                                 break;
                             case ']':
                             {
-                                PushToken(new Token(JmesPathTokenKind.EndFilter));
+                                PushToken(new Token(TokenType.EndFilter));
                                 _stateStack.Pop();
                                 ++_index;
                                 ++_column;
@@ -1309,7 +1311,7 @@ namespace JsonCons.JmesPath
                                 SkipWhiteSpace();
                                 break;
                             case ',':
-                                PushToken(new Token(JmesPathTokenKind.Separator));
+                                PushToken(new Token(TokenType.Separator));
                                 _stateStack.Pop();
                                 _stateStack.Push(JmesPathState.KeyValExpr); 
                                 ++_index;
@@ -1327,7 +1329,7 @@ namespace JsonCons.JmesPath
                             case '}':
                             {
                                 _stateStack.Pop();
-                                PushToken(new Token(JmesPathTokenKind.EndMultiSelectHash));
+                                PushToken(new Token(TokenType.EndMultiSelectHash));
                                 ++_index;
                                 ++_column;
                                 break;
@@ -1400,7 +1402,7 @@ namespace JsonCons.JmesPath
 
             _stateStack.Pop();
 
-            PushToken(new Token(JmesPathTokenKind.EndOfExpression));
+            PushToken(new Token(TokenType.EndOfExpression));
 
             var a = _outputStack.ToArray();
 
@@ -1434,7 +1436,7 @@ namespace JsonCons.JmesPath
 
         void UnwindRightParen()
         {
-            while (_operatorStack.Count > 1 && _operatorStack.Peek().TokenKind != JmesPathTokenKind.LeftParen)
+            while (_operatorStack.Count > 1 && _operatorStack.Peek().Type != TokenType.LeftParen)
             {
                 _outputStack.Push(_operatorStack.Pop());
             }
@@ -1442,18 +1444,18 @@ namespace JsonCons.JmesPath
             {
                 throw new JmesPathParseException("Unbalanced parentheses", _line, _column);
             }
-            _operatorStack.Pop(); // JsonPathTokenKind.LeftParen
+            _operatorStack.Pop(); // TokenType.LeftParen
         }
 
         void PushToken(Token token)
         {
-            switch (token.TokenKind)
+            switch (token.Type)
             {
-                case JmesPathTokenKind.EndFilter:
+                case TokenType.EndFilter:
                 {
                     UnwindRightParen();
                     var tokens = new List<Token>();
-                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginFilter)
+                    while (_outputStack.Count > 1 && _outputStack.Peek().Type != TokenType.BeginFilter)
                     {
                         tokens.Add(_outputStack.Pop());
                     }
@@ -1461,9 +1463,9 @@ namespace JsonCons.JmesPath
                     {
                         throw new JmesPathParseException("Unbalanced parentheses", _line, _column);
                     }
-                    if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
+                    if (tokens[tokens.Count-1].Type != TokenType.Literal)
                     {
-                        tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
+                        tokens.Add(new Token(TokenType.CurrentNode));
                     }
                     _outputStack.Pop();
 
@@ -1479,25 +1481,25 @@ namespace JsonCons.JmesPath
                     }
                     break;
                 }
-                case JmesPathTokenKind.EndMultiSelectList:
+                case TokenType.EndMultiSelectList:
                 {
                     UnwindRightParen();
                     var expressions = new List<Expression>();
-                    while (_outputStack.Count > 0 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginMultiSelectList)
+                    while (_outputStack.Count > 0 && _outputStack.Peek().Type != TokenType.BeginMultiSelectList)
                     {
                         var tokens = new List<Token>();
                         do
                         {
                             tokens.Add(_outputStack.Pop());
                         }
-                        while (_outputStack.Count > 0 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginMultiSelectList && _outputStack.Peek().TokenKind != JmesPathTokenKind.Separator);
-                        if (_outputStack.Peek().TokenKind == JmesPathTokenKind.Separator)
+                        while (_outputStack.Count > 0 && _outputStack.Peek().Type != TokenType.BeginMultiSelectList && _outputStack.Peek().Type != TokenType.Separator);
+                        if (_outputStack.Peek().Type == TokenType.Separator)
                         {
                             _outputStack.Pop();
                         }
-                        if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
+                        if (tokens[tokens.Count-1].Type != TokenType.Literal)
                         {
-                            tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
+                            tokens.Add(new Token(TokenType.CurrentNode));
                         }
                         expressions.Add(new Expression(tokens.ToArray()));
                     }
@@ -1505,7 +1507,7 @@ namespace JsonCons.JmesPath
                     {
                         throw new JmesPathParseException("Unbalanced braces", _line, _column);
                     }
-                    _outputStack.Pop(); // JmesPathTokenKind.BeginMultiSelectList
+                    _outputStack.Pop(); // TokenType.BeginMultiSelectList
                     expressions.Reverse();
 
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
@@ -1521,30 +1523,30 @@ namespace JsonCons.JmesPath
                     break;
                 }
                 
-                case JmesPathTokenKind.EndMultiSelectHash:
+                case TokenType.EndMultiSelectHash:
                 {
                     UnwindRightParen();
                     var keyExprPairs = new List<KeyExpressionPair>();
-                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginMultiSelectHash)
+                    while (_outputStack.Count > 1 && _outputStack.Peek().Type != TokenType.BeginMultiSelectHash)
                     {
                         var tokens = new List<Token>();
                         do
                         {
                             tokens.Add(_outputStack.Pop());
                         }
-                        while (_outputStack.Peek().TokenKind != JmesPathTokenKind.Key);
-                        if (_outputStack.Peek().TokenKind != JmesPathTokenKind.Key)
+                        while (_outputStack.Peek().Type != TokenType.Key);
+                        if (_outputStack.Peek().Type != TokenType.Key)
                         {
                             throw new JmesPathParseException("Syntax error", _line, _column);
                         }
                         string key = _outputStack.Pop().GetKey();
-                        if (_outputStack.Peek().TokenKind == JmesPathTokenKind.Separator)
+                        if (_outputStack.Peek().Type == TokenType.Separator)
                         {
                             _outputStack.Pop();
                         }
-                        if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
+                        if (tokens[tokens.Count-1].Type != TokenType.Literal)
                         {
-                            tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
+                            tokens.Add(new Token(TokenType.CurrentNode));
                         }
                         keyExprPairs.Add(new KeyExpressionPair(key, new Expression(tokens.ToArray())));
                     }
@@ -1553,7 +1555,7 @@ namespace JsonCons.JmesPath
                         throw new JmesPathParseException("Syntax error", _line, _column);
                     }
                     keyExprPairs.Reverse();
-                    _outputStack.Pop(); // JmesPathTokenKind.BeginMultiSelectHash
+                    _outputStack.Pop(); // TokenType.BeginMultiSelectHash
                  
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
                         (token.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
@@ -1567,10 +1569,10 @@ namespace JsonCons.JmesPath
                     }
                     break;
                 }
-                case JmesPathTokenKind.EndExpressionType:
+                case TokenType.EndExpressionType:
                 {
                     var tokens = new List<Token>();
-                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginExpressionType)
+                    while (_outputStack.Count > 1 && _outputStack.Peek().Type != TokenType.BeginExpressionType)
                     {
                         tokens.Add(_outputStack.Pop());
                     }
@@ -1578,15 +1580,15 @@ namespace JsonCons.JmesPath
                     {
                         throw new JmesPathParseException("Unbalanced braces", _line, _column);
                     }
-                    if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
+                    if (tokens[tokens.Count-1].Type != TokenType.Literal)
                     {
-                        tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
+                        tokens.Add(new Token(TokenType.CurrentNode));
                     }
                     _outputStack.Push(new Token(new FunctionExpression(new Expression(tokens.ToArray()))));
                     break;
                 }
-                case JmesPathTokenKind.Literal:
-                    if (_outputStack.Count != 0 && _outputStack.Peek().TokenKind == JmesPathTokenKind.CurrentNode)
+                case TokenType.Literal:
+                    if (_outputStack.Count != 0 && _outputStack.Peek().Type == TokenType.CurrentNode)
                     {
                         _outputStack.Pop();
                         _outputStack.Push(token);
@@ -1596,7 +1598,7 @@ namespace JsonCons.JmesPath
                         _outputStack.Push(token);
                     }
                     break;
-                case JmesPathTokenKind.Expression:
+                case TokenType.Expression:
                     if (_outputStack.Count != 0 && _outputStack.Peek().IsProjection && 
                         (token.PrecedenceLevel > _outputStack.Peek().PrecedenceLevel ||
                         (token.PrecedenceLevel == _outputStack.Peek().PrecedenceLevel && token.IsRightAssociative)))
@@ -1608,21 +1610,21 @@ namespace JsonCons.JmesPath
                         _outputStack.Push(token);
                     }
                     break;
-                case JmesPathTokenKind.RightParen:
+                case TokenType.RightParen:
                     {
                         UnwindRightParen();
                         break;
                     }
-                case JmesPathTokenKind.EndArguments:
+                case TokenType.EndArguments:
                     {
                         UnwindRightParen();
                         int argCount = 0;
                         var tokens = new List<Token>();
-                        Debug.Assert(_operatorStack.Count > 0 && _operatorStack.Peek().TokenKind == JmesPathTokenKind.Function);
+                        Debug.Assert(_operatorStack.Count > 0 && _operatorStack.Peek().Type == TokenType.Function);
                         tokens.Add(_operatorStack.Pop()); // Function
-                        while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JmesPathTokenKind.BeginArguments)
+                        while (_outputStack.Count > 1 && _outputStack.Peek().Type != TokenType.BeginArguments)
                         {
-                            if (_outputStack.Peek().TokenKind == JmesPathTokenKind.Argument)
+                            if (_outputStack.Peek().Type == TokenType.Argument)
                             {
                                 ++argCount;
                             }
@@ -1632,10 +1634,10 @@ namespace JsonCons.JmesPath
                         {
                             throw new JmesPathParseException("Expected parentheses", _line, _column);
                         }
-                        _outputStack.Pop(); // JmesPathTokenKind.BeginArguments
-                        if (tokens[tokens.Count-1].TokenKind != JmesPathTokenKind.Literal)
+                        _outputStack.Pop(); // TokenType.BeginArguments
+                        if (tokens[tokens.Count-1].Type != TokenType.Literal)
                         {
-                            tokens.Add(new Token(JmesPathTokenKind.CurrentNode));
+                            tokens.Add(new Token(TokenType.CurrentNode));
                         }
                         if (tokens[0].GetFunction().Arity != null && argCount != tokens[0].GetFunction().Arity)
                         {
@@ -1654,7 +1656,7 @@ namespace JsonCons.JmesPath
                         }
                         break;
                     }
-                case JmesPathTokenKind.EndOfExpression:
+                case TokenType.EndOfExpression:
                     {
                         while (_operatorStack.Count != 0)
                         {
@@ -1662,10 +1664,10 @@ namespace JsonCons.JmesPath
                         }
                         break;
                     }
-                case JmesPathTokenKind.UnaryOperator:
-                case JmesPathTokenKind.BinaryOperator:
+                case TokenType.UnaryOperator:
+                case TokenType.BinaryOperator:
                 {
-                    if (_operatorStack.Count == 0 || _operatorStack.Peek().TokenKind == JmesPathTokenKind.LeftParen)
+                    if (_operatorStack.Count == 0 || _operatorStack.Peek().Type == TokenType.LeftParen)
                     {
                         _operatorStack.Push(token);
                     }
@@ -1687,40 +1689,40 @@ namespace JsonCons.JmesPath
                     }
                     break;
                 }
-                case JmesPathTokenKind.Separator:
+                case TokenType.Separator:
                 {
                     UnwindRightParen();
                     _outputStack.Push(token);
-                    _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
+                    _operatorStack.Push(new Token(TokenType.LeftParen));
                     break;
                 }
-                case JmesPathTokenKind.BeginFilter:
+                case TokenType.BeginFilter:
                     _outputStack.Push(token);
-                    _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
+                    _operatorStack.Push(new Token(TokenType.LeftParen));
                     break;
-                case JmesPathTokenKind.BeginMultiSelectList:
+                case TokenType.BeginMultiSelectList:
                     _outputStack.Push(token);
-                    _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
+                    _operatorStack.Push(new Token(TokenType.LeftParen));
                     break;
-                case JmesPathTokenKind.BeginMultiSelectHash:
+                case TokenType.BeginMultiSelectHash:
                     _outputStack.Push(token);
-                    _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
+                    _operatorStack.Push(new Token(TokenType.LeftParen));
                     break;
-                case JmesPathTokenKind.Function:
-                    _outputStack.Push(new Token(JmesPathTokenKind.BeginArguments));
+                case TokenType.Function:
+                    _outputStack.Push(new Token(TokenType.BeginArguments));
                     _operatorStack.Push(token);
-                    _operatorStack.Push(new Token(JmesPathTokenKind.LeftParen));
+                    _operatorStack.Push(new Token(TokenType.LeftParen));
                     break;
-                case JmesPathTokenKind.CurrentNode:
+                case TokenType.CurrentNode:
                     _outputStack.Push(token);
                     break;
-                case JmesPathTokenKind.Key:
-                case JmesPathTokenKind.Pipe:
-                case JmesPathTokenKind.Argument:
-                case JmesPathTokenKind.BeginExpressionType:
+                case TokenType.Key:
+                case TokenType.Pipe:
+                case TokenType.Argument:
+                case TokenType.BeginExpressionType:
                     _outputStack.Push(token);
                     break;
-                case JmesPathTokenKind.LeftParen:
+                case TokenType.LeftParen:
                     _operatorStack.Push(token);
                     break;
                 default:

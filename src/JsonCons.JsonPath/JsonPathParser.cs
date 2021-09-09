@@ -371,14 +371,14 @@ namespace JsonCons.JsonPath
                                 SkipWhiteSpace();
                                 break;
                             case '$':
-                                PushToken(new Token(JsonPathTokenKind.RootNode));
+                                PushToken(new Token(TokenType.RootNode));
                                 PushToken(new Token(new RootSelector(_current)));
                                 _stateStack.Pop();
                                 ++_current;
                                 ++_column;
                                 break;
                             case '@':
-                                PushToken(new Token(JsonPathTokenKind.CurrentNode));
+                                PushToken(new Token(TokenType.CurrentNode));
                                 PushToken(new Token(new CurrentNodeSelector()));
                                 _stateStack.Pop();
                                 ++_current;
@@ -692,7 +692,7 @@ namespace JsonCons.JsonPath
                             case ')':
                                 ++_current;
                                 ++_column;
-                                PushToken(new Token(JsonPathTokenKind.RightParen));
+                                PushToken(new Token(TokenType.RightParen));
                                 _stateStack.Pop();
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
                                 break;
@@ -743,8 +743,8 @@ namespace JsonCons.JsonPath
                             case '?': 
                             {
                                 // Filter expression
-                                PushToken(new Token(JsonPathTokenKind.BeginUnion));
-                                PushToken(new Token(JsonPathTokenKind.BeginFilter));
+                                PushToken(new Token(TokenType.BeginUnion));
+                                PushToken(new Token(TokenType.BeginFilter));
                                 _stateStack.Pop(); _stateStack.Push(JsonPathState.UnionExpression); // union
                                 _stateStack.Push(JsonPathState.FilterExpression);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
@@ -754,7 +754,7 @@ namespace JsonCons.JsonPath
                                 break;
                             }
                             case '$': // JsonPath
-                                PushToken(new Token(JsonPathTokenKind.BeginUnion));
+                                PushToken(new Token(TokenType.BeginUnion));
                                 PushToken(new Token(new RootSelector(_current)));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
@@ -763,7 +763,7 @@ namespace JsonCons.JsonPath
                                 ++_column;
                                 break;
                             case '@': // JsonPath
-                                PushToken(new Token(JsonPathTokenKind.BeginUnion));
+                                PushToken(new Token(TokenType.BeginUnion));
                                 PushToken(new Token(new CurrentNodeSelector()));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
@@ -789,9 +789,9 @@ namespace JsonCons.JsonPath
                                 ++_column;
                                 break;
                             case ',': 
-                                PushToken(new Token(JsonPathTokenKind.BeginUnion));
+                                PushToken(new Token(TokenType.BeginUnion));
                                 PushToken(new Token(new WildcardSelector()));
-                                PushToken(new Token(JsonPathTokenKind.Separator));
+                                PushToken(new Token(TokenType.Separator));
                                 buffer.Clear();
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); 
@@ -820,13 +820,13 @@ namespace JsonCons.JsonPath
                                 ++_column;
                                 break;
                             case ',': 
-                                PushToken(new Token(JsonPathTokenKind.Separator));
+                                PushToken(new Token(TokenType.Separator));
                                 _stateStack.Push(JsonPathState.UnionElement);
                                 ++_current;
                                 ++_column;
                                 break;
                             case ']': 
-                                PushToken(new Token(JsonPathTokenKind.EndUnion));
+                                PushToken(new Token(TokenType.EndUnion));
                                 _stateStack.Pop();
                                 ++_current;
                                 ++_column;
@@ -852,7 +852,7 @@ namespace JsonCons.JsonPath
                                 break;
                             case '?':
                             {
-                                PushToken(new Token(JsonPathTokenKind.BeginFilter));
+                                PushToken(new Token(TokenType.BeginFilter));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.FilterExpression);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
@@ -910,7 +910,7 @@ namespace JsonCons.JsonPath
                             case ',':
                             case ']':
                             {
-                                PushToken(new Token(JsonPathTokenKind.EndFilter));
+                                PushToken(new Token(TokenType.EndFilter));
                                 _stateStack.Pop();
                                 break;
                             }
@@ -933,9 +933,9 @@ namespace JsonCons.JsonPath
                                 ++_column;
                                 break;
                             case ',': 
-                                PushToken(new Token(JsonPathTokenKind.BeginUnion));
+                                PushToken(new Token(TokenType.BeginUnion));
                                 PushToken(new Token(new IdentifierSelector(buffer.ToString())));
-                                PushToken(new Token(JsonPathTokenKind.Separator));
+                                PushToken(new Token(TokenType.Separator));
                                 buffer.Clear();
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
@@ -987,7 +987,7 @@ namespace JsonCons.JsonPath
                             }
                             case ',':
                             {
-                                PushToken(new Token(JsonPathTokenKind.BeginUnion));
+                                PushToken(new Token(TokenType.BeginUnion));
                                 Int32 n;
                                 if (!Int32.TryParse(buffer.ToString(), out n))
                                 {
@@ -995,7 +995,7 @@ namespace JsonCons.JsonPath
                                 }
                                 PushToken(new Token(new IndexSelector(n)));
                                 buffer.Clear();
-                                PushToken(new Token(JsonPathTokenKind.Separator));
+                                PushToken(new Token(TokenType.Separator));
                                 buffer.Clear();
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
@@ -1017,7 +1017,7 @@ namespace JsonCons.JsonPath
                                     sliceStart = n;
                                     buffer.Clear();
                                 }
-                                PushToken(new Token(JsonPathTokenKind.BeginUnion));
+                                PushToken(new Token(TokenType.BeginUnion));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.UnionExpression); // union
                                 _stateStack.Push(JsonPathState.SliceExpressionStop);
@@ -1209,7 +1209,7 @@ namespace JsonCons.JsonPath
                             {
                                 ++_current;
                                 ++_column;
-                                PushToken(new Token(JsonPathTokenKind.LeftParen));
+                                PushToken(new Token(TokenType.LeftParen));
                                 _stateStack.Pop();
                                 _stateStack.Push(JsonPathState.ExpectRightParen);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
@@ -1355,7 +1355,7 @@ namespace JsonCons.JsonPath
                                 SkipWhiteSpace();
                                 break;
                             case ',':
-                                PushToken(new Token(JsonPathTokenKind.BeginArgument));
+                                PushToken(new Token(TokenType.BeginArgument));
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
@@ -1364,7 +1364,7 @@ namespace JsonCons.JsonPath
                                 break;
                             case ')':
                             {
-                                PushToken(new Token(JsonPathTokenKind.EndArguments));
+                                PushToken(new Token(TokenType.EndArguments));
                                 _stateStack.Pop(); 
                                 ++_current;
                                 ++_column;
@@ -1386,7 +1386,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop();
                                 break;
                             default:
-                                PushToken(new Token(JsonPathTokenKind.BeginArgument));
+                                PushToken(new Token(TokenType.BeginArgument));
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.OneOrMoreArguments);
                                 _stateStack.Push(JsonPathState.Argument);
@@ -1407,7 +1407,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop();
                                 break;
                             case ',':
-                                PushToken(new Token(JsonPathTokenKind.BeginArgument));
+                                PushToken(new Token(TokenType.BeginArgument));
                                 _stateStack.Push(JsonPathState.Argument);
                                 _stateStack.Push(JsonPathState.ExpressionRhs);
                                 _stateStack.Push(JsonPathState.UnaryOperatorOrPathOrValueOrFunction);
@@ -1427,8 +1427,8 @@ namespace JsonCons.JsonPath
                             case ',':
                             case ')':
                             {
-                                PushToken(new Token(JsonPathTokenKind.EndArgument));
-                                PushToken(new Token(JsonPathTokenKind.Argument));
+                                PushToken(new Token(TokenType.EndArgument));
+                                PushToken(new Token(TokenType.Argument));
                                 _stateStack.Pop();
                                 break;
                             }
@@ -1925,7 +1925,7 @@ namespace JsonCons.JsonPath
             {
                 throw new JsonPathParseException("Invalid state 1", _line, _column);
             }
-            if (_outputStack.Peek().TokenKind != JsonPathTokenKind.Selector)
+            if (_outputStack.Peek().Type != TokenType.Selector)
             {
                 throw new JsonPathParseException("Invalid state 2", _line, _column);
             }
@@ -1952,7 +1952,7 @@ namespace JsonCons.JsonPath
 
         void UnwindRightParen()
         {
-            while (_operatorStack.Count > 1 && _operatorStack.Peek().TokenKind != JsonPathTokenKind.LeftParen)
+            while (_operatorStack.Count > 1 && _operatorStack.Peek().Type != TokenType.LeftParen)
             {
                 _outputStack.Push(_operatorStack.Pop());
             }
@@ -1960,22 +1960,22 @@ namespace JsonCons.JsonPath
             {
                 throw new JsonPathParseException("Unbalanced parentheses", _line, _column);
             }
-            _operatorStack.Pop(); // JsonPathTokenKind.LeftParen
+            _operatorStack.Pop(); // TokenType.LeftParen
         }
 
         private void PushToken(Token token)
         {
-            switch (token.TokenKind)
+            switch (token.Type)
             {
-                case JsonPathTokenKind.BeginFilter:
+                case TokenType.BeginFilter:
                     _outputStack.Push(token);
-                    _operatorStack.Push(new Token(JsonPathTokenKind.LeftParen));
+                    _operatorStack.Push(new Token(TokenType.LeftParen));
                     break;
-                case JsonPathTokenKind.EndFilter:
+                case TokenType.EndFilter:
                 {
                     UnwindRightParen();
                     var tokens = new List<Token>();
-                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginFilter)
+                    while (_outputStack.Count > 1 && _outputStack.Peek().Type != TokenType.BeginFilter)
                     {
                         tokens.Add(_outputStack.Pop());
                     }
@@ -1983,8 +1983,8 @@ namespace JsonCons.JsonPath
                     {
                         throw new JsonPathParseException("Unbalanced parentheses", _line, _column);
                     }
-                    _outputStack.Pop(); // JsonPathTokenKind.LeftParen
-                    if (_outputStack.Count > 1 && _outputStack.Peek().TokenKind == JsonPathTokenKind.Selector)
+                    _outputStack.Pop(); // TokenType.LeftParen
+                    if (_outputStack.Count > 1 && _outputStack.Peek().Type == TokenType.Selector)
                     {
                         _outputStack.Peek().GetSelector().AppendSelector(new FilterSelector(new Expression(tokens)));
                     }
@@ -1994,12 +1994,12 @@ namespace JsonCons.JsonPath
                     }
                     break;
                 }
-                case JsonPathTokenKind.BeginArgument:
+                case TokenType.BeginArgument:
                     _outputStack.Push(token);
-                    _operatorStack.Push(new Token(JsonPathTokenKind.LeftParen));
+                    _operatorStack.Push(new Token(TokenType.LeftParen));
                     break;
-                case JsonPathTokenKind.Selector:
-                    if (!token.GetSelector().IsRoot() && _outputStack.Count != 0 && _outputStack.Peek().TokenKind == JsonPathTokenKind.Selector)
+                case TokenType.Selector:
+                    if (!token.GetSelector().IsRoot() && _outputStack.Count != 0 && _outputStack.Peek().Type == TokenType.Selector)
                     {
                         _outputStack.Peek().GetSelector().AppendSelector(token.GetSelector());
                     }
@@ -2008,23 +2008,23 @@ namespace JsonCons.JsonPath
                         _outputStack.Push(token);
                     }
                     break;
-                case JsonPathTokenKind.Separator:
+                case TokenType.Separator:
                     _outputStack.Push(token);
                     break;
-                case JsonPathTokenKind.BeginUnion:
+                case TokenType.BeginUnion:
                     _outputStack.Push(token);
                     break;
-                case JsonPathTokenKind.EndUnion:
+                case TokenType.EndUnion:
                 {
                     List<ISelector> selectors = new List<ISelector>();
-                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginUnion)
+                    while (_outputStack.Count > 1 && _outputStack.Peek().Type != TokenType.BeginUnion)
                     {
-                        switch (_outputStack.Peek().TokenKind)
+                        switch (_outputStack.Peek().Type)
                         {
-                            case JsonPathTokenKind.Selector:
+                            case TokenType.Selector:
                                 selectors.Add(_outputStack.Pop().GetSelector());
                                 break;
-                            case JsonPathTokenKind.Separator:
+                            case TokenType.Separator:
                                 _outputStack.Pop(); // Ignore separator
                                 break;
                             default:
@@ -2037,9 +2037,9 @@ namespace JsonCons.JsonPath
                         throw new JsonPathParseException("Syntax error", _line, _column);
                     }
                     selectors.Reverse();
-                    _outputStack.Pop(); // JsonPathTokenKind.BeginUnion
+                    _outputStack.Pop(); // TokenType.BeginUnion
 
-                    if (_outputStack.Count != 0 && _outputStack.Peek().TokenKind == JsonPathTokenKind.Selector)
+                    if (_outputStack.Count != 0 && _outputStack.Peek().Type == TokenType.Selector)
                     {
                         _outputStack.Peek().GetSelector().AppendSelector(new UnionSelector(selectors));
                     }
@@ -2049,18 +2049,18 @@ namespace JsonCons.JsonPath
                     }
                     break;
                 }
-                case JsonPathTokenKind.LeftParen:
+                case TokenType.LeftParen:
                     _operatorStack.Push(token);
                     break;
-                case JsonPathTokenKind.RightParen:
+                case TokenType.RightParen:
                 {
                     UnwindRightParen();
                     break;
                 }
-                case JsonPathTokenKind.UnaryOperator:
-                case JsonPathTokenKind.BinaryOperator:
+                case TokenType.UnaryOperator:
+                case TokenType.BinaryOperator:
                 {
-                    if (_operatorStack.Count == 0 || _operatorStack.Peek().TokenKind == JsonPathTokenKind.LeftParen)
+                    if (_operatorStack.Count == 0 || _operatorStack.Peek().Type == TokenType.LeftParen)
                     {
                         _operatorStack.Push(token);
                     }
@@ -2082,30 +2082,30 @@ namespace JsonCons.JsonPath
                     }
                     break;
                 }
-                case JsonPathTokenKind.Value:
-                case JsonPathTokenKind.RootNode:
-                case JsonPathTokenKind.CurrentNode:
+                case TokenType.Value:
+                case TokenType.RootNode:
+                case TokenType.CurrentNode:
                     _outputStack.Push(token);
                     break;
-                case JsonPathTokenKind.Function:
-                    _outputStack.Push(new Token(JsonPathTokenKind.BeginArguments));
+                case TokenType.Function:
+                    _outputStack.Push(new Token(TokenType.BeginArguments));
                     _operatorStack.Push(token);
-                    _operatorStack.Push(new Token(JsonPathTokenKind.LeftParen));
+                    _operatorStack.Push(new Token(TokenType.LeftParen));
                     break;
-                case JsonPathTokenKind.Argument:
+                case TokenType.Argument:
                     _outputStack.Push(token);
                     break;
-                case JsonPathTokenKind.EndArguments:
+                case TokenType.EndArguments:
                 {
                     UnwindRightParen();
 
                     Int32 argCount = 0;
                     var tokens = new List<Token>();
-                    Debug.Assert(_operatorStack.Count > 0 && _operatorStack.Peek().TokenKind == JsonPathTokenKind.Function);
+                    Debug.Assert(_operatorStack.Count > 0 && _operatorStack.Peek().Type == TokenType.Function);
                     tokens.Add(_operatorStack.Pop()); // Function
-                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginArguments)
+                    while (_outputStack.Count > 1 && _outputStack.Peek().Type != TokenType.BeginArguments)
                     {
-                        if (_outputStack.Peek().TokenKind == JsonPathTokenKind.Argument)
+                        if (_outputStack.Peek().Type == TokenType.Argument)
                         {
                             ++argCount;
                         }
@@ -2115,7 +2115,7 @@ namespace JsonCons.JsonPath
                     {
                         throw new JsonPathParseException("Unbalanced parentheses", _line, _column);
                     }
-                    _outputStack.Pop(); // JsonPathTokenKind.BeginArguments
+                    _outputStack.Pop(); // TokenType.BeginArguments
                     if (tokens[0].GetFunction().Arity != null && argCount != tokens[0].GetFunction().Arity)
                     {
                         throw new JsonPathParseException($"Invalid arity calling function '{tokens[0].GetFunction()}', expected {tokens[0].GetFunction().Arity}, found {argCount}", _line, _column);
@@ -2123,11 +2123,11 @@ namespace JsonCons.JsonPath
                     _outputStack.Push(new Token(new Expression(tokens)));
                     break;
                 }
-                case JsonPathTokenKind.EndArgument:
+                case TokenType.EndArgument:
                 {
                     UnwindRightParen();
                     var tokens = new List<Token>();
-                    while (_outputStack.Count > 1 && _outputStack.Peek().TokenKind != JsonPathTokenKind.BeginArgument)
+                    while (_outputStack.Count > 1 && _outputStack.Peek().Type != TokenType.BeginArgument)
                     {
                         tokens.Add(_outputStack.Pop());
                     }
@@ -2135,7 +2135,7 @@ namespace JsonCons.JsonPath
                     {
                         throw new JsonPathParseException("Unbalanced parentheses", _line, _column);
                     }
-                    _outputStack.Pop(); // JsonPathTokenKind.BeginArgument
+                    _outputStack.Pop(); // TokenType.BeginArgument
                     _outputStack.Push(new Token(new Expression(tokens)));
                     break;
                 }
