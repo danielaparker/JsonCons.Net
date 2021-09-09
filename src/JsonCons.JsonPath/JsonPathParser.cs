@@ -57,9 +57,10 @@ namespace JsonCons.JsonPath
         FilterExpression,
         ExpressionRhs,
         UnaryOperatorOrPathOrValueOrFunction,
-        JsonText,
-        JsonTextString,
-        JsonStringValue,
+        Json,
+        JsonString,
+        JsonNumber,
+        StringValue,
         Function,
         FunctionName,
         JsonLiteral,
@@ -157,7 +158,7 @@ namespace JsonCons.JsonPath
             Int32 sliceStep = 1;
             UInt32 cp = 0;
             UInt32 cp2 = 0;
-            int jsonTextLevel = 0;
+            int jsonLevel = 0;
             bool pathsRequired = false;
             int ancestorDepth = 0;
 
@@ -1218,14 +1219,14 @@ namespace JsonCons.JsonPath
                             }
                             case '\'':
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.JsonStringValue);
+                                _stateStack.Push(JsonPathState.StringValue);
                                 _stateStack.Push(JsonPathState.SingleQuotedString);
                                 ++_current;
                                 ++_column;
                                 break;
                             case '\"':
                                 _stateStack.Pop(); 
-                                _stateStack.Push(JsonPathState.JsonStringValue);
+                                _stateStack.Push(JsonPathState.StringValue);
                                 _stateStack.Push(JsonPathState.DoubleQuotedString);
                                 ++_current;
                                 ++_column;
@@ -1308,7 +1309,7 @@ namespace JsonCons.JsonPath
                                 _stateStack.Pop(); 
                                 _stateStack.Push(JsonPathState.JsonLiteral);
                                 _start = _current;
-                                _stateStack.Push(JsonPathState.JsonText);
+                                _stateStack.Push(JsonPathState.Json);
                                 break;
                             default:
                             {
@@ -1437,7 +1438,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     }
-                    case JsonPathState.JsonText:
+                    case JsonPathState.Json:
                     {
                         switch (_span[_current])
                         {
@@ -1446,14 +1447,14 @@ namespace JsonCons.JsonPath
                                 break;
                             case '{':
                             case '[':
-                                ++jsonTextLevel;
+                                ++jsonLevel;
                                 ++_current;
                                 ++_column;
                                 break;
                             case '}':
                             case ']':
-                                --jsonTextLevel;
-                                if (jsonTextLevel == 0)
+                                --jsonLevel;
+                                if (jsonLevel == 0)
                                 {
                                     _stateStack.Pop(); 
                                 }
@@ -1461,28 +1462,40 @@ namespace JsonCons.JsonPath
                                 ++_column;
                                 break;
                             case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
-                                _stateStack.Push(JsonPathState.Number);
+                                _stateStack.Push(JsonPathState.JsonNumber);
                                 ++_current;
                                 ++_column;
                                 break;
                             case '\"':
-                                _stateStack.Push(JsonPathState.JsonTextString);
+                                _stateStack.Push(JsonPathState.JsonString);
                                 ++_current;
                                 ++_column;
                                 break;
                             case ':':
+                            case ',':
                                 ++_current;
                                 ++_column;
                                 break;
                             default:
-                                _stateStack.Push(JsonPathState.UnquotedString);
-                                ++_current;
-                                ++_column;
+                                if (_current + 4 < _span.Length && (_source.Slice(_current,4).Equals("true") || _source.Slice(_current, 4).Equals("null")))
+                                {
+                                    _current += 4;
+                                    _column += 4;
+                                }
+                                else if (_current + 5 < _span.Length && _source.Slice(_current, 5).Equals("false"))
+                                {
+                                    _current += 5;
+                                    _column += 5;
+                                }
+                                else
+                                {
+                                    throw new JsonPathParseException("Syntax error, invalid JSON literal", _line, _column);
+                                }
                                 break;
                         }
                         break;
                     }
-                    case JsonPathState.JsonTextString: 
+                    case JsonPathState.JsonString: 
                         switch (_span[_current])
                         {
                             case '\\':
@@ -1506,6 +1519,19 @@ namespace JsonCons.JsonPath
                                 break;
                         };
                         break;
+                    case JsonPathState.JsonNumber: 
+                        switch (_span[_current])
+                        {
+                            case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
+                            case 'e':case 'E':case '.':
+                                ++_current;
+                                ++_column;
+                                break;
+                            default:
+                                _stateStack.Pop(); // Number
+                                break;
+                        };
+                        break;
                     case JsonPathState.JsonLiteral:
                     {
                         try
@@ -1523,7 +1549,7 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     }
-                    case JsonPathState.JsonStringValue:
+                    case JsonPathState.StringValue:
                     {
                         PushToken(new Token(new StringValue(buffer.ToString())));
                         buffer.Clear();
