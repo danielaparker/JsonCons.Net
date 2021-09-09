@@ -148,7 +148,7 @@ namespace JsonCons.JsonPath
                         break;
                     case JsonPathTokenKind.Function:
                     {
-                        if (token.GetFunction().Arity.HasValue && token.GetFunction().Arity.Value != argStack.Count)
+                        if (token.GetFunction().Arity.HasValue && token.GetFunction().Arity!.Value != argStack.Count)
                         {
                             result = JsonConstants.Null;
                             return false;

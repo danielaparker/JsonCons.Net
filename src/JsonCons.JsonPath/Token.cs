@@ -35,7 +35,7 @@ namespace JsonCons.JsonPath
     readonly struct Token : IEquatable<Token>
     {
         readonly JsonPathTokenKind _type;
-        readonly object _expr;
+        readonly object? _expr;
 
         internal Token(JsonPathTokenKind type)
         {
@@ -139,37 +139,37 @@ namespace JsonCons.JsonPath
         internal IValue GetValue()
         {
             Debug.Assert(_type == JsonPathTokenKind.Value);
-            return (IValue)_expr;
+            return _expr as IValue ?? throw new InvalidOperationException("Expression is null");
         }
 
         internal ISelector GetSelector()
         {
             Debug.Assert(_type == JsonPathTokenKind.Selector);
-            return (ISelector)_expr;
+            return _expr as ISelector ?? throw new InvalidOperationException("Expression is null");;
         }
 
         internal IFunction GetFunction()
         {
             Debug.Assert(_type == JsonPathTokenKind.Function);
-            return (IFunction)_expr;
+            return _expr as IFunction ?? throw new InvalidOperationException("Expression is null");;
         }
 
         internal IExpression GetExpression()
         {
             Debug.Assert(_type == JsonPathTokenKind.Expression);
-            return (IExpression)_expr;
+            return _expr as IExpression ?? throw new InvalidOperationException("Expression is null");;
         }
 
         internal IUnaryOperator GetUnaryOperator()
         {
             Debug.Assert(_type == JsonPathTokenKind.UnaryOperator);
-            return (IUnaryOperator)_expr;
+            return _expr as IUnaryOperator ?? throw new InvalidOperationException("Expression is null");;
         }
 
         internal IBinaryOperator GetBinaryOperator()
         {
             Debug.Assert(_type == JsonPathTokenKind.BinaryOperator);
-            return (IBinaryOperator)_expr;
+            return _expr as IBinaryOperator ?? throw new InvalidOperationException("Expression is null");;
         }
 
         public bool Equals(Token other)

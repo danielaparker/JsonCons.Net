@@ -62,7 +62,7 @@ namespace JsonCons.JsonPath
 
     abstract class BaseSelector : ISelector 
     {
-        ISelector Tail {get;set;} = null;
+        ISelector? Tail {get;set;} = null;
 
         public abstract void Select(DynamicResources resources,
                                     IValue root, 
@@ -235,7 +235,7 @@ namespace JsonCons.JsonPath
                                     ProcessingFlags options,
                                     int depth)
         {
-            JsonLocationNode ancestor = lastNode;
+            JsonLocationNode? ancestor = lastNode;
             int index = 0;
             while (ancestor != null && index < _ancestorDepth)
             {
@@ -259,7 +259,7 @@ namespace JsonCons.JsonPath
                                          ProcessingFlags options,
                                          out IValue result)
         {
-            JsonLocationNode ancestor = lastNode;
+            JsonLocationNode? ancestor = lastNode;
             int index = 0;
             while (ancestor != null && index < _ancestorDepth)
             {
@@ -697,7 +697,7 @@ namespace JsonCons.JsonPath
     sealed class UnionSelector : ISelector
     {
         IList<ISelector> _selectors;
-        ISelector _tail;
+        ISelector? _tail;
 
         internal UnionSelector(IList<ISelector> selectors)
         {

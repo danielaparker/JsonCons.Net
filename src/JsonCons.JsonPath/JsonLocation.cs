@@ -40,7 +40,7 @@ namespace JsonCons.JsonPath
         /// Gets the parent of this path node.
         ///
         /// </summary>
-        public JsonLocationNode Parent {get;}
+        public JsonLocationNode? Parent {get;}
 
         /// <summary>
         /// Gets the type of this path node.
@@ -118,7 +118,7 @@ namespace JsonCons.JsonPath
             }
             Parent = parent;
             ComponentKind = JsonLocationNodeKind.Index;
-            _name = null;
+            _name = "";
             _index = index;
         }
 
@@ -202,7 +202,7 @@ namespace JsonCons.JsonPath
         public JsonLocation(JsonLocationNode lastNode)
         {
             var nodes = new List<JsonLocationNode>();
-            JsonLocationNode node = lastNode;
+            JsonLocationNode? node = lastNode;
             do
             {
                 nodes.Add(node);
@@ -351,7 +351,7 @@ namespace JsonCons.JsonPath
         /// </summary>
         /// <param name="other">The <see cref="JsonLocation"/> to compare to this instance.</param>
         /// <returns>true if other is a <see cref="JsonLocation"/> and its value is the same as this instance; otherwise, false. If other is null, the method returns false.</returns>
-        public override bool Equals(Object other)
+        public override bool Equals(Object? other)
         {
             if (other == null)
             {

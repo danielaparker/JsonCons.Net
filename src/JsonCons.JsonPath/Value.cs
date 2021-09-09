@@ -138,7 +138,13 @@ namespace JsonCons.JsonPath
 
         public string GetString()
         {
-            return _element.GetString();
+            var s = _element.GetString();
+            if (s == null)
+            {
+                throw new NullReferenceException("String is null");
+            }
+
+            return s;
         }
 
         public bool TryGetDecimal(out Decimal value)
@@ -568,7 +574,7 @@ namespace JsonCons.JsonPath
 
             public IValue Current
             {
-                get { return _enumerator.Current as IValue; }
+                get { return _enumerator.Current as IValue ?? throw new InvalidOperationException("Current should not be null"); ; }
             }
 
             object System.Collections.IEnumerator.Current
