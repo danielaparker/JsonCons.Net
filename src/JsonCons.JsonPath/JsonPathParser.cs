@@ -1486,25 +1486,21 @@ namespace JsonCons.JsonPath
                         switch (_span[_current])
                         {
                             case '\\':
-                                buffer.Append(_span[_current]);
                                 ++_current;
                                 ++_column;
                                 if (_current == _span.Length)
                                 {
                                     throw new JsonPathParseException("Unexpected end of input", _line, _column);
                                 }
-                                buffer.Append(_span[_current]);
                                 ++_current;
                                 ++_column;
                                 break;
                             case '\"':
-                                buffer.Append(_span[_current]);
                                 _stateStack.Pop(); 
                                 ++_current;
                                 ++_column;
                                 break;
                             default:
-                                buffer.Append(_span[_current]);
                                 ++_current;
                                 ++_column;
                                 break;
