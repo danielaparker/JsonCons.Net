@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace JsonCons.JmesPath
 {
-    enum JmesPathTokenKind
+    enum TokenType
     {
         CurrentNode,
         LeftParen,
@@ -37,65 +37,61 @@ namespace JsonCons.JmesPath
 
     readonly struct Token : IEquatable<Token>
     {
-        readonly JmesPathTokenKind _tokenKind;
-        readonly object _expr;
+        readonly object? _expr;
 
-        internal Token(JmesPathTokenKind tokenKind)
+        internal Token(TokenType type)
         {
-            _tokenKind = tokenKind;
+            Type = type;
             _expr = null;
         }
 
-        internal Token(JmesPathTokenKind tokenKind, string s)
+        internal Token(TokenType type, string s)
         {
-            _tokenKind = tokenKind;
+            Type = type;
             _expr = s;
         }
 
         internal Token(IExpression expr)
         {
-            _tokenKind = JmesPathTokenKind.Expression;
+            Type = TokenType.Expression;
             _expr = expr;
         }
 
         internal Token(IUnaryOperator expr)
         {
-            _tokenKind = JmesPathTokenKind.UnaryOperator;
+            Type = TokenType.UnaryOperator;
             _expr = expr;
         }
 
         internal Token(IBinaryOperator expr)
         {
-            _tokenKind = JmesPathTokenKind.BinaryOperator;
+            Type = TokenType.BinaryOperator;
             _expr = expr;
         }
 
         internal Token(IFunction expr)
         {
-            _tokenKind = JmesPathTokenKind.Function;
+            Type = TokenType.Function;
             _expr = expr;
         }
 
         internal Token(IValue expr)
         {
-            _tokenKind = JmesPathTokenKind.Literal;
+            Type = TokenType.Literal;
             _expr = expr;
         }
 
-        internal JmesPathTokenKind TokenKind
-        {
-            get { return _tokenKind; }   
-        }
+        internal TokenType Type{get;}
 
         internal bool IsOperator
         {
             get
             {
-                switch(_tokenKind)
+                switch(Type)
                 {
-                    case JmesPathTokenKind.UnaryOperator:
+                    case TokenType.UnaryOperator:
                         return true;
-                    case JmesPathTokenKind.BinaryOperator:
+                    case TokenType.BinaryOperator:
                         return true;
                     default:
                         return false;
@@ -107,9 +103,9 @@ namespace JsonCons.JmesPath
         {
             get
             {
-                switch(_tokenKind)
+                switch(Type)
                 {
-                    case JmesPathTokenKind.Expression:
+                    case TokenType.Expression:
                         return GetExpression().IsProjection;
                     default:
                         return false;
@@ -121,13 +117,13 @@ namespace JsonCons.JmesPath
         {
             get
             {
-                switch(_tokenKind)
+                switch(Type)
                 {
-                    case JmesPathTokenKind.Expression:
+                    case TokenType.Expression:
                         return GetExpression().IsRightAssociative;
-                    case JmesPathTokenKind.UnaryOperator:
+                    case TokenType.UnaryOperator:
                         return GetUnaryOperator().IsRightAssociative;
-                    case JmesPathTokenKind.BinaryOperator:
+                    case TokenType.BinaryOperator:
                         return GetBinaryOperator().IsRightAssociative;
                     default:
                         return false;
@@ -139,13 +135,13 @@ namespace JsonCons.JmesPath
         {
             get
             {
-                switch(_tokenKind)
+                switch(Type)
                 {
-                    case JmesPathTokenKind.Expression:
+                    case TokenType.Expression:
                         return GetExpression().PrecedenceLevel;
-                    case JmesPathTokenKind.UnaryOperator:
+                    case TokenType.UnaryOperator:
                         return GetUnaryOperator().PrecedenceLevel;
-                    case JmesPathTokenKind.BinaryOperator:
+                    case TokenType.BinaryOperator:
                         return GetBinaryOperator().PrecedenceLevel;
                     default:
                         return 100;
@@ -155,42 +151,42 @@ namespace JsonCons.JmesPath
 
         internal string GetKey()
         {
-            Debug.Assert(_tokenKind == JmesPathTokenKind.Key);
-            return (string)_expr;
+            Debug.Assert(Type == TokenType.Key);
+            return _expr as string ?? throw new InvalidOperationException("Key cannot be null");
         }
 
         internal IUnaryOperator GetUnaryOperator()
         {
-            Debug.Assert(_tokenKind == JmesPathTokenKind.UnaryOperator);
-            return (IUnaryOperator)_expr;
+            Debug.Assert(Type == TokenType.UnaryOperator);
+            return _expr as IUnaryOperator ?? throw new InvalidOperationException("Unary operator cannot be null");
         }
 
         internal IBinaryOperator GetBinaryOperator()
         {
-            Debug.Assert(_tokenKind == JmesPathTokenKind.BinaryOperator);
-            return (IBinaryOperator)_expr;
+            Debug.Assert(Type == TokenType.BinaryOperator);
+            return _expr as IBinaryOperator ?? throw new InvalidOperationException("Binary operator cannot be null");
         }
 
         internal IValue GetValue()
         {
-            Debug.Assert(_tokenKind == JmesPathTokenKind.Literal);
-            return (IValue)_expr;
+            Debug.Assert(Type == TokenType.Literal);
+            return _expr as IValue ?? throw new InvalidOperationException("Value cannot be null");
         }
 
         internal IFunction GetFunction()
         {
-            Debug.Assert(_tokenKind == JmesPathTokenKind.Function);
-            return (IFunction)_expr;
+            Debug.Assert(Type == TokenType.Function);
+            return _expr as IFunction ?? throw new InvalidOperationException("Function cannot be null");
         }
 
         internal IExpression GetExpression()
         {
-            Debug.Assert(_tokenKind == JmesPathTokenKind.Expression);
-            return (IExpression)_expr;
+            Debug.Assert(Type == TokenType.Expression);
+            return _expr as IExpression ?? throw new InvalidOperationException("Expression cannot be null");
         }
         public bool Equals(Token other)
         {
-            if (this._tokenKind == other._tokenKind)
+            if (this.Type == other.Type)
                 return true;
             else
                 return false;        
@@ -198,53 +194,53 @@ namespace JsonCons.JmesPath
 
         public override string ToString()
         {
-            switch(_tokenKind)
+            switch(Type)
             {
-                case JmesPathTokenKind.BeginArguments:
+                case TokenType.BeginArguments:
                     return "BeginArguments";
-                case JmesPathTokenKind.CurrentNode:
+                case TokenType.CurrentNode:
                     return "CurrentNode";
-                case JmesPathTokenKind.LeftParen:
+                case TokenType.LeftParen:
                     return "LeftParen";
-                case JmesPathTokenKind.RightParen:
+                case TokenType.RightParen:
                     return "RightParen";
-                case JmesPathTokenKind.BeginMultiSelectHash:
+                case TokenType.BeginMultiSelectHash:
                     return "BeginMultiSelectHash";
-                case JmesPathTokenKind.EndMultiSelectHash:
+                case TokenType.EndMultiSelectHash:
                     return "EndMultiSelectHash";
-                case JmesPathTokenKind.BeginMultiSelectList:
+                case TokenType.BeginMultiSelectList:
                     return "BeginMultiSelectList";
-                case JmesPathTokenKind.EndMultiSelectList:
+                case TokenType.EndMultiSelectList:
                     return "EndMultiSelectList";
-                case JmesPathTokenKind.BeginFilter:
+                case TokenType.BeginFilter:
                     return "BeginFilter";
-                case JmesPathTokenKind.EndFilter:
+                case TokenType.EndFilter:
                     return "EndFilter";
-                case JmesPathTokenKind.Pipe:
+                case TokenType.Pipe:
                     return $"Pipe";
-                case JmesPathTokenKind.Separator:
+                case TokenType.Separator:
                     return "Separator";
-                case JmesPathTokenKind.Key:
+                case TokenType.Key:
                     return $"Key {_expr}";
-                case JmesPathTokenKind.Literal:
+                case TokenType.Literal:
                     return $"Literal {_expr}";
-                case JmesPathTokenKind.Expression:
+                case TokenType.Expression:
                     return "Expression";
-                case JmesPathTokenKind.BinaryOperator:
+                case TokenType.BinaryOperator:
                     return $"BinaryOperator {_expr}";
-                case JmesPathTokenKind.UnaryOperator:
+                case TokenType.UnaryOperator:
                     return $"UnaryOperator {_expr}";
-                case JmesPathTokenKind.Function:
+                case TokenType.Function:
                     return $"Function {_expr}";
-                case JmesPathTokenKind.EndArguments:
+                case TokenType.EndArguments:
                     return "EndArguments";
-                case JmesPathTokenKind.Argument:
+                case TokenType.Argument:
                     return "Argument";
-                case JmesPathTokenKind.BeginExpressionType:
+                case TokenType.BeginExpressionType:
                     return "BeginExpressionType";
-                case JmesPathTokenKind.EndExpressionType:
+                case TokenType.EndExpressionType:
                     return "EndExpressionType";
-                case JmesPathTokenKind.EndOfExpression:
+                case TokenType.EndOfExpression:
                     return "EndOfExpression";
                 default:
                     return "Other";

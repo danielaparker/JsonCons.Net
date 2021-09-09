@@ -39,8 +39,8 @@ namespace JsonCons.JsonPath
             switch (val.ValueKind)
             {
                 case JsonValueKind.False:
-                    return true;
                 case JsonValueKind.Null:
+                case JsonValueKind.Undefined:
                     return true;
                 case JsonValueKind.Array:
                     return val.GetArrayLength() == 0;
@@ -79,24 +79,24 @@ namespace JsonCons.JsonPath
             for (int i = _tokens.Count-1; i >= 0; --i)
             {
                 var token = _tokens[i];
-                switch (token.TokenKind)
+                switch (token.Type)
                 {
-                    case JsonPathTokenKind.Value:
+                    case TokenType.Value:
                     {
                         stack.Push(token.GetValue());
                         break;
                     }
-                    case JsonPathTokenKind.RootNode:
+                    case TokenType.RootNode:
                     {
                         stack.Push(root);
                         break;
                     }
-                    case JsonPathTokenKind.CurrentNode:
+                    case TokenType.CurrentNode:
                     {
                         stack.Push(current);
                         break;
                     }
-                    case JsonPathTokenKind.UnaryOperator:
+                    case TokenType.UnaryOperator:
                     {
                         Debug.Assert(stack.Count >= 1);
                         var item = stack.Pop();
@@ -109,7 +109,7 @@ namespace JsonCons.JsonPath
                         stack.Push(value);
                         break;
                     }
-                    case JsonPathTokenKind.BinaryOperator:
+                    case TokenType.BinaryOperator:
                     {
                         Debug.Assert(stack.Count >= 2);
                         var rhs = stack.Pop();
@@ -124,13 +124,13 @@ namespace JsonCons.JsonPath
                         stack.Push(value);
                         break;
                     }
-                    case JsonPathTokenKind.Selector:
+                    case TokenType.Selector:
                     {
                         Debug.Assert(stack.Count >= 1);
                         IValue val = stack.Peek();
                         stack.Pop();
                         IValue value;
-                        if (token.GetSelector().TryEvaluate(resources, root, NormalizedPathNode.Current, val, options, out value))
+                        if (token.GetSelector().TryEvaluate(resources, root, JsonLocationNode.Current, val, options, out value))
                         {
                             stack.Push(value);
                         }
@@ -141,14 +141,14 @@ namespace JsonCons.JsonPath
                         }
                         break;
                     }
-                    case JsonPathTokenKind.Argument:
+                    case TokenType.Argument:
                         Debug.Assert(stack.Count != 0);
                         argStack.Add(stack.Peek());
                         stack.Pop();
                         break;
-                    case JsonPathTokenKind.Function:
+                    case TokenType.Function:
                     {
-                        if (token.GetFunction().Arity.HasValue && token.GetFunction().Arity.Value != argStack.Count)
+                        if (token.GetFunction().Arity.HasValue && token.GetFunction().Arity!.Value != argStack.Count)
                         {
                             result = JsonConstants.Null;
                             return false;
@@ -164,7 +164,7 @@ namespace JsonCons.JsonPath
                         stack.Push(value);
                         break;
                     }
-                    case JsonPathTokenKind.Expression:
+                    case TokenType.Expression:
                     {
                         IValue value;
                         if (!token.GetExpression().TryEvaluate(resources, root, current, options, out value))

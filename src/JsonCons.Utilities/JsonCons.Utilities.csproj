@@ -15,6 +15,7 @@ System.Text.Json namespace with support for JSON Pointer, JSON Patch, and JSON M
     <PackageReleaseNotes>Move from preview to release 1.0.0
 </PackageReleaseNotes>
     <PackageTags>jsonpointer json-pointer jsonpatch json-patch json-merge-patch</PackageTags>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -170,14 +170,14 @@ namespace JsonCons.Utilities
                 {
                     throw new ArgumentException("Invalid patch");
                 }
-                string op = opElement.GetString();
+                string op = opElement.GetString() ?? throw new InvalidOperationException("Operation cannot be null");
 
                 JsonElement pathElement;
                 if (!operation.TryGetProperty("path", out pathElement))
                 {
                     throw new ArgumentException(op, "Invalid patch");
                 }
-                string path = pathElement.GetString();
+                string path = pathElement.GetString() ?? throw new InvalidOperationException("Operation cannot be null"); ;
 
                 JsonPointer location;
                 if (!JsonPointer.TryParse(path, out location))
@@ -250,7 +250,7 @@ namespace JsonCons.Utilities
                     {
                         throw new ArgumentException(op, "Invalid patch");
                     }
-                    string from = fromElement.GetString();
+                    string from = fromElement.GetString() ?? throw new InvalidOperationException("From element cannot be null"); ;
 
                     JsonPointer fromPointer;
                     if (!JsonPointer.TryParse(from, out fromPointer))
@@ -283,7 +283,7 @@ namespace JsonCons.Utilities
                     {
                         throw new ArgumentException(op, "Invalid patch");
                     }
-                    string from = fromElement.GetString();
+                    string from = fromElement.GetString() ?? throw new InvalidOperationException("from cannot be null");
                     JsonPointer fromPointer;
                     if (!JsonPointer.TryParse(from, out fromPointer))
                     {

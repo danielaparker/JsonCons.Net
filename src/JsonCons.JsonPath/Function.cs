@@ -36,10 +36,7 @@ namespace JsonCons.JsonPath
 
         public override bool TryEvaluate(IList<IValue> args, out IValue result) 
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var arg = args[0];
 
@@ -79,10 +76,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var arg0 = args[0];
             var arg1 = args[1];
@@ -148,7 +142,7 @@ namespace JsonCons.JsonPath
         {
             if (this.Arity.HasValue)
             {
-                Debug.Assert(args.Count == this.Arity.Value);
+                Debug.Assert(args.Count == this.Arity!.Value)                   ;
             }
 
             var arg0 = args[0];
@@ -190,10 +184,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var arg0 = args[0];
             var arg1 = args[1];
@@ -235,10 +226,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var arg0 = args[0];
             if (arg0.ValueKind != JsonValueKind.Array)
@@ -306,10 +294,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var arg0 = args[0];
             if (arg0.ValueKind != JsonValueKind.Array || arg0.GetArrayLength() == 0)
@@ -358,10 +343,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
             var arg0 = args[0];
             if (arg0.ValueKind != JsonValueKind.Array || arg0.GetArrayLength() == 0)
             {
@@ -412,10 +394,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             if (args[0].ValueKind != JsonValueKind.String || args[1].ValueKind != JsonValueKind.String)
             {
@@ -453,10 +432,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var val = args[0];
             if (val.ValueKind != JsonValueKind.Number)
@@ -501,10 +477,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var val = args[0];
             if (val.ValueKind != JsonValueKind.Number)
@@ -549,10 +522,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var arg0 = args[0];
             switch (arg0.ValueKind)
@@ -603,10 +573,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var arg0 = args[0];
             if (arg0.ValueKind != JsonValueKind.Array)
@@ -668,10 +635,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var arg0 = args[0];
             if (arg0.ValueKind != JsonValueKind.Array)
@@ -733,10 +697,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var arg0 = args[0];
 
@@ -785,10 +746,7 @@ namespace JsonCons.JsonPath
         public override bool TryEvaluate(IList<IValue> args, 
                                          out IValue result)
         {
-            if (this.Arity.HasValue)
-            {
-                Debug.Assert(args.Count == this.Arity.Value);
-            }
+            Debug.Assert(this.Arity.HasValue && args.Count == this.Arity!.Value)                   ;
 
             var arg0 = args[0];
             if (arg0.ValueKind != JsonValueKind.Object)

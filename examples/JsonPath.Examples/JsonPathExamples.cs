@@ -54,7 +54,7 @@ public static class JsonPathExamples
         Console.WriteLine();
 
         Console.WriteLine("Select paths");
-        IList<NormalizedPath> paths = selector.SelectPaths(doc.RootElement);
+        IList<JsonLocation> paths = selector.SelectPaths(doc.RootElement);
         foreach (var path in paths)
         {
             Console.WriteLine(path);

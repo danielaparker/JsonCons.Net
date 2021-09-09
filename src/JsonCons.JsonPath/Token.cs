@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace JsonCons.JsonPath
 {
-    enum JsonPathTokenKind
+    enum TokenType
     {
         RootNode,
         CurrentNode,
@@ -34,65 +34,61 @@ namespace JsonCons.JsonPath
 
     readonly struct Token : IEquatable<Token>
     {
-        readonly JsonPathTokenKind _type;
-        readonly object _expr;
+        readonly object? _expr;
 
-        internal Token(JsonPathTokenKind type)
+        internal Token(TokenType type)
         {
-            _type = type;
+            Type = type;
             _expr = null;
         }
 
         internal Token(ISelector selector)
         {
-            _type = JsonPathTokenKind.Selector;
+            Type = TokenType.Selector;
             _expr = selector;
         }
 
         internal Token(IExpression expr)
         {
-            _type = JsonPathTokenKind.Expression;
+            Type = TokenType.Expression;
             _expr = expr;
         }
 
         internal Token(IUnaryOperator expr)
         {
-            _type = JsonPathTokenKind.UnaryOperator;
+            Type = TokenType.UnaryOperator;
             _expr = expr;
         }
 
         internal Token(IBinaryOperator expr)
         {
-            _type = JsonPathTokenKind.BinaryOperator;
+            Type = TokenType.BinaryOperator;
             _expr = expr;
         }
 
         internal Token(IFunction expr)
         {
-            _type = JsonPathTokenKind.Function;
+            Type = TokenType.Function;
             _expr = expr;
         }
 
         internal Token(IValue expr)
         {
-            _type = JsonPathTokenKind.Value;
+            Type = TokenType.Value;
             _expr = expr;
         }
 
-        internal JsonPathTokenKind TokenKind
-        {
-            get { return _type; }   
-        }
+        internal TokenType Type {get;}   
 
         internal bool IsOperator
         {
             get
             {
-                switch(_type)
+                switch(Type)
                 {
-                    case JsonPathTokenKind.UnaryOperator:
+                    case TokenType.UnaryOperator:
                         return true;
-                    case JsonPathTokenKind.BinaryOperator:
+                    case TokenType.BinaryOperator:
                         return true;
                     default:
                         return false;
@@ -104,13 +100,13 @@ namespace JsonCons.JsonPath
         {
             get
             {
-                switch(_type)
+                switch(Type)
                 {
-                    case JsonPathTokenKind.Selector:
+                    case TokenType.Selector:
                         return true;
-                    case JsonPathTokenKind.UnaryOperator:
+                    case TokenType.UnaryOperator:
                         return GetUnaryOperator().IsRightAssociative;
-                    case JsonPathTokenKind.BinaryOperator:
+                    case TokenType.BinaryOperator:
                         return GetBinaryOperator().IsRightAssociative;
                     default:
                         return false;
@@ -122,13 +118,13 @@ namespace JsonCons.JsonPath
         {
             get
             {
-                switch(_type)
+                switch(Type)
                 {
-                    case JsonPathTokenKind.Selector:
+                    case TokenType.Selector:
                         return 11;
-                    case JsonPathTokenKind.UnaryOperator:
+                    case TokenType.UnaryOperator:
                         return GetUnaryOperator().PrecedenceLevel;
-                    case JsonPathTokenKind.BinaryOperator:
+                    case TokenType.BinaryOperator:
                         return GetBinaryOperator().PrecedenceLevel;
                     default:
                         return 0;
@@ -138,43 +134,43 @@ namespace JsonCons.JsonPath
 
         internal IValue GetValue()
         {
-            Debug.Assert(_type == JsonPathTokenKind.Value);
-            return (IValue)_expr;
+            Debug.Assert(Type == TokenType.Value);
+            return _expr as IValue ?? throw new InvalidOperationException("Value cannot be null");
         }
 
         internal ISelector GetSelector()
         {
-            Debug.Assert(_type == JsonPathTokenKind.Selector);
-            return (ISelector)_expr;
+            Debug.Assert(Type == TokenType.Selector);
+            return _expr as ISelector ?? throw new InvalidOperationException("Selector cannot be null");;
         }
 
         internal IFunction GetFunction()
         {
-            Debug.Assert(_type == JsonPathTokenKind.Function);
-            return (IFunction)_expr;
+            Debug.Assert(Type == TokenType.Function);
+            return _expr as IFunction ?? throw new InvalidOperationException("Function cannot be null");;
         }
 
         internal IExpression GetExpression()
         {
-            Debug.Assert(_type == JsonPathTokenKind.Expression);
-            return (IExpression)_expr;
+            Debug.Assert(Type == TokenType.Expression);
+            return _expr as IExpression ?? throw new InvalidOperationException("Expression cannot be null");;
         }
 
         internal IUnaryOperator GetUnaryOperator()
         {
-            Debug.Assert(_type == JsonPathTokenKind.UnaryOperator);
-            return (IUnaryOperator)_expr;
+            Debug.Assert(Type == TokenType.UnaryOperator);
+            return _expr as IUnaryOperator ?? throw new InvalidOperationException("Unary operator cannot be null");;
         }
 
         internal IBinaryOperator GetBinaryOperator()
         {
-            Debug.Assert(_type == JsonPathTokenKind.BinaryOperator);
-            return (IBinaryOperator)_expr;
+            Debug.Assert(Type == TokenType.BinaryOperator);
+            return _expr as IBinaryOperator ?? throw new InvalidOperationException("Binary operator cannot be null");;
         }
 
         public bool Equals(Token other)
         {
-            if (this._type == other._type)
+            if (this.Type == other.Type)
                 return true;
             else
                 return false;        
@@ -182,47 +178,47 @@ namespace JsonCons.JsonPath
 
         public override string ToString()
         {
-            switch(_type)
+            switch(Type)
             {
-                case JsonPathTokenKind.BeginArguments:
+                case TokenType.BeginArguments:
                     return "BeginArguments";
-                case JsonPathTokenKind.RootNode:
+                case TokenType.RootNode:
                     return "RootNode";
-                case JsonPathTokenKind.CurrentNode:
+                case TokenType.CurrentNode:
                     return "CurrentNode";
-                case JsonPathTokenKind.BeginFilter:
+                case TokenType.BeginFilter:
                     return "BeginFilter";
-                case JsonPathTokenKind.EndFilter:
+                case TokenType.EndFilter:
                     return "EndFilter";
-                case JsonPathTokenKind.BeginUnion:
+                case TokenType.BeginUnion:
                     return "BeginUnion";
-                case JsonPathTokenKind.EndUnion:
+                case TokenType.EndUnion:
                     return "EndUnion";
-                case JsonPathTokenKind.Value:
+                case TokenType.Value:
                     return $"Value {_expr}";
-                case JsonPathTokenKind.Selector:
+                case TokenType.Selector:
                     return $"Selector {_expr}";
-                case JsonPathTokenKind.UnaryOperator:
+                case TokenType.UnaryOperator:
                     return $"UnaryOperator {_expr}";
-                case JsonPathTokenKind.BinaryOperator:
+                case TokenType.BinaryOperator:
                     return $"BinaryOperator {_expr}";
-                case JsonPathTokenKind.Function:
+                case TokenType.Function:
                     return $"Function {_expr}";
-                case JsonPathTokenKind.EndArguments:
+                case TokenType.EndArguments:
                     return "EndArguments";
-                case JsonPathTokenKind.Argument:
+                case TokenType.Argument:
                     return "Argument";
-                case JsonPathTokenKind.EndArgument:
+                case TokenType.EndArgument:
                     return "EndArgument";
-                case JsonPathTokenKind.Expression:
+                case TokenType.Expression:
                     return "Expression";
-                case JsonPathTokenKind.BeginArgument:
+                case TokenType.BeginArgument:
                     return "BeginArgument";
-                case JsonPathTokenKind.LeftParen:
+                case TokenType.LeftParen:
                     return "LeftParen";
-                case JsonPathTokenKind.RightParen:
+                case TokenType.RightParen:
                     return "RightParen";
-                case JsonPathTokenKind.Separator:
+                case TokenType.Separator:
                     return "Separator";
                 default:
                     return "Other";

@@ -85,8 +85,11 @@ namespace JsonCons.Utilities
                 }
     
                 case JsonValueKind.String:
-                    return lhs.GetString().Equals(rhs.GetString()); 
-    
+                {
+                    string str = lhs.GetString() ?? throw new InvalidOperationException("string cannot be null");
+                    return str.Equals(rhs.GetString());
+                }
+
                 case JsonValueKind.Array:
                     return lhs.EnumerateArray().SequenceEqual(rhs.EnumerateArray(), this);
     
@@ -154,9 +157,12 @@ namespace JsonCons.Utilities
                         break;
     
                 case JsonValueKind.String:
-                     hashCode += 17 * element.GetString().GetHashCode();
+                {
+                    string str = element.GetString() ?? throw new InvalidOperationException("string cannot be null");
+                    hashCode += 17 * str.GetHashCode();
                     break;
-    
+                }
+
                 case JsonValueKind.Array:
                     if (depth < MaxHashDepth)
                         foreach (var item in element.EnumerateArray())

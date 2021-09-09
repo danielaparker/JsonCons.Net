@@ -138,7 +138,13 @@ namespace JsonCons.JsonPath
 
         public string GetString()
         {
-            return _element.GetString();
+            var s = _element.GetString();
+            if (s == null)
+            {
+                throw new NullReferenceException("String is null");
+            }
+
+            return s;
         }
 
         public bool TryGetDecimal(out Decimal value)
@@ -498,6 +504,52 @@ namespace JsonCons.JsonPath
         }      
     };
 
+    readonly struct UndefinedValue : IValue
+    {
+        public JsonValueKind ValueKind {get{return JsonValueKind.Undefined;}}
+
+        public IValue this[int index] { get { throw new InvalidOperationException(); } }
+
+        public int GetArrayLength() { throw new InvalidOperationException(); }
+
+        public string GetString() { throw new InvalidOperationException(); }
+
+        public bool TryGetDecimal(out Decimal value)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool TryGetDouble(out double value)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool TryGetProperty(string propertyName, out IValue property)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public IArrayValueEnumerator EnumerateArray()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public IObjectValueEnumerator EnumerateObject()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool IsJsonElement()
+        {
+            return false;
+        }
+
+        public JsonElement GetJsonElement()
+        {
+            throw new InvalidOperationException("Not a JsonElement");
+        }      
+    };
+
     readonly struct ArrayValue : IValue
     {
         internal class ArrayEnumerator : IArrayValueEnumerator
@@ -522,7 +574,7 @@ namespace JsonCons.JsonPath
 
             public IValue Current
             {
-                get { return _enumerator.Current as IValue; }
+                get { return _enumerator.Current as IValue ?? throw new InvalidOperationException("Current should not be null"); ; }
             }
 
             object System.Collections.IEnumerator.Current

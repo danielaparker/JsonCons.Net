@@ -20,14 +20,14 @@ namespace JsonCons.JsonPath
         /// Gets the location of this value within a root JSON value.
         ///
         /// </summary>
-        public NormalizedPath Path {get;}
+        public JsonLocation Path {get;}
         /// <summary>
         /// Gets the value
         ///
         /// </summary>
         public JsonElement Value {get;}
 
-        internal PathValuePair(NormalizedPath path, JsonElement value)
+        internal PathValuePair(JsonLocation path, JsonElement value)
         {
             Path = path;
             Value = value;
@@ -65,7 +65,7 @@ namespace JsonCons.JsonPath
 
     interface INodeAccumulator
     {
-        void Add(NormalizedPathNode last, IValue value);
+        void Add(JsonLocationNode lastNode, IValue value);
     };
 
     sealed class SynchronizedNodeAccumulator : INodeAccumulator
@@ -78,9 +78,9 @@ namespace JsonCons.JsonPath
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void Add(NormalizedPathNode last, IValue value)
+        public void Add(JsonLocationNode lastNode, IValue value)
         {
-            _accumulator.Add(last, value);
+            _accumulator.Add(lastNode, value);
         }
     }
 
@@ -93,7 +93,7 @@ namespace JsonCons.JsonPath
             _values = values;
         }
 
-        public void Add(NormalizedPathNode last, IValue value)
+        public void Add(JsonLocationNode lastNode, IValue value)
         {
             _values.Add(value.GetJsonElement());
         }
@@ -108,7 +108,7 @@ namespace JsonCons.JsonPath
             _values = values;
         }
 
-        public void Add(NormalizedPathNode last, IValue value)
+        public void Add(JsonLocationNode lastNode, IValue value)
         {
             _values.Add(value);
         }
@@ -116,16 +116,16 @@ namespace JsonCons.JsonPath
 
     sealed class PathAccumulator : INodeAccumulator
     {
-        IList<NormalizedPath> _values;
+        IList<JsonLocation> _values;
 
-        internal PathAccumulator(IList<NormalizedPath> values)
+        internal PathAccumulator(IList<JsonLocation> values)
         {
             _values = values;
         }
 
-        public void Add(NormalizedPathNode last, IValue value)
+        public void Add(JsonLocationNode lastNode, IValue value)
         {
-            _values.Add(new NormalizedPath(last));
+            _values.Add(new JsonLocation(lastNode));
         }
     }
 
@@ -138,9 +138,9 @@ namespace JsonCons.JsonPath
             _nodes = nodes;
         }
 
-        public void Add(NormalizedPathNode last, IValue value)
+        public void Add(JsonLocationNode lastNode, IValue value)
         {
-            _nodes.Add(new PathValuePair(new NormalizedPath(last), value.GetJsonElement()));
+            _nodes.Add(new PathValuePair(new JsonLocation(lastNode), value.GetJsonElement()));
         }
     }
 

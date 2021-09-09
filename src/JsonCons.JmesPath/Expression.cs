@@ -640,33 +640,33 @@ namespace JsonCons.JmesPath
             for (int i = _tokens.Length-1; i >= 0; --i)
             {
                 var token = _tokens[i];
-                switch (token.TokenKind)
+                switch (token.Type)
                 {
-                    case JmesPathTokenKind.Literal:
+                    case TokenType.Literal:
                     {
                         stack.Push(token.GetValue());
                         break;
                     }
-                    case JmesPathTokenKind.BeginExpressionType:
+                    case TokenType.BeginExpressionType:
                     {
                         Debug.Assert(i>0);
                         token = _tokens[--i];
-                        Debug.Assert(token.TokenKind == JmesPathTokenKind.Expression);
+                        Debug.Assert(token.Type == TokenType.Expression);
                         Debug.Assert(stack.Count != 0);
                         stack.Pop();
                         stack.Push(new ExpressionValue(token.GetExpression()));
                         break;
                     }
-                    case JmesPathTokenKind.Pipe:
+                    case TokenType.Pipe:
                     {
                         Debug.Assert(stack.Count != 0);
                         root_ptr = stack.Peek();
                         break;
                     }
-                    case JmesPathTokenKind.CurrentNode:
+                    case TokenType.CurrentNode:
                         stack.Push(root_ptr);
                         break;
-                    case JmesPathTokenKind.Expression:
+                    case TokenType.Expression:
                     {
                         Debug.Assert(stack.Count != 0);
                         var ptr = stack.Pop();
@@ -679,7 +679,7 @@ namespace JsonCons.JmesPath
                         stack.Push(val);
                         break;
                     }
-                    case JmesPathTokenKind.UnaryOperator:
+                    case TokenType.UnaryOperator:
                     {
                         Debug.Assert(stack.Count >= 1);
                         var rhs = stack.Pop();
@@ -692,7 +692,7 @@ namespace JsonCons.JmesPath
                         stack.Push(val);
                         break;
                     }
-                    case JmesPathTokenKind.BinaryOperator:
+                    case TokenType.BinaryOperator:
                     {
                         Debug.Assert(stack.Count >= 2);
                         var rhs = stack.Pop();
@@ -706,13 +706,13 @@ namespace JsonCons.JmesPath
                         stack.Push(val);
                         break;
                     }
-                    case JmesPathTokenKind.Argument:
+                    case TokenType.Argument:
                     {
                         Debug.Assert(stack.Count != 0);
                         argStack.Add(stack.Pop());
                         break;
                     }
-                    case JmesPathTokenKind.Function:
+                    case TokenType.Function:
                     {
                         if (token.GetFunction().Arity != null && token.GetFunction().Arity != argStack.Count())
                         {

@@ -633,9 +633,17 @@
             </code>
             </example>
         </member>
+        <member name="P:JsonCons.Utilities.JsonPointer.Default">
+            <summary>Gets a singleton instance of a <see cref="T:JsonCons.Utilities.JsonPointer"/> to the root value of a JSON document.</summary>
+        </member>
         <member name="P:JsonCons.Utilities.JsonPointer.Tokens">
             <summary>
             Returns a list of (unescaped) reference tokens
+            </summary>
+        </member>
+        <member name="M:JsonCons.Utilities.JsonPointer.#ctor">
+            <summary>
+            Constructs a JSON Pointer to the root value of a JSON document
             </summary>
         </member>
         <member name="M:JsonCons.Utilities.JsonPointer.#ctor(System.Collections.Generic.IReadOnlyList{System.String})">

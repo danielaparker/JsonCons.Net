@@ -10,18 +10,24 @@ namespace JsonCons.Utilities
 {
     internal class JsonDocumentBuilder
     {
+        internal static JsonDocumentBuilder Default { get; } = new JsonDocumentBuilder();
+
         internal JsonValueKind ValueKind {get;}
 
-        object _item;
+        object? _item;
 
         IList<JsonDocumentBuilder> GetList()
         {
-            return (IList<JsonDocumentBuilder>)_item;
+            return _item as IList<JsonDocumentBuilder> ?? throw new InvalidOperationException("Item is null");
         }
 
         IDictionary<string,JsonDocumentBuilder> GetDictionary()
         {
-            return (IDictionary<string,JsonDocumentBuilder>)_item;
+            return _item as IDictionary<string, JsonDocumentBuilder> ?? throw new InvalidOperationException("Item is null");
+        }
+        internal JsonDocumentBuilder()
+            : this(JsonValueKind.Null)
+        {
         }
 
         internal JsonDocumentBuilder(JsonValueKind valueKind)
@@ -226,7 +232,7 @@ namespace JsonCons.Utilities
             }
             if (ValueKind != JsonValueKind.Object)
             {
-                value = null;
+                value = JsonDocumentBuilder.Default;
                 return false;
             }
             return GetDictionary().TryGetValue(name, out value);

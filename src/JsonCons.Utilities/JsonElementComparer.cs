@@ -101,8 +101,10 @@ namespace JsonCons.Utilities
                 }
     
                 case JsonValueKind.String:
-                    return lhs.GetString().CompareTo(rhs.GetString()); 
-    
+                {
+                    return string.Compare(lhs.GetString(), rhs.GetString());
+                }
+
                 case JsonValueKind.Array:
                 {
                     var enumerator1 = lhs.EnumerateArray();
