@@ -12,6 +12,7 @@ System.Text.Json namespace with support for JMESPath. It supports transforming a
     <RepositoryUrl>https://github.com/danielaparker/JsonCons.Net</RepositoryUrl>
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
     <PackageTags>jmespath</PackageTags>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

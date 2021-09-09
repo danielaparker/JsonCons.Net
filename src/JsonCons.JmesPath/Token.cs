@@ -38,7 +38,7 @@ namespace JsonCons.JmesPath
     readonly struct Token : IEquatable<Token>
     {
         readonly JmesPathTokenKind _tokenKind;
-        readonly object _expr;
+        readonly object? _expr;
 
         internal Token(JmesPathTokenKind tokenKind)
         {
@@ -156,37 +156,37 @@ namespace JsonCons.JmesPath
         internal string GetKey()
         {
             Debug.Assert(_tokenKind == JmesPathTokenKind.Key);
-            return (string)_expr;
+            return _expr as string ?? throw new InvalidOperationException("Key cannot be null");
         }
 
         internal IUnaryOperator GetUnaryOperator()
         {
             Debug.Assert(_tokenKind == JmesPathTokenKind.UnaryOperator);
-            return (IUnaryOperator)_expr;
+            return _expr as IUnaryOperator ?? throw new InvalidOperationException("Unary operator cannot be null");
         }
 
         internal IBinaryOperator GetBinaryOperator()
         {
             Debug.Assert(_tokenKind == JmesPathTokenKind.BinaryOperator);
-            return (IBinaryOperator)_expr;
+            return _expr as IBinaryOperator ?? throw new InvalidOperationException("Binary operator cannot be null");
         }
 
         internal IValue GetValue()
         {
             Debug.Assert(_tokenKind == JmesPathTokenKind.Literal);
-            return (IValue)_expr;
+            return _expr as IValue ?? throw new InvalidOperationException("Value cannot be null");
         }
 
         internal IFunction GetFunction()
         {
             Debug.Assert(_tokenKind == JmesPathTokenKind.Function);
-            return (IFunction)_expr;
+            return _expr as IFunction ?? throw new InvalidOperationException("Function cannot be null");
         }
 
         internal IExpression GetExpression()
         {
             Debug.Assert(_tokenKind == JmesPathTokenKind.Expression);
-            return (IExpression)_expr;
+            return _expr as IExpression ?? throw new InvalidOperationException("Expression cannot be null");
         }
         public bool Equals(Token other)
         {

@@ -170,7 +170,7 @@ namespace JsonCons.JmesPath
 
         public string GetString()
         {
-            return _element.GetString();
+            return _element.GetString() ?? throw new InvalidOperationException("String cannot be null");
         }
 
         public bool TryGetDecimal(out Decimal value)
@@ -558,7 +558,7 @@ namespace JsonCons.JmesPath
 
             public IValue Current
             {
-                get { return _enumerator.Current as IValue; }
+                get { return _enumerator.Current as IValue ?? throw new InvalidOperationException("Current cannot be null"); }
             }
 
             object System.Collections.IEnumerator.Current

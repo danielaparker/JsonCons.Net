@@ -139,37 +139,37 @@ namespace JsonCons.JsonPath
         internal IValue GetValue()
         {
             Debug.Assert(_type == JsonPathTokenKind.Value);
-            return _expr as IValue ?? throw new InvalidOperationException("Expression is null");
+            return _expr as IValue ?? throw new InvalidOperationException("Value cannot be null");
         }
 
         internal ISelector GetSelector()
         {
             Debug.Assert(_type == JsonPathTokenKind.Selector);
-            return _expr as ISelector ?? throw new InvalidOperationException("Expression is null");;
+            return _expr as ISelector ?? throw new InvalidOperationException("Selector cannot be null");;
         }
 
         internal IFunction GetFunction()
         {
             Debug.Assert(_type == JsonPathTokenKind.Function);
-            return _expr as IFunction ?? throw new InvalidOperationException("Expression is null");;
+            return _expr as IFunction ?? throw new InvalidOperationException("Function cannot be null");;
         }
 
         internal IExpression GetExpression()
         {
             Debug.Assert(_type == JsonPathTokenKind.Expression);
-            return _expr as IExpression ?? throw new InvalidOperationException("Expression is null");;
+            return _expr as IExpression ?? throw new InvalidOperationException("Expression cannot be null");;
         }
 
         internal IUnaryOperator GetUnaryOperator()
         {
             Debug.Assert(_type == JsonPathTokenKind.UnaryOperator);
-            return _expr as IUnaryOperator ?? throw new InvalidOperationException("Expression is null");;
+            return _expr as IUnaryOperator ?? throw new InvalidOperationException("Unary operator cannot be null");;
         }
 
         internal IBinaryOperator GetBinaryOperator()
         {
             Debug.Assert(_type == JsonPathTokenKind.BinaryOperator);
-            return _expr as IBinaryOperator ?? throw new InvalidOperationException("Expression is null");;
+            return _expr as IBinaryOperator ?? throw new InvalidOperationException("Binary operator cannot be null");;
         }
 
         public bool Equals(Token other)
