@@ -349,7 +349,7 @@ namespace JsonCons.Utilities
 
             foreach (var item in value.EnumerateObject())
             {
-                JsonDocumentBuilder parent = null;
+                JsonDocumentBuilder? parent = null;
                 JsonDocumentBuilder part = result;
                 int parentIndex = 0;
                 string parentName = "";

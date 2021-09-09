@@ -85,7 +85,7 @@ namespace JsonCons.Utilities
                                   JsonDocumentBuilder value)
         {
             JsonDocumentBuilder current = root;
-            string token = null;
+            string token = "";
 
             var enumerator = location.GetEnumerator();
             bool more = enumerator.MoveNext();
@@ -157,7 +157,7 @@ namespace JsonCons.Utilities
                                           JsonDocumentBuilder value)
         {
             JsonDocumentBuilder current = root;
-            string token = null;
+            string token = "";
 
             var enumerator = location.GetEnumerator();
             bool more = enumerator.MoveNext();
@@ -228,7 +228,7 @@ namespace JsonCons.Utilities
                                      ref JsonDocumentBuilder root)
         {
             JsonDocumentBuilder current = root;
-            string token = null;
+            string token = "";
 
             var enumerator = location.GetEnumerator();
             bool more = enumerator.MoveNext();
@@ -288,7 +288,7 @@ namespace JsonCons.Utilities
                                       JsonDocumentBuilder value)
         {
             JsonDocumentBuilder current = root;
-            string token = null;
+            string token = "";
 
             var enumerator = location.GetEnumerator();
             bool more = enumerator.MoveNext();

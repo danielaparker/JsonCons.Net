@@ -60,12 +60,24 @@ namespace JsonCons.Utilities
 
     public sealed class JsonPointer : IEnumerable<string>, IEquatable<JsonPointer>
     {
+        /// <summary>Gets a singleton instance of a <see cref="JsonPointer"/> to the root value of a JSON document.</summary>
+        public static JsonPointer Default {get;} = new JsonPointer();
+
         enum JsonPointerState {Start, Escaped, Delim}
 
         /// <summary>
         /// Returns a list of (unescaped) reference tokens
         /// </summary>
         public IReadOnlyList<string> Tokens {get;}
+
+        /// <summary>
+        /// Constructs a JSON Pointer to the root value of a JSON document
+        /// </summary>
+
+        public JsonPointer()
+        {
+            Tokens = new List<string>();
+        }
 
         /// <summary>
         /// Constructs a JSON Pointer from a list of (unescaped) reference tokens 
@@ -147,7 +159,7 @@ namespace JsonCons.Utilities
                                     state = JsonPointerState.Delim;
                                     break;
                                 default:
-                                    pointer = null;
+                                    pointer = JsonPointer.Default;
                                     return false;
                             };
                             break;
@@ -177,12 +189,12 @@ namespace JsonCons.Utilities
                                     state = JsonPointerState.Delim;
                                     break;
                                 default:
-                                    pointer = null;
+                                    pointer = JsonPointer.Default;
                                     return false;
                             };
                             break;
                         default:
-                            pointer = null;
+                            pointer = JsonPointer.Default;
                             return false;
                     }
                     ++index;
@@ -302,7 +314,7 @@ namespace JsonCons.Utilities
                return false;
             }
 
-            return Equals(other as JsonPointer);
+            return Equals((JsonPointer)other);
         }
 
         /// <summary>
