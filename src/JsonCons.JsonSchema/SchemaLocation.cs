@@ -23,6 +23,8 @@ namespace JsonCons.JsonSchema
 
         internal Uri Uri {get;}
 
+        internal string Scheme {get {return Uri.Scheme;}}
+
         internal string Fragment {get {return Uri.Fragment;}}
 
         internal bool IsAbsoluteUri 

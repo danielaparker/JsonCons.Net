@@ -58,9 +58,9 @@ namespace JsonCons.JsonSchema
 
     class ValidatorRegistry
     {
-        internal Dictionary<string, KeywordValidator> Validators {get;set;} = new Dictionary<string, KeywordValidator>();
-        internal Dictionary<string, ReferenceValidator> Unresolved {get;set;} = new Dictionary<string, ReferenceValidator>();
-        internal Dictionary<string, JsonElement> UnprocessedKeywords {get;set;} = new Dictionary<string, JsonElement>();
+        internal Dictionary<string, KeywordValidator> Validators {get;} = new Dictionary<string, KeywordValidator>();
+        internal Dictionary<string, ReferenceValidator> Unresolved {get;} = new Dictionary<string, ReferenceValidator>();
+        internal Dictionary<string, JsonElement> UnprocessedKeywords {get;} = new Dictionary<string, JsonElement>();
     };
 
     class KeywordValidatorFactory : IKeywordValidatorFactory
@@ -168,59 +168,55 @@ namespace JsonCons.JsonSchema
 
         void Insert(SchemaLocation uri, KeywordValidator s)
         {
-            var file = GetOrCreateFile(uri.base());
-            auto schemas_it = file.Validators.lower_bound(uri.Fragment));
-            if (schemas_it != file.Validators.end() && !(file.Validators.key_comp()(uri.Fragment, schemas_it->first))) 
+            var file = GetOrCreateFile(uri.Scheme);
+
+            if (file.Validators.ContainsKey(uri.Fragment))
             {
-                JSONCONS_THROW(schema_error("schema with " + uri.string() + " already inserted"));
-                return;
+                throw new JsonSchemaException($"Schema with {uri} already inserted.");
             }
 
-            file.Validators.insert({string(uri.Fragment), s});
+            file.Validators.Add(uri.Fragment, s);
 
             // is there an Unresolved reference to this newly inserted schema?
-            auto unresolved_it = file.Unresolved.find(string(uri.Fragment));
-            if (unresolved_it != file.Unresolved.end()) 
-            {
-                unresolved_it->second->SetReferredValidator(s);
-                file.Unresolved.erase(unresolved_it);
 
+            ReferenceValidator reference;
+            if (file.Unresolved.TryGetValue(uri.Fragment, out reference))
+            {
+                reference.SetReferredValidator(s);
+                file.Unresolved.Remove(uri.Fragment);
             }
         }
 
-        void InsertUnknownKeyword(SchemaLocation uri, 
-                                    const string& key, 
-                                    const Json& value)
+        void InsertUnknownKeyword(SchemaLocation uri, string key, JsonElement value)
         {
-            auto &file = GetOrCreateFile(string(uri.base()));
-            auto new_u = uri.append(key);
-            schema_location new_uri(new_u);
+            var file = GetOrCreateFile(uri.Scheme);
+            var newUri = SchemaLocation.Append(uri, key);
 
-            if (new_uri.has_json_pointer()) 
+            if (newUri.HasJsonPointer) 
             {
-                auto fragment = string(new_uri.fragment());
+                var fragment = newUri.Fragment;
                 // is there a reference looking for this unknown-keyword, which is thus no longer a unknown keyword but a schema
-                auto Unresolved = file.Unresolved.find(fragment);
+                var Unresolved = file.Unresolved.find(fragment);
                 if (Unresolved != file.Unresolved.end())
-                    make_keyword_validator(value, {{new_uri}}, {});
+                    make_keyword_validator(value, {{newUri}}, {});
                 else // no, nothing ref'd it, keep for later
                     file.UnprocessedKeywords[fragment] = value;
 
                 // recursively add possible subschemas of unknown keywords
                 if (value.type() == json_type::object_value)
-                    for (const auto& subsch : value.object_range())
+                    for (const var& subsch : value.object_range())
                     {
-                        InsertUnknownKeyword(new_uri, subsch.key(), subsch.value());
+                        InsertUnknownKeyword(newUri, subsch.key(), subsch.value());
                     }
             }
         }
 
-        KeywordValidator get_or_create_reference(const schema_location& uri)
+        KeywordValidator GetOrCreateReference(const SchemaLocation& uri)
         {
-            auto &file = GetOrCreateFile(string(uri.base()));
+            var &file = GetOrCreateFile(string(uri.base()));
 
             // a schema already exists
-            auto sch = file.Validators.find(string(uri.Fragment));
+            var sch = file.Validators.find(string(uri.Fragment));
             if (sch != file.Validators.end())
                 return sch->second;
 
@@ -231,26 +227,26 @@ namespace JsonCons.JsonSchema
             if (uri.has_json_pointer()) 
             {
                 string fragment = string(uri.Fragment);
-                auto unprocessed_keywords_it = file.UnprocessedKeywords.find(fragment);
+                var unprocessed_keywords_it = file.UnprocessedKeywords.find(fragment);
                 if (unprocessed_keywords_it != file.UnprocessedKeywords.end()) 
                 {
-                    auto &subsch = unprocessed_keywords_it->second; 
-                    auto s = make_keyword_validator(subsch, {{uri}}, {});       //  A JSON Schema MUST be an object or a boolean.
+                    var &subsch = unprocessed_keywords_it->second; 
+                    var s = make_keyword_validator(subsch, {{uri}}, {});       //  A JSON Schema MUST be an object or a boolean.
                     file.UnprocessedKeywords.erase(unprocessed_keywords_it);
                     return s;
                 }
             }
 
             // get or create a ReferenceValidator
-            auto ref = file.Unresolved.lower_bound(string(uri.Fragment));
+            var ref = file.Unresolved.lower_bound(string(uri.Fragment));
             if (ref != file.Unresolved.end() && !(file.Unresolved.key_comp()(string(uri.Fragment), ref->first))) 
             {
                 return ref->second; // Unresolved, use existing reference
             } 
             else 
             {
-                auto orig = jsoncons::make_unique<ReferenceValidator<Json>>(uri.string());
-                auto p = file.Unresolved.insert(ref,
+                var orig = jsoncons::make_unique<ReferenceValidator<Json>>(uri.string());
+                var p = file.Unresolved.insert(ref,
                                               {string(uri.Fragment), orig.get()})
                     ->second; // Unresolved, create new reference
 
@@ -259,14 +255,29 @@ namespace JsonCons.JsonSchema
             }
         }
 
-        ValidatorRegistry& GetOrCreateFile(const string& loc)
+        ValidatorRegistry GetOrCreateFile(string loc)
         {
-            auto file = subschema_registries_.lower_bound(loc);
+            var file = subschema_registries_.lower_bound(loc);
             if (file != subschema_registries_.end() && !(subschema_registries_.key_comp()(loc, file->first)))
                 return file->second;
             else
                 return subschema_registries_.insert(file, {loc, {}})->second;
         }
+    }
+
+    public static int LowerBound<T>(this IList<T> sortedCollection, T key) where T : IComparable<T> 
+    {
+        int begin = 0;
+        int end = sortedCollection.Count;
+        while (end > begin) {
+            int index = (begin + end) / 2;
+            T el = sortedCollection[index];
+            if (el.CompareTo(key) >= 0)
+                end = index;
+            else
+                begin = index + 1;
+        }
+        return end;
     }
 
 } // namespace JsonCons.JsonSchema
