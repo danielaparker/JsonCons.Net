@@ -12,7 +12,7 @@ namespace JsonCons.Utilities
     /// <summary>
     /// Captures error message and the operation that caused it.
     /// </summary>
-    public class JsonPatchException : Exception
+    public sealed class JsonPatchException : Exception
     {
         /// <summary>
         /// Constructs a <see cref="JsonPatchException"/>.
