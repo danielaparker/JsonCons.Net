@@ -63,16 +63,16 @@ namespace JsonCons.JsonPath
         }
     };
 
-    interface INodeAccumulator
+    interface INodeReceiver
     {
         void Add(JsonLocationNode lastNode, IValue value);
     };
 
-    sealed class SynchronizedNodeAccumulator : INodeAccumulator
+    sealed class SynchronizedNodeReceiver : INodeReceiver
     {
-        INodeAccumulator _accumulator;
+        INodeReceiver _accumulator;
 
-        internal SynchronizedNodeAccumulator(INodeAccumulator accumulator)
+        internal SynchronizedNodeReceiver(INodeReceiver accumulator)
         {
             _accumulator = accumulator;
         }
@@ -84,11 +84,11 @@ namespace JsonCons.JsonPath
         }
     }
 
-    sealed class JsonElementAccumulator : INodeAccumulator
+    sealed class JsonElementReceiver : INodeReceiver
     {
         IList<JsonElement> _values;
 
-        internal JsonElementAccumulator(IList<JsonElement> values)
+        internal JsonElementReceiver(IList<JsonElement> values)
         {
             _values = values;
         }
@@ -99,11 +99,11 @@ namespace JsonCons.JsonPath
         }
     }
 
-    sealed class ValueAccumulator : INodeAccumulator
+    sealed class ValueReceiver : INodeReceiver
     {
         IList<IValue> _values;
 
-        internal ValueAccumulator(IList<IValue> values)
+        internal ValueReceiver(IList<IValue> values)
         {
             _values = values;
         }
@@ -114,11 +114,11 @@ namespace JsonCons.JsonPath
         }
     }
 
-    sealed class PathAccumulator : INodeAccumulator
+    sealed class PathReceiver : INodeReceiver
     {
         IList<JsonLocation> _values;
 
-        internal PathAccumulator(IList<JsonLocation> values)
+        internal PathReceiver(IList<JsonLocation> values)
         {
             _values = values;
         }
@@ -129,11 +129,11 @@ namespace JsonCons.JsonPath
         }
     }
 
-    sealed class NodeAccumulator : INodeAccumulator
+    sealed class NodeReceiver : INodeReceiver
     {
         IList<PathValuePair> _nodes;
 
-        internal NodeAccumulator(IList<PathValuePair> nodes)
+        internal NodeReceiver(IList<PathValuePair> nodes)
         {
             _nodes = nodes;
         }

@@ -44,7 +44,7 @@ namespace JsonCons.JsonPath
                     IValue root,
                     JsonLocationNode lastNode,
                     IValue current, 
-                    INodeAccumulator accumulator,
+                    INodeReceiver accumulator,
                     ProcessingFlags options,
                     int depth);
 
@@ -68,7 +68,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeAccumulator accumulator,
+                                    INodeReceiver accumulator,
                                     ProcessingFlags options,
                                     int depth);
 
@@ -95,7 +95,7 @@ namespace JsonCons.JsonPath
                                   IValue root, 
                                   JsonLocationNode lastNode,
                                   IValue current,
-                                  INodeAccumulator accumulator,
+                                  INodeReceiver accumulator,
                                   ProcessingFlags options,
                                   int depth)
         {
@@ -146,7 +146,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeAccumulator accumulator,
+                                    INodeReceiver accumulator,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -192,7 +192,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeAccumulator accumulator,
+                                    INodeReceiver accumulator,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -231,7 +231,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeAccumulator accumulator,
+                                    INodeReceiver accumulator,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -332,7 +332,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeAccumulator accumulator,
+                                    INodeReceiver accumulator,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -406,7 +406,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeAccumulator accumulator,
+                                    INodeReceiver accumulator,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -487,7 +487,7 @@ namespace JsonCons.JsonPath
                                     IValue root,
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeAccumulator accumulator,
+                                    INodeReceiver accumulator,
                                     ProcessingFlags options,
                                     int depth) 
         {
@@ -545,10 +545,10 @@ namespace JsonCons.JsonPath
                                          out IValue results) 
         {
             var elements = new List<IValue>();
-            INodeAccumulator accumulator = new ValueAccumulator(elements);  
+            INodeReceiver accumulator = new ValueReceiver(elements);  
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeAccumulator(accumulator);
+                accumulator = new SynchronizedNodeReceiver(accumulator);
             }
             Select(resources, 
                    root, 
@@ -573,7 +573,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeAccumulator accumulator,
+                                    INodeReceiver accumulator,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -612,10 +612,10 @@ namespace JsonCons.JsonPath
                                          out IValue results)
         {
             var elements = new List<IValue>();
-            INodeAccumulator accumulator = new ValueAccumulator(elements);  
+            INodeReceiver accumulator = new ValueReceiver(elements);  
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeAccumulator(accumulator);
+                accumulator = new SynchronizedNodeReceiver(accumulator);
             }
             Select(resources, 
                    root, 
@@ -640,7 +640,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeAccumulator accumulator,
+                                    INodeReceiver accumulator,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -672,10 +672,10 @@ namespace JsonCons.JsonPath
                                          out IValue results)
         {
             var elements = new List<IValue>();
-            INodeAccumulator accumulator = new ValueAccumulator(elements);  
+            INodeReceiver accumulator = new ValueReceiver(elements);  
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeAccumulator(accumulator);
+                accumulator = new SynchronizedNodeReceiver(accumulator);
             }
             Select(resources, 
                    root, 
@@ -725,7 +725,7 @@ namespace JsonCons.JsonPath
                            IValue root, 
                            JsonLocationNode lastNode,
                            IValue current,
-                           INodeAccumulator accumulator,
+                           INodeReceiver accumulator,
                            ProcessingFlags options,
                            int depth)
         {
@@ -753,10 +753,10 @@ namespace JsonCons.JsonPath
                                 out IValue results)
         {
             var elements = new List<IValue>();
-            INodeAccumulator accumulator = new ValueAccumulator(elements);  
+            INodeReceiver accumulator = new ValueReceiver(elements);  
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeAccumulator(accumulator);
+                accumulator = new SynchronizedNodeReceiver(accumulator);
             }
             Select(resources, 
                    root, 
@@ -793,7 +793,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeAccumulator accumulator,
+                                    INodeReceiver accumulator,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -836,10 +836,10 @@ namespace JsonCons.JsonPath
                                          out IValue results)
         {
             var elements = new List<IValue>();
-            INodeAccumulator accumulator = new ValueAccumulator(elements);  
+            INodeReceiver accumulator = new ValueReceiver(elements);  
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeAccumulator(accumulator);
+                accumulator = new SynchronizedNodeReceiver(accumulator);
             }
             Select(resources, 
                    root, 

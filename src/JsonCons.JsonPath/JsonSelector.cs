@@ -298,10 +298,10 @@ namespace JsonCons.JsonPath
             if ((flags & ProcessingFlags.SortByPath | flags & ProcessingFlags.NoDups) != 0)
             {
                 var nodes = new List<PathValuePair>();
-                INodeAccumulator accumulator = new NodeAccumulator(nodes);
+                INodeReceiver accumulator = new NodeReceiver(nodes);
                 if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
                 {
-                    accumulator = new SynchronizedNodeAccumulator(accumulator);
+                    accumulator = new SynchronizedNodeReceiver(accumulator);
                 }
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
@@ -347,10 +347,10 @@ namespace JsonCons.JsonPath
             }
             else
             {
-                INodeAccumulator accumulator = new JsonElementAccumulator(values);            
+                INodeReceiver accumulator = new JsonElementReceiver(values);            
                 if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
                 {
-                    accumulator = new SynchronizedNodeAccumulator(accumulator);
+                    accumulator = new SynchronizedNodeReceiver(accumulator);
                 }
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
@@ -395,10 +395,10 @@ namespace JsonCons.JsonPath
             }
 
             var paths = new List<JsonLocation>();
-            INodeAccumulator accumulator = new PathAccumulator(paths);
+            INodeReceiver accumulator = new PathReceiver(paths);
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeAccumulator(accumulator);
+                accumulator = new SynchronizedNodeReceiver(accumulator);
             }
             _selector.Select(resources, 
                              new JsonElementValue(root), 
@@ -468,10 +468,10 @@ namespace JsonCons.JsonPath
             }
 
             var nodes = new List<PathValuePair>();
-            INodeAccumulator accumulator = new NodeAccumulator(nodes);
+            INodeReceiver accumulator = new NodeReceiver(nodes);
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeAccumulator(accumulator);
+                accumulator = new SynchronizedNodeReceiver(accumulator);
             }
             _selector.Select(resources, 
                              new JsonElementValue(root), 
