@@ -10,10 +10,21 @@ using System.Text.RegularExpressions;
 
 namespace JsonCons.JsonSchema
 {
+    static class JsonElementConstants
+    {
+        internal static JsonElement NullValue {get;}
+
+        static JsonElementConstants()
+        {
+            using JsonDocument doc = JsonDocument.Parse("null");
+            NullValue = doc.RootElement.Clone();
+        }
+    }
 
     class ReferenceValidator : KeywordValidator
     {
         KeywordValidator _referredValidator;
+
         internal ReferenceValidator(string id)
             : base(id) 
         {
@@ -50,7 +61,8 @@ namespace JsonCons.JsonSchema
                                                     this.AbsoluteKeywordLocation, 
                                                     instanceLocation.ToString(), 
                                                     "Unresolved schema reference"));
-                return;
+                defaultValue = JsonElementConstants.NullValue;
+                return false;
             }
             return _referredValidator.TryGetDefaultValue(instanceLocation, instance, reporter, out defaultValue);
         }
@@ -65,6 +77,16 @@ namespace JsonCons.JsonSchema
 
     class KeywordValidatorFactory : IKeywordValidatorFactory
     {
+        Func<Uri,JsonDocument> _uriResolver;
+        IDictionary<string,ValidatorRegistry> _validatorRegistries;
+
+        internal KeywordValidatorFactory(Func<Uri,JsonDocument> uriResolver)
+        {
+            _uriResolver = uriResolver;
+            _validatorRegistries = new Dictionary<string,ValidatorRegistry>();
+
+        }
+
         IList<SchemaLocation> UpdateUris(JsonElement schema,
                                          IList<SchemaLocation> uris,
                                          IList<string> keys)
@@ -168,7 +190,7 @@ namespace JsonCons.JsonSchema
 
         void Insert(SchemaLocation uri, KeywordValidator s)
         {
-            var file = GetOrCreateFile(uri.Scheme);
+            var file = GetOrCreateRegistry(uri.Scheme);
 
             if (file.Validators.ContainsKey(uri.Fragment))
             {
@@ -189,48 +211,54 @@ namespace JsonCons.JsonSchema
 
         void InsertUnknownKeyword(SchemaLocation uri, string key, JsonElement value)
         {
-            var file = GetOrCreateFile(uri.Scheme);
+            ValidatorRegistry file = GetOrCreateRegistry(uri.Scheme);
             var newUri = SchemaLocation.Append(uri, key);
 
             if (newUri.HasJsonPointer) 
             {
                 var fragment = newUri.Fragment;
                 // is there a reference looking for this unknown-keyword, which is thus no longer a unknown keyword but a schema
-                var Unresolved = file.Unresolved.find(fragment);
-                if (Unresolved != file.Unresolved.end())
-                    make_keyword_validator(value, {{newUri}}, {});
-                else // no, nothing ref'd it, keep for later
+                ReferenceValidator reference;
+                if (file.Unresolved.TryGetValue(fragment, reference))
+                {
+                    CreateKeywordValidator(value, new List<SchemaLocation>(){newUri}, new List<string>());
+                }
+                else
+                {
                     file.UnprocessedKeywords[fragment] = value;
+                }
 
                 // recursively add possible subschemas of unknown keywords
-                if (value.type() == json_type::object_value)
-                    for (const var& subsch : value.object_range())
+                if (value.ValueKind == JsonValueKind.Object)
+                    foreach (var subsch in value.EnumerateObject())
                     {
-                        InsertUnknownKeyword(newUri, subsch.key(), subsch.value());
+                        InsertUnknownKeyword(newUri, subsch.Name, subsch.Value);
                     }
             }
         }
 
-        KeywordValidator GetOrCreateReference(const SchemaLocation& uri)
+        KeywordValidator GetOrCreateReference(SchemaLocation uri)
         {
-            var &file = GetOrCreateFile(string(uri.base()));
+            var file = GetOrCreateRegistry(uri.Base);
 
             // a schema already exists
-            var sch = file.Validators.find(string(uri.Fragment));
-            if (sch != file.Validators.end())
-                return sch->second;
+            KeywordValidator sch;
+            if (file.Validators.TryGetValue(uri.Fragment, out sch))
+            {
+                return sch;
+            }
 
             // referencing an unknown keyword, turn it into schema
             //
             // an unknown keyword can only be referenced by a JSONPointer,
             // not by a plain name identifier
-            if (uri.has_json_pointer()) 
+            if (uri.HasJsonPointer) 
             {
-                string fragment = string(uri.Fragment);
+                string fragment = uri.Fragment;
                 var unprocessed_keywords_it = file.UnprocessedKeywords.find(fragment);
                 if (unprocessed_keywords_it != file.UnprocessedKeywords.end()) 
                 {
-                    var &subsch = unprocessed_keywords_it->second; 
+                    var subsch = unprocessed_keywords_it->second; 
                     var s = make_keyword_validator(subsch, {{uri}}, {});       //  A JSON Schema MUST be an object or a boolean.
                     file.UnprocessedKeywords.erase(unprocessed_keywords_it);
                     return s;
@@ -238,46 +266,44 @@ namespace JsonCons.JsonSchema
             }
 
             // get or create a ReferenceValidator
-            var ref = file.Unresolved.lower_bound(string(uri.Fragment));
-            if (ref != file.Unresolved.end() && !(file.Unresolved.key_comp()(string(uri.Fragment), ref->first))) 
+            KeywordValidator validator;
+            if (file.TryGetValue(uri.Fragment, out validator))
             {
-                return ref->second; // Unresolved, use existing reference
-            } 
+                return validator; // Unresolved, use existing reference
+            }
             else 
             {
-                var orig = jsoncons::make_unique<ReferenceValidator<Json>>(uri.string());
-                var p = file.Unresolved.insert(ref,
-                                              {string(uri.Fragment), orig.get()})
-                    ->second; // Unresolved, create new reference
-
-                subschemas_.emplace_back(std::move(orig));
-                return p;
+                var orig = new ReferenceValidator(uri.ToString());
+                file.Unresolved.Add(uri.Fragment, orig); // Unresolved, create new reference
+                return orig;
             }
         }
 
-        ValidatorRegistry GetOrCreateFile(string loc)
+        ValidatorRegistry GetOrCreateRegistry(string loc)
         {
-            var file = subschema_registries_.lower_bound(loc);
-            if (file != subschema_registries_.end() && !(subschema_registries_.key_comp()(loc, file->first)))
-                return file->second;
-            else
-                return subschema_registries_.insert(file, {loc, {}})->second;
+            ValidatorRegistry registry;
+            if (!_validatorRegistries.TryGetValue(loc, out registry))
+            {
+                registry = new ValidatorRegistry();
+                _validatorRegistries.Add(loc, new ValidatorRegistry());
+            }
+            return registry;
         }
-    }
 
-    public static int LowerBound<T>(this IList<T> sortedCollection, T key) where T : IComparable<T> 
-    {
-        int begin = 0;
-        int end = sortedCollection.Count;
-        while (end > begin) {
-            int index = (begin + end) / 2;
-            T el = sortedCollection[index];
-            if (el.CompareTo(key) >= 0)
-                end = index;
-            else
-                begin = index + 1;
+        public static int LowerBound<T>(this IList<T> sortedCollection, T key) where T : IComparable<T> 
+        {
+            int begin = 0;
+            int end = sortedCollection.Count;
+            while (end > begin) {
+                int index = (begin + end) / 2;
+                T el = sortedCollection[index];
+                if (el.CompareTo(key) >= 0)
+                    end = index;
+                else
+                    begin = index + 1;
+            }
+            return end;
         }
-        return end;
     }
 
 } // namespace JsonCons.JsonSchema
