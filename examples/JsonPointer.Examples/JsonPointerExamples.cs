@@ -2,40 +2,53 @@
 using System.Diagnostics;
 using System.Text.Json;
 using JsonCons.Utilities;
+using System.Collections.Generic;
 
 static class JsonPointerExamples
 {
-    static void GetValueExample()
+    static void CreateJsonPointer()
     {
         using var doc = JsonDocument.Parse(@"
 [
-      { ""category"": ""reference"",
-        ""author"": ""Nigel Rees"",
-        ""title"": ""Sayings of the Century"",
-        ""price"": 8.95
-      },
-      { ""category"": ""fiction"",
-        ""author"": ""Evelyn Waugh"",
-        ""title"": ""Sword of Honour"",
-        ""price"": 12.99
-      }
-    ]
+  {
+    ""key"": true,
+    ""other~key"": [""foo""]
+  },
+  {
+    ""key"": false,
+    ""other~key"": [""bar"", ""baz""]
+  },
+  {
+    ""key"": true,
+    ""other~key"": [""qux""]
+  }
+]
         ");
 
         var options = new JsonSerializerOptions() { WriteIndented = true };
 
-        JsonPointer pointer = JsonPointer.Parse("/1/author");
+        var tokens = new List<string>{"1", "other~key"};
+        JsonPointer aPointer = new JsonPointer(tokens);
+        Console.WriteLine($"(1) {aPointer}");
+        //(1) /1/other~0key
+        Console.WriteLine();
+
+        JsonPointer anotherPointer = JsonPointer.Append(aPointer, 1);
+        Console.WriteLine($"(2) {anotherPointer}");
+        //(2) /1/other~0key/1
+        Console.WriteLine();
 
         JsonElement element;
-
-        if (pointer.TryGetValue(doc.RootElement, out element))
+        if (anotherPointer.TryGetValue(doc.RootElement, out element))
         {
-            Console.WriteLine($"{JsonSerializer.Serialize(element, options)}\n");
+            Console.WriteLine($"(3) {JsonSerializer.Serialize(element, options)}\n");
         }
+        //(3) "baz"
+        Console.WriteLine();
     }
 
     // Examples from RFC 6901
-    static void MoreGetValueExamples()
+    static void GetValueExamples()
     {
         using var doc = JsonDocument.Parse(@"
 {
@@ -176,8 +189,8 @@ static class JsonPointerExamples
 
     static void Main(string[] args)
     {
-        JsonPointerExamples.GetValueExample();
-        JsonPointerExamples.MoreGetValueExamples();
+        JsonPointerExamples.CreateJsonPointer();
+        JsonPointerExamples.GetValueExamples();
         JsonPointerExamples.FlattenAndUnflatten();
         JsonPointerExamples.UnflattenAssumingObject();
     }

@@ -12,7 +12,7 @@ namespace JsonCons.JmesPath
     /// Defines a custom exception object that is thrown when JMESPath parsing fails.
     /// </summary>    
 
-    public class JmesPathParseException : Exception
+    public sealed class JmesPathParseException : Exception
     {
         /// <summary>
         /// The line in the JMESPath string where a parse error was detected.

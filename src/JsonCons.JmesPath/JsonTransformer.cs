@@ -75,7 +75,7 @@ namespace JsonCons.JmesPath
     /// </code>
     /// </example>
 
-    public class JsonTransformer
+    public sealed class JsonTransformer
     {
         /// <summary>
         /// Parses a JMESPath string into a <see cref="JsonTransformer"/>, for "parse once, use many times".
