@@ -72,9 +72,9 @@ namespace JsonCons.JsonPath
     {
         INodeReceiver _accumulator;
 
-        internal SynchronizedNodeReceiver(INodeReceiver accumulator)
+        internal SynchronizedNodeReceiver(INodeReceiver receiver                    )
         {
-            _accumulator = accumulator;
+            _accumulator = receiver                    ;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]

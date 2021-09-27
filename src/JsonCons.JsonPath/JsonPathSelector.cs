@@ -44,7 +44,7 @@ namespace JsonCons.JsonPath
                     IValue root,
                     JsonLocationNode lastNode,
                     IValue current, 
-                    INodeReceiver accumulator,
+                    INodeReceiver receiver                    ,
                     ProcessingFlags options,
                     int depth);
 
@@ -68,7 +68,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeReceiver accumulator,
+                                    INodeReceiver receiver                    ,
                                     ProcessingFlags options,
                                     int depth);
 
@@ -95,17 +95,17 @@ namespace JsonCons.JsonPath
                                   IValue root, 
                                   JsonLocationNode lastNode,
                                   IValue current,
-                                  INodeReceiver accumulator,
+                                  INodeReceiver receiver                    ,
                                   ProcessingFlags options,
                                   int depth)
         {
             if (Tail == null)
             {
-                accumulator.Add(lastNode, current);
+                receiver                    .Add(lastNode, current);
             }
             else
             {
-                Tail.Select(resources, root, lastNode, current, accumulator, options, depth);
+                Tail.Select(resources, root, lastNode, current, receiver                    , options, depth);
             }
         }
 
@@ -146,11 +146,11 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeReceiver accumulator,
+                                    INodeReceiver receiver                    ,
                                     ProcessingFlags options,
                                     int depth)
         {
-            this.TailSelect(resources, root, lastNode, root, accumulator, options, depth);        
+            this.TailSelect(resources, root, lastNode, root, receiver                    , options, depth);        
         }
         public override bool TryEvaluate(DynamicResources resources, 
                                          IValue root, 
@@ -192,11 +192,11 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeReceiver accumulator,
+                                    INodeReceiver receiver                    ,
                                     ProcessingFlags options,
                                     int depth)
         {
-            this.TailSelect(resources, root, lastNode, current, accumulator, options, depth);        
+            this.TailSelect(resources, root, lastNode, current, receiver                    , options, depth);        
         }
         public override bool TryEvaluate(DynamicResources resources, IValue root, 
                                          JsonLocationNode lastNode, 
@@ -231,7 +231,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeReceiver accumulator,
+                                    INodeReceiver receiver                    ,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -249,7 +249,7 @@ namespace JsonCons.JsonPath
                 IValue value;
                 if (TryGetValue(root, path, out value))
                 {
-                    this.TailSelect(resources, root, path.Last, value, accumulator, options, depth);        
+                    this.TailSelect(resources, root, path.Last, value, receiver                    , options, depth);        
                 }
             }
         }
@@ -332,7 +332,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeReceiver accumulator,
+                                    INodeReceiver receiver                    ,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -343,7 +343,7 @@ namespace JsonCons.JsonPath
                 {
                     this.TailSelect(resources, root, 
                                       PathGenerator.Generate(lastNode, _identifier, options), 
-                                      value, accumulator, options, depth);
+                                      value, receiver                    , options, depth);
                 }
             }
         }
@@ -406,7 +406,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeReceiver accumulator,
+                                    INodeReceiver receiver                    ,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -416,7 +416,7 @@ namespace JsonCons.JsonPath
                 {
                     this.TailSelect(resources, root, 
                                       PathGenerator.Generate(lastNode, _index, options), 
-                                      current[_index], accumulator, options, depth);
+                                      current[_index], receiver                    , options, depth);
                 }
                 else
                 {
@@ -425,7 +425,7 @@ namespace JsonCons.JsonPath
                     {
                         this.TailSelect(resources, root, 
                                           PathGenerator.Generate(lastNode, _index, options), 
-                                          current[index], accumulator, options, depth);
+                                          current[index], receiver                    , options, depth);
                     }
                 }
             }
@@ -487,7 +487,7 @@ namespace JsonCons.JsonPath
                                     IValue root,
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeReceiver accumulator,
+                                    INodeReceiver receiver                    ,
                                     ProcessingFlags options,
                                     int depth) 
         {
@@ -511,7 +511,7 @@ namespace JsonCons.JsonPath
                     {
                         this.TailSelect(resources, root, 
                                           PathGenerator.Generate(lastNode, i, options), 
-                                          current[i], accumulator, options, depth);
+                                          current[i], receiver                    , options, depth);
                     }
                 }
                 else if (step < 0)
@@ -530,7 +530,7 @@ namespace JsonCons.JsonPath
                         {
                             this.TailSelect(resources, root, 
                                               PathGenerator.Generate(lastNode, i, options), 
-                                              current[i], accumulator, options, depth);
+                                              current[i], receiver                    , options, depth);
                         }
                     }
                 }
@@ -545,16 +545,16 @@ namespace JsonCons.JsonPath
                                          out IValue results) 
         {
             var elements = new List<IValue>();
-            INodeReceiver accumulator = new ValueReceiver(elements);  
+            INodeReceiver receiver = new ValueReceiver(elements);  
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeReceiver(accumulator);
+                receiver = new SynchronizedNodeReceiver(receiver                    );
             }
             Select(resources, 
                    root, 
                    lastNode, 
                    current,
-                   accumulator,
+                   receiver                    ,
                    options,
                    0);   
             results = new ArrayValue(elements);
@@ -573,7 +573,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeReceiver accumulator,
+                                    INodeReceiver receiver                    ,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -584,24 +584,24 @@ namespace JsonCons.JsonPath
 
             if (current.ValueKind == JsonValueKind.Array)
             {
-                this.TailSelect(resources, root, lastNode, current, accumulator, options, depth+1);
+                this.TailSelect(resources, root, lastNode, current, receiver                    , options, depth+1);
                 Int32 index = 0;
                 foreach (var item in current.EnumerateArray())
                 {
                     Select(resources, root, 
                            PathGenerator.Generate(lastNode, index, options), 
-                           item, accumulator, options, depth+1);
+                           item, receiver                    , options, depth+1);
                     ++index;
                 }
             }
             else if (current.ValueKind == JsonValueKind.Object)
             {
-                this.TailSelect(resources, root, lastNode, current, accumulator, options, depth+1);
+                this.TailSelect(resources, root, lastNode, current, receiver                    , options, depth+1);
                 foreach (var prop in current.EnumerateObject())
                 {
                     Select(resources, root, 
                            PathGenerator.Generate(lastNode, prop.Name, options), 
-                           prop.Value, accumulator, options, depth+1);
+                           prop.Value, receiver                    , options, depth+1);
                 }
             }
         }
@@ -612,16 +612,16 @@ namespace JsonCons.JsonPath
                                          out IValue results)
         {
             var elements = new List<IValue>();
-            INodeReceiver accumulator = new ValueReceiver(elements);  
+            INodeReceiver receiver = new ValueReceiver(elements);  
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeReceiver(accumulator);
+                receiver = new SynchronizedNodeReceiver(receiver                    );
             }
             Select(resources, 
                    root, 
                    lastNode, 
                    current,
-                   accumulator,
+                   receiver                    ,
                    options,
                    0);   
             results = new ArrayValue(elements);
@@ -640,7 +640,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeReceiver accumulator,
+                                    INodeReceiver receiver                    ,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -651,7 +651,7 @@ namespace JsonCons.JsonPath
                 {
                     this.TailSelect(resources, root, 
                                     PathGenerator.Generate(lastNode, index, options), 
-                                    item, accumulator, options, depth);
+                                    item, receiver                    , options, depth);
                     ++index;
                 }
             }
@@ -661,7 +661,7 @@ namespace JsonCons.JsonPath
                 {
                     this.TailSelect(resources, root, 
                                     PathGenerator.Generate(lastNode, prop.Name, options), 
-                                    prop.Value, accumulator, options, depth);
+                                    prop.Value, receiver                    , options, depth);
                 }
             }
         }
@@ -672,16 +672,16 @@ namespace JsonCons.JsonPath
                                          out IValue results)
         {
             var elements = new List<IValue>();
-            INodeReceiver accumulator = new ValueReceiver(elements);  
+            INodeReceiver receiver = new ValueReceiver(elements);  
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeReceiver(accumulator);
+                receiver = new SynchronizedNodeReceiver(receiver                    );
             }
             Select(resources, 
                    root, 
                    lastNode, 
                    current,
-                   accumulator,
+                   receiver                    ,
                    options,
                    0);   
             results = new ArrayValue(elements);
@@ -725,7 +725,7 @@ namespace JsonCons.JsonPath
                            IValue root, 
                            JsonLocationNode lastNode,
                            IValue current,
-                           INodeReceiver accumulator,
+                           INodeReceiver receiver                    ,
                            ProcessingFlags options,
                            int depth)
         {
@@ -733,14 +733,14 @@ namespace JsonCons.JsonPath
             {
                 foreach (var selector in _selectors)
                 {
-                    selector.Select(resources, root, lastNode, current, accumulator, options, depth);
+                    selector.Select(resources, root, lastNode, current, receiver                    , options, depth);
                 }
             }
             else
             {
                 Action<int> action = delegate(int i)
                 {
-                    _selectors[i].Select(resources, root, lastNode, current, accumulator, options, depth);
+                    _selectors[i].Select(resources, root, lastNode, current, receiver                    , options, depth);
                 };
                 Parallel.For(0, _selectors.Count, action);
             }
@@ -753,16 +753,16 @@ namespace JsonCons.JsonPath
                                 out IValue results)
         {
             var elements = new List<IValue>();
-            INodeReceiver accumulator = new ValueReceiver(elements);  
+            INodeReceiver receiver = new ValueReceiver(elements);  
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeReceiver(accumulator);
+                receiver = new SynchronizedNodeReceiver(receiver                    );
             }
             Select(resources, 
                    root, 
                    lastNode, 
                    current,
-                   accumulator,
+                   receiver                    ,
                    options,
                    0);   
             results = new ArrayValue(elements);
@@ -793,7 +793,7 @@ namespace JsonCons.JsonPath
                                     IValue root, 
                                     JsonLocationNode lastNode,
                                     IValue current,
-                                    INodeReceiver accumulator,
+                                    INodeReceiver receiver                    ,
                                     ProcessingFlags options,
                                     int depth)
         {
@@ -808,7 +808,7 @@ namespace JsonCons.JsonPath
                     {
                         this.TailSelect(resources, root, 
                                         PathGenerator.Generate(lastNode, index, options), 
-                                        item, accumulator, options, depth);
+                                        item, receiver                    , options, depth);
                     }
                     ++index;
                 }
@@ -823,7 +823,7 @@ namespace JsonCons.JsonPath
                     {
                         this.TailSelect(resources, root, 
                                           PathGenerator.Generate(lastNode, property.Name, options), 
-                                          property.Value, accumulator, options, depth);
+                                          property.Value, receiver                    , options, depth);
                     }
                 }
             }
@@ -836,16 +836,16 @@ namespace JsonCons.JsonPath
                                          out IValue results)
         {
             var elements = new List<IValue>();
-            INodeReceiver accumulator = new ValueReceiver(elements);  
+            INodeReceiver receiver = new ValueReceiver(elements);  
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeReceiver(accumulator);
+                receiver = new SynchronizedNodeReceiver(receiver                    );
             }
             Select(resources, 
                    root, 
                    lastNode, 
                    current,
-                   accumulator,
+                   receiver                    ,
                    options,
                    0);   
             results = new ArrayValue(elements);

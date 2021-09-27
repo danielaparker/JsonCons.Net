@@ -298,16 +298,16 @@ namespace JsonCons.JsonPath
             if ((flags & ProcessingFlags.SortByPath | flags & ProcessingFlags.NoDups) != 0)
             {
                 var nodes = new List<PathValuePair>();
-                INodeReceiver accumulator = new NodeReceiver(nodes);
+                INodeReceiver receiver = new NodeReceiver(nodes);
                 if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
                 {
-                    accumulator = new SynchronizedNodeReceiver(accumulator);
+                    receiver = new SynchronizedNodeReceiver(receiver                    );
                 }
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
                                  JsonLocationNode.Root, 
                                  new JsonElementValue(root), 
-                                 accumulator, 
+                                 receiver                    , 
                                  flags,
                                  0);
 
@@ -347,16 +347,16 @@ namespace JsonCons.JsonPath
             }
             else
             {
-                INodeReceiver accumulator = new JsonElementReceiver(values);            
+                INodeReceiver receiver = new JsonElementReceiver(values);            
                 if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
                 {
-                    accumulator = new SynchronizedNodeReceiver(accumulator);
+                    receiver = new SynchronizedNodeReceiver(receiver                    );
                 }
                 _selector.Select(resources, 
                                  new JsonElementValue(root), 
                                  JsonLocationNode.Root, 
                                  new JsonElementValue(root), 
-                                 accumulator, 
+                                 receiver                    , 
                                  flags,
                                  0);
             }
@@ -395,16 +395,16 @@ namespace JsonCons.JsonPath
             }
 
             var paths = new List<JsonLocation>();
-            INodeReceiver accumulator = new PathReceiver(paths);
+            INodeReceiver receiver = new PathReceiver(paths);
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeReceiver(accumulator);
+                receiver = new SynchronizedNodeReceiver(receiver                    );
             }
             _selector.Select(resources, 
                              new JsonElementValue(root), 
                              JsonLocationNode.Root, 
                              new JsonElementValue(root), 
-                             accumulator, 
+                             receiver                    , 
                              flags | ProcessingFlags.Path,
                              0);
 
@@ -468,16 +468,16 @@ namespace JsonCons.JsonPath
             }
 
             var nodes = new List<PathValuePair>();
-            INodeReceiver accumulator = new NodeReceiver(nodes);
+            INodeReceiver receiver = new NodeReceiver(nodes);
             if (resources.Options.ExecutionMode == PathExecutionMode.Parallel)
             {
-                accumulator = new SynchronizedNodeReceiver(accumulator);
+                receiver = new SynchronizedNodeReceiver(receiver                    );
             }
             _selector.Select(resources, 
                              new JsonElementValue(root), 
                              JsonLocationNode.Root, 
                              new JsonElementValue(root), 
-                             accumulator, 
+                             receiver                    , 
                              flags | ProcessingFlags.Path,
                              0);
 
