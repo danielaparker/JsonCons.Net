@@ -21,27 +21,25 @@ namespace JsonCons.JsonSchema
     {
         public static JsonValidator Create(JsonElement schema)
         {
-            var creator = new JsonValidatorCreator();
-            return creator.Create(schema);
+            return JsonValidatorCreator.Create(schema);
         }
 
         public static JsonValidator Create(JsonElement schema,
                                            Func<Uri,JsonDocument> uriResolver)
         {
-            var creator = new JsonValidatorCreator(uriResolver);
-            return creator.Create(schema);
+            return JsonValidatorCreator.Create(schema, uriResolver);
         }
 
-        bool TryValidate(JsonElement instance)
+        public bool TryValidate(JsonElement instance)
         {
             return true;
         }
 
-        void Validate(JsonElement instance, Action<ValidationOutput> reporter)
+        public void Validate(JsonElement instance, Action<ValidationOutput> reporter)
         {
         }
 
-        void Validate(JsonElement instance, Action<ValidationOutput> reporter, out JsonDocument patch)
+        public void Validate(JsonElement instance, Action<ValidationOutput> reporter, out JsonDocument patch)
         {
             patch = JsonDocument.Parse("null");
         }

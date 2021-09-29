@@ -32,6 +32,11 @@ namespace JsonCons.JsonSchema
             get {return Uri.IsAbsoluteUri;}
         }
 
+        internal string AbsolutePath
+        {
+            get {return Uri.AbsolutePath;}
+        }
+
         internal bool HasJsonPointer 
         {
             get {return Uri.Fragment.Length != 0 && Uri.Fragment[0] == '/';}

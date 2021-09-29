@@ -146,42 +146,41 @@ namespace JsonCons.JsonSchema
                     break;
                 case JsonValueKind.Object:
                 {
-                    if (!schema.TryGetProperty("definitions", out JsonElement))
+                    if (!schema.TryGetProperty("definitions", out element))
                     {
                         foreach (var def in element.EnumerateObject())
                         {
-                            var keys = new List<string>(2);
-                            keys.Add("definitions");
-                            keys.Add(def.Key);
-                            CreateKeywordValidator(def.Value, newUris, keys);
+                            var keys2 = new List<string>(2);
+                            keys2.Add("definitions");
+                            keys2.Add(def.Name);
+                            CreateKeywordValidator(def.Value, newUris, keys2);
                         }
                     }
 
-                    if (!schema.TryGetProperty("$ref", out JsonElement))
+                    if (!schema.TryGetProperty("$ref", out element))
                     { 
                         SchemaLocation relative = new SchemaLocation(element.GetString()); 
-                        SchemaLocation id = SchemaLocation.resolve(relative, newUris[newUris.Count-1]);
+                        SchemaLocation id = SchemaLocation.Resolve(relative, newUris[newUris.Count-1]);
                         validator = GetOrCreateReference(id);
                     } 
                     else 
                     {
-                        validator = TypeValidator.CreateKeywordValidator(this, schema, newUris);
+                        validator = CreateKeywordValidator(schema, newUris, new List<string>() { });
                     }
                     break;
                 }
                 default:
                     throw new JsonSchemaException($"Invalid JSON-type for a schema for {newUris[0]} expected: boolean or object", "");
-                    break;
             }
 
             foreach (var uri in newUris) 
             { 
-                insert(uri, validator);
+                Insert(uri, validator);
 
                 if (schema.ValueKind == JsonValueKind.Object)
                 {
                     foreach (var item in schema.EnumerateObject())
-                        InsertUnknownKeyword(uri, item.Key, item.Value); // save unknown keywords for later reference
+                        InsertUnknownKeyword(uri, item.Name, item.Value); // save unknown keywords for later reference
                 }
             }
 
@@ -219,7 +218,7 @@ namespace JsonCons.JsonSchema
                 var fragment = newUri.Fragment;
                 // is there a reference looking for this unknown-keyword, which is thus no longer a unknown keyword but a schema
                 ReferenceValidator reference;
-                if (file.Unresolved.TryGetValue(fragment, reference))
+                if (file.Unresolved.TryGetValue(fragment, out reference))
                 {
                     CreateKeywordValidator(value, new List<SchemaLocation>(){newUri}, new List<string>());
                 }
@@ -239,7 +238,7 @@ namespace JsonCons.JsonSchema
 
         KeywordValidator GetOrCreateReference(SchemaLocation uri)
         {
-            var file = GetOrCreateRegistry(uri.Base);
+            var file = GetOrCreateRegistry(uri.AbsolutePath);
 
             // a schema already exists
             KeywordValidator sch;
@@ -255,19 +254,18 @@ namespace JsonCons.JsonSchema
             if (uri.HasJsonPointer) 
             {
                 string fragment = uri.Fragment;
-                var unprocessed_keywords_it = file.UnprocessedKeywords.find(fragment);
-                if (unprocessed_keywords_it != file.UnprocessedKeywords.end()) 
+                JsonElement subsch;
+                if (file.UnprocessedKeywords.TryGetValue(fragment, out subsch))
                 {
-                    var subsch = unprocessed_keywords_it->second; 
-                    var s = make_keyword_validator(subsch, {{uri}}, {});       //  A JSON Schema MUST be an object or a boolean.
-                    file.UnprocessedKeywords.erase(unprocessed_keywords_it);
+                    var s = CreateKeywordValidator(subsch, new List<SchemaLocation>(){uri}, new List<string>(){});       //  A JSON Schema MUST be an object or a boolean.
+                    file.UnprocessedKeywords.Remove(fragment);
                     return s;
                 }
             }
 
             // get or create a ReferenceValidator
-            KeywordValidator validator;
-            if (file.TryGetValue(uri.Fragment, out validator))
+            ReferenceValidator validator;
+            if (file.Unresolved.TryGetValue(uri.Fragment, out validator))
             {
                 return validator; // Unresolved, use existing reference
             }
@@ -290,6 +288,10 @@ namespace JsonCons.JsonSchema
             return registry;
         }
 
+    }
+
+    static class Utilities 
+    {
         public static int LowerBound<T>(this IList<T> sortedCollection, T key) where T : IComparable<T> 
         {
             int begin = 0;
@@ -304,6 +306,7 @@ namespace JsonCons.JsonSchema
             }
             return end;
         }
-    }
+
+    };
 
 } // namespace JsonCons.JsonSchema

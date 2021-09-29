@@ -58,6 +58,13 @@ namespace JsonCons.JsonSchema
             return validator;
         }
 
+        internal static JsonValidator Create(JsonElement schema, Func<Uri,JsonDocument> uriResolver)
+        {
+            var validator = new JsonValidator();
+
+            return validator;
+        }
+
         static JsonDocument DefaultUriResolver(Uri uri)
         {
             if (uri.PathAndQuery.Equals("/draft-07/schema"))
