@@ -2008,7 +2008,7 @@ namespace JsonCons.JsonSchema
 
             var lastJsonValueKind = Enum.GetValues(typeof(JsonValueKind)).Cast<JsonValueKind>().Max();
 
-            KeywordValidator[] typeMapping = new KeywordValidator[(int)lastJsonValueKind];
+            KeywordValidator[] typeMapping = new KeywordValidator[(int)lastJsonValueKind+1];
             EnumValidator enumValidator = null;
             ConstValidator constValidator = null;
             IList<KeywordValidator> combinedValidators = new List<KeywordValidator>();
@@ -2191,11 +2191,11 @@ namespace JsonCons.JsonSchema
         }
 
         static void InitializeTypeMapping(IKeywordValidatorFactory validatorFactory,
-                                                     string type,
-                                                     JsonElement sch,
-                                                     IList<SchemaLocation> uris,
-                                                     ISet<string> keywords,
-                                                     IList<KeywordValidator> typeMapping)
+                                          string type,
+                                          JsonElement sch,
+                                          IList<SchemaLocation> uris,
+                                          ISet<string> keywords,
+                                          IList<KeywordValidator> typeMapping)
         {
             switch (type)
             {
@@ -2236,7 +2236,17 @@ namespace JsonCons.JsonSchema
                     break;
                 }
                 default:
+                {
+                    typeMapping[(int)JsonValueKind.Null] = NullValidator.Create(uris);
+                    typeMapping[(int)JsonValueKind.Object] = ObjectValidator.Create(validatorFactory, sch, uris);
+                    typeMapping[(int)JsonValueKind.Array] = ArrayValidator.Create(validatorFactory, sch, uris);
+                    typeMapping[(int)JsonValueKind.String] = StringValidator.Create(sch, uris);
+                    typeMapping[(int)JsonValueKind.True] = BooleanValidator.Create(sch, uris);
+                    typeMapping[(int)JsonValueKind.False] = BooleanValidator.Create(sch, uris);
+                    typeMapping[(int)JsonValueKind.Number] = IntegerValidator.Create(sch, uris, keywords);
+                    typeMapping[(int)JsonValueKind.Number] = DoubleValidator.Create(sch, uris, keywords);
                     break;
+                }
             }
         }
     }
