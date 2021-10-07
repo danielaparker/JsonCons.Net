@@ -51,16 +51,11 @@ namespace JsonCons.JsonSchema
             _uriResolver = uriResolver;
         }
 
-        internal static JsonValidator Create(JsonElement schema)
-        {
-            var validator = new JsonValidator();
-
-            return validator;
-        }
-
         internal static JsonValidator Create(JsonElement schema, Func<Uri,JsonDocument> uriResolver)
         {
-            var validator = new JsonValidator();
+            var factory = new KeywordValidatorFactory(uriResolver);
+            factory.LoadRoot(schema);
+            var validator = new JsonValidator(factory.Root);
 
             return validator;
         }

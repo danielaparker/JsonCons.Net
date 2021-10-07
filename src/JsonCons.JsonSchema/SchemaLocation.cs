@@ -12,16 +12,46 @@ namespace JsonCons.JsonSchema
 {
     class SchemaLocation
     {
+        Uri _location = null;
+        string _pointer = null;
+        string _identifier = null;
+
         internal SchemaLocation(string uri)
         {
-            Uri = new Uri(uri);
+            int pos = uri.IndexOf('#');
+            if (pos != -1)
+            {
+                string s = Uri.UnescapeDataString(uri.Substring(pos+1));
+                if (s.Length > 0 && s[0] == '/')
+                {
+                    _pointer = s;
+                }
+                else
+                {
+                    _identifier = s;
+                }
+
+                string location = uri.Substring(0, pos);
+                if (location.Length > 0)
+                {
+                    _location = new Uri(location);
+                }
+            }
+            else
+            {
+                _location = new Uri(uri);
+            }
         }
         internal SchemaLocation(Uri uri)
         {
-            Uri = uri;
+            _location = uri;
         }
 
-        internal Uri Uri {get;}
+        internal Uri Uri {get {return _location;}}
+
+        internal string Identifier {get {return _identifier;}}
+
+        internal string Pointer {get {return _pointer;}}
 
         internal string Scheme {get {return Uri.Scheme;}}
 
@@ -29,7 +59,7 @@ namespace JsonCons.JsonSchema
 
         internal bool IsAbsoluteUri 
         {
-            get {return Uri.IsAbsoluteUri;}
+            get {return _location != null && Uri.IsAbsoluteUri;}
         }
 
         internal string AbsolutePath
@@ -37,20 +67,26 @@ namespace JsonCons.JsonSchema
             get {return Uri.AbsolutePath;}
         }
 
-        internal bool HasJsonPointer 
-        {
-            get {return Uri.Fragment.Length != 0 && Uri.Fragment[0] == '/';}
-        }
-
         internal bool HasIdentifier
         {
-            get {return Uri.Fragment.Length != 0 && Uri.Fragment[0] != '/';}
+            get {return _identifier != null;}
+        }
+
+        internal bool HasJsonPointer
+        {
+            get {return _pointer != null;}
         }
 
         internal bool TryGetPointer(out string pointer) 
         {
-            pointer = Uri.Fragment;
+            pointer = _pointer;
             return HasJsonPointer ? true : false;
+        }
+
+        internal bool TryGetIdentifier(out string identifier) 
+        {
+            identifier = _identifier;
+            return HasIdentifier ? true : false;
         }
 
         internal static SchemaLocation Resolve(SchemaLocation baseUri, SchemaLocation relativeUri) 
@@ -100,7 +136,22 @@ namespace JsonCons.JsonSchema
 
         public override string ToString()
         {
-            return Uri.ToString();
+            if (_location != null)
+            {
+                return _location.ToString();
+            }
+            else if (_pointer != null)
+            {
+                return _pointer;
+            }
+            else if (_identifier != null)
+            {
+                return _identifier;
+            }
+            else
+            {
+                return "";
+            }
         }
 
         internal string GetPathAndQuery()
@@ -133,7 +184,7 @@ namespace JsonCons.JsonSchema
                     return item;
                 }
             }
-            return new SchemaLocation("");
+            return new SchemaLocation("#");
         }
     }
 

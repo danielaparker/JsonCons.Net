@@ -1269,7 +1269,7 @@ namespace JsonCons.JsonSchema
 
         internal static ObjectValidator Create(IKeywordValidatorFactory validatorFactory,
                                                JsonElement sch,
-                                               List<SchemaLocation> uris)
+                                               IList<SchemaLocation> uris)
         {
             SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
 
@@ -1551,7 +1551,7 @@ namespace JsonCons.JsonSchema
 
         internal static ArrayValidator Create(IKeywordValidatorFactory validatorFactory, 
                                               JsonElement sch, 
-                                              List<SchemaLocation> uris)
+                                              IList<SchemaLocation> uris)
         {
             SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
 
@@ -1790,7 +1790,7 @@ namespace JsonCons.JsonSchema
         internal static ConditionalValidator Create(IKeywordValidatorFactory validatorFactory,
                                                     JsonElement sch_if,
                                                     JsonElement sch,
-                                                    List<SchemaLocation> uris)
+                                                    IList<SchemaLocation> uris)
         {
             SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
             KeywordValidator ifValidator = null;
@@ -1859,7 +1859,7 @@ namespace JsonCons.JsonSchema
         }
 
         internal static EnumValidator Create(JsonElement sch,
-                                             List<SchemaLocation> uris)
+                                             IList<SchemaLocation> uris)
         {
             SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
 
@@ -1909,7 +1909,7 @@ namespace JsonCons.JsonSchema
     }
 
         internal static ConstValidator Create(JsonElement sch,
-                                              List<SchemaLocation> uris)
+                                              IList<SchemaLocation> uris)
         {
             SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
 
@@ -1942,7 +1942,7 @@ namespace JsonCons.JsonSchema
     }
 
         internal static BooleanValidator Create(JsonElement sch,
-                                                List<SchemaLocation> uris)
+                                                IList<SchemaLocation> uris)
         {
             SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
 
@@ -1973,7 +1973,7 @@ namespace JsonCons.JsonSchema
     class TypeValidator : KeywordValidator
     {
         JsonElement? _defaultValue;
-        IList<KeywordValidator> _typeMapping;
+        KeywordValidator[] _typeMapping;
         EnumValidator _enumValidator;
         ConstValidator _constValidator;
         IList<KeywordValidator> _combinedValidators;
@@ -1982,7 +1982,7 @@ namespace JsonCons.JsonSchema
 
         internal TypeValidator(string absoluteKeywordLocation,
                                JsonElement? defaultValue,
-                               IList<KeywordValidator> typeMapping,
+                               KeywordValidator[] typeMapping,
                                EnumValidator enumValidator,
                                ConstValidator constValidator,
                                IList<KeywordValidator> combinedValidators,
@@ -2001,11 +2001,14 @@ namespace JsonCons.JsonSchema
 
         internal static TypeValidator Create(IKeywordValidatorFactory validatorFactory,
                                              JsonElement sch,
-                                             List<SchemaLocation> uris)
+                                             IList<SchemaLocation> uris)
         {
             SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
             JsonElement? defaultValue = null;
-            IList<KeywordValidator> typeMapping = new List<KeywordValidator>((int)Enum.GetValues(typeof(JsonValueKind)).Cast<JsonValueKind>().Max());
+
+            var lastJsonValueKind = Enum.GetValues(typeof(JsonValueKind)).Cast<JsonValueKind>().Max();
+
+            KeywordValidator[] typeMapping = new KeywordValidator[(int)lastJsonValueKind];
             EnumValidator enumValidator = null;
             ConstValidator constValidator = null;
             IList<KeywordValidator> combinedValidators = new List<KeywordValidator>();
@@ -2015,7 +2018,7 @@ namespace JsonCons.JsonSchema
             JsonElement element;
             var knownKeywords = new HashSet<string>();
 
-            if (sch.TryGetProperty("type", out element))
+            if (!sch.TryGetProperty("type", out element))
             {
                 InitializeTypeMapping(validatorFactory, "", sch, uris, knownKeywords, typeMapping);
             }
@@ -2190,7 +2193,7 @@ namespace JsonCons.JsonSchema
         static void InitializeTypeMapping(IKeywordValidatorFactory validatorFactory,
                                                      string type,
                                                      JsonElement sch,
-                                                     List<SchemaLocation> uris,
+                                                     IList<SchemaLocation> uris,
                                                      ISet<string> keywords,
                                                      IList<KeywordValidator> typeMapping)
         {

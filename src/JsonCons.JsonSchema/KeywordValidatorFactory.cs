@@ -79,12 +79,72 @@ namespace JsonCons.JsonSchema
     {
         Func<Uri,JsonDocument> _uriResolver;
         IDictionary<string,ValidatorRegistry> _validatorRegistries;
+        KeywordValidator _root;
+
+        internal KeywordValidator Root {get{return _root;}}
 
         internal KeywordValidatorFactory(Func<Uri,JsonDocument> uriResolver)
         {
             _uriResolver = uriResolver;
             _validatorRegistries = new Dictionary<string,ValidatorRegistry>();
 
+        }
+
+        internal void LoadRoot(JsonElement sch)
+        {
+            if (sch.ValueKind == JsonValueKind.Object)
+            {
+                JsonElement schemaIdElement;
+                if (sch.TryGetProperty("$schema", out schemaIdElement))
+                {
+                    string s = schemaIdElement.GetString();
+                }
+            }
+            Load(sch);
+        }
+
+        internal void Load(JsonElement sch)
+        {
+            _validatorRegistries.Clear();
+            _root = CreateKeywordValidator(sch, new List<SchemaLocation>(){new SchemaLocation("#")}, new List<string>(){});
+
+            // Load all external schemas that have not already been loaded
+
+            int loadedCount = 0;
+            do 
+            {
+                loadedCount = 0;
+
+                var locations = new List<string>();
+                foreach (var item in _validatorRegistries)
+                    locations.Add(item.Key);
+
+                foreach (var loc in locations) 
+                {
+                    if (_validatorRegistries[loc].Validators.Count == 0) // registry for this file is empty
+                    { 
+                        if (_uriResolver != null) 
+                        {
+                            JsonDocument externalSchema = _uriResolver(new Uri(loc));
+                            CreateKeywordValidator(externalSchema.RootElement, new List<SchemaLocation>{new SchemaLocation(loc)}, new List<string>{});
+                            ++loadedCount;
+                        } 
+                        else 
+                        {
+                            throw new Exception($"External schema reference '{loc}' needs to be loaded, but no resolver provided");
+                        }
+                    }
+                }
+            } 
+            while (loadedCount > 0);
+
+            foreach (var file in _validatorRegistries)
+            {
+                if (file.Value.Unresolved.Count != 0)
+                {
+                    throw new Exception($"after all files have been parsed, '{(file.Key == "" ? "<root>" : file.Key)}' has still undefined references.");
+                }
+            }
         }
 
         IList<SchemaLocation> UpdateUris(JsonElement schema,
@@ -146,7 +206,7 @@ namespace JsonCons.JsonSchema
                     break;
                 case JsonValueKind.Object:
                 {
-                    if (!schema.TryGetProperty("definitions", out element))
+                    if (schema.TryGetProperty("definitions", out element))
                     {
                         foreach (var def in element.EnumerateObject())
                         {
@@ -157,7 +217,7 @@ namespace JsonCons.JsonSchema
                         }
                     }
 
-                    if (!schema.TryGetProperty("$ref", out element))
+                    if (schema.TryGetProperty("$ref", out element))
                     { 
                         SchemaLocation relative = new SchemaLocation(element.GetString()); 
                         SchemaLocation id = SchemaLocation.Resolve(relative, newUris[newUris.Count-1]);
@@ -165,7 +225,7 @@ namespace JsonCons.JsonSchema
                     } 
                     else 
                     {
-                        validator = CreateKeywordValidator(schema, newUris, new List<string>() { });
+                        validator = TypeValidator.Create(this, schema, newUris);
                     }
                     break;
                 }

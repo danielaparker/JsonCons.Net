@@ -45,7 +45,7 @@ namespace JsonCons.JsonSchema
     }
 
     // Interface for validation error handlers
-    abstract class ErrorReporter
+    public abstract class ErrorReporter
     {
         int _errorCount;
 

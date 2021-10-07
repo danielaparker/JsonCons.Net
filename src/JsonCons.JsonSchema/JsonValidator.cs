@@ -9,6 +9,18 @@ using JsonCons.Utilities;
 
 namespace JsonCons.JsonSchema
 {
+
+    public class FailEarlyReporter : ErrorReporter
+    {
+        internal override void OnError(ValidationOutput o) 
+        {
+        }
+        public FailEarlyReporter()
+            : base(true)
+        {
+        }
+    }
+
     public class ValidationException : Exception
     {
         public ValidationException(string message)
@@ -19,9 +31,22 @@ namespace JsonCons.JsonSchema
 
     public sealed class JsonValidator
     {
+        KeywordValidator _root;
+
+        internal JsonValidator(KeywordValidator root)
+        {
+            _root = root;
+        }
+ 
+        public static JsonDocument DefaultUriResolver(Uri uri)
+        {
+            return JsonDocument.Parse("null");
+        }
+
         public static JsonValidator Create(JsonElement schema)
         {
-            return JsonValidatorCreator.Create(schema);
+            var factory = new KeywordValidatorFactory(DefaultUriResolver);
+            return JsonValidatorCreator.Create(schema, new Func<Uri,JsonDocument>(DefaultUriResolver));
         }
 
         public static JsonValidator Create(JsonElement schema,
@@ -32,7 +57,11 @@ namespace JsonCons.JsonSchema
 
         public bool TryValidate(JsonElement instance)
         {
-            return true;
+            var location = new JsonPointer();
+            var patch = new List<PatchElement>();
+            var reporter = new FailEarlyReporter();
+            _root.Validate(instance, location, reporter, patch);
+            return reporter.ErrorCount == 0 ? true : false;
         }
 
         public void Validate(JsonElement instance, Action<ValidationOutput> reporter)
