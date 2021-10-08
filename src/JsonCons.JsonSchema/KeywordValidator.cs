@@ -35,10 +35,27 @@ namespace JsonCons.JsonSchema
             OnValidate(instance,instanceLocation,reporter,patch);
         }
 
+        internal void ValidateString(string str, 
+                                     JsonPointer instanceLocation, 
+                                     ErrorReporter reporter,
+                                     IList<PatchElement> patch)
+        {
+            OnValidateString(str, instanceLocation, reporter, patch);
+        }
+
         internal abstract void OnValidate(JsonElement instance, 
                                           JsonPointer instanceLocation, 
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch);
+
+        internal virtual void OnValidateString(string str, 
+                                               JsonPointer instanceLocation, 
+                                               ErrorReporter reporter,
+                                               IList<PatchElement> patch)
+        {
+            using var doc = JsonDocument.Parse(JsonSerializer.Serialize(str));
+            OnValidate(doc.RootElement, instanceLocation, reporter, patch);
+        }
 
         internal virtual bool TryGetDefaultValue(JsonPointer instanceLocation, 
                                                  JsonElement instance, 
@@ -223,12 +240,13 @@ namespace JsonCons.JsonSchema
                                                     "Instance must be a string"));
             }
             string str = instance.GetString();
-            ValidateString(str, instanceLocation, reporter);
+            OnValidateString(str, instanceLocation, reporter, patch);
         }
 
-        internal void ValidateString(string str,
-                                     JsonPointer instanceLocation,
-                                     ErrorReporter reporter)
+        internal override void OnValidateString(string str,
+                                                JsonPointer instanceLocation,
+                                                ErrorReporter reporter,
+                                                IList<PatchElement> patch)
         {
             string content = null;
             if (_contentEncoding != null)
@@ -1149,6 +1167,13 @@ namespace JsonCons.JsonSchema
                                           IList<PatchElement> patch) 
         {
         }
+
+        internal override void OnValidateString(string str,
+                                                JsonPointer instanceLocation,
+                                                ErrorReporter reporter,
+                                                IList<PatchElement> patch) 
+        {
+        }
     }
 
     class FalseValidator : KeywordValidator
@@ -1168,6 +1193,17 @@ namespace JsonCons.JsonSchema
                                           JsonPointer instanceLocation,
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch) 
+        {
+            reporter.Error(new ValidationOutput("false", 
+                                                this.AbsoluteKeywordLocation, 
+                                                instanceLocation.ToString(), 
+                                                "False schema always fails"));
+        }
+
+        internal override void OnValidateString(string str,
+                                                JsonPointer instanceLocation,
+                                                ErrorReporter reporter,
+                                                IList<PatchElement> patch) 
         {
             reporter.Error(new ValidationOutput("false", 
                                                 this.AbsoluteKeywordLocation, 
@@ -1240,7 +1276,7 @@ namespace JsonCons.JsonSchema
         IList<RegexValidatorPair> _patternProperties;
         KeywordValidator _additionalProperties;
         IDictionary<string,KeywordValidator> _dependencies;
-        StringValidator _propertyNameValidator;
+        KeywordValidator _propertyNameValidator;
 
         ObjectValidator(string absoluteKeywordLocation,
                         int? maxProperties,
@@ -1252,7 +1288,7 @@ namespace JsonCons.JsonSchema
                         IList<RegexValidatorPair> patternProperties,
                         KeywordValidator additionalProperties,
                         IDictionary<string,KeywordValidator> dependencies,
-                        StringValidator propertyNameValidator)
+                        KeywordValidator propertyNameValidator)
             : base(absoluteKeywordLocation)
         {
             _maxProperties = maxProperties;
@@ -1282,7 +1318,7 @@ namespace JsonCons.JsonSchema
             IList<RegexValidatorPair> patternProperties = new List<RegexValidatorPair>();
             KeywordValidator additionalProperties = null;
             IDictionary<string,KeywordValidator> dependencies = new Dictionary<string,KeywordValidator>();
-            StringValidator propertyNameValidator = null;
+            KeywordValidator propertyNameValidator = null;
 
             JsonElement element;
 
@@ -1386,7 +1422,7 @@ namespace JsonCons.JsonSchema
             {
                 var keys = new List<string>();
                 keys.Add("propertyNames");
-                propertyNameValidator = StringValidator.Create(element, uris);
+                propertyNameValidator = validatorFactory.CreateKeywordValidator(element, uris, keys);                
             }
             return new ObjectValidator(absoluteKeywordLocation.ToString(),
                                        maxProperties,
@@ -1441,7 +1477,7 @@ namespace JsonCons.JsonSchema
             {
                 if (_propertyNameValidator != null)
                 {
-                    _propertyNameValidator.ValidateString(property.Name, instanceLocation, reporter);
+                    _propertyNameValidator.ValidateString(property.Name, instanceLocation, reporter, patch);
                 }
 
                 bool aPropOrPatternMatched = false;

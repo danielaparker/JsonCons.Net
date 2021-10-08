@@ -20,7 +20,7 @@
                     "foobar": {}
                 },
                 "valid": false
-            }/*,
+            },
             {
                 "description": "object without properties is valid",
                 "data": {},
@@ -40,9 +40,9 @@
                 "description": "ignores other non-objects",
                 "data": 12,
                 "valid": true
-            }*/
+            }
         ]
-    }/*,
+    },
     {
         "description": "propertyNames with boolean schema true",
         "schema": {"propertyNames": true},
@@ -74,5 +74,5 @@
                 "valid": true
             }
         ]
-    }*/
+    }
 ]
