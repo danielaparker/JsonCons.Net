@@ -1484,10 +1484,13 @@ namespace JsonCons.JsonSchema
                 // check all matching "patternProperties"
                 foreach (var pp in _patternProperties)
                 {
-                    pp.Pattern.Match(property.Name);
-                    aPropOrPatternMatched = true;
-                    JsonPointer loc = JsonPointer.Append(instanceLocation, property.Name);
-                    pp.Validator.Validate(property.Value, loc, reporter, patch);
+                    var match = pp.Pattern.Match(property.Name);
+                    if (match.Success)
+                    {
+                        aPropOrPatternMatched = true;
+                        JsonPointer loc = JsonPointer.Append(instanceLocation, property.Name);
+                        pp.Validator.Validate(property.Value, loc, reporter, patch);
+                    }
                 }
                 // finally, check "additionalProperties" 
                 if (!aPropOrPatternMatched && _additionalProperties != null) 
