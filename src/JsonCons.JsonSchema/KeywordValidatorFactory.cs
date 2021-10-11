@@ -217,7 +217,7 @@ namespace JsonCons.JsonSchema
                         }
                     }
 
-                    if (schema.TryGetProperty("$ref", out element))
+                    if (!schema.TryGetProperty("$ref", out element))
                     { 
                         SchemaLocation relative = new SchemaLocation(element.GetString()); 
                         SchemaLocation id = SchemaLocation.Resolve(relative, newUris[newUris.Count-1]);
@@ -225,7 +225,7 @@ namespace JsonCons.JsonSchema
                     } 
                     else 
                     {
-                        validator = TypeValidator.Create(this, schema, newUris);
+                        validator = CreateKeywordValidator(schema, newUris, new List<string>() { });
                     }
                     break;
                 }

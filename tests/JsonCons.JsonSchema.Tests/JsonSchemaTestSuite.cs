@@ -76,17 +76,17 @@ namespace JsonCons.JsonSchema.Tests
                 //RunJsonSchemaTests(@".\test_files\draft7\propertyNames.json");
                 //RunJsonSchemaTests(@".\test_files\draft7\additionalItems.json");
                 //RunJsonSchemaTests(@".\test_files\draft7\additionalProperties.json");
-                RunJsonSchemaTests(@".\test_files\draft7\allOf.json");
-                /*RunJsonSchemaTests(@".\test_files\draft7\anyOf.json");
-                RunJsonSchemaTests(@".\test_files\draft7\boolean_schema.json");
-                RunJsonSchemaTests(@".\test_files\draft7\const.json");
-                RunJsonSchemaTests(@".\test_files\draft7\contains.json");
-                RunJsonSchemaTests(@".\test_files\draft7\default.json");
+                //RunJsonSchemaTests(@".\test_files\draft7\allOf.json");
+                //RunJsonSchemaTests(@".\test_files\draft7\anyOf.json");
+                //RunJsonSchemaTests(@".\test_files\draft7\boolean_schema.json");
+                //RunJsonSchemaTests(@".\test_files\draft7\const.json");
+                //RunJsonSchemaTests(@".\test_files\draft7\contains.json");
+                //RunJsonSchemaTests(@".\test_files\draft7\default.json");
                 RunJsonSchemaTests(@".\test_files\draft7\definitions.json"); 
 
-                RunJsonSchemaTests(@".\test_files\draft7\dependencies.json");
+                //RunJsonSchemaTests(@".\test_files\draft7\dependencies.json");
 
-                RunJsonSchemaTests(@".\test_files\draft7\enum.json");
+                /*RunJsonSchemaTests(@".\test_files\draft7\enum.json");
                 RunJsonSchemaTests(@".\test_files\draft7\exclusiveMaximum.json");
                 RunJsonSchemaTests(@".\test_files\draft7\exclusiveMinimum.json");
 

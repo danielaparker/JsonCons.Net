@@ -21,20 +21,26 @@ namespace JsonCons.JsonSchema
             int pos = uri.IndexOf('#');
             if (pos != -1)
             {
-                string s = Uri.UnescapeDataString(uri.Substring(pos+1));
-                if (s.Length > 0 && s[0] == '/')
+                if (pos+1 < uri.Length)
                 {
-                    _pointer = s;
-                }
-                else
-                {
-                    _identifier = s;
+                    string s = Uri.UnescapeDataString(uri.Substring(pos+1));
+                    if (s[0] == '/')
+                    {
+                        _pointer = s;
+                    }
+                    {
+                        _identifier = s;
+                    }
                 }
 
                 string location = uri.Substring(0, pos);
                 if (location.Length > 0)
                 {
                     _location = new Uri(location);
+                }
+                else
+                {
+                    _location = new Uri(location, UriKind.Relative);
                 }
             }
             else

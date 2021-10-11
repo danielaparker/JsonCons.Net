@@ -1945,7 +1945,7 @@ namespace JsonCons.JsonSchema
                                           ErrorReporter reporter,
                                           IList<PatchElement> patch) 
         {
-            if (JsonElementEqualityComparer.Instance.Equals(_constValue, instance)) 
+            if (!JsonElementEqualityComparer.Instance.Equals(_constValue, instance)) 
                 reporter.Error(new ValidationOutput("const", 
                                                     this.AbsoluteKeywordLocation, 
                                                     instanceLocation.ToString(), 
