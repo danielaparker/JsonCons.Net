@@ -1,5 +1,5 @@
 [
-    {
+    /*{
         "description": "additionalItems as schema",
         "schema": {
             "items": [{}],
@@ -93,7 +93,7 @@
                 "valid": true
             }
         ]
-    },
+    },*/
     {
         "description": "additionalItems should not look in applicators, valid case",
         "schema": {
@@ -109,7 +109,7 @@
                 "valid": true
             }
         ]
-    },
+    }/*,
     {
         "description": "additionalItems should not look in applicators, invalid case",
         "schema": {
@@ -126,5 +126,5 @@
                 "valid": false
             }
         ]
-    }
+    }*/
 ]

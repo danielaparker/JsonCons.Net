@@ -385,8 +385,7 @@ namespace JsonCons.JsonSchema
         {
             SchemaLocation absoluteKeywordLocation = SchemaLocation.GetAbsoluteKeywordLocation(uris);
 
-            var keys = new List<string>();
-            keys.Add("not");
+            var keys = new List<string>(1){"not"};
             KeywordValidator rule = validatorFactory.CreateKeywordValidator(schema, uris, keys);
             return new NotValidator(absoluteKeywordLocation.ToString(), rule);
         }
@@ -438,13 +437,13 @@ namespace JsonCons.JsonSchema
                                CollectingErrorReporter localReporter, 
                                int count)
         {
-            if (localReporter.Errors.Count == 0)
+            if (localReporter.Errors.Count != 0)
                 reporter.Error(new ValidationOutput(Key, 
                                                     "",
                                                     instanceLocation.ToString(), 
                                                     "At least one keyword_validator failed to match, but all are required to match. ", 
                                                     localReporter.Errors));
-            return localReporter.Errors.Count == 0;
+            return localReporter.Errors.Count != 0;
         }
     }
 
@@ -512,9 +511,7 @@ namespace JsonCons.JsonSchema
             var validators = new List<KeywordValidator>();
             for (int i = 0; i < schema.GetArrayLength(); ++i)
             {
-                var keys = new List<string>();
-                keys.Add(criterion.Key);
-                keys.Add(i.ToString());
+                var keys = new List<string>(2){criterion.Key,i.ToString()};
                 validators.Add(validatorFactory.CreateKeywordValidator(schema[i], uris, keys));
             }
 
@@ -552,6 +549,7 @@ namespace JsonCons.JsonSchema
             }
         }
     }
+
 
     static class JsonAccessors 
     {
@@ -1360,9 +1358,7 @@ namespace JsonCons.JsonSchema
             {
                 foreach (var prop in element.EnumerateObject())
                 {
-                    var keys = new List<string>();
-                    keys.Add("properties");
-                    keys.Add("prop.Name");
+                    var keys = new List<string>(2){"properties",prop.Name};
 
                     properties.Add(prop.Name, validatorFactory.CreateKeywordValidator(prop.Value, uris, keys));
                 }
@@ -1372,8 +1368,7 @@ namespace JsonCons.JsonSchema
             {
                 foreach (var prop in element.EnumerateObject())
                 {
-                    var keys = new List<string>();
-                    keys.Add(prop.Name);
+                    var keys = new List<string>(1){prop.Name};
                     patternProperties.Add(new RegexValidatorPair(new Regex(prop.Name), 
                                            validatorFactory.CreateKeywordValidator(prop.Value, uris, keys)));
                 }
@@ -1381,8 +1376,7 @@ namespace JsonCons.JsonSchema
 
             if (sch.TryGetProperty("additionalProperties", out element)) 
             {
-                var keys = new List<string>();
-                keys.Add("additionalProperties");
+                var keys = new List<string>(1){"additionalProperties"};
                 additionalProperties = validatorFactory.CreateKeywordValidator(element, uris, keys);
             }
 
@@ -1407,9 +1401,7 @@ namespace JsonCons.JsonSchema
                         }
                         default:
                         {
-                            var keys = new List<string>();
-                            keys.Add("dependencies");
-                            keys.Add(dep.Name);
+                            var keys = new List<string>(2){"dependencies", dep.Name};
                             dependencies.Add(dep.Name,
                                              validatorFactory.CreateKeywordValidator(dep.Value, uris, keys));
                             break;
@@ -1420,8 +1412,7 @@ namespace JsonCons.JsonSchema
 
             if (sch.TryGetProperty("propertyNames", out element)) 
             {
-                var keys = new List<string>();
-                keys.Add("propertyNames");
+                var keys = new List<string>(1){"propertyNames"};
                 propertyNameValidator = validatorFactory.CreateKeywordValidator(element, uris, keys);                
             }
             return new ObjectValidator(absoluteKeywordLocation.ToString(),
@@ -1555,7 +1546,7 @@ namespace JsonCons.JsonSchema
         string _minItemsLocation;
         bool? _uniqueItems;
         string _uniqueItemsLocation;
-        KeywordValidator _itemsKeywordValidator;
+        KeywordValidator _itemsValidator;
         IList<KeywordValidator> _itemValidators;
         KeywordValidator _additionalItemsValidator;
         KeywordValidator _containsValidator;
@@ -1567,7 +1558,7 @@ namespace JsonCons.JsonSchema
                                 string minItemsLocation,
                                 bool? uniqueItems,
                                 string uniqueItemsLocation,
-                                KeywordValidator itemsSchema,
+                                KeywordValidator itemsValidator,
                                 IList<KeywordValidator> itemValidators,
                                 KeywordValidator additionalItemsValidator,
                                 KeywordValidator containsValidator)
@@ -1579,7 +1570,7 @@ namespace JsonCons.JsonSchema
             _minItemsLocation = minItemsLocation;
             _uniqueItems = uniqueItems;
             _uniqueItemsLocation = uniqueItemsLocation;
-            _itemsKeywordValidator = itemsSchema;
+            _itemsValidator = itemsValidator;
             _itemValidators = itemValidators;
             _additionalItemsValidator = additionalItemsValidator;
             _containsValidator = containsValidator;
@@ -1597,7 +1588,7 @@ namespace JsonCons.JsonSchema
             string minItemsLocation = "";
             bool? uniqueItems = null;
             string uniqueItemsLocation = "";
-            KeywordValidator itemsKeywordValidator = null;
+            KeywordValidator itemsValidator = null;
             IList<KeywordValidator> itemValidators = null;
             KeywordValidator additionalItemsValidator = null;
             KeywordValidator containsValidator = null;
@@ -1637,40 +1628,36 @@ namespace JsonCons.JsonSchema
                 uniqueItems = val;
             }
 
-            if (sch.TryGetProperty("additionalItems", out element))
-            {
-                var keys = new List<string>();
-                keys.Add("additionalItems");
-                additionalItemsValidator = validatorFactory.CreateKeywordValidator(element, uris, keys);
-            }
             if (sch.TryGetProperty("items", out element))
             {
+                itemValidators = new List<KeywordValidator>();
                 if (element.ValueKind == JsonValueKind.Array) 
                 {
                     int c = 0;
                     foreach (var item in element.EnumerateArray())
                     {
-                        var keys = new List<string>();
-                        keys.Add("items");
-                        keys.Add(c.ToString());
+                        var keys = new List<string>(2){"items", c.ToString()};
                         ++c;
                         itemValidators.Add(validatorFactory.CreateKeywordValidator(item, uris, keys));
+                    }
+                    if (sch.TryGetProperty("additionalItems", out element))
+                    {
+                        var keys = new List<string>(1){"additionalItems"};
+                        additionalItemsValidator = validatorFactory.CreateKeywordValidator(element, uris, keys);
                     }
                 }
                 else if (element.ValueKind == JsonValueKind.Object ||
                          element.ValueKind == JsonValueKind.True ||
                          element.ValueKind == JsonValueKind.False)
                 {
-                    var keys = new List<string>();
-                    keys.Add("items");
-                    itemsKeywordValidator = validatorFactory.CreateKeywordValidator(element, uris, keys);
+                    var keys = new List<string>(1){"items"};
+                    itemsValidator = validatorFactory.CreateKeywordValidator(element, uris, keys);
                 }
             }
 
             if (sch.TryGetProperty("contains", out element))
             {
-                var keys = new List<string>();
-                keys.Add("contains");
+                var keys = new List<string>(1){"contains"};
                 containsValidator = validatorFactory.CreateKeywordValidator(element, uris, keys);
             }
 
@@ -1681,7 +1668,7 @@ namespace JsonCons.JsonSchema
                                       minItemsLocation,
                                       uniqueItems,
                                       uniqueItemsLocation,
-                                      itemsKeywordValidator,
+                                      itemsValidator,
                                       itemValidators,
                                       additionalItemsValidator,
                                       containsValidator);
@@ -1739,24 +1726,25 @@ namespace JsonCons.JsonSchema
                 }
             }
 
-            if (_itemsKeywordValidator != null)
+            if (_itemsValidator != null)
             {
                 int index = 0;
                 foreach (var i in instance.EnumerateArray()) 
                 {
-                    _itemsKeywordValidator.Validate(i, JsonPointer.Append(instanceLocation, index), reporter, patch);
+                    _itemsValidator.Validate(i, JsonPointer.Append(instanceLocation, index), reporter, patch);
                     index++;
                 }
             }
-
-            if (_itemValidators != null)
+            else if (_itemValidators != null)
             {
                 int index = 0;
                 foreach (var item in instance.EnumerateArray()) 
                 {
                     KeywordValidator validator = null;
                     if (index < _itemValidators.Count)
-                        validator = _itemValidators[index];
+                    {
+                        validator = _itemValidators[index++];
+                    }
                     else if (_additionalItemsValidator != null)
                     {
                         validator = _additionalItemsValidator;
@@ -1766,7 +1754,6 @@ namespace JsonCons.JsonSchema
                         break;
                     }
                     validator.Validate(item, JsonPointer.Append(instanceLocation, index), reporter, patch);
-                    ++index;
                 }
             }
 
@@ -1836,20 +1823,17 @@ namespace JsonCons.JsonSchema
             JsonElement element;
             if (sch.TryGetProperty("then", out element))
             {
-                var keys = new List<string>();
-                keys.Add("then");
+                var keys = new List<string>(1){"then"};
                 thenValidator = validatorFactory.CreateKeywordValidator(element, uris, keys);
             }
             if (sch.TryGetProperty("else", out element))
             {
-                var keys = new List<string>();
-                keys.Add("else");
+                var keys = new List<string>(1){"else"};
                 elseValidator = validatorFactory.CreateKeywordValidator(element, uris, keys);
             }
             if (thenValidator != null)
             {
-                var keys = new List<string>();
-                keys.Add("if");
+                var keys = new List<string>(1){"if"};
                 ifValidator = validatorFactory.CreateKeywordValidator(sch_if, uris, keys);
             }
              return new ConditionalValidator(absoluteKeywordLocation.ToString(), 
@@ -2107,17 +2091,17 @@ namespace JsonCons.JsonSchema
 
             if (sch.TryGetProperty("allOf", out element))
             {
-                combinedValidators.Add(CombiningValidator.Create(validatorFactory, sch, uris, CombiningValidator.AllOf));
+                combinedValidators.Add(CombiningValidator.Create(validatorFactory, element, uris, CombiningValidator.AllOf));
             }
 
             if (sch.TryGetProperty("anyOf", out element))
             {
-                combinedValidators.Add(CombiningValidator.Create(validatorFactory, sch, uris, CombiningValidator.AnyOf));
+                combinedValidators.Add(CombiningValidator.Create(validatorFactory, element, uris, CombiningValidator.AnyOf));
             }
 
             if (sch.TryGetProperty("oneOf", out element))
             {
-                combinedValidators.Add(CombiningValidator.Create(validatorFactory, sch, uris, CombiningValidator.OneOf));
+                combinedValidators.Add(CombiningValidator.Create(validatorFactory, element, uris, CombiningValidator.OneOf));
             }
 
             if (sch.TryGetProperty("if", out element))
@@ -2143,7 +2127,9 @@ namespace JsonCons.JsonSchema
             var type = _typeMapping[(int)instance.ValueKind];
 
             if (type != null)
+            {
                 type.Validate(instance, instanceLocation, reporter, patch);
+            }
             else
             {
                 var buffer = new StringBuilder("Expected ");
@@ -2189,9 +2175,9 @@ namespace JsonCons.JsonSchema
                 }
             }
 
-            foreach (var l in _combinedValidators)
+            foreach (var validator in _combinedValidators)
             {
-                l.Validate(instance, instanceLocation, reporter, patch);
+                validator.Validate(instance, instanceLocation, reporter, patch);
                 if (reporter.ErrorCount > 0 && reporter.FailEarly)
                 {
                     return;

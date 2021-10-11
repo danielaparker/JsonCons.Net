@@ -73,9 +73,9 @@ namespace JsonCons.JsonSchema.Tests
             try
             {
 
-                RunJsonSchemaTests(@".\test_files\draft7\propertyNames.json");
-                /*RunJsonSchemaTests(@".\test_files\draft7\additionalItems.json");
-                RunJsonSchemaTests(@".\test_files\draft7\additionalProperties.json");
+                //RunJsonSchemaTests(@".\test_files\draft7\propertyNames.json");
+                RunJsonSchemaTests(@".\test_files\draft7\additionalItems.json");
+                /*RunJsonSchemaTests(@".\test_files\draft7\additionalProperties.json");
                 RunJsonSchemaTests(@".\test_files\draft7\allOf.json");
                 RunJsonSchemaTests(@".\test_files\draft7\anyOf.json");
                 RunJsonSchemaTests(@".\test_files\draft7\boolean_schema.json");
