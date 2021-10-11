@@ -18,16 +18,16 @@
             ]
         },
         "tests": [
-            /*{
+            {
                 "description": "allOf",
                 "data": {"foo": "baz", "bar": 2},
                 "valid": true
-            },*/
+            },
             {
                 "description": "mismatch second",
                 "data": {"foo": "baz"},
                 "valid": false
-            }/*,
+            },
             {
                 "description": "mismatch first",
                 "data": {"bar": 2},
@@ -37,9 +37,9 @@
                 "description": "wrong type",
                 "data": {"foo": "baz", "bar": "quux"},
                 "valid": false
-            }*/
+            }
         ]
-    }/*,
+    },
     {
         "description": "allOf with base schema",
         "schema": {
@@ -290,5 +290,5 @@
                 "valid": true
             }
         ]
-    }*/
+    }
 ]

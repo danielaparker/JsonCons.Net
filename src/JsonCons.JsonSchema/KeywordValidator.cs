@@ -670,7 +670,7 @@ namespace JsonCons.JsonSchema
 
         internal static bool IsMultipleOf(double x, double multipleOf) 
         {
-            return x >= multipleOf && multipleOf % x == 0;
+            return x %  multipleOf == 0;
         }
     }
 
