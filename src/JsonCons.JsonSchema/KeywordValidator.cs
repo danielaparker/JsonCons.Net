@@ -659,7 +659,7 @@ namespace JsonCons.JsonSchema
             }
             foreach (var item in element.EnumerateArray())
             {
-                if (element.ValueKind != JsonValueKind.String)
+                if (item.ValueKind != JsonValueKind.String)
                 {
                     return false;
                 }
@@ -1342,13 +1342,13 @@ namespace JsonCons.JsonSchema
                 minProperties = val;
             }
 
-            if (sch.TryGetProperty("requiredValidator", out element)) 
+            if (sch.TryGetProperty("required", out element)) 
             {
                 SchemaLocation location = SchemaLocation.Append(absoluteKeywordLocation, "requiredValidator");
                 IList<string> list;
                 if (!JsonAccessors.TryGetListOfString(element, out list))
                 {
-                    throw new JsonSchemaException("'requiredValidator' must be an array of strings", location.ToString());
+                    throw new JsonSchemaException("'required' must be an array of strings", location.ToString());
                 }
 
                 requiredValidator = new RequiredValidator(location.ToString(), list);
