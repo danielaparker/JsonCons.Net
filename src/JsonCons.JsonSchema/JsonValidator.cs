@@ -38,19 +38,19 @@ namespace JsonCons.JsonSchema
             _root = root;
         }
  
-        public static JsonDocument DefaultUriResolver(Uri uri)
+        public static JsonDocument DefaultUriResolver(string uri)
         {
-            return JsonDocument.Parse("null");
+            return JsonDocument.Parse("{}");
         }
 
         public static JsonValidator Create(JsonElement schema)
         {
             var factory = new KeywordValidatorFactory(DefaultUriResolver);
-            return JsonValidatorCreator.Create(schema, new Func<Uri,JsonDocument>(DefaultUriResolver));
+            return JsonValidatorCreator.Create(schema, new Func<string,JsonDocument>(DefaultUriResolver));
         }
 
         public static JsonValidator Create(JsonElement schema,
-                                           Func<Uri,JsonDocument> uriResolver)
+                                           Func<string,JsonDocument> uriResolver)
         {
             return JsonValidatorCreator.Create(schema, uriResolver);
         }

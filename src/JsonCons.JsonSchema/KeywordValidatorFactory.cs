@@ -77,13 +77,13 @@ namespace JsonCons.JsonSchema
 
     class KeywordValidatorFactory : IKeywordValidatorFactory
     {
-        Func<Uri,JsonDocument> _uriResolver;
+        Func<string,JsonDocument> _uriResolver;
         IDictionary<string,ValidatorRegistry> _validatorRegistries;
         KeywordValidator _root;
 
         internal KeywordValidator Root {get{return _root;}}
 
-        internal KeywordValidatorFactory(Func<Uri,JsonDocument> uriResolver)
+        internal KeywordValidatorFactory(Func<string,JsonDocument> uriResolver)
         {
             _uriResolver = uriResolver;
             _validatorRegistries = new Dictionary<string,ValidatorRegistry>();
@@ -125,7 +125,7 @@ namespace JsonCons.JsonSchema
                     { 
                         if (_uriResolver != null) 
                         {
-                            JsonDocument externalSchema = _uriResolver(new Uri(loc));
+                            JsonDocument externalSchema = _uriResolver(loc);
                             CreateKeywordValidator(externalSchema.RootElement, new List<SchemaLocation>{new SchemaLocation(loc)}, new List<string>{});
                             ++loadedCount;
                         } 
@@ -217,7 +217,7 @@ namespace JsonCons.JsonSchema
                         }
                     }
 
-                    if (!schema.TryGetProperty("$ref", out element))
+                    if (schema.TryGetProperty("$ref", out element))
                     { 
                         SchemaLocation relative = new SchemaLocation(element.GetString()); 
                         SchemaLocation id = SchemaLocation.Resolve(relative, newUris[newUris.Count-1]);
@@ -235,12 +235,14 @@ namespace JsonCons.JsonSchema
 
             foreach (var uri in newUris) 
             { 
-                Insert(uri, validator);
-
-                if (schema.ValueKind == JsonValueKind.Object)
+                if (uri.IsAbsoluteUri)
                 {
-                    foreach (var item in schema.EnumerateObject())
-                        InsertUnknownKeyword(uri, item.Name, item.Value); // save unknown keywords for later reference
+                    Insert(uri, validator);
+                    if (schema.ValueKind == JsonValueKind.Object)
+                    {
+                        foreach (var item in schema.EnumerateObject())
+                            InsertUnknownKeyword(uri, item.Name, item.Value); // save unknown keywords for later reference
+                    }
                 }
             }
 
@@ -273,7 +275,7 @@ namespace JsonCons.JsonSchema
             ValidatorRegistry file = GetOrCreateRegistry(uri.Scheme);
             var newUri = SchemaLocation.Append(uri, key);
 
-            if (newUri.HasJsonPointer) 
+            if (newUri.HasPointer) 
             {
                 var fragment = newUri.Fragment;
                 // is there a reference looking for this unknown-keyword, which is thus no longer a unknown keyword but a schema
@@ -311,7 +313,7 @@ namespace JsonCons.JsonSchema
             //
             // an unknown keyword can only be referenced by a JSONPointer,
             // not by a plain name identifier
-            if (uri.HasJsonPointer) 
+            if (uri.HasPointer) 
             {
                 string fragment = uri.Fragment;
                 JsonElement subsch;

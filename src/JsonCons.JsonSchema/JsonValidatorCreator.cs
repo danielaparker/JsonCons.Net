@@ -39,19 +39,19 @@ namespace JsonCons.JsonSchema
 
     sealed class JsonValidatorCreator
     {
-        Func<Uri,JsonDocument> _uriResolver;
+        Func<string,JsonDocument> _uriResolver;
 
         internal JsonValidatorCreator()
         {
             _uriResolver = DefaultUriResolver;
         }
 
-        internal JsonValidatorCreator(Func<Uri,JsonDocument> uriResolver)
+        internal JsonValidatorCreator(Func<string,JsonDocument> uriResolver)
         {
             _uriResolver = uriResolver;
         }
 
-        internal static JsonValidator Create(JsonElement schema, Func<Uri,JsonDocument> uriResolver)
+        internal static JsonValidator Create(JsonElement schema, Func<string,JsonDocument> uriResolver)
         {
             var factory = new KeywordValidatorFactory(uriResolver);
             factory.LoadRoot(schema);
@@ -60,16 +60,16 @@ namespace JsonCons.JsonSchema
             return validator;
         }
 
-        static JsonDocument DefaultUriResolver(Uri uri)
+        static JsonDocument DefaultUriResolver(string uri)
         {
-            if (uri.PathAndQuery.Equals("/draft-07/schema"))
+            //if (uri == "/draft-07/schema")
             {
                 return SchemaDraft7.Instance.Schema;
             }
-            else
-            {
-                throw new ArgumentException($@"Don't know how to load JSON Schema {uri}");
-            }
+            //else
+            //{
+            //    throw new ArgumentException($@"Don't know how to load JSON Schema {uri}");
+            //}
         }
     }
 

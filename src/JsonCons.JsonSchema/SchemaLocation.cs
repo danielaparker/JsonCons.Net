@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using JsonCons.Utilities;
 using System.Text.RegularExpressions;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("JsonCons.JsonSchema.Tests")]
 
 namespace JsonCons.JsonSchema
 {
+
     class SchemaLocation
     {
         Uri _location = null;
@@ -18,38 +22,33 @@ namespace JsonCons.JsonSchema
 
         internal SchemaLocation(string uri)
         {
+            //Debug.WriteLine($"From string: {uri}");
+
+            _location = new Uri(uri,UriKind.RelativeOrAbsolute);
+
             int pos = uri.IndexOf('#');
             if (pos != -1)
             {
-                if (pos+1 < uri.Length)
+                if (pos < uri.Length)
                 {
-                    string s = Uri.UnescapeDataString(uri.Substring(pos+1));
-                    if (s[0] == '/')
-                    {
-                        _pointer = s;
-                    }
+                    string s = pos+1 < uri.Length ? Uri.UnescapeDataString(uri.Substring(pos+1)) : "";
+                    if (s.Length > 0 && s[0] != '/')
                     {
                         _identifier = s;
+                    }
+                    else
+                    {
+                        _pointer = uri.Substring(pos);
                     }
                 }
 
                 string location = uri.Substring(0, pos);
-                if (location.Length > 0)
-                {
-                    _location = new Uri(location);
-                }
-                else
-                {
-                    _location = new Uri(location, UriKind.Relative);
-                }
-            }
-            else
-            {
-                _location = new Uri(uri);
             }
         }
         internal SchemaLocation(Uri uri)
         {
+            //Debug.WriteLine($"From URI: {uri}");
+
             _location = uri;
         }
 
@@ -78,7 +77,7 @@ namespace JsonCons.JsonSchema
             get {return _identifier != null;}
         }
 
-        internal bool HasJsonPointer
+        internal bool HasPointer
         {
             get {return _pointer != null;}
         }
@@ -86,7 +85,7 @@ namespace JsonCons.JsonSchema
         internal bool TryGetPointer(out string pointer) 
         {
             pointer = _pointer;
-            return HasJsonPointer ? true : false;
+            return HasPointer ? true : false;
         }
 
         internal bool TryGetIdentifier(out string identifier) 
@@ -98,6 +97,7 @@ namespace JsonCons.JsonSchema
         internal static SchemaLocation Resolve(SchemaLocation baseUri, SchemaLocation relativeUri) 
         {
             Uri newUri;
+            Debug.WriteLine($"base: {baseUri.ToString()} relative: {relativeUri.ToString()}");
             if (Uri.TryCreate(baseUri.Uri, relativeUri.Uri, out newUri))
             {
             }
@@ -107,17 +107,23 @@ namespace JsonCons.JsonSchema
         internal static SchemaLocation Append(SchemaLocation uri, string field) 
         {
             if (uri.HasIdentifier)
-                return new SchemaLocation(uri.Uri);
+                return uri;
 
-            JsonPointer pointer = JsonPointer.Parse(uri.Fragment);
             var tokens = new List<string>();
-            foreach (var token in pointer.Tokens)
+            if (uri.HasPointer)
             {
-                tokens.Add(token);
+                var pointer = JsonPointer.Parse(uri.Pointer);
+                foreach (var token in pointer.Tokens)
+                {
+                    tokens.Add(token);
+                }
             }
             tokens.Add(field);
+            var pointer2 = new JsonPointer(tokens);
 
-            string newUri = uri.Uri.GetLeftPart(UriPartial.Query) + "#" + pointer.ToString();
+            Debug.WriteLine("GetLeftPart");
+            string newUri = uri.Uri.GetLeftPart(UriPartial.Query) + pointer2.ToUriFragment();
+            Debug.WriteLine("GetLeftPart done");
 
             return new SchemaLocation(newUri);
         }
@@ -127,37 +133,28 @@ namespace JsonCons.JsonSchema
             if (uri.HasIdentifier)
                 return new SchemaLocation(uri.Uri);
 
-            JsonPointer pointer = JsonPointer.Parse(uri.Fragment);
             var tokens = new List<string>();
-            foreach (var token in pointer.Tokens)
+            if (uri.HasPointer)
             {
-                tokens.Add(token);
+                var pointer = JsonPointer.Parse(uri.Pointer);
+                foreach (var token in pointer.Tokens)
+                {
+                    tokens.Add(token);
+                }
             }
             tokens.Add(index.ToString());
+            var pointer2 = new JsonPointer(tokens);
 
-            string newUri = uri.Uri.GetLeftPart(UriPartial.Query) + "#" + pointer.ToString();
+            Debug.WriteLine("GetLeftPart");
+            string newUri= uri.Uri.GetLeftPart(UriPartial.Query) + pointer2.ToUriFragment();
+            Debug.WriteLine("GetLeftPart done");
 
             return new SchemaLocation(newUri);
         }
 
         public override string ToString()
         {
-            if (_location != null)
-            {
-                return _location.ToString();
-            }
-            else if (_pointer != null)
-            {
-                return _pointer;
-            }
-            else if (_identifier != null)
-            {
-                return _identifier;
-            }
-            else
-            {
-                return "";
-            }
+            return _location.ToString();
         }
 
         internal string GetPathAndQuery()
@@ -172,8 +169,10 @@ namespace JsonCons.JsonSchema
 
         internal int Compare(SchemaLocation uri)
         {
-            return Uri.Compare(Uri, uri.Uri, UriComponents.AbsoluteUri, UriFormat.UriEscaped, 
-                               StringComparison.Ordinal); 
+            //return Uri.Compare(Uri, uri.Uri, UriComponents.AbsoluteUri, UriFormat.UriEscaped, 
+            //                   StringComparison.Ordinal); 
+
+            return uri.ToString().CompareTo(Uri.ToString());
         }
 
         public override int GetHashCode()
@@ -192,6 +191,21 @@ namespace JsonCons.JsonSchema
             }
             return new SchemaLocation("#");
         }
-    }
+
+        internal static bool IsRooted(string basepath)
+        {
+            if (!string.IsNullOrEmpty(basepath) && (basepath[0] != '/'))
+                return (basepath[0] == '\\');
+
+            return true;
+        }
+
+        internal static bool IsRelativeUri(string virtualPath)
+        {
+            if (virtualPath.IndexOf(":") != -1)
+                return false;
+
+            return !IsRooted(virtualPath);
+        }    }
 
 } // namespace JsonCons.JsonSchema

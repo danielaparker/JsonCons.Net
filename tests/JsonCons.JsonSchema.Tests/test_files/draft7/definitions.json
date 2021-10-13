@@ -3,7 +3,7 @@
         "description": "valid definition",
         "schema": {"$ref": "http://json-schema.org/draft-07/schema#"},
         "tests": [
-            {
+            /*{
                 "description": "valid definition schema",
                 "data": {
                     "definitions": {
@@ -11,9 +11,9 @@
                     }
                 },
                 "valid": true
-            }
+            }*/
         ]
-    },
+    }/*,
     {
         "description": "invalid definition",
         "schema": {"$ref": "http://json-schema.org/draft-07/schema#"},
@@ -28,5 +28,5 @@
                 "valid": false
             }
         ]
-    }
+    }*/
 ]
