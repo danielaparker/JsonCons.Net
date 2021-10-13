@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="JsonSchemaTestSuite.cs" />
     <Compile Remove="JsonValidatorTests.cs" />
   </ItemGroup>
 

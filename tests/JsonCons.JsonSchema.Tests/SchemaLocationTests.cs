@@ -12,7 +12,7 @@ namespace JsonCons.JsonSchema.Tests
         public void TestAbsoluteUriWithEmptyFragment()
         {
             var href = "http://json-schema.org/draft-07/schema#";
-            var loc = new SchemaLocation2(href);
+            var loc = new SchemaLocation(href);
             Assert.IsTrue(loc.IsAbsoluteUri);
             Assert.IsFalse(loc.HasIdentifier);
             Assert.IsTrue(loc.HasPointer);
@@ -22,7 +22,7 @@ namespace JsonCons.JsonSchema.Tests
         public void TestAbsoluteUri()
         {
             var href = "http://json-schema.org/draft-07/schema";
-            var loc = new SchemaLocation2(href);
+            var loc = new SchemaLocation(href);
             Assert.IsTrue(loc.IsAbsoluteUri);
             Assert.IsFalse(loc.HasIdentifier);
             Assert.IsFalse(loc.HasPointer);
@@ -32,7 +32,7 @@ namespace JsonCons.JsonSchema.Tests
         public void TestPointerToRoot()
         {
             var href = "#";
-            var loc = new SchemaLocation2(href);
+            var loc = new SchemaLocation(href);
             Assert.IsFalse(loc.IsAbsoluteUri);
             Assert.IsFalse(loc.HasIdentifier);
             Assert.IsTrue(loc.HasPointer);
@@ -43,7 +43,7 @@ namespace JsonCons.JsonSchema.Tests
         public void TestPointerToBar()
         {
             var href = "#/bar";
-            var loc = new SchemaLocation2(href);
+            var loc = new SchemaLocation(href);
             Assert.IsFalse(loc.IsAbsoluteUri);
             Assert.IsFalse(loc.HasIdentifier);
             Assert.IsTrue(loc.HasPointer);
@@ -54,7 +54,7 @@ namespace JsonCons.JsonSchema.Tests
         public void TestIdentifier()
         {
             var href = "#foo";
-            var loc = new SchemaLocation2(href);
+            var loc = new SchemaLocation(href);
             Assert.IsFalse(loc.IsAbsoluteUri);
             Assert.IsTrue(loc.HasIdentifier);
             Assert.IsFalse(loc.HasPointer);
@@ -68,10 +68,10 @@ namespace JsonCons.JsonSchema.Tests
             var baseUriStr = "http://json-schema.org/draft-07/schema#";
             var relativeUriStr = "#";
 
-            var baseUri = new SchemaLocation2(baseUriStr);
-            var relativeUri = new SchemaLocation2(relativeUriStr);
+            var baseUri = new SchemaLocation(baseUriStr);
+            var relativeUri = new SchemaLocation(relativeUriStr);
 
-            var resolvedUri = SchemaLocation2.Resolve(baseUri, relativeUri);
+            var resolvedUri = SchemaLocation.Resolve(baseUri, relativeUri);
             Assert.IsTrue(resolvedUri.ToString() == baseUriStr);
         } 
         
@@ -81,9 +81,9 @@ namespace JsonCons.JsonSchema.Tests
             var baseUriStr = "#";
             var name = "foo";
 
-            var baseUri = new SchemaLocation2(baseUriStr);
+            var baseUri = new SchemaLocation(baseUriStr);
 
-            var resolvedUri = SchemaLocation2.Append(baseUri, name);
+            var resolvedUri = SchemaLocation.Append(baseUri, name);
 
             Debug.WriteLine(resolvedUri.Pointer);
             Assert.IsTrue(resolvedUri.Pointer.ToUriFragment().Equals("#/foo"));
@@ -94,9 +94,9 @@ namespace JsonCons.JsonSchema.Tests
             var baseUriStr = "#";
             int index = 3;
 
-            var baseUri = new SchemaLocation2(baseUriStr);
+            var baseUri = new SchemaLocation(baseUriStr);
 
-            var resolvedUri = SchemaLocation2.Append(baseUri, index);
+            var resolvedUri = SchemaLocation.Append(baseUri, index);
 
             Debug.WriteLine(resolvedUri.Pointer);
             Assert.IsTrue(resolvedUri.Pointer.ToUriFragment().Equals("#/3"));

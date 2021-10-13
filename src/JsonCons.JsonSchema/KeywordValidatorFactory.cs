@@ -300,7 +300,7 @@ namespace JsonCons.JsonSchema
 
         KeywordValidator GetOrCreateReference(SchemaLocation uri)
         {
-            var file = GetOrCreateRegistry(uri.AbsolutePath);
+            var file = GetOrCreateRegistry(uri.PathAndQuery);
 
             // a schema already exists
             KeywordValidator sch;

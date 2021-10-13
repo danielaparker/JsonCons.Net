@@ -691,6 +691,31 @@ references:
   commentId: N:JsonCons.JsonSchema
   fullName: JsonCons.JsonSchema
   nameWithType: JsonCons.JsonSchema
+- uid: JsonCons.JsonSchema.ErrorReporter
+  name: ErrorReporter
+  href: ref/JsonCons.JsonSchema.ErrorReporter.html
+  commentId: T:JsonCons.JsonSchema.ErrorReporter
+  fullName: JsonCons.JsonSchema.ErrorReporter
+  nameWithType: ErrorReporter
+- uid: JsonCons.JsonSchema.FailEarlyReporter
+  name: FailEarlyReporter
+  href: ref/JsonCons.JsonSchema.FailEarlyReporter.html
+  commentId: T:JsonCons.JsonSchema.FailEarlyReporter
+  fullName: JsonCons.JsonSchema.FailEarlyReporter
+  nameWithType: FailEarlyReporter
+- uid: JsonCons.JsonSchema.FailEarlyReporter.#ctor
+  name: FailEarlyReporter()
+  href: ref/JsonCons.JsonSchema.FailEarlyReporter.html#JsonCons_JsonSchema_FailEarlyReporter__ctor
+  commentId: M:JsonCons.JsonSchema.FailEarlyReporter.#ctor
+  fullName: JsonCons.JsonSchema.FailEarlyReporter.FailEarlyReporter()
+  nameWithType: FailEarlyReporter.FailEarlyReporter()
+- uid: JsonCons.JsonSchema.FailEarlyReporter.#ctor*
+  name: FailEarlyReporter
+  href: ref/JsonCons.JsonSchema.FailEarlyReporter.html#JsonCons_JsonSchema_FailEarlyReporter__ctor_
+  commentId: Overload:JsonCons.JsonSchema.FailEarlyReporter.#ctor
+  isSpec: "True"
+  fullName: JsonCons.JsonSchema.FailEarlyReporter.FailEarlyReporter
+  nameWithType: FailEarlyReporter.FailEarlyReporter
 - uid: JsonCons.JsonSchema.JsonSchemaException
   name: JsonSchemaException
   href: ref/JsonCons.JsonSchema.JsonSchemaException.html
@@ -735,15 +760,15 @@ references:
   commentId: M:JsonCons.JsonSchema.JsonValidator.Create(System.Text.Json.JsonElement)
   fullName: JsonCons.JsonSchema.JsonValidator.Create(System.Text.Json.JsonElement)
   nameWithType: JsonValidator.Create(JsonElement)
-- uid: JsonCons.JsonSchema.JsonValidator.Create(System.Text.Json.JsonElement,System.Func{System.Uri,System.Text.Json.JsonDocument})
-  name: Create(JsonElement, Func<Uri, JsonDocument>)
-  href: ref/JsonCons.JsonSchema.JsonValidator.html#JsonCons_JsonSchema_JsonValidator_Create_System_Text_Json_JsonElement_System_Func_System_Uri_System_Text_Json_JsonDocument__
-  commentId: M:JsonCons.JsonSchema.JsonValidator.Create(System.Text.Json.JsonElement,System.Func{System.Uri,System.Text.Json.JsonDocument})
-  name.vb: Create(JsonElement, Func(Of Uri, JsonDocument))
-  fullName: JsonCons.JsonSchema.JsonValidator.Create(System.Text.Json.JsonElement, System.Func<System.Uri, System.Text.Json.JsonDocument>)
-  fullName.vb: JsonCons.JsonSchema.JsonValidator.Create(System.Text.Json.JsonElement, System.Func(Of System.Uri, System.Text.Json.JsonDocument))
-  nameWithType: JsonValidator.Create(JsonElement, Func<Uri, JsonDocument>)
-  nameWithType.vb: JsonValidator.Create(JsonElement, Func(Of Uri, JsonDocument))
+- uid: JsonCons.JsonSchema.JsonValidator.Create(System.Text.Json.JsonElement,System.Func{System.String,System.Text.Json.JsonDocument})
+  name: Create(JsonElement, Func<String, JsonDocument>)
+  href: ref/JsonCons.JsonSchema.JsonValidator.html#JsonCons_JsonSchema_JsonValidator_Create_System_Text_Json_JsonElement_System_Func_System_String_System_Text_Json_JsonDocument__
+  commentId: M:JsonCons.JsonSchema.JsonValidator.Create(System.Text.Json.JsonElement,System.Func{System.String,System.Text.Json.JsonDocument})
+  name.vb: Create(JsonElement, Func(Of String, JsonDocument))
+  fullName: JsonCons.JsonSchema.JsonValidator.Create(System.Text.Json.JsonElement, System.Func<System.String, System.Text.Json.JsonDocument>)
+  fullName.vb: JsonCons.JsonSchema.JsonValidator.Create(System.Text.Json.JsonElement, System.Func(Of System.String, System.Text.Json.JsonDocument))
+  nameWithType: JsonValidator.Create(JsonElement, Func<String, JsonDocument>)
+  nameWithType.vb: JsonValidator.Create(JsonElement, Func(Of String, JsonDocument))
 - uid: JsonCons.JsonSchema.JsonValidator.Create*
   name: Create
   href: ref/JsonCons.JsonSchema.JsonValidator.html#JsonCons_JsonSchema_JsonValidator_Create_
@@ -751,6 +776,57 @@ references:
   isSpec: "True"
   fullName: JsonCons.JsonSchema.JsonValidator.Create
   nameWithType: JsonValidator.Create
+- uid: JsonCons.JsonSchema.JsonValidator.DefaultUriResolver(System.String)
+  name: DefaultUriResolver(String)
+  href: ref/JsonCons.JsonSchema.JsonValidator.html#JsonCons_JsonSchema_JsonValidator_DefaultUriResolver_System_String_
+  commentId: M:JsonCons.JsonSchema.JsonValidator.DefaultUriResolver(System.String)
+  fullName: JsonCons.JsonSchema.JsonValidator.DefaultUriResolver(System.String)
+  nameWithType: JsonValidator.DefaultUriResolver(String)
+- uid: JsonCons.JsonSchema.JsonValidator.DefaultUriResolver*
+  name: DefaultUriResolver
+  href: ref/JsonCons.JsonSchema.JsonValidator.html#JsonCons_JsonSchema_JsonValidator_DefaultUriResolver_
+  commentId: Overload:JsonCons.JsonSchema.JsonValidator.DefaultUriResolver
+  isSpec: "True"
+  fullName: JsonCons.JsonSchema.JsonValidator.DefaultUriResolver
+  nameWithType: JsonValidator.DefaultUriResolver
+- uid: JsonCons.JsonSchema.JsonValidator.TryValidate(System.Text.Json.JsonElement)
+  name: TryValidate(JsonElement)
+  href: ref/JsonCons.JsonSchema.JsonValidator.html#JsonCons_JsonSchema_JsonValidator_TryValidate_System_Text_Json_JsonElement_
+  commentId: M:JsonCons.JsonSchema.JsonValidator.TryValidate(System.Text.Json.JsonElement)
+  fullName: JsonCons.JsonSchema.JsonValidator.TryValidate(System.Text.Json.JsonElement)
+  nameWithType: JsonValidator.TryValidate(JsonElement)
+- uid: JsonCons.JsonSchema.JsonValidator.TryValidate*
+  name: TryValidate
+  href: ref/JsonCons.JsonSchema.JsonValidator.html#JsonCons_JsonSchema_JsonValidator_TryValidate_
+  commentId: Overload:JsonCons.JsonSchema.JsonValidator.TryValidate
+  isSpec: "True"
+  fullName: JsonCons.JsonSchema.JsonValidator.TryValidate
+  nameWithType: JsonValidator.TryValidate
+- uid: JsonCons.JsonSchema.JsonValidator.Validate(System.Text.Json.JsonElement,System.Action{JsonCons.JsonSchema.ValidationOutput})
+  name: Validate(JsonElement, Action<ValidationOutput>)
+  href: ref/JsonCons.JsonSchema.JsonValidator.html#JsonCons_JsonSchema_JsonValidator_Validate_System_Text_Json_JsonElement_System_Action_JsonCons_JsonSchema_ValidationOutput__
+  commentId: M:JsonCons.JsonSchema.JsonValidator.Validate(System.Text.Json.JsonElement,System.Action{JsonCons.JsonSchema.ValidationOutput})
+  name.vb: Validate(JsonElement, Action(Of ValidationOutput))
+  fullName: JsonCons.JsonSchema.JsonValidator.Validate(System.Text.Json.JsonElement, System.Action<JsonCons.JsonSchema.ValidationOutput>)
+  fullName.vb: JsonCons.JsonSchema.JsonValidator.Validate(System.Text.Json.JsonElement, System.Action(Of JsonCons.JsonSchema.ValidationOutput))
+  nameWithType: JsonValidator.Validate(JsonElement, Action<ValidationOutput>)
+  nameWithType.vb: JsonValidator.Validate(JsonElement, Action(Of ValidationOutput))
+- uid: JsonCons.JsonSchema.JsonValidator.Validate(System.Text.Json.JsonElement,System.Action{JsonCons.JsonSchema.ValidationOutput},System.Text.Json.JsonDocument@)
+  name: Validate(JsonElement, Action<ValidationOutput>, out JsonDocument)
+  href: ref/JsonCons.JsonSchema.JsonValidator.html#JsonCons_JsonSchema_JsonValidator_Validate_System_Text_Json_JsonElement_System_Action_JsonCons_JsonSchema_ValidationOutput__System_Text_Json_JsonDocument__
+  commentId: M:JsonCons.JsonSchema.JsonValidator.Validate(System.Text.Json.JsonElement,System.Action{JsonCons.JsonSchema.ValidationOutput},System.Text.Json.JsonDocument@)
+  name.vb: Validate(JsonElement, Action(Of ValidationOutput), ByRef JsonDocument)
+  fullName: JsonCons.JsonSchema.JsonValidator.Validate(System.Text.Json.JsonElement, System.Action<JsonCons.JsonSchema.ValidationOutput>, out System.Text.Json.JsonDocument)
+  fullName.vb: JsonCons.JsonSchema.JsonValidator.Validate(System.Text.Json.JsonElement, System.Action(Of JsonCons.JsonSchema.ValidationOutput), ByRef System.Text.Json.JsonDocument)
+  nameWithType: JsonValidator.Validate(JsonElement, Action<ValidationOutput>, out JsonDocument)
+  nameWithType.vb: JsonValidator.Validate(JsonElement, Action(Of ValidationOutput), ByRef JsonDocument)
+- uid: JsonCons.JsonSchema.JsonValidator.Validate*
+  name: Validate
+  href: ref/JsonCons.JsonSchema.JsonValidator.html#JsonCons_JsonSchema_JsonValidator_Validate_
+  commentId: Overload:JsonCons.JsonSchema.JsonValidator.Validate
+  isSpec: "True"
+  fullName: JsonCons.JsonSchema.JsonValidator.Validate
+  nameWithType: JsonValidator.Validate
 - uid: JsonCons.JsonSchema.ValidationException
   name: ValidationException
   href: ref/JsonCons.JsonSchema.ValidationException.html
