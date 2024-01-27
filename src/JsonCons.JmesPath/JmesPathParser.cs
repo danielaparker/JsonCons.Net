@@ -322,7 +322,9 @@ namespace JsonCons.JmesPath
                                 ++_column;
                                 break;
                             default:
-                                if ((_span[_index] >= 'A' && _span[_index] <= 'Z') || (_span[_index] >= 'a' && _span[_index] <= 'z') || (_span[_index] == '_'))
+                                if (_span[_index] == '_'
+                                    || (_span[_index] >= 'A' && _span[_index] <= 'Z') || (_span[_index] >= 'a' && _span[_index] <= 'z')
+                                    || (_span[_index] >= 'А' && _span[_index] <= 'Я') || (_span[_index] >= 'а' && _span[_index] <= 'я') || _span[_index] == 'ё' || _span[_index] == 'Ё')
                                 {
                                     _stateStack.Pop();
                                     _stateStack.Push(JmesPathState.IdentifierOrFunctionExpr);
@@ -374,7 +376,9 @@ namespace JsonCons.JmesPath
                                 ++_column;
                                 break;
                             default:
-                                if ((_span[_index] >= 'A' && _span[_index] <= 'Z') || (_span[_index] >= 'a' && _span[_index] <= 'z') || (_span[_index] == '_'))
+                                if (_span[_index] == '_'
+                                    || (_span[_index] >= 'A' && _span[_index] <= 'Z') || (_span[_index] >= 'a' && _span[_index] <= 'z')
+                                    || (_span[_index] >= 'А' && _span[_index] <= 'Я') || (_span[_index] >= 'а' && _span[_index] <= 'я') || _span[_index] == 'ё' || _span[_index] == 'Ё')
                                 {
                                     _stateStack.Pop();
                                     _stateStack.Push(JmesPathState.IdentifierOrFunctionExpr);
@@ -520,7 +524,9 @@ namespace JsonCons.JmesPath
                                 SkipWhiteSpace();
                                 break;
                             default:
-                                if ((_span[_index] >= '0' && _span[_index] <= '9') || (_span[_index] >= 'A' && _span[_index] <= 'Z') || (_span[_index] >= 'a' && _span[_index] <= 'z') || (_span[_index] == '_'))
+                                if (_span[_index] == '_' || (_span[_index] >= '0' && _span[_index] <= '9')
+                                    || (_span[_index] >= 'A' && _span[_index] <= 'Z') || (_span[_index] >= 'a' && _span[_index] <= 'z') 
+                                    || (_span[_index] >= 'А' && _span[_index] <= 'Я') || (_span[_index] >= 'а' && _span[_index] <= 'я') || _span[_index] == 'ё' || _span[_index] == 'Ё')
                                 {
                                     buffer.Append(_span[_index]);
                                     ++_index;
@@ -1101,7 +1107,9 @@ namespace JsonCons.JmesPath
                                 ++_column;
                                 break;
                             default:
-                                if ((_span[_index] >= 'A' && _span[_index] <= 'Z') || (_span[_index] >= 'a' && _span[_index] <= 'z') || (_span[_index] == '_'))
+                                if (_span[_index] == '_' 
+                                    || (_span[_index] >= 'A' && _span[_index] <= 'Z') || (_span[_index] >= 'a' && _span[_index] <= 'z')
+                                    || (_span[_index] >= 'А' && _span[_index] <= 'Я') || (_span[_index] >= 'а' && _span[_index] <= 'я') || _span[_index] == 'ё' || _span[_index] == 'Ё')
                                 {
                                     _stateStack.Pop();
                                     _stateStack.Push(JmesPathState.ExpectColon);
